@@ -6,11 +6,11 @@
 USERDISTRO := "${DISTRO}"
 DISTRO = "yogurt"
 DISTRO_NAME = "Yogurt"
-DISTRO_VERSION = "PD14.1.0"
+DISTRO_VERSION ?= "PDMaster"
 
 BUILDNAME = "Yogurt ${DISTRO_VERSION}"
 
-TARGET_VENDOR = "-yogurto"
+TARGET_VENDOR = "-yogurt"
 SDK_VENDOR = "-yogurtsdk"
 
 # Yocto work around for missing ONLINE_PACKAGE_MANAGEMENT support
