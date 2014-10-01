@@ -20,7 +20,7 @@ ONLINE_PACKAGE_MANAGEMENT = "full"
 #INHERIT += "src_distribute_local"
 SRC_DIST_LOCAL ?= "symlink"
 
-# Can be "glibc", "eglibc" or "uclibc"
+# Can be "glibc", "musl" or "uclibc"
 TCLIBC ?= "glibc"
 
 # The things *libc can provide.

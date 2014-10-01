@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSION="$(cat /etc/angstrom-version | head -n1 | awk '{print $2}')"
+VERSION="$(cat /etc/yogurt-version | head -n1 | awk '{print $2}')"
 CODENAME="Core edition"
 
 case $1 in
@@ -8,34 +8,34 @@ case $1 in
 	;;
 "-i")
 	if [ "$2" = "-s" ] ; then
-		echo "Angstrom"
+		echo "Yogurt"
 	else
-		echo "Distributor ID: Angstrom"
+		echo "Distributor ID: Yogurt"
 	fi
 	;;
 "-is")
-	echo "Angstrom"
+	echo "Yogurt"
 	;;
 "-si")
-	echo "Angstrom"
+	echo "Yogurt"
 	;;
 "-ir")
-	echo "Distributor ID: Angstrom"
+	echo "Distributor ID: Yogurt"
 	echo "Release:        $VERSION"
 	;;
 "-irc")
-	echo "Distributor ID: Angstrom"
+	echo "Distributor ID: Yogurt"
 	echo "Release:        $VERSION"
 	echo "Codename:       $CODENAME"
 	;;
 "-d")
-	echo "Description:    Angstrom GNU/Linux $VERSION ($CODENAME)"
+	echo "Description:    Yogurt GNU/Linux $VERSION ($CODENAME)"
 	;;
 "-ds")
-	echo "Angstrom GNU/Linux $VERSION ($CODENAME)"
+	echo "Yogurt GNU/Linux $VERSION ($CODENAME)"
 	;;
 "-sd")
-	echo "Angstrom GNU/Linux $VERSION ($CODENAME)"
+	echo "Yogurt GNU/Linux $VERSION ($CODENAME)"
 	;;
 "-r")
 	if [ "$2" = "-s" ] ; then
@@ -49,7 +49,7 @@ case $1 in
 	;;
 "-ri")
 	echo "Release:        $VERSION"
-	echo "Distributor ID: Angstrom"
+	echo "Distributor ID: Yogurt"
 	;;
 "-c")
 	if [ "$2" = "-s" ] ; then
@@ -59,8 +59,8 @@ case $1 in
 	fi
 	;;
 "-a")
-	echo "Distributor ID: Angstrom"
-	echo "Description:    Angstrom GNU/Linux $VERSION ($CODENAME)"
+	echo "Distributor ID: Yogurt"
+	echo "Description:    Yogurt GNU/Linux $VERSION ($CODENAME)"
 	echo "Release:        $VERSION" 
 	echo "Codename:       $CODENAME"
 	;;

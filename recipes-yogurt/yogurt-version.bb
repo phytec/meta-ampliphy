@@ -45,12 +45,16 @@ do_install() {
 	echo "${@get_layers(bb, d)}" > ${D}${sysconfdir}/yogurt-build-info
 
 	echo "VERSION=\"${DISTRO_VERSION}\"" > ${D}${sysconfdir}/os-release
-	echo "NAME=\"Angstrom\"" >> ${D}${sysconfdir}/os-release
+	echo "NAME=\"Yogurt\"" >> ${D}${sysconfdir}/os-release
 	echo "ID=\"yogurt\"" >> ${D}${sysconfdir}/os-release
-	echo "PRETTY_NAME=\"The Yogurt Distribution\"" >> ${D}${sysconfdir}/os-release
+	echo "PRETTY_NAME=\"The Yogurt Distribution ${DISTRO_VERSION}\"" >> ${D}${sysconfdir}/os-release
 	echo "ANSI_COLOR=\"1;35\"" >> ${D}${sysconfdir}/os-release
 	echo "HOME_URL=\"http://www.phytec.de\"" >> ${D}${sysconfdir}/os-release
 
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/lsb_release ${D}${bindir}/
 }
+RPROVIDES_${PN} = "os-release"
+RREPLACES_${PN} = "os-release"
+RCONFLICTS_${PN} = "os-release"
+
