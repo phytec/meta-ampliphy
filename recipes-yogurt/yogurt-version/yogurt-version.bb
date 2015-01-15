@@ -37,7 +37,7 @@ def get_layers(bb, d):
 
 do_install() {
 	install -d ${D}${sysconfdir}
-	echo "Yogurt ${DISTRO_VERSION} (Core edition)" > ${D}${sysconfdir}/yogurt-version
+	echo "Yogurt ${DISTRO_VERSION} (${DISTRO_CODENAME})" > ${D}${sysconfdir}/yogurt-version
 	echo "Built from branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/yogurt-version
 	echo "Revision: ${METADATA_REVISION}" >> ${D}${sysconfdir}/yogurt-version
 	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/yogurt-version

@@ -1,6 +1,7 @@
 #!/bin/sh
 VERSION="$(cat /etc/yogurt-version | head -n1 | awk '{print $2}')"
-CODENAME="Core edition"
+CODENAME="$(cat /etc/yogurt-version | head -n1 | awk '{print $3}'|sed 's/(\|)//g')"
+
 
 case $1 in
 "-v")
