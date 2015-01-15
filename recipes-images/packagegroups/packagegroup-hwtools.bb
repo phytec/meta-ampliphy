@@ -25,6 +25,7 @@ RDEPENDS_${PN} = " \
     mtd-utils-misc \
     iproute2 \
     can-utils \
+    bumprts \
 "
 
 # those packages depend on the specific layers
