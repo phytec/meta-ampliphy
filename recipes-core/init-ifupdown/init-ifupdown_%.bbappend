@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}:"
 
-SRC_URI_ti33x += "file://can-pre-up"
+SRC_URI += "${@bb.utils.contains("MACHINE_FEATURES", "can", "file://can-pre-up", "", d)}"
 
 do_install_append () {
     if [ -e ${WORKDIR}/can-pre-up ] ; then
