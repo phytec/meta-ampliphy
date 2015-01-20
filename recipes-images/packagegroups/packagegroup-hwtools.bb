@@ -29,5 +29,4 @@ RDEPENDS_${PN} = " \
 "
 
 # those packages depend on the specific layers
-RDEPENDS_${PN}_ti33x += "phyedit"
-RDEPENDS_${PN}_ti533x += "ultimatesolution"
+RDEPENDS_${PN}_append_ti33x = " phyedit"
