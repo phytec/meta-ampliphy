@@ -9,8 +9,8 @@ SRC_URI_append = " \
 "
 
 do_install_append () {
-        mkdir -p ${D}/usr/lib/systemd/network/
-        install -m 0644 ${WORKDIR}/*.network ${D}/usr/lib/systemd/network/
-        mkdir -p ${D}/usr/lib/systemd/system/
-        install -m 0644 ${WORKDIR}/*.service ${D}/usr/lib/systemd/system/
+        install -d ${D}${systemd_unitdir}/network/
+        install -m 0644 ${WORKDIR}/*.network ${D}${systemd_unitdir}/network/
+        install -d ${D}${systemd_unitdir}/system/
+        install -m 0644 ${WORKDIR}/*.service ${D}${systemd_unitdir}/system/
 }
