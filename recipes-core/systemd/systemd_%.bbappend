@@ -9,8 +9,14 @@ SRC_URI_append = " \
 "
 
 do_install_append () {
+    for file in ${WORKDIR}/*.network
+    do
         install -d ${D}${systemd_unitdir}/network/
-        install -m 0644 ${WORKDIR}/*.network ${D}${systemd_unitdir}/network/
+        install -m 0644 $file ${D}${systemd_unitdir}/network/
+    done
+    for file in ${WORKDIR}/*.service
+    do
         install -d ${D}${systemd_unitdir}/system/
-        install -m 0644 ${WORKDIR}/*.service ${D}${systemd_unitdir}/system/
+        install -m 0644 $file ${D}${systemd_unitdir}/system/
+    done
 }
