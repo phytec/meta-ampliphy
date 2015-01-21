@@ -3,14 +3,17 @@ Description=OpenSSH Key Generation
 ConditionPathExists=|!/etc/ssh/ssh_host_rsa_key
 ConditionPathExists=|!/etc/ssh/ssh_host_dsa_key
 ConditionPathExists=|!/etc/ssh/ssh_host_ecdsa_key
+ConditionPathExists=|!/etc/ssh/ssh_host_ed25519_key
 
 [Service]
 Environment="SYSCONFDIR=/etc/ssh"
 Environment="HOST_KEY_RSA=/etc/ssh/ssh_host_rsa_key"
 Environment="HOST_KEY_DSA=/etc/ssh/ssh_host_dsa_key"
 Environment="HOST_KEY_ECDSA=/etc/ssh/ssh_host_ecdsa_key"
+Environment="HOST_KEY_ED25519=/etc/ssh/ssh_host_ed25519_key"
 ExecStart=/usr/bin/ssh-keygen -q -f $HOST_KEY_RSA -N '' -t rsa 
 ExecStart=/usr/bin/ssh-keygen -q -f $HOST_KEY_DSA -N '' -t dsa
 ExecStart=/usr/bin/ssh-keygen -q -f $HOST_KEY_ECDSA -N '' -t ecdsa
+ExecStart=/usr/bin/ssh-keygen -q -f $HOST_KEY_ED25519 -N '' -t ed25519
 Type=oneshot
 RemainAfterExit=yes
