@@ -17,4 +17,11 @@ do_install_append () {
     for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.service); do
         install -m 0644 "$file" ${D}${systemd_unitdir}/system/
     done
+
+    if [ -f ${D}${systemd_unitdir}/system/can0.service ]
+    then
+        install -d ${D}${sysconfdir}/systemd/system/basic.target.wants
+        ln -sf ${D}${systemd_unitdir}/system/can0.service ${D}${sysconfdir}/systemd/system/basic.target.wants/can0.service
+    fi
+
 }
