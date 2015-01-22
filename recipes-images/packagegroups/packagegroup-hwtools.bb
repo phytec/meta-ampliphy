@@ -15,16 +15,14 @@ RDEPENDS_${PN} = " \
     devmem2 \
     iw \
     bc \
-    tslib-conf \
-    tslib-calibrate \
-    tslib-tests \
+    ${@bb.utils.contains("MACHINE_FEATURES", "touchscreen", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
     fb-test \
     memedit \
     mtd-utils \
     mtd-utils-ubifs \
     mtd-utils-misc \
     iproute2 \
-    can-utils \
+    ${@bb.utils.contains("MACHINE_FEATURES", "can", "can-utils", "", d)} \
     bumprts \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
 "
