@@ -26,6 +26,7 @@ RDEPENDS_${PN} = " \
     iproute2 \
     can-utils \
     bumprts \
+    ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
 "
 
 # those packages depend on the specific layers
