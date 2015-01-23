@@ -15,5 +15,6 @@ RDEPENDS_${PN} = " \
     rt-tests \
     evtest \
     perf \
+    stress \
 "
 
