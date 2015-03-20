@@ -6,6 +6,10 @@ SRC_URI_append = " \
     file://eth0.network \
     file://eth1.network \
     ${@bb.utils.contains("MACHINE_FEATURES", "can", "file://can0.service", "", d)} \
+    file://0001-networkd-Begin-with-serial-number-1-for-netlink-requ.patch \
+    file://0001-sd-rtnl-never-set-serial-to-0.patch \
+    file://0001-sd-rtnl-improve-detection-of-broadcast-messages.patch \
+    file://0001-sd-rtnl-process-only-apply-matches-to-broadcast-mess.patch \
 "
 
 do_install_append () {

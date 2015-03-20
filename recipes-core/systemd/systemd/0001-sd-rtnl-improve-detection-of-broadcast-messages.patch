@@ -1,0 +1,64 @@
+From 3f42446d286a12292f1693d5cf9cb3ec3844e1a4 Mon Sep 17 00:00:00 2001
+From: Tom Gundersen <teg@jklm.no>
+Date: Fri, 13 Mar 2015 16:12:57 +0100
+Subject: [PATCH] sd-rtnl: improve detection of broadcast messages
+
+Do not rely on nl_pid == 0, but check the groups instead. We currently avoid using
+nl_pid == 0 for unicast anyway, so this should be redundant, but let's try to be
+correct.
+---
+ src/libsystemd/sd-rtnl/rtnl-internal.h | 1 +
+ src/libsystemd/sd-rtnl/rtnl-message.c  | 4 +++-
+ src/libsystemd/sd-rtnl/sd-rtnl.c       | 2 ++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/libsystemd/sd-rtnl/rtnl-internal.h b/src/libsystemd/sd-rtnl/rtnl-internal.h
+index a192198..05b88b1 100644
+--- a/src/libsystemd/sd-rtnl/rtnl-internal.h
++++ b/src/libsystemd/sd-rtnl/rtnl-internal.h
+@@ -109,6 +109,7 @@ struct sd_rtnl_message {
+         size_t *rta_offset_tb[RTNL_CONTAINER_DEPTH];
+         unsigned short rta_tb_size[RTNL_CONTAINER_DEPTH];
+         bool sealed:1;
++        bool broadcast:1;
+ 
+         sd_rtnl_message *next; /* next in a chain of multi-part messages */
+ };
+diff --git a/src/libsystemd/sd-rtnl/rtnl-message.c b/src/libsystemd/sd-rtnl/rtnl-message.c
+index 8bb7bcd..d24769b 100644
+--- a/src/libsystemd/sd-rtnl/rtnl-message.c
++++ b/src/libsystemd/sd-rtnl/rtnl-message.c
+@@ -654,7 +654,7 @@ int sd_rtnl_message_get_family(sd_rtnl_message *m, int *family) {
+ int sd_rtnl_message_is_broadcast(sd_rtnl_message *m) {
+         assert_return(m, -EINVAL);
+ 
+-        return !m->hdr->nlmsg_pid;
++        return m->broadcast;
+ }
+ 
+ int sd_rtnl_message_link_get_ifindex(sd_rtnl_message *m, int *ifindex) {
+@@ -1577,6 +1577,8 @@ int socket_read_message(sd_rtnl *rtnl) {
+                 if (r < 0)
+                         return r;
+ 
++                m->broadcast = !!group;
++
+                 m->hdr = memdup(new_msg, new_msg->nlmsg_len);
+                 if (!m->hdr)
+                         return -ENOMEM;
+diff --git a/src/libsystemd/sd-rtnl/sd-rtnl.c b/src/libsystemd/sd-rtnl/sd-rtnl.c
+index f483af9..c7a36b9 100644
+--- a/src/libsystemd/sd-rtnl/sd-rtnl.c
++++ b/src/libsystemd/sd-rtnl/sd-rtnl.c
+@@ -262,6 +262,8 @@ static void rtnl_seal_message(sd_rtnl *rtnl, sd_rtnl_message *m) {
+         assert(m);
+         assert(m->hdr);
+ 
++        /* don't use seq == 0, as that is used for broadcasts, so we
++           would get confused by replies to such messages */
+         m->hdr->nlmsg_seq = rtnl->serial++ ? : rtnl->serial++;
+ 
+         rtnl_message_seal(m);
+-- 
+1.9.1
+

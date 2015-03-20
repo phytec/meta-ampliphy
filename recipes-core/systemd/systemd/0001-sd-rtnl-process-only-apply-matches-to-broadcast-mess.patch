@@ -1,0 +1,49 @@
+From f436aa11f72e69e7b19cb4d73c78716296e3e417 Mon Sep 17 00:00:00 2001
+From: Tom Gundersen <teg@jklm.no>
+Date: Fri, 13 Mar 2015 16:13:24 +0100
+Subject: [PATCH] sd-rtnl: process - only apply matches to broadcast messages
+
+---
+ src/libsystemd/sd-rtnl/sd-rtnl.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
+
+diff --git a/src/libsystemd/sd-rtnl/sd-rtnl.c b/src/libsystemd/sd-rtnl/sd-rtnl.c
+index c7a36b9..50162c3 100644
+--- a/src/libsystemd/sd-rtnl/sd-rtnl.c
++++ b/src/libsystemd/sd-rtnl/sd-rtnl.c
+@@ -428,9 +428,6 @@ static int process_reply(sd_rtnl *rtnl, sd_rtnl_message *m) {
+         assert(rtnl);
+         assert(m);
+ 
+-        if (sd_rtnl_message_is_broadcast(m))
+-                return 0;
+-
+         serial = rtnl_message_get_serial(m);
+         c = hashmap_remove(rtnl->reply_callbacks, &serial);
+         if (!c)
+@@ -495,13 +492,15 @@ static int process_running(sd_rtnl *rtnl, sd_rtnl_message **ret) {
+         if (!m)
+                 goto null_message;
+ 
+-        r = process_reply(rtnl, m);
+-        if (r != 0)
+-                goto null_message;
+-
+-        r = process_match(rtnl, m);
+-        if (r != 0)
+-                goto null_message;
++        if (sd_rtnl_message_is_broadcast(m)) {
++                r = process_match(rtnl, m);
++                if (r != 0)
++                        goto null_message;
++        } else {
++                r = process_reply(rtnl, m);
++                if (r != 0)
++                        goto null_message;
++        }
+ 
+         if (ret) {
+                 *ret = m;
+-- 
+1.9.1
+
