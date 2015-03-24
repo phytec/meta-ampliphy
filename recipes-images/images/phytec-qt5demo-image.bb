@@ -29,6 +29,5 @@ IMAGE_INSTALL += "\
     qtmultimedia \
     qtmultimedia-plugins \
     qtmultimedia-qmlplugins \
-    cinematicexperience \
-    qtsmarthome \
+    qt5everywheredemo \
 "
