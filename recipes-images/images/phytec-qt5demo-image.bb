@@ -3,6 +3,8 @@
 SUMMARY =  "This image is designed to be a development image for Qt 5 \
             Embedded userspace applications."
 
+require phytec-hwbringup-image.bb
+
 IMAGE_FEATURES += "splash ssh-server-openssh hwcodecs"
 
 LICENSE = "MIT"
@@ -13,13 +15,8 @@ inherit core-image distro_features_check
 CONFLICT_DISTRO_FEATURES = "x11 wayland"
 REQUIRED_DISTRO_FEATURES = "opengl"
 
-IMAGE_INSTALL = " \
-    packagegroup-core-boot \
+IMAGE_INSTALL += "\
     packagegroup-base \
-    packagegroup-hwtools \
-    packagegroup-benchmark \
-    packagegroup-userland \
-    ${@bb.utils.contains("DISTRO_FEATURES", "mtd-tests", "packagegroup-mtdtests", "", d)} \
     \
     qtbase \
     qtbase-plugins \
