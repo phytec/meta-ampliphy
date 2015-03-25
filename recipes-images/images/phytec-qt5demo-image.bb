@@ -30,4 +30,5 @@ IMAGE_INSTALL += "\
     qtmultimedia-plugins \
     qtmultimedia-qmlplugins \
     qt5everywheredemo \
+    qt5-opengles2-test \
 "
