@@ -1,0 +1,11 @@
+[Unit]
+Description=Autostart Qt 5 Demo
+Requires=pvr-init.service
+After=pvr-init.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/qt5demo-starter
+
+[Install]
+WantedBy=multi-user.target

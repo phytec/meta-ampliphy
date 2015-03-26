@@ -31,4 +31,5 @@ IMAGE_INSTALL += "\
     qtmultimedia-qmlplugins \
     qt5everywheredemo \
     qt5-opengles2-test \
+    ${@bb.utils.contains('DISTRO_FEATURES','autostart-demo','qt5demo-autostarter','',d)} \
 "
