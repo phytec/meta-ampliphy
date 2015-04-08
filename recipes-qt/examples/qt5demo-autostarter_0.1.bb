@@ -17,7 +17,7 @@ SYSTEMDSERVICE_${PN} = "qt5demo.service"
 do_install() {
     install -d  ${D}${systemd_unitdir}/system \
                 ${D}${systemd_unitdir}/system/multi-user.target.wants \
-        	${D}${bindir}
+                ${D}${bindir}
     install -m 0755 ${WORKDIR}/qt5demo-starter ${D}${bindir}
     install -m 0644 ${WORKDIR}/qt5demo.service ${D}${systemd_unitdir}/system
     ln -fs ../qt5demo.service ${D}${systemd_unitdir}/system/multi-user.target.wants/qt5demo.service
