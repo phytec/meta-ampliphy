@@ -26,6 +26,7 @@ IMAGE_INSTALL += "\
     qtdeclarative \
     qtdeclarative-plugins \
     qtdeclarative-qmlplugins \
+    qtquickcontrols-qmlplugins \
     qtmultimedia \
     qtmultimedia-plugins \
     qtmultimedia-qmlplugins \

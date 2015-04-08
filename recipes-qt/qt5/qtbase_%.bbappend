@@ -6,6 +6,9 @@ GLES2_X11_FLAG = "${@base_contains('DISTRO_FEATURES', 'x11', ' -no-eglfs', ' -eg
 PACKAGECONFIG[gles2] = "-opengl es2 ${GLES2_X11_FLAG},,virtual/libgles2 virtual/egl, libgles2 libegl"
 PACKAGECONFIG_GL_ti33x = "gles2"
 
+#this is necessary for qtquickcontrols-qmlplugins
+PACKAGECONFIG_append = " accessibility"
+
 #environment settings for qt5
 SRC_URI += "file://qt_env.sh"
 
