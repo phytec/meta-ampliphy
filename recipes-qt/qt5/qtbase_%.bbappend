@@ -1,10 +1,20 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-HAS_X11 = "${@base_contains('DISTRO_FEATURES', 'x11', 1, 0, d)}"
+# The string 'gl' is in PACKAGECONFIG because "opengl" is in yogurt's
+# DISTRO_FEATURES. Since our boards only support egl/gles2 and not the full
+# opengl, we have to disable gl and enable gles2 by hand here.
+PACKAGECONFIG_remove = "gl"
+PACKAGECONFIG_append_ti33x = " gles2"
 
-GLES2_X11_FLAG = "${@base_contains('DISTRO_FEATURES', 'x11', ' -no-eglfs', ' -eglfs', d)}"
-PACKAGECONFIG[gles2] = "-opengl es2 ${GLES2_X11_FLAG},,virtual/libgles2 virtual/egl, libgles2 libegl"
-PACKAGECONFIG_GL_ti33x = "gles2"
+# The recipe libgles-omap3 doesn't install the package libgles2 and libegl by
+# default, so we have to add explicit runtime dependences here. But these
+# runtime dependences break the i.MX6 build, because they pull in the mesa
+# recipe. For the gpu-viv-bin-mx6q recipe the build dependences to
+# virtual/libegl and virtual/libgles2 are sufficient.
+#
+# Since PACKAGECONFIG doesn't supported machine overrides, we append these
+# runtime dependences to the qtbase package directly.
+RDEPENDS_${PN}_append_ti33x = " libgles2 libegl"
 
 #this is necessary for qtquickcontrols-qmlplugins
 PACKAGECONFIG_append = " accessibility"
