@@ -11,5 +11,5 @@ RDEPENDS_${PN} = " \
     perf \
     openssh \
     openssh-sftp-server \
+    htop \
 "
-
