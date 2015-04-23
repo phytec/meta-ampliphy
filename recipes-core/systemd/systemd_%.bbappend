@@ -25,7 +25,7 @@ do_install_append () {
     if [ -f ${D}${systemd_unitdir}/system/can0.service ]
     then
         install -d ${D}${sysconfdir}/systemd/system/basic.target.wants
-        ln -sf ${D}${systemd_unitdir}/system/can0.service ${D}${sysconfdir}/systemd/system/basic.target.wants/can0.service
+        ln -sf ${systemd_unitdir}/system/can0.service ${D}${sysconfdir}/systemd/system/basic.target.wants/can0.service
     fi
 
 }
