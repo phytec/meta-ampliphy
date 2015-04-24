@@ -34,3 +34,5 @@ IMAGE_INSTALL += "\
     qt5-opengles2-test \
     ${@bb.utils.contains('DISTRO_FEATURES','autostart-demo','qt5demo-autostarter','',d)} \
 "
+
+IMAGE_INSTALL_append_mx6 = " packagegroup-gstreamer"
