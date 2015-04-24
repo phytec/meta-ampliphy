@@ -1,0 +1,124 @@
+From 2ce9aea85bf0e157428718c2cd485e6d8b009103 Mon Sep 17 00:00:00 2001
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Date: Mon, 15 Dec 2014 19:32:29 +0100
+Subject: [PATCH 2/2] Allow to access v4l2 in raw mode
+
+---
+ sys/v4l2/gstv4l2object.c |  3 +++
+ sys/v4l2/gstv4l2object.h |  3 +++
+ sys/v4l2/gstv4l2src.c    | 15 +++++++++++++++
+ sys/v4l2/v4l2_calls.c    |  4 +++-
+ 4 files changed, 24 insertions(+), 1 deletion(-)
+
+diff --git a/sys/v4l2/gstv4l2object.c b/sys/v4l2/gstv4l2object.c
+index 8aaea57..cf7008b 100644
+--- a/sys/v4l2/gstv4l2object.c
++++ b/sys/v4l2/gstv4l2object.c
+@@ -31,6 +31,7 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <string.h>
++#include <stdlib.h>
+ 
+ #ifdef HAVE_GUDEV
+ #include <gudev/gudev.h>
+@@ -457,6 +458,8 @@ gst_v4l2_object_new (GstElement * element,
+   v4l2object->colors = NULL;
+ 
+   v4l2object->xwindow_id = 0;
++  v4l2object->raw_open = getenv ("X_PHYTEC_GSTV4L_RAW")
++      && getenv ("X_PHYTEC_GSTV4L_RAW")[0];
+ 
+   v4l2object->keep_aspect = TRUE;
+ 
+diff --git a/sys/v4l2/gstv4l2object.h b/sys/v4l2/gstv4l2object.h
+index 6dbf473..ecdfec9 100644
+--- a/sys/v4l2/gstv4l2object.h
++++ b/sys/v4l2/gstv4l2object.h
+@@ -171,6 +171,9 @@ struct _GstV4l2Object {
+   /* Allow to skip reading initial format through G_FMT. Some devices
+    * just fails if you don't call S_FMT first. (ex: M2M decoders) */
+   gboolean no_initial_format;
++
++  /* Open /dev/video0 without translating formats throguh libv4l2 */
++  gboolean raw_open;
+ };
+ 
+ struct _GstV4l2ObjectClassHelper {
+diff --git a/sys/v4l2/gstv4l2src.c b/sys/v4l2/gstv4l2src.c
+index 8775612..2d955a1 100644
+--- a/sys/v4l2/gstv4l2src.c
++++ b/sys/v4l2/gstv4l2src.c
+@@ -45,6 +45,7 @@
+ #endif
+ 
+ #include <string.h>
++#include <stdlib.h>
+ #include <sys/time.h>
+ #include <unistd.h>
+ 
+@@ -63,11 +64,13 @@ GST_DEBUG_CATEGORY (v4l2src_debug);
+ #define GST_CAT_DEFAULT v4l2src_debug
+ 
+ #define DEFAULT_PROP_DEVICE   "/dev/video0"
++#define PROP_DEF_RAW		    FALSE
+ 
+ enum
+ {
+   PROP_0,
+   V4L2_STD_OBJECT_PROPS,
++  PROP_RAW,
+   PROP_LAST
+ };
+ 
+@@ -143,6 +146,12 @@ gst_v4l2src_class_init (GstV4l2SrcClass * klass)
+   gst_v4l2_object_install_properties_helper (gobject_class,
+       DEFAULT_PROP_DEVICE);
+ 
++  g_object_class_install_property (gobject_class, PROP_RAW,
++      g_param_spec_boolean ("raw", "Return raw data",
++          "When true, conversion routines of libv4l2 will not be used",
++          getenv ("X_PHYTEC_GSTV4L_RAW") && getenv ("X_PHYTEC_GSTV4L_RAW")[0],
++          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
++
+   /**
+    * GstV4l2Src::prepare-format:
+    * @v4l2src: the v4l2src instance
+@@ -223,6 +232,9 @@ gst_v4l2src_set_property (GObject * object,
+   if (!gst_v4l2_object_set_property_helper (v4l2src->v4l2object,
+           prop_id, value, pspec)) {
+     switch (prop_id) {
++      case PROP_RAW:
++        v4l2src->v4l2object->raw_open = g_value_get_boolean (value);
++        break;
+       default:
+         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+         break;
+@@ -239,6 +251,9 @@ gst_v4l2src_get_property (GObject * object,
+   if (!gst_v4l2_object_get_property_helper (v4l2src->v4l2object,
+           prop_id, value, pspec)) {
+     switch (prop_id) {
++      case PROP_RAW:
++        g_value_set_boolean (value, v4l2src->v4l2object->raw_open);
++        break;
+       default:
+         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+         break;
+diff --git a/sys/v4l2/v4l2_calls.c b/sys/v4l2/v4l2_calls.c
+index d1cc284..c38cc42 100644
+--- a/sys/v4l2/v4l2_calls.c
++++ b/sys/v4l2/v4l2_calls.c
+@@ -540,7 +540,9 @@ gst_v4l2_open (GstV4l2Object * v4l2object)
+     goto not_open;
+ 
+   libv4l2_fd = v4l2_fd_open (v4l2object->video_fd,
+-      V4L2_ENABLE_ENUM_FMT_EMULATION);
++			     v4l2object->raw_open
++			     ? V4L2_DISABLE_CONVERSION
++			     : V4L2_ENABLE_ENUM_FMT_EMULATION);
+   /* Note the v4l2_xxx functions are designed so that if they get passed an
+      unknown fd, the will behave exactly as their regular xxx counterparts, so
+      if v4l2_fd_open fails, we continue as normal (missing the libv4l2 custom
+-- 
+1.9.3
+
