@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=4d92cd373abda3937c2bc47fbc49d
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-PR = "r18"
+PR = "r19"
 inherit systemd
 
 NATIVE_SYSTEMD_SUPPORT = "1"
@@ -24,3 +24,8 @@ do_install() {
         install -m 0644 "$file" ${D}${systemd_unitdir}/system/
     done
 }
+
+
+# Ship directory "/lib/systemd/system" explicitly in case it is empty. Avoids:
+#     QA Issue: systemd-machine-units: Files/directories were installed but not shipped
+FILES_${PN}_append = " ${systemd_unitdir}/system/"
