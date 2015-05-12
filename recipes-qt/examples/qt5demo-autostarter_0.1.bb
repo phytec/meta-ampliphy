@@ -3,7 +3,7 @@
 DESCRIPTION = "this brings up a demo for our dev kits"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/GPL-2.0;md5=801f80980d171dd6425610833a22dbe6"
-PR = "r1"
+PR = "r2"
 
 SRC_URI = " \
     file://qt5demo-starter \
@@ -13,6 +13,10 @@ SRC_URI = " \
 inherit systemd
 
 SYSTEMDSERVICE_${PN} = "qt5demo.service"
+
+# The resutling packages are machine dependent, because the qt5demo.service
+# unit is different for ti335x and mx6 machines.
+PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 do_install() {
     install -d  ${D}${systemd_unitdir}/system \
