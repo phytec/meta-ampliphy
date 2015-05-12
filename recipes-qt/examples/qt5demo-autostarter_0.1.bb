@@ -31,3 +31,4 @@ do_install() {
         ${D}${sysconfdir}/systemd/system/multi-user.target.wants/qt5demo.service
 }
 FILES_${PN} = "${bindir} ${systemd_unitdir} ${sysconfdir}"
+RDEPENDS_${PN} += "qt5everywheredemo"
