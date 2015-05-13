@@ -1,0 +1,54 @@
+From aaaf0e726c86fd6a70de4870cccf048b41be7488 Mon Sep 17 00:00:00 2001
+From: Stefan Christ <s.christ@phytec.de>
+Date: Tue, 12 May 2015 15:54:02 +0200
+Subject: [clinfo][PATCH] Makefile: fix some build issues
+
+- Use LIBS for libraries, because LDFLAGS maybe overwritten by build
+  environment
+- Create directories before installing files into them
+
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
+---
+ Makefile | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 4786711..b356ecd 100644
+--- a/Makefile
++++ b/Makefile
+@@ -17,11 +17,12 @@ EXEC = clinfo
+ 
+ CFLAGS = -Wall -O3 -std=c99
+ LDFLAGS =
++LIBS =
+ 
+ ifeq ($(shell uname),Darwin)
+-	LDFLAGS += -framework OpenCL
++	LIBS += -framework OpenCL
+ else
+-	LDFLAGS += -lOpenCL -lm
++	LIBS += -lOpenCL -lm
+ endif
+ 
+ prefix = /usr/local
+@@ -38,13 +39,16 @@ INSTALL = install
+ all: $(EXEC)
+ 
+ $(EXEC): clinfo.c
+-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
++	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
+ 
+ clean:
+ 	$(RM) $(EXEC)
+ 
+ install: $(EXEC)
++	$(INSTALL) -d $(prefix)
++	$(INSTALL) -d $(prefix)/$(bindir)
+ 	$(INSTALL) $(EXEC) $(prefix)/$(bindir)/
++	$(INSTALL) -d $(prefix)/$(mandir)
+ 	$(INSTALL) clinfo.1 $(prefix)/$(mandir)/$(EXEC).1
+ 
+ uninstall:
+-- 
+1.9.1
+
