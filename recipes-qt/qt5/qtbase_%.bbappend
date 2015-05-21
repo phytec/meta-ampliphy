@@ -20,14 +20,6 @@ RDEPENDS_${PN}_append_ti33x = " libgles2 libegl"
 #this is necessary for qtquickcontrols-qmlplugins
 PACKAGECONFIG_append = " accessibility"
 
-#environment settings for qt5
-SRC_URI += "file://qt_env.sh"
-
-do_install_append () {
-    install -d ${D}${sysconfdir}/profile.d
-    install -m 0755 ${WORKDIR}/qt_env.sh ${D}${sysconfdir}/profile.d/
-}
-
 # From the layer meta-fsl-arm. Fix qtbase build.
 SRC_URI_append_mx6 = " file://Force_egl_visual_ID_33.patch"
 do_configure_prepend_mx6() {
@@ -53,11 +45,20 @@ load(qt_config)
 EOF
 }
 
-PACKAGES =+ "${PN}-conf"
+# Set default QT_QPA_PLATFORM for all phytec boards
+do_configure_prepend() {
+        # adapt qmake.conf to our needs
+        sed -i 's!load(qt_config)!!' ${S}/mkspecs/linux-oe-g++/qmake.conf
 
-FILES_${PN}-conf = "${sysconfdir}/profile.d/qt_env.sh"
+        # Insert QT_QPA_PLATFORM into qmake.conf
+        cat >> ${S}/mkspecs/linux-oe-g++/qmake.conf <<EOF
 
-RDEPENDS_${PN} += "${PN}-conf"
+QT_QPA_DEFAULT_PLATFORM = eglfs
+
+load(qt_config)
+
+EOF
+}
 
 #skip QA tests for examples
 INSANE_SKIP_${PN}-examples-dev += "libdir"
