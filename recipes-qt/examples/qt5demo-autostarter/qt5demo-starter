@@ -1,6 +1,0 @@
-#!/bin/sh 
-export QT_QPA_GENERIC_PLUGINS='Auto'
-export QT_QPA_PLATFORM='eglfs'
-
-cd /usr/share/qt5everywheredemo-1.0
-./QtDemo

@@ -5,7 +5,9 @@ After=pvr-init.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/qt5demo-starter
+Environment=QT_QPA_GENERIC_PLUGINS=Auto QT_QPA_PLATFORM=eglfs
+WorkingDirectory=/usr/share/qt5everywheredemo-1.0
+ExecStart=/usr/share/qt5everywheredemo-1.0/QtDemo
 
 # Detach the framebuffer console from fb0 before starting the QtDemo and
 # reattach it after QtDemo has stopped.
