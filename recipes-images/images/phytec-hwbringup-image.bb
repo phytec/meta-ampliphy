@@ -11,5 +11,4 @@ IMAGE_INSTALL = " \
     packagegroup-hwtools \
     packagegroup-benchmark \
     packagegroup-userland \
-    ${@bb.utils.contains("DISTRO_FEATURES", "mtd-tests", "packagegroup-mtdtests", "", d)} \
 "
