@@ -20,6 +20,9 @@ RDEPENDS_${PN}_append_ti33x = " libgles2 libegl"
 #this is necessary for qtquickcontrols-qmlplugins
 PACKAGECONFIG_append = " accessibility"
 
+#this is required by qtwebkit
+PACKAGECONFIG_append = " icu"
+
 # From the layer meta-fsl-arm. Fix qtbase build.
 SRC_URI_append_mx6 = " file://Force_egl_visual_ID_33.patch"
 do_configure_prepend_mx6() {

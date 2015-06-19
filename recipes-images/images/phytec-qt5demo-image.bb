@@ -30,6 +30,8 @@ IMAGE_INSTALL += "\
     qtmultimedia \
     qtmultimedia-plugins \
     qtmultimedia-qmlplugins \
+    qtwebkit \
+    qtwebkit-qmlplugins \
     qt5everywheredemo \
     qt5-opengles2-test \
     qt5demo-autostarter \
