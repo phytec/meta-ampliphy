@@ -5,7 +5,7 @@ SUMMARY =  "This image is designed to be a development image for Qt 5 \
 
 require phytec-hwbringup-image.bb
 
-IMAGE_FEATURES += "splash ssh-server-openssh hwcodecs"
+IMAGE_FEATURES += "splash ssh-server-openssh hwcodecs qtcreator-debug eclipse-debug"
 
 LICENSE = "MIT"
 
