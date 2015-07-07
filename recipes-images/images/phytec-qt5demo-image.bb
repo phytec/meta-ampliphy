@@ -18,6 +18,8 @@ REQUIRED_DISTRO_FEATURES = "opengl"
 IMAGE_INSTALL += "\
     packagegroup-base \
     \
+    packagegroup-gstreamer \
+    \
     qtbase \
     qtbase-plugins \
     qtbase-fonts \
@@ -37,4 +39,3 @@ IMAGE_INSTALL += "\
     qt5demo-autostarter \
 "
 
-IMAGE_INSTALL_append_mx6 = " packagegroup-gstreamer"
