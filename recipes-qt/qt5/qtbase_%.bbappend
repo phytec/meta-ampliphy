@@ -10,8 +10,8 @@ PACKAGECONFIG_append_mx6 = " gles2"
 # The recipe libgles-omap3 doesn't install the package libgles2 and libegl by
 # default, so we have to add explicit runtime dependences here. But these
 # runtime dependences break the i.MX6 build, because they pull in the mesa
-# recipe. For the gpu-viv-bin-mx6q recipe the build dependences to
-# virtual/libegl and virtual/libgles2 are sufficient.
+# recipe. For the gpu-viv-bin-mx6q recipe the build dependences to virtual/egl
+# and virtual/libgles2 are sufficient.
 #
 # Since PACKAGECONFIG doesn't supported machine overrides, we append these
 # runtime dependences to the qtbase package directly.
