@@ -8,9 +8,9 @@ PACKAGECONFIG_append_ti33x = " gles2"
 PACKAGECONFIG_append_mx6 = " gles2"
 
 # The recipe libgles-omap3 doesn't install the package libgles2 and libegl by
-# default, so we have to add explicit runtime dependences here. But these
+# default, so we have to add explicit runtime dependencies here. But these
 # runtime dependences break the i.MX6 build, because they pull in the mesa
-# recipe. For the gpu-viv-bin-mx6q recipe the build dependences to virtual/egl
+# recipe. For the gpu-viv-bin-mx6q recipe the build dependencies to virtual/egl
 # and virtual/libgles2 are sufficient.
 #
 # Since PACKAGECONFIG doesn't supported machine overrides, we append these
