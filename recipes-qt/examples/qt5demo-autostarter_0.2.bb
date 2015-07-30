@@ -24,5 +24,5 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 do_install() {
     install -Dm 0644 ${WORKDIR}/qt5demo.service ${D}${systemd_unitdir}/system/qt5demo.service
 }
-FILES_${PN} = "${bindir} ${systemd_unitdir}"
+FILES_${PN} = "${systemd_unitdir}"
 RDEPENDS_${PN} += "qt5everywheredemo"
