@@ -10,6 +10,8 @@ SRC_URI = " \
 
 inherit systemd
 
+PR = "r1"
+
 SYSTEMD_SERVICE_${PN} = "qt5demo.service"
 
 # Don't generate '-dev' and '-dbg' packages, since they are empty.

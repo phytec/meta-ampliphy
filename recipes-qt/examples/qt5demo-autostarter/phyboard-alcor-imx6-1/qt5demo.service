@@ -1,0 +1,22 @@
+[Unit]
+Description=Autostart Qt 5 Demo
+
+[Service]
+Type=simple
+# Fix touchscreen input on phyboard-alcor-imx6
+Environment=QT_QPA_EVDEV_TOUCHSCREEN_PARAMETERS="rotate=180"
+Environment=QT_QPA_GENERIC_PLUGINS=Auto QT_QPA_PLATFORM=eglfs
+WorkingDirectory=/usr/share/qt5everywheredemo-1.0
+ExecStart=/usr/share/qt5everywheredemo-1.0/QtDemo
+
+# Detach the framebuffer console from fb0 before starting the QtDemo and
+# reattach it after QtDemo has stopped.
+# See <linux>/Documentation/fb/fbcon.txt for details.
+# NOTE: The dash "-" allows the commands to fail, e.g. if no virtual console
+# was started.
+# FIXME Is there a better command without shell invocation?
+ExecStartPre=-/bin/sh -c "echo 0 > /sys/devices/virtual/vtconsole/vtcon1/bind"
+ExecStopPost=-/bin/sh -c "echo 1 > /sys/devices/virtual/vtconsole/vtcon1/bind"
+
+[Install]
+WantedBy=multi-user.target
