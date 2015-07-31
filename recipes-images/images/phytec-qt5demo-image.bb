@@ -3,7 +3,7 @@
 SUMMARY =  "This image is designed to be a development image for Qt 5 \
             Embedded userspace applications."
 
-require phytec-hwbringup-image.bb
+require phytec-headless-image.bb
 
 IMAGE_FEATURES += "splash ssh-server-openssh hwcodecs qtcreator-debug eclipse-debug"
 
