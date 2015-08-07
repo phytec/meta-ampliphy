@@ -26,4 +26,4 @@ RDEPENDS_${PN} = " \
     gstreamer1.0-plugins-bad-videoparsersbad \
     gst-plugin-i2c \
 "
-RDEPENDS_${PN}_mx6 += "gstreamer-examples"
+RDEPENDS_${PN}_append_mx6 = " gstreamer-examples"
