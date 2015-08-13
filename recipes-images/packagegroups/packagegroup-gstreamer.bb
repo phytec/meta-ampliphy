@@ -10,6 +10,7 @@ RDEPENDS_${PN} = " \
     media-ctl \
     v4l-utils \
     gstreamer1.0 \
+    gstreamer1.0-libav \
     gstreamer1.0-plugins-base \
     gstreamer1.0-plugins-base-tcp \
     gstreamer1.0-plugins-base-pango \
