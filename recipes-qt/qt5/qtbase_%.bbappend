@@ -17,11 +17,16 @@ PACKAGECONFIG_append_mx6 = " gles2"
 # runtime dependences to the qtbase package directly.
 RDEPENDS_${PN}_append_ti33x = " libgles2 libegl"
 
+PACKAGECONFIG_MULTIMEDIA_append = " alsa"
+
 #this is necessary for qtquickcontrols-qmlplugins
 PACKAGECONFIG_append = " accessibility"
 
 #this is required by qtwebkit
 PACKAGECONFIG_append = " icu"
+
+#this is required by our demo application, qtwebkit cookie database
+PACKAGECONFIG_append = " sql-sqlite"
 
 # From the layer meta-fsl-arm. Fix qtbase build.
 SRC_URI_append_mx6 = " file://Force_egl_visual_ID_33.patch"
