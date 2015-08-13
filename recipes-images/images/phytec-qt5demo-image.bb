@@ -36,6 +36,6 @@ IMAGE_INSTALL += "\
     qtwebkit-qmlplugins \
     qt5everywheredemo \
     qt5-opengles2-test \
-    qt5demo-autostarter \
+    phytec-qtdemo \
 "
 

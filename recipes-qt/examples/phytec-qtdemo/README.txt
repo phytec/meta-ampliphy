@@ -1,6 +1,6 @@
 Note: Keep service units in machine override folders
 
-    ti33x/qt5demo.service
+    ti33x/phytec-qtdemo.service
 
 in sync with the baseline service!
 The differences for ti33x are:
