@@ -12,7 +12,6 @@ RDEPENDS_${PN} = " \
     usbutils \
     ethtool \
     i2c-tools \
-    ${@bb.utils.contains("MACHINE_FEATURES", "alsa", "alsa-utils alsa-state", "", d)} \
     devmem2 \
     iw \
     bc \

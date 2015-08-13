@@ -10,4 +10,5 @@ IMAGE_INSTALL = " \
     packagegroup-hwtools \
     packagegroup-benchmark \
     packagegroup-userland \
+    ${@bb.utils.contains("MACHINE_FEATURES", "alsa", "packagegroup-audio", "", d)} \
 "
