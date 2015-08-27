@@ -3,7 +3,6 @@ Description=Autostart Qt 5 Demo
 
 [Service]
 Type=simple
-Environment=QT_QPA_GENERIC_PLUGINS=Auto QT_QPA_PLATFORM=eglfs
 ExecStart=/usr/bin/QtDemo
 
 # Detach the framebuffer console from fb0 before starting the QtDemo and

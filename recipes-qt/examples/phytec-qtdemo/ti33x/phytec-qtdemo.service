@@ -5,7 +5,6 @@ After=pvr-init.service
 
 [Service]
 Type=simple
-Environment=QT_QPA_GENERIC_PLUGINS=Auto QT_QPA_PLATFORM=eglfs
 ExecStart=/usr/bin/QtDemo
 
 # Detaching the framebuffer console from fb0 crashes for am335x ti kernel
