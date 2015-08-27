@@ -5,11 +5,14 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/LICENSE;md5=4d92cd373abda3937c2bc47fbc49d
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-PR = "r20"
+PR = "r21"
 inherit systemd
 
 NATIVE_SYSTEMD_SUPPORT = "1"
 ALLOW_EMPTY_${PN} = "1"
+
+# Don't generate empty -dbg package
+PACKAGES = "${PN}"
 
 SRC_URI = " \
     file://eth0.network \
