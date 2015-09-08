@@ -14,7 +14,7 @@ RDEPENDS_${PN} = " \
     htop \
     ${@bb.utils.contains("MACHINE_FEATURES", "wlan", "wireless-tools wpa-supplicant iw hostapd", "", d)} \
 "
-# those packages depend on the specific layers
+
 RDEPENDS_${PN}_append_ti33x = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "wlan", "linux-firmware-wl12xx wl12xx-calibrator", "", d)} \
 "
