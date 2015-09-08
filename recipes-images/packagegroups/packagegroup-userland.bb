@@ -12,7 +12,7 @@ RDEPENDS_${PN} = " \
     openssh \
     openssh-sftp-server \
     htop \
-    ${@bb.utils.contains("MACHINE_FEATURES", "wlan", "wireless-tools wpa-supplicant iw", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "wlan", "wireless-tools wpa-supplicant iw hostapd", "", d)} \
 "
 # those packages depend on the specific layers
 RDEPENDS_${PN}_append_ti33x = " \
