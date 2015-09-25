@@ -5,7 +5,7 @@ Description=Autostart Qt 5 Demo
 Type=simple
 # Fix touchscreen input on phyboard-alcor-imx6
 Environment=QT_QPA_EVDEV_TOUCHSCREEN_PARAMETERS="rotate=180"
-ExecStart=/usr/bin/QtDemo
+ExecStart=/usr/bin/qtLauncher /usr/bin/QtDemo
 
 # Detach the framebuffer console from fb0 before starting the QtDemo and
 # reattach it after QtDemo has stopped.

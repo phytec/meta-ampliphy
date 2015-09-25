@@ -1,0 +1,67 @@
+From dc64d0c94034953a1517edf96432701109ce991b Mon Sep 17 00:00:00 2001
+From: Daniel Schultz <d.schultz@phytec.de>
+Date: Mon, 21 Sep 2015 15:03:24 +0200
+Subject: [PATCH] patch for evdevtouch while using tslib, questions regarding
+ evdevtouch
+
+Hi Laszlo,
+
+ I'm not that in the dev-process of qt but would like to send a patch
+upstream. So I'm asking you, as a evdevtouch contributor, if it is
+possible that you could ship the patch below in my name for me. Maybe as
+a reviewer too? If thats not possible, I'm willing to setup Gerrit. By
+the way, is http://qt-project.org/wiki/Setting-up-Gerrit the right place
+to start contributing code?
+
+Regarding your patch "evdevtouch: Make it work with am335x", "Change-Id:
+I3eb5d76002acba1972061f3add44d797349c8ec8", I have a few question:
+
+ - Isn't the min/max value depending on the resistive touch panel?
+ - Wouldn't it be better to config these calibration-values by e.g.
+   an environment variable?
+ - What are your thoughts about the possibility to config these values
+   by some devicetree-nodes in the linux-kernel?
+ - Just a curious one: Why don't you use tslib?
+
+Thanks
+ -- Christoph
+---
+ src/platformsupport/input/evdevtouch/qevdevtouch.cpp | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/platformsupport/input/evdevtouch/qevdevtouch.cpp b/src/platformsupport/input/evdevtouch/qevdevtouch.cpp
+index d0d8b78..699e88f 100644
+--- a/src/platformsupport/input/evdevtouch/qevdevtouch.cpp
++++ b/src/platformsupport/input/evdevtouch/qevdevtouch.cpp
+@@ -176,6 +176,7 @@ QEvdevTouchScreenHandler::QEvdevTouchScreenHandler(const QString &specification,
+ 
+     QString dev;
+     int rotationAngle = 0;
++    bool disable = false;
+     bool invertx = false;
+     bool inverty = false;
+     for (int i = 0; i < args.count(); ++i) {
+@@ -199,6 +200,8 @@ QEvdevTouchScreenHandler::QEvdevTouchScreenHandler(const QString &specification,
+             invertx = true;
+         } else if (args.at(i) == QLatin1String("inverty")) {
+             inverty = true;
++        } else if (args.at(i) == QLatin1String("disable")) {
++            disable = true;
+         }
+     }
+ 
+@@ -220,6 +223,11 @@ QEvdevTouchScreenHandler::QEvdevTouchScreenHandler(const QString &specification,
+         return;
+     }
+ 
++    if (disable) {
++        qDebug("evdevtouch: Disabled as requested by environment variable");
++        return;
++    }
++
+     if (printDeviceInfo)
+         qDebug("evdevtouch: Using device %s", qPrintable(dev));
+ 
+-- 
+1.9.1
+

@@ -5,7 +5,7 @@ After=pvr-init.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/QtDemo
+ExecStart=/usr/bin/qtLauncher /usr/bin/QtDemo
 
 # Detaching the framebuffer console from fb0 crashes for am335x ti kernel
 # We need to live with the workaround for now

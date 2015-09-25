@@ -16,8 +16,12 @@ PACKAGECONFIG_append_mx6 = " gles2"
 # Since PACKAGECONFIG doesn't supported machine overrides, we append these
 # runtime dependences to the qtbase package directly.
 RDEPENDS_${PN}_append_ti33x = " libgles2 libegl"
+DEPENDS_append = " tslib"
 
 PACKAGECONFIG_MULTIMEDIA_append = " alsa"
+PACKAGECONFIG_DEFAULT_append = " tslib"
+
+QT_CONFIG_FLAGS_append = " -tslib -qreal float"
 
 #this is necessary for qtquickcontrols-qmlplugins
 PACKAGECONFIG_append = " accessibility"
@@ -27,6 +31,10 @@ PACKAGECONFIG_append = " icu"
 
 #this is required by our demo application, qtwebkit cookie database
 PACKAGECONFIG_append = " sql-sqlite"
+
+SRC_URI_append = " file://0001-patch-for-evdevtouch-while-using-tslib-questions-reg.patch" 
+SRC_URI_append = " file://res-touchscreen.rules"
+SRC_URI_append = " file://qtLauncher"
 
 # From the layer meta-fsl-arm. Fix qtbase build.
 SRC_URI_append_mx6 = " file://Force_egl_visual_ID_33.patch"
@@ -71,3 +79,11 @@ EOF
 #skip QA tests for examples
 INSANE_SKIP_${PN}-examples-dev += "libdir"
 INSANE_SKIP_${PN}-examples-dbg += "libdir"
+
+do_install_append () {
+	install -d ${D}${nonarch_base_libdir}/udev/rules.d
+	install -m 0644 ${WORKDIR}/res-touchscreen.rules ${D}${nonarch_base_libdir}/udev/rules.d/
+
+	install -d ${D}/usr/bin
+	install -m 0755 ${WORKDIR}/qtLauncher ${D}/usr/bin/
+}
