@@ -21,7 +21,6 @@
 DESCRIPTION = "OpenCL Info Utility"
 HOMEPAGE = "https://github.com/simleb/clinfo"
 SECTION = "extras"
-DEPENDS = "gpu-viv-bin-mx6q"
 
 LICENSE = "GPLv3+"
 LIC_FILES_CHKSUM = "file://License.txt;md5=9eef91148a9b14ec7f9df333daebc746"
@@ -35,8 +34,10 @@ SRC_URI = " \
 "
 SRCREV = "3abd53d107ce8817e7e042ed275d52f1436cac84"
 
+DEPENDS += "virtual/opencl"
+
 PV = "0.1+git${SRCPV}"
-PR = "r0"
+PR = "r1"
 
 CFLAGS += "-Wall -std=c99"
 
@@ -54,6 +55,6 @@ do_install() {
     oe_runmake install prefix="${D}"
 }
 
-RDEPENDS_${PN} +=  "libopencl-mx6"
+RDEPENDS_${PN} += "libopencl"
 
 COMPATIBLE_MACHINE = "mx6"
