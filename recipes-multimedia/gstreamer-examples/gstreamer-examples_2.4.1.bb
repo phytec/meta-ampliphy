@@ -48,3 +48,14 @@ FILES_${PN}-dbg = " \
     ${prefix}/src \
     ${GSTREAMER_EXAMPLES_DIR}/tools/.debug \
 "
+RDEPENDS_${PN} += " \
+	gst-plugin-i2c \
+	media-ctl \
+	v4l-utils \
+	gstreamer1.0 \
+	gstreamer1.0-plugins-good-multifile \
+	gstreamer1.0-plugins-good-video4linux2 \
+	gstreamer1.0-plugins-bad-fbdevsink \
+	gstreamer1.0-plugins-bad-bayer \
+	gstreamer1.0-plugins-good-jpeg \
+"
