@@ -12,6 +12,7 @@ RDEPENDS_${PN} = " \
     openssh \
     openssh-sftp-server \
     htop \
+    crda \
     ${@bb.utils.contains("MACHINE_FEATURES", "wlan", "wireless-tools wpa-supplicant iw hostapd", "", d)} \
 "
 
