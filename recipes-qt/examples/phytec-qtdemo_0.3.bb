@@ -26,14 +26,21 @@ inherit qmake5 systemd
 
 SYSTEMD_SERVICE_${PN} = "phytec-qtdemo.service"
 
+PACKAGES += "${PN}-htmlcontent"
+
 FILES_${PN} = "${datadir} ${bindir} ${systemd_unitdir}"
 FILES_${PN}-dbg = "${datadir}/${PN}/.debug"
 FILES_${PN}-dev = "/usr/src"
+FILES_${PN}-htmlcontent = "${datadir}/${PN}/html"
+
 RDEPENDS_${PN} = "qtgraphicaleffects-qmlplugins qtmultimedia-qmlplugins qtfreevirtualkeyboard"
+RRECOMMENDS_${PN} += "${PN}-htmlcontent"
 
 do_install_append() {
     install -d ${D}${bindir}
     ln -sf ${datadir}/${PN}/phytec-qtdemo ${D}${bindir}/QtDemo
     install -Dm 0644 ${WORKDIR}/phytec-qtdemo.service ${D}${systemd_unitdir}/system/phytec-qtdemo.service
-}
 
+    #htmlcontent
+    cp -r ${S}/phytec_offline ${D}${datadir}/${PN}/html
+}
