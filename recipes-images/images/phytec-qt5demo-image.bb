@@ -37,5 +37,6 @@ IMAGE_INSTALL += "\
     qt5everywheredemo \
     qt5-opengles2-test \
     phytec-qtdemo \
+    ${@bb.utils.contains("MACHINE_FEATURES", "sgx", "omap3-sgx-modules libgles2 libegl", "",d)} \
 "
 
