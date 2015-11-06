@@ -4,6 +4,8 @@
 DESCRIPTION = "Userlandtools for gstreamer and cameras"
 LICENSE = "MIT"
 
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
