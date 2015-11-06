@@ -1,21 +1,17 @@
 DESCRIPTION = "A QML based on screen virtual keyboard for embedded QML applications"
 SUMMARY = "Touchscreen driver for integrated mouse pointer in VirtualBox"
-LICENSE = "GPL-2.0"
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0;md5=801f80980d171dd6425610833a22dbe6"
+# There is no generic header for the Beerware license, we need to provide it
+# in the license directory
+LICENSE = "Beerware-Olszak"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=db94a430cc061dc7f8b05b5087109d6e"
 
 PV = "1.0+gitr${SRCPV}"
 
 DEPENDS = "qtbase qtdeclarative"
 
-SRC_URI = " \
-    git://github.com/githubuser0xFFFF/QtFreeVirtualKeyboard \
-    file://0001-InputPanel-minor-layout-modification.patch \
-    file://0002-Keys-add-German-keys.patch \
-    file://0003-move-some-messages-from-console-log-to-debug-out.patch \
-"
-SRCREV = "3cc47af7c9296a509fee055e42999012833806a5"
-S = "${WORKDIR}/git/src"
-PATCHTOOL = "git"
+SRC_URI = "git://git.phytec.de/QtFreeVirtualKeyboard"
+SRCREV = "81685326c4673e7aaebafd96dd6f6961979e8dfa"
+S = "${WORKDIR}/git"
 
 inherit qmake5
 
