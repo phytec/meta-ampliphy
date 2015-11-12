@@ -3,8 +3,11 @@
 
 DESCRIPTION = "This is a demo software showing some Qt Features"
 HOMEPAGE = "http://www.phytec.de"
-LICENSE = "GPL-2.0"
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0;md5=801f80980d171dd6425610833a22dbe6"
+LICENSE = "MIT & CC-BY-3.0"
+LIC_FILES_CHKSUM = " \
+    file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302 \
+    file://${COMMON_LICENSE_DIR}/CC-BY-3.0;md5=dfa02b5755629022e267f10b9c0a2ab7 \
+"
 
 DEPENDS = "qtbase qtdeclarative"
 
@@ -17,8 +20,8 @@ SRC_URI = " \
     git://git.phytec.de/phyRDKDemo \
     file://phytec-qtdemo.service \
 "
-SRCREV = "17ce6c53eb8d95301915aae14f0f3c7051840ee7"
-PV = "0.4+git${SRCPV}"
+SRCREV = "6b291bbcf13c587da408d1d5a00e52370caf923a"
+PV = "0.5+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
@@ -26,21 +29,31 @@ inherit qmake5 systemd
 
 SYSTEMD_SERVICE_${PN} = "phytec-qtdemo.service"
 
-PACKAGES += "${PN}-htmlcontent"
+PACKAGES += "${PN}-democontent ${PN}-videos"
 
 FILES_${PN} = "${datadir} ${bindir} ${systemd_unitdir}"
 FILES_${PN}-dbg = "${datadir}/${PN}/.debug"
 FILES_${PN}-dev = "/usr/src"
-FILES_${PN}-htmlcontent = "${datadir}/${PN}/html"
+FILES_${PN}-democontent = "${datadir}/${PN}/html ${datadir}/${PN}/images"
+FILES_${PN}-video = "${datadir}/${PN}/videos"
+LICENSE_${PN}-video = "CC-BY-3.0"
 
-RDEPENDS_${PN} = "qtgraphicaleffects-qmlplugins qtmultimedia-qmlplugins qtfreevirtualkeyboard"
-RRECOMMENDS_${PN} += "${PN}-htmlcontent"
+RDEPENDS_${PN} += "qtgraphicaleffects-qmlplugins qtmultimedia-qmlplugins qtfreevirtualkeyboard"
+RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
 
 do_install_append() {
     install -d ${D}${bindir}
     ln -sf ${datadir}/${PN}/phytec-qtdemo ${D}${bindir}/QtDemo
     install -Dm 0644 ${WORKDIR}/phytec-qtdemo.service ${D}${systemd_unitdir}/system/phytec-qtdemo.service
 
-    #htmlcontent
-    cp -r ${S}/phytec_offline ${D}${datadir}/${PN}/html
+    # democontent
+    install -d ${D}${datadir}/${PN}/html
+    cp -r ${S}/phytec_offline/* ${D}${datadir}/${PN}/html
+    install -d ${D}${datadir}/${PN}/images
+    for f in ${S}/images/page_phytec_*.png; do \
+        install -Dm 0644 $f ${D}${datadir}/${PN}/images/
+    done
+
+    # videos
+    install -Dm 0644 ${S}/media/caminandes.webm ${D}${datadir}/${PN}/videos/caminandes.webm
 }
