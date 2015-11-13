@@ -19,6 +19,7 @@ PR = "r0"
 SRC_URI = " \
     git://git.phytec.de/phyRDKDemo \
     file://phytec-qtdemo.service \
+    file://PhyKitDemo.conf \
 "
 SRCREV = "6b291bbcf13c587da408d1d5a00e52370caf923a"
 PV = "0.5+git${SRCPV}"
@@ -31,7 +32,7 @@ SYSTEMD_SERVICE_${PN} = "phytec-qtdemo.service"
 
 PACKAGES += "${PN}-democontent ${PN}-videos"
 
-FILES_${PN} = "${datadir} ${bindir} ${systemd_unitdir}"
+FILES_${PN} = "${datadir} ${bindir} ${systemd_unitdir} /.config"
 FILES_${PN}-dbg = "${datadir}/${PN}/.debug"
 FILES_${PN}-dev = "/usr/src"
 FILES_${PN}-democontent = "${datadir}/${PN}/html ${datadir}/${PN}/images"
@@ -45,6 +46,7 @@ do_install_append() {
     install -d ${D}${bindir}
     ln -sf ${datadir}/${PN}/phytec-qtdemo ${D}${bindir}/QtDemo
     install -Dm 0644 ${WORKDIR}/phytec-qtdemo.service ${D}${systemd_unitdir}/system/phytec-qtdemo.service
+    install -Dm 0644 ${WORKDIR}/PhyKitDemo.conf ${D}/.config/Phytec/PhyKitDemo.conf
 
     # democontent
     install -d ${D}${datadir}/${PN}/html
