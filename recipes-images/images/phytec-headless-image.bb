@@ -11,4 +11,5 @@ IMAGE_INSTALL = " \
     packagegroup-benchmark \
     packagegroup-userland \
     ${@bb.utils.contains("MACHINE_FEATURES", "alsa", "packagegroup-audio", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "wlan", "packagegroup-wifi", "", d)} \
 "
