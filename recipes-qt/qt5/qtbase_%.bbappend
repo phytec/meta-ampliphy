@@ -8,6 +8,7 @@ PACKAGECONFIG_append_ti33x = " gles2"
 PACKAGECONFIG_append_mx6 = " gles2"
 
 DEPENDS_append = " tslib"
+RDEPENDS_${PN}_append = " tslib-conf tslib-calibrate"
 
 PACKAGECONFIG_MULTIMEDIA_append = " alsa"
 PACKAGECONFIG_DEFAULT_append = " tslib"
