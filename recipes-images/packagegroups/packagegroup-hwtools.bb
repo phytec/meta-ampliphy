@@ -19,6 +19,7 @@ RDEPENDS_${PN} = " \
     fbtest \
     memedit \
     memtester \
+    mmc-utils \
     mtd-utils \
     mtd-utils-ubifs \
     mtd-utils-misc \
