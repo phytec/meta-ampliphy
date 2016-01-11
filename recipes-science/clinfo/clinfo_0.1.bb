@@ -37,24 +37,16 @@ SRCREV = "3abd53d107ce8817e7e042ed275d52f1436cac84"
 DEPENDS += "virtual/opencl"
 
 PV = "0.1+git${SRCPV}"
-PR = "r1"
+PR = "r2"
 
 CFLAGS += "-Wall -std=c99"
 
-# The gpu-viv-bin-mx6q library libOpenCL.so needs dlopen, dlclose, dlsym.
-# So add "-ldl" to variable LIBS from Makefile.
-LIBS_mx6 = "-lOpenCL -lm -ldl"
-
-LDFLAGS_mx6 += "-Wl,--no-as-needed"
-
-do_compile () {
-    oe_runmake LIBS="${LIBS}"
-}
+# HACK: libOpenCl.so is missing dependency to libdl
+# Will be fixed in imx-gpu-viv-5.0.11.p4.5-hfp
+LDFLAGS_prepend_mx6 = " -Wl,--no-as-needed -ldl "
 
 do_install() {
     oe_runmake install prefix="${D}"
 }
 
 RDEPENDS_${PN} += "libopencl"
-
-COMPATIBLE_MACHINE = "mx6"
