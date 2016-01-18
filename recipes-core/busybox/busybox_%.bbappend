@@ -10,3 +10,6 @@ SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "systemd", "file://deselect-
 SYSTEMD_SERVICE_${PN}-syslog = ""
 ALTERNATIVE_${PN}-syslog_remove = "syslog-conf"
 RRECOMMENDS_busybox_remove ="busybox-syslog"
+
+SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "systemd", "file://deselect-dhcp-stuff.cfg", "", d)}"
+RRECOMMENDS_busybox_remove = "${@bb.utils.contains("DISTRO_FEATURES", "systemd", "busybox-udhcpc", "", d)}"
