@@ -20,6 +20,7 @@ RDEPENDS_${PN} = " \
     memedit \
     memtester \
     mmc-utils \
+    flashbench \
     mtd-utils \
     mtd-utils-ubifs \
     mtd-utils-misc \
