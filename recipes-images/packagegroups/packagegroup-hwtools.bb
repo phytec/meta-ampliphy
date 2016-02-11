@@ -19,6 +19,8 @@ RDEPENDS_${PN} = " \
     fbtest \
     memedit \
     memtester \
+    e2fsprogs-resize2fs \
+    parted \
     mmc-utils \
     flashbench \
     mtd-utils \
