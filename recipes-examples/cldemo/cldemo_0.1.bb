@@ -18,16 +18,12 @@ SRC_URI = "file://cldemo.c"
 SRC_URI[md5sum] = "06c9df8712bfb78013ae306cc8bfd5de"
 SRC_URI[sha256sum] = "ca415096d0219997de5aeb5df5e08cef75cff3f6f43da56dae2bf2ed6cd965a7"
 
-PR = "r2"
+PR = "r3"
 
 do_unpack_append () {
     import shutil
     shutil.copy("${WORKDIR}/cldemo.c", "${S}")
 }
-
-# HACK: libOpenCl.so is missing dependency to libdl
-# Will be fixed in imx-gpu-viv-5.0.11.p4.5-hfp
-LDFLAGS_prepend_mx6 = " -Wl,--no-as-needed -ldl "
 
 do_compile () {
     ${CC} ${CFLAGS} -std=gnu99 -Wall ${LDFLAGS} \
