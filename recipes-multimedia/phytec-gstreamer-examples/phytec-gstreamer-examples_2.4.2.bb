@@ -3,18 +3,21 @@
 
 DESCRIPTION = "Phytec Gstreamer examples"
 HOMEPAGE = "http://www.phytec.de"
-LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=16469200a43ccc97395e139bb705a9e2"
 
 SECTION = "multimedia"
 
 PR = "r0"
 
-SRC_URI = "ftp://ftp.phytec.de/pub/ImageProcessing/phyCAM_Software/i.MX6-gstreamer_examples/gstreamer_examples-${PV}.tar.gz"
-SRC_URI[md5sum] = "20704ebb8f488628187743b04781c180"
-SRC_URI[sha256sum] = "2c7f3354b4e41e412e7e73eb9fdcf826519192ce049f10a9e90815cdeaadd0e6"
-
-S = "${WORKDIR}/gstreamer_examples"
+# Archive created via
+#   $ unzip gstreamer_examples.zip
+#   $ mv gstreamer_examples phytec-gstreamer-examples-2.4.2
+#   $ find phytec-gstreamer-examples-2.4.2/ -exec "touch" "{}" ";"
+#   $ find phytec-gstreamer-examples-2.4.2/ -name "*.sh" -exec "chmod" "+x" "{}" ";"
+#   $ tar --owner=root --group=root -czf phytec-gstreamer-examples-2.4.2.tar.gz \
+#   $    phytec-gstreamer-examples-2.4.2/
+SRC_URI = "file://${PN}-${PV}.tar.gz"
 
 GSTREAMER_EXAMPLES_DIR = "${datadir}/${PN}"
 
