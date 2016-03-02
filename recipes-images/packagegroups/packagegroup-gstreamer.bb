@@ -32,6 +32,6 @@ RDEPENDS_${PN} = " \
 
 # Camera tools by PHYTEC
 RDEPENDS_${PN}_append_mx6 = " \
-    gstreamer-examples \
+    phytec-gstreamer-examples \
     bvtest \
 "

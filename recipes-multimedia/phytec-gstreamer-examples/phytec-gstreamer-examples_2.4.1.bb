@@ -8,16 +8,15 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 SECTION = "multimedia"
 
-S = "${WORKDIR}/gstreamer_examples"
-
 PR = "r0"
 
-SRC_URI = "ftp://ftp.phytec.de/pub/ImageProcessing/phyCAM_Software/i.MX6-gstreamer_examples/${@"${PN}".replace('-', '_')}-${PV}.tar.gz"
-
+SRC_URI = "ftp://ftp.phytec.de/pub/ImageProcessing/phyCAM_Software/i.MX6-gstreamer_examples/gstreamer_examples-${PV}.tar.gz"
 SRC_URI[md5sum] = "20704ebb8f488628187743b04781c180"
 SRC_URI[sha256sum] = "2c7f3354b4e41e412e7e73eb9fdcf826519192ce049f10a9e90815cdeaadd0e6"
 
-GSTREAMER_EXAMPLES_DIR = "/home/root/gstreamer_examples"
+S = "${WORKDIR}/gstreamer_examples"
+
+GSTREAMER_EXAMPLES_DIR = "${datadir}/${PN}"
 
 do_compile() {
 	${CC} ${CFLAGS} ${LDFLAGS} -o tools/i2c tools/i2c.c
@@ -41,9 +40,13 @@ do_install() {
 	done
 
 	install -m 0755 tools/i2c ${DESTDIR}/tools
+
+	# Create link in home folder for old documentation
+	install -d ${D}/home/root
+	ln -s ${GSTREAMER_EXAMPLES_DIR} ${D}/home/root/gstreamer_examples
 }
 
-FILES_${PN} = "${GSTREAMER_EXAMPLES_DIR}/*"
+FILES_${PN} += "/home/root/"
 FILES_${PN}-dbg = " \
     ${prefix}/src \
     ${GSTREAMER_EXAMPLES_DIR}/tools/.debug \
