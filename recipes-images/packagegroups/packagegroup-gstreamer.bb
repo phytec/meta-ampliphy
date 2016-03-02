@@ -34,4 +34,5 @@ RDEPENDS_${PN} = " \
 RDEPENDS_${PN}_append_mx6 = " \
     phytec-gstreamer-examples \
     bvtest \
+    phytec-v4l2-c-examples \
 "
