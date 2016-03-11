@@ -13,3 +13,5 @@ RRECOMMENDS_busybox_remove ="busybox-syslog"
 
 SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "systemd", "file://deselect-dhcp-stuff.cfg", "", d)}"
 RRECOMMENDS_busybox_remove = "${@bb.utils.contains("DISTRO_FEATURES", "systemd", "busybox-udhcpc", "", d)}"
+
+SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "tiny", "file://poky-tiny.cfg", "", d)}"
