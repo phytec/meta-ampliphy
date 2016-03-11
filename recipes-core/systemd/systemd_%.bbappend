@@ -15,3 +15,19 @@ do_install_append () {
         rm -f ${D}${exec_prefix}/lib/tmpfiles.d/x11.conf
     fi
 }
+
+# Should be fixed in poky recipe
+#
+# Fix runtime error of systemd-tmpfiles service:
+#    Failed to open directory /var/tmp: Too many levels of symbolic links
+# The error happens beceause poky adds a symbolic link from /var/tmp to tmpfs
+# /var/volatile/tmp and systemd-tmpfiles open the directory with O_NOFOLLOW.
+#
+# Since poky/oe-core installs alredy an extra cleanup configuration for
+# /var/volatile/tmp  in
+#    meta/recipes-core/systemd/systemd/00-create-volatile.conf
+# the line must be removed completely in tmp.conf.
+do_install_append() {
+    sed -i 's/^v \/var\/tmp.*$//g' \
+        ${D}${exec_prefix}/lib/tmpfiles.d/tmp.conf
+}
