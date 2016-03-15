@@ -1,8 +1,51 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-PACKAGECONFIG = "xz resolved networkd \
-                   ${@bb.utils.contains('DISTRO_FEATURES', 'pam', 'pam', '', d)} \
-"
+# remove has higher priority as packageconfig and depends so those
+# lines need to be maintained and kept sync for the append
+PACKAGECONFIG_append = " lz4 kmod networkd resolved"
+PACKAGECONFIG_remove = " xz ldconfig"
+DEPENDS_remove = ""
+RDEPENDS_${PN}_remove = ""
+
+PACKAGECONFIG[nls] = "--enable-nls,--disable-nls,intltool-native"
+PACKAGECONFIG[acl] = "--enable-acl,--disable-acl,acl"
+PACKAGECONFIG[lz4] = "--enable-lz4,--disable-lz4,lz4"
+PACKAGECONFIG[zlib] = "--enable-zlib,--disable-zlib,zlib"
+PACKAGECONFIG[bzip2] = "--enable-bzip2,--disable-bzip2,bzip2"
+PACKAGECONFIG[dbus] = "--enable-dbus,--disable-dbus,dbus,dbus"
+PACKAGECONFIG[utmp] = "--enable-utmp,--disable-utmp,"
+PACKAGECONFIG[kmod] = "--enable-kmod,--disable-kmod,kmod,libkmod"
+PACKAGECONFIG[apparmor] = "--enable-apparmor,--disable-apparmor,"
+PACKAGECONFIG[smack] = "--enable-smack,--disable-smack,"
+PACKAGECONFIG[ima] = "--enable-ima,--disable-ima,"
+PACKAGECONFIG[polkit] = "--enable-polkit,--disable-polkit,"
+PACKAGECONFIG[gnutls] = "--enable-gnutls,--disable-gnutls,gnutls"
+PACKAGECONFIG[efi] = "--enable-efi,--disable-efi,"
+PACKAGECONFIG[gnuefi] = "--enable-gnuefi,--disable-gnuefi,"
+PACKAGECONFIG[kdbus] = "--enable-kdbus,--disable-kdbus"
+PACKAGECONFIG[myhostname] = "--enable-myhostname,--disable-myhostname"
+PACKAGECONFIG[udev-hwdb] = "--enable-hwdb,--disable-hwdb,"
+PACKAGECONFIG[hibernate] = "--enable-hibernate,--disable-hibernate"
+PACKAGECONFIG[timesyncd] = "--enable-timesyncd,--disable-timesyncd,"
+PACKAGECONFIG[machined] = "--enable-machined,--disable-machined"
+
+# additions from upstream master
+PACKAGECONFIG[backlight] = "--enable-backlight,--disable-backlight"
+PACKAGECONFIG[quotacheck] = "--enable-quotacheck,--disable-quotacheck"
+PACKAGECONFIG[bootchart] = "--enable-bootchart,--disable-bootchart"
+PACKAGECONFIG[hostnamed] = "--enable-hostnamed,--disable-hostnamed"
+PACKAGECONFIG[rfkill] = "--enable-rfkill,--disable-rfkill"
+PACKAGECONFIG[timedated] = "--enable-timedated,--disable-timedated"
+PACKAGECONFIG[localed] = "--enable-localed,--disable-localed"
+# libseccomp is found in meta-security
+PACKAGECONFIG[seccomp] = "--enable-seccomp,--disable-seccomp,libseccomp"
+PACKAGECONFIG[logind] = "--enable-logind,--disable-logind"
+# disabling this breaks some other systemd tools
+#PACKAGECONFIG[sysusers] = "--enable-sysusers,--disable-sysusers"
+PACKAGECONFIG[firstboot] = "--enable-firstboot,--disable-firstboot"
+PACKAGECONFIG[randomseed] = "--enable-randomseed,--disable-randomseed"
+# needs upstream recipe fix
+#PACKAGECONFIG[binfmt] = "--enable-binfmt,--disable-binfmt"
 
 RRECOMMENDS_${PN}_remove = "systemd-compat-units"
 RDEPENDS_${PN} += "systemd-machine-units"
