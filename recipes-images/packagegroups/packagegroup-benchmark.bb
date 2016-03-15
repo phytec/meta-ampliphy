@@ -11,6 +11,7 @@ RDEPENDS_${PN} = " \
     hdparm \
     iozone3 \
     iperf \
+    iperf3 \
     lmbench \
     rt-tests \
     evtest \
