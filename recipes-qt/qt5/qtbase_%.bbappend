@@ -24,6 +24,9 @@ PACKAGECONFIG_append = " icu"
 #this is required by our demo application, qtwebkit cookie database
 PACKAGECONFIG_append = " sql-sqlite"
 
+#fix for 5.5
+PACKAGECONFIG_append = " pcre"
+
 SRC_URI_append = " file://0001-Backport-qreal-bug-from-5.6.patch"
 SRC_URI_append = " file://res-touchscreen.rules"
 SRC_URI_append = " file://qtLauncher"
