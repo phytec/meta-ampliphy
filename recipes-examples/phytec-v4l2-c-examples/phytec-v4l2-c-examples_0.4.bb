@@ -9,9 +9,11 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 SECTION = "examples"
 
 # Archive created with
-#   $ unzip v4l2_c-examples-0.2.zip
-#   $ mv v4l2_c-examples_V1.0 phytec-v4l2-c-examples-0.2
-#   $ tar --owner=root --group=root -czf phytec-v4l2-c-examples-0.2.tar.gz phytec-v4l2-c-examples-0.2/
+#   $ unzip v4l2_c-examples.zip
+#   $ mv v4l2_c-examples_V1.0\ -\ Kopie/ phytec-v4l2-c-examples-0.4
+#   $ find phytec-v4l2-c-examples-0.4 -exec "touch" "{}" ";"
+#   $ find phytec-v4l2-c-examples-0.4 -name "*.sh" -exec "chmod" "+x" "{}" ";"
+#   $ tar --owner=root --group=root -czf phytec-v4l2-c-examples-0.4.tar.gz phytec-v4l2-c-examples-0.4/
 SRC_URI = "file://${PN}-${PV}.tar.gz"
 
 PR = "r0"
