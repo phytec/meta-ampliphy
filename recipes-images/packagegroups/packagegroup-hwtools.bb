@@ -25,6 +25,7 @@ RDEPENDS_${PN} = " \
     parted \
     mmc-utils \
     flashbench \
+    util-linux-blkdiscard \
     mtd-utils \
     mtd-utils-ubifs \
     mtd-utils-misc \
