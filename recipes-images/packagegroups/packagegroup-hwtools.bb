@@ -17,6 +17,7 @@ RDEPENDS_${PN} = " \
     bc \
     ${@bb.utils.contains("MACHINE_FEATURES", "touchscreen", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
     fbtest \
+    libdrm-tests \
     memedit \
     memtester \
     e2fsprogs-mke2fs \
