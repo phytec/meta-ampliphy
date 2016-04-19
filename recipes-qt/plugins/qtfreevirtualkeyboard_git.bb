@@ -10,7 +10,7 @@ PV = "1.0+gitr${SRCPV}"
 DEPENDS = "qtbase qtdeclarative"
 
 SRC_URI = "git://git.phytec.de/QtFreeVirtualKeyboard"
-SRCREV = "81685326c4673e7aaebafd96dd6f6961979e8dfa"
+SRCREV = "70e1f5f8d4929bc3d2d0ab0bb9291d198460bbec"
 S = "${WORKDIR}/git"
 
 inherit qmake5
