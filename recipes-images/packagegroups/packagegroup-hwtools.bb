@@ -9,6 +9,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
+    arm-memspeed \
     usbutils \
     ethtool \
     i2c-tools \
