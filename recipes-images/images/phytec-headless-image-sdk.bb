@@ -1,4 +1,4 @@
-require phytec-headless-image.bb
+require recipes-images/images/phytec-headless-image.bb
 
 DESCRIPTION = "Adds native compiler toolchain to the headless-image"
 
