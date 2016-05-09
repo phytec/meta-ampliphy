@@ -9,7 +9,10 @@ SECTION = "extras"
 # PV is 8.2.0 because the file was copied from mesa-demos version 8.2.0
 
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://es2gears.c;beginline=4;endline=19;md5=178215d4cfeca51c0162f74ac3f7e68f"
+LIC_FILES_CHKSUM = " \
+    file://es2gears.c;beginline=4;endline=19;md5=178215d4cfeca51c0162f74ac3f7e68f \
+    file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302 \
+"
 
 SRC_URI = "file://es2gears.c"
 SRC_URI[md5sum] = "015a756087de089c73b13351a31053d9"
