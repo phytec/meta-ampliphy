@@ -20,7 +20,7 @@ inherit pkgconfig
 
 DEPENDS += "virtual/egl virtual/libgles2"
 
-PR = "r1"
+PR = "r2"
 
 do_unpack_append () {
     import shutil
@@ -41,7 +41,3 @@ do_install() {
 
 RDEPENDS_${PN} += "libegl"
 RDEPENDS_${PN} += "libgles2"
-
-# The source code contains i.MX6 specfic code for now. But it should be fairly
-# simple to port to AM335x framebuffer backend.
-COMPATIBLE_MACHINE = "mx6"

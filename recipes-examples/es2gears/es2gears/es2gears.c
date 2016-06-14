@@ -21,11 +21,14 @@
 
 /* Changelog Phytec:
     2015-09-01: Stefan Christ <s.christ@phytec.de>
-	- copy base file from src/egl/opengles2/es2gears.c in mesa-demos-8.2.0 
+        - copy base file from src/egl/opengles2/es2gears.c in mesa-demos-8.2.0
           (License is MIT)
-        - add i.MX6 and EGL initialization to main function 
+        - add i.MX6 and EGL initialization to main function
         - replace and remove some eglut stuff
         - add signal handler to exit on CTRL+C
+    2016-06-09: Stefan Christ <s.christ@phytec.de>
+        - Mask i.MX6 specific code in #ifdef's
+        - Cleanup some whitespaces
 */
 
 /*
@@ -730,6 +733,7 @@ void term(int signum)
    quit = 1;
 }
 
+#if defined(LINUX) && defined(EGL_API_FB)
 void print_native_info(EGLNativeDisplayType native_display, EGLNativeWindowType native_window)
 {
    int height, width, stride, bitsperpixel, x, y;
@@ -744,6 +748,7 @@ void print_native_info(EGLNativeDisplayType native_display, EGLNativeWindowType 
    printf("native_window: x %d y %d width %d height %d bitsperpixel %d offset %u\n",
           x, y, width, height, bitsperpixel, offset);
 }
+#endif
 
 
 int
@@ -751,12 +756,18 @@ main(int argc, char *argv[])
 {
    int ret;
 
+#if defined(LINUX) && defined(EGL_API_FB)
    /* i.MX6 specific framebuffer initialization */
-   int fdnumber = 0; 
+   int fdnumber = 0;
    EGLNativeDisplayType native_display = fbGetDisplayByIndex(fdnumber);
    EGLNativeWindowType native_window = fbCreateWindow(native_display, 0, 0, 0, 0); // maximal values
 
    print_native_info(native_display, native_window);
+#else
+   /* Default initializied copied from Qt sourcecode */
+   EGLNativeDisplayType native_display = EGL_DEFAULT_DISPLAY;
+   EGLNativeWindowType native_window = 0;
+#endif
 
    /* generic EGL initialization */
    EGLDisplay egl_display = eglGetDisplay(native_display);
@@ -833,7 +844,14 @@ main(int argc, char *argv[])
    gears_init();
 
    int width, height;
-   fbGetDisplayGeometry(native_display, &width, &height); /* i.MX6 sepcific */
+#if defined(LINUX) && defined(EGL_API_FB)
+   /* i.MX6 specific */
+   fbGetDisplayGeometry(native_display, &width, &height);
+#else
+   /* TODO */
+   height = 400;
+   width = 800;
+#endif
    gears_reshape(width, height);
 
    /* Simple mainloop without keyboard events */
@@ -852,9 +870,11 @@ main(int argc, char *argv[])
    eglDestroySurface(egl_display, egl_surface);
    eglTerminate(egl_display);
 
+#if defined(LINUX) && defined(EGL_API_FB)
    /* i.MX6 specific framebuffer cleanup */
    fbDestroyWindow(native_window);
    fbDestroyDisplay(native_display);
+#endif
 
    return 0;
 }
