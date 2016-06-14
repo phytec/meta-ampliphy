@@ -15,23 +15,23 @@ LIC_FILES_CHKSUM = " \
 "
 
 SRC_URI = "file://es2gears.c"
-SRC_URI[md5sum] = "015a756087de089c73b13351a31053d9"
-SRC_URI[sha256sum] = "68ac4b30915c523e78ad1d6513a156485a70aee687508166ad1de0b7013fb1c4"
+
+inherit pkgconfig
 
 DEPENDS += "virtual/egl virtual/libgles2"
 
-PR = "r0"
+PR = "r1"
 
 do_unpack_append () {
     import shutil
     shutil.copy("${WORKDIR}/es2gears.c", "${S}")
 }
 
-CFLAGS_append_mx6 = " -DLINUX -DEGL_API_FB"
-
 do_compile () {
-    ${CC} ${CFLAGS} ${LDFLAGS} -o ${B}/es2gears ${S}/es2gears.c \
-        -Wall -lEGL -lGLESv2 -lm
+    ${CC} ${CFLAGS} ${LDFLAGS} -o ${B}/es2gears ${S}/es2gears.c -Wall \
+        $(pkg-config --libs --cflags glesv2) \
+        $(pkg-config --libs --cflags egl) \
+	-lm
 }
 
 do_install() {
