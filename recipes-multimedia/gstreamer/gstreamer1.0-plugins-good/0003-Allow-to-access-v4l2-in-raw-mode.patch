@@ -1,7 +1,7 @@
-From 2ce9aea85bf0e157428718c2cd485e6d8b009103 Mon Sep 17 00:00:00 2001
+From 51a6bf01827a8fe7d15d4b1fb85424cf9c1083e6 Mon Sep 17 00:00:00 2001
 From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 Date: Mon, 15 Dec 2014 19:32:29 +0100
-Subject: [PATCH 2/2] Allow to access v4l2 in raw mode
+Subject: [PATCH 3/3] Allow to access v4l2 in raw mode
 
 ---
  sys/v4l2/gstv4l2object.c |  3 +++
@@ -11,7 +11,7 @@ Subject: [PATCH 2/2] Allow to access v4l2 in raw mode
  4 files changed, 24 insertions(+), 1 deletion(-)
 
 diff --git a/sys/v4l2/gstv4l2object.c b/sys/v4l2/gstv4l2object.c
-index 8aaea57..cf7008b 100644
+index dbbc12b..874f386 100644
 --- a/sys/v4l2/gstv4l2object.c
 +++ b/sys/v4l2/gstv4l2object.c
 @@ -31,6 +31,7 @@
@@ -22,7 +22,7 @@ index 8aaea57..cf7008b 100644
  
  #ifdef HAVE_GUDEV
  #include <gudev/gudev.h>
-@@ -457,6 +458,8 @@ gst_v4l2_object_new (GstElement * element,
+@@ -504,6 +505,8 @@ gst_v4l2_object_new (GstElement * element,
    v4l2object->colors = NULL;
  
    v4l2object->xwindow_id = 0;
@@ -32,7 +32,7 @@ index 8aaea57..cf7008b 100644
    v4l2object->keep_aspect = TRUE;
  
 diff --git a/sys/v4l2/gstv4l2object.h b/sys/v4l2/gstv4l2object.h
-index 6dbf473..ecdfec9 100644
+index 177a86b..0524645 100644
 --- a/sys/v4l2/gstv4l2object.h
 +++ b/sys/v4l2/gstv4l2object.h
 @@ -171,6 +171,9 @@ struct _GstV4l2Object {
@@ -46,7 +46,7 @@ index 6dbf473..ecdfec9 100644
  
  struct _GstV4l2ObjectClassHelper {
 diff --git a/sys/v4l2/gstv4l2src.c b/sys/v4l2/gstv4l2src.c
-index 8775612..2d955a1 100644
+index e8bfb18..bc161a4 100644
 --- a/sys/v4l2/gstv4l2src.c
 +++ b/sys/v4l2/gstv4l2src.c
 @@ -45,6 +45,7 @@
@@ -105,7 +105,7 @@ index 8775612..2d955a1 100644
          G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
          break;
 diff --git a/sys/v4l2/v4l2_calls.c b/sys/v4l2/v4l2_calls.c
-index d1cc284..c38cc42 100644
+index 356d42f..71b91b3 100644
 --- a/sys/v4l2/v4l2_calls.c
 +++ b/sys/v4l2/v4l2_calls.c
 @@ -540,7 +540,9 @@ gst_v4l2_open (GstV4l2Object * v4l2object)
@@ -120,5 +120,5 @@ index d1cc284..c38cc42 100644
       unknown fd, the will behave exactly as their regular xxx counterparts, so
       if v4l2_fd_open fails, we continue as normal (missing the libv4l2 custom
 -- 
-1.9.3
+1.9.1
 

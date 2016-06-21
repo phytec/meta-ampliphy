@@ -1,7 +1,7 @@
-From b290e8476647585a414c22dc454c1e54734bd79e Mon Sep 17 00:00:00 2001
+From 1da5912c6d81801af44fcd61d3614137776712a2 Mon Sep 17 00:00:00 2001
 From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Date: Fri, 18 Dec 2015 15:49:43 -0500
-Subject: [PATCH] v4l2object: Update formats table
+Subject: [PATCH 2/3] v4l2object: Update formats table
 
 This change add all the new RGB based format. Those format removes the
 ambiguity with the ALPHA channel. Some other missing multiplanar format
@@ -14,10 +14,10 @@ Conflicts:
  1 file changed, 172 insertions(+), 39 deletions(-)
 
 diff --git a/sys/v4l2/gstv4l2object.c b/sys/v4l2/gstv4l2object.c
-index 00a41cb..9b859ff 100644
+index 7e176bf..dbbc12b 100644
 --- a/sys/v4l2/gstv4l2object.c
 +++ b/sys/v4l2/gstv4l2object.c
-@@ -91,39 +91,83 @@ typedef struct
+@@ -90,39 +90,83 @@ typedef struct
  } GstV4L2FormatDesc;
  
  static const GstV4L2FormatDesc gst_v4l2_formats[] = {
@@ -112,7 +112,7 @@ index 00a41cb..9b859ff 100644
    {V4L2_PIX_FMT_SBGGR8, TRUE, GST_V4L2_CODEC},
    {V4L2_PIX_FMT_SBGGR10, TRUE, GST_V4L2_CODEC},
    {V4L2_PIX_FMT_SBGGR12, TRUE, GST_V4L2_CODEC},
-@@ -143,12 +187,16 @@ static const GstV4L2FormatDesc gst_v4l2_formats[] = {
+@@ -142,12 +186,16 @@ static const GstV4L2FormatDesc gst_v4l2_formats[] = {
    {V4L2_PIX_FMT_PJPG, FALSE, GST_V4L2_CODEC},
    {V4L2_PIX_FMT_DV, FALSE, GST_V4L2_TRANSPORT},
    {V4L2_PIX_FMT_MPEG, FALSE, GST_V4L2_TRANSPORT},
@@ -132,7 +132,7 @@ index 00a41cb..9b859ff 100644
    {V4L2_PIX_FMT_VP8, FALSE, GST_V4L2_CODEC | GST_V4L2_NO_PARSE},
  
    /*  Vendor-specific formats   */
-@@ -156,7 +204,6 @@ static const GstV4L2FormatDesc gst_v4l2_formats[] = {
+@@ -155,7 +203,6 @@ static const GstV4L2FormatDesc gst_v4l2_formats[] = {
    {V4L2_PIX_FMT_SN9C10X, TRUE, GST_V4L2_CODEC},
    {V4L2_PIX_FMT_PWC1, TRUE, GST_V4L2_CODEC},
    {V4L2_PIX_FMT_PWC2, TRUE, GST_V4L2_CODEC},
@@ -140,7 +140,7 @@ index 00a41cb..9b859ff 100644
  };
  
  #define GST_V4L2_FORMAT_COUNT (G_N_ELEMENTS (gst_v4l2_formats))
-@@ -900,10 +947,27 @@ gst_v4l2_object_format_get_rank (const struct v4l2_fmtdesc *fmt)
+@@ -918,10 +965,27 @@ gst_v4l2_object_format_get_rank (const struct v4l2_fmtdesc *fmt)
        break;
  
      case V4L2_PIX_FMT_RGB332:
@@ -168,7 +168,7 @@ index 00a41cb..9b859ff 100644
        rank = RGB_ODD_BASE_RANK;
        break;
  
-@@ -914,6 +978,10 @@ gst_v4l2_object_format_get_rank (const struct v4l2_fmtdesc *fmt)
+@@ -932,6 +996,10 @@ gst_v4l2_object_format_get_rank (const struct v4l2_fmtdesc *fmt)
  
      case V4L2_PIX_FMT_RGB32:
      case V4L2_PIX_FMT_BGR32:
@@ -179,7 +179,7 @@ index 00a41cb..9b859ff 100644
        rank = RGB_BASE_RANK;
        break;
  
-@@ -938,6 +1006,7 @@ gst_v4l2_object_format_get_rank (const struct v4l2_fmtdesc *fmt)
+@@ -956,6 +1024,7 @@ gst_v4l2_object_format_get_rank (const struct v4l2_fmtdesc *fmt)
        rank = YUV_BASE_RANK + 2;
        break;
      case V4L2_PIX_FMT_YUV420:  /* I420, 12 bits per pixel */
@@ -187,7 +187,7 @@ index 00a41cb..9b859ff 100644
        rank = YUV_BASE_RANK + 7;
        break;
      case V4L2_PIX_FMT_YUYV:    /* YUY2, 16 bits per pixel */
-@@ -949,6 +1018,9 @@ gst_v4l2_object_format_get_rank (const struct v4l2_fmtdesc *fmt)
+@@ -967,6 +1036,9 @@ gst_v4l2_object_format_get_rank (const struct v4l2_fmtdesc *fmt)
      case V4L2_PIX_FMT_UYVY:    /* UYVY, 16 bits per pixel */
        rank = YUV_BASE_RANK + 9;
        break;
@@ -197,7 +197,7 @@ index 00a41cb..9b859ff 100644
      case V4L2_PIX_FMT_Y41P:    /* Y41P, 12 bits per pixel */
        rank = YUV_BASE_RANK + 5;
        break;
-@@ -1146,9 +1218,20 @@ gst_v4l2_object_v4l2fourcc_to_video_format (guint32 fourcc)
+@@ -1164,9 +1236,20 @@ gst_v4l2_object_v4l2fourcc_to_video_format (guint32 fourcc)
      case V4L2_PIX_FMT_GREY:    /*  8  Greyscale     */
        format = GST_VIDEO_FORMAT_GRAY8;
        break;
@@ -218,7 +218,7 @@ index 00a41cb..9b859ff 100644
      case V4L2_PIX_FMT_RGB565:
        format = GST_VIDEO_FORMAT_RGB16;
        break;
-@@ -1158,12 +1241,20 @@ gst_v4l2_object_v4l2fourcc_to_video_format (guint32 fourcc)
+@@ -1176,12 +1259,20 @@ gst_v4l2_object_v4l2fourcc_to_video_format (guint32 fourcc)
      case V4L2_PIX_FMT_BGR24:
        format = GST_VIDEO_FORMAT_BGR;
        break;
@@ -239,7 +239,7 @@ index 00a41cb..9b859ff 100644
      case V4L2_PIX_FMT_NV12:
      case V4L2_PIX_FMT_NV12M:
        format = GST_VIDEO_FORMAT_NV12;
-@@ -1182,6 +1273,7 @@ gst_v4l2_object_v4l2fourcc_to_video_format (guint32 fourcc)
+@@ -1200,6 +1291,7 @@ gst_v4l2_object_v4l2fourcc_to_video_format (guint32 fourcc)
        format = GST_VIDEO_FORMAT_YUV9;
        break;
      case V4L2_PIX_FMT_YUV420:
@@ -247,7 +247,7 @@ index 00a41cb..9b859ff 100644
        format = GST_VIDEO_FORMAT_I420;
        break;
      case V4L2_PIX_FMT_YUYV:
-@@ -1193,11 +1285,6 @@ gst_v4l2_object_v4l2fourcc_to_video_format (guint32 fourcc)
+@@ -1211,11 +1303,6 @@ gst_v4l2_object_v4l2fourcc_to_video_format (guint32 fourcc)
      case V4L2_PIX_FMT_UYVY:
        format = GST_VIDEO_FORMAT_UYVY;
        break;
@@ -259,7 +259,7 @@ index 00a41cb..9b859ff 100644
      case V4L2_PIX_FMT_YUV411P:
        format = GST_VIDEO_FORMAT_Y41B;
        break;
-@@ -1285,10 +1372,6 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
+@@ -1338,10 +1425,6 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
      case V4L2_PIX_FMT_JPEG:    /* JFIF JPEG */
        structure = gst_structure_new_empty ("image/jpeg");
        break;
@@ -270,7 +270,7 @@ index 00a41cb..9b859ff 100644
      case V4L2_PIX_FMT_MPEG1:
        structure = gst_structure_new ("video/mpeg",
            "mpegversion", G_TYPE_INT, 2, NULL);
-@@ -1298,6 +1381,7 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
+@@ -1351,6 +1434,7 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
            "mpegversion", G_TYPE_INT, 2, NULL);
        break;
      case V4L2_PIX_FMT_MPEG4:
@@ -278,7 +278,7 @@ index 00a41cb..9b859ff 100644
        structure = gst_structure_new ("video/mpeg",
            "mpegversion", G_TYPE_INT, 4, "systemstream",
            G_TYPE_BOOLEAN, FALSE, NULL);
-@@ -1311,21 +1395,35 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
+@@ -1364,21 +1448,35 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
            "stream-format", G_TYPE_STRING, "byte-stream", "alignment",
            G_TYPE_STRING, "au", NULL);
        break;
@@ -319,7 +319,7 @@ index 00a41cb..9b859ff 100644
      case V4L2_PIX_FMT_NV12:    /* 12  Y/CbCr 4:2:0  */
      case V4L2_PIX_FMT_NV12M:
      case V4L2_PIX_FMT_NV12MT:
-@@ -1334,12 +1432,10 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
+@@ -1387,12 +1485,10 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
      case V4L2_PIX_FMT_YVU410:
      case V4L2_PIX_FMT_YUV410:
      case V4L2_PIX_FMT_YUV420:  /* I420/IYUV */
@@ -333,7 +333,7 @@ index 00a41cb..9b859ff 100644
      case V4L2_PIX_FMT_YUV422P:
      case V4L2_PIX_FMT_YVYU:
      case V4L2_PIX_FMT_YUV411P:{
-@@ -1387,8 +1483,28 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
+@@ -1440,8 +1536,28 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
      case V4L2_PIX_FMT_PWC2:
        structure = gst_structure_new_empty ("video/x-pwc2");
        break;
@@ -363,7 +363,7 @@ index 00a41cb..9b859ff 100644
            fourcc, GST_FOURCC_ARGS (fourcc));
        break;
    }
-@@ -1533,15 +1649,11 @@ gst_v4l2_object_get_caps_info (GstV4l2Object * v4l2object, GstCaps * caps,
+@@ -1586,15 +1702,11 @@ gst_v4l2_object_get_caps_info (GstV4l2Object * v4l2object, GstCaps * caps,
      switch (GST_VIDEO_INFO_FORMAT (info)) {
        case GST_VIDEO_FORMAT_I420:
          fourcc = V4L2_PIX_FMT_YUV420;
@@ -380,7 +380,7 @@ index 00a41cb..9b859ff 100644
        case GST_VIDEO_FORMAT_UYVY:
          fourcc = V4L2_PIX_FMT_UYVY;
          break;
-@@ -1581,15 +1693,30 @@ gst_v4l2_object_get_caps_info (GstV4l2Object * v4l2object, GstCaps * caps,
+@@ -1634,15 +1746,30 @@ gst_v4l2_object_get_caps_info (GstV4l2Object * v4l2object, GstCaps * caps,
          fourcc = V4L2_PIX_FMT_BGR24;
          break;
        case GST_VIDEO_FORMAT_xRGB:
@@ -411,7 +411,7 @@ index 00a41cb..9b859ff 100644
        default:
          break;
      }
-@@ -1612,6 +1739,7 @@ gst_v4l2_object_get_caps_info (GstV4l2Object * v4l2object, GstCaps * caps,
+@@ -1665,6 +1792,7 @@ gst_v4l2_object_get_caps_info (GstV4l2Object * v4l2object, GstCaps * caps,
              break;
            case 4:
              fourcc = V4L2_PIX_FMT_MPEG4;
@@ -419,7 +419,7 @@ index 00a41cb..9b859ff 100644
              break;
            default:
              break;
-@@ -1620,7 +1748,12 @@ gst_v4l2_object_get_caps_info (GstV4l2Object * v4l2object, GstCaps * caps,
+@@ -1673,7 +1801,12 @@ gst_v4l2_object_get_caps_info (GstV4l2Object * v4l2object, GstCaps * caps,
      } else if (g_str_equal (mimetype, "video/x-h263")) {
        fourcc = V4L2_PIX_FMT_H263;
      } else if (g_str_equal (mimetype, "video/x-h264")) {
