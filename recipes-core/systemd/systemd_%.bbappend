@@ -1,9 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-PACKAGES =+ "\
-    ${PN}-extra-utils \
-"
-
 # remove has higher priority as packageconfig and depends so those
 # lines need to be maintained and kept sync for the append
 PACKAGECONFIG_append = " lz4 kmod networkd resolved"
@@ -78,51 +74,3 @@ do_install_append() {
     sed -i 's/^v \/var\/tmp.*$//g' \
         ${D}${exec_prefix}/lib/tmpfiles.d/tmp.conf
 }
-
-FILES_${PN}-extra-utils = "\
-                        ${base_bindir}/systemd-escape \
-                        ${base_bindir}/systemd-inhibit \
-                        ${bindir}/systemd-detect-virt \
-                        ${bindir}/systemd-path \
-                        ${bindir}/systemd-run \
-                        ${bindir}/systemd-cat \
-                        ${bindir}/systemd-delta \
-                        ${bindir}/systemd-cgls \
-                        ${bindir}/systemd-cgtop \
-                        ${bindir}/systemd-stdio-bridge \
-                        ${base_bindir}/systemd-ask-password \
-                        ${base_bindir}/systemd-tty-ask-password-agent \
-                        ${systemd_unitdir}/system/systemd-ask-password-console.path \
-                        ${systemd_unitdir}/system/systemd-ask-password-console.service \
-                        ${systemd_unitdir}/system/systemd-ask-password-wall.path \
-                        ${systemd_unitdir}/system/systemd-ask-password-wall.service \
-                        ${systemd_unitdir}/system/sysinit.target.wants/systemd-ask-password-console.path \
-                        ${systemd_unitdir}/system/sysinit.target.wants/systemd-ask-password-wall.path \
-                        ${systemd_unitdir}/system/multi-user.target.wants/systemd-ask-password-wall.path \
-                        ${rootlibexecdir}/systemd/systemd-resolve-host \
-                        ${rootlibexecdir}/systemd/systemd-ac-power \
-                        ${rootlibexecdir}/systemd/systemd-activate \
-                        ${bindir}/systemd-nspawn \
-                        ${exec_prefix}/lib/tmpfiles.d/systemd-nspawn.conf \
-                        ${systemd_unitdir}/system/systemd-nspawn@.service \
-                        ${rootlibexecdir}/systemd/systemd-bus-proxyd \
-                        ${systemd_unitdir}/system/systemd-bus-proxyd.service \
-                        ${systemd_unitdir}/system/systemd-bus-proxyd.socket \
-                        ${rootlibexecdir}/systemd/systemd-socket-proxyd \
-                        ${rootlibexecdir}/systemd/systemd-reply-password \
-                        ${rootlibexecdir}/systemd/systemd-sleep \
-                        ${rootlibexecdir}/systemd/system-sleep \
-                        ${systemd_unitdir}/system/systemd-hibernate.service \
-                        ${systemd_unitdir}/system/systemd-hybrid-sleep.service \
-                        ${systemd_unitdir}/system/systemd-suspend.service \
-                        ${systemd_unitdir}/system/sleep.target \
-                        ${rootlibexecdir}/systemd/systemd-initctl \
-                        ${systemd_unitdir}/system/systemd-initctl.service \
-                        ${systemd_unitdir}/system/systemd-initctl.socket \
-                        ${systemd_unitdir}/system/sockets.target.wants/systemd-initctl.socket \
-                        ${rootlibexecdir}/systemd/system-generators/systemd-gpt-auto-generator \
-                        ${rootlibexecdir}/systemd/systemd-cgroups-agent \
-"
-# upstream sets this as default, we want the small image version to be
-# the default
-#RRECOMMENDS_${PN} += "systemd-extra-utils"
