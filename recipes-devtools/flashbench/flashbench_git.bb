@@ -12,6 +12,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 S = "${WORKDIR}/git"
 
 SRC_URI = "git://git.linaro.org/people/arnd.bergmann/flashbench.git;protocol=https"
+SRC_URI += "\
+    file://0001-flashbench-fix-Makefile.patch \
+"
 
 # There are no upstream tags/releases.
 SRCREV = "2e30b1968a66147412f21002ea844122a0d5e2f0"

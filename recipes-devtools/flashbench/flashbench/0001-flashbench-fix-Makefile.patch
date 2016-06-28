@@ -1,0 +1,33 @@
+From 99fabbd9f6bd68eadadbb3e48120c38a599fa5ed Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Mon, 20 Jun 2016 11:36:03 +0200
+Subject: [PATCH] flashbench: fix Makefile
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Assign compiler defaults as conditional. This removes the requirement
+to explicitly override those variables, e.g. for a cross-compile setup.
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ Makefile | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index f83b220..45c59a3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,6 +1,6 @@
+-CC	:= gcc
+-CFLAGS	:= -O2 -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -g2
+-LDFLAGS := -lrt
++CC      ?= gcc
++CFLAGS  ?= -O2 -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -g2
++LDFLAGS ?= -lrt
+ 
+ all: flashbench erase
+ 
+-- 
+1.9.1
+
