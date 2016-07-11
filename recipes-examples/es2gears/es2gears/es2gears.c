@@ -29,6 +29,11 @@
     2016-06-09: Stefan Christ <s.christ@phytec.de>
         - Mask i.MX6 specific code in #ifdef's
         - Cleanup some whitespaces
+    2016-07-11: Stefan Christ <s.christ@phytec.de>
+        - Initialize eglSwapInterval to use double buffering.
+          NOTE: For i.MX6/Freescale/NXP OpenGL libraries you must set the
+          environment variable FB_MULTI_BUFFER, too. Example:
+              $ FB_MULTI_BUFFER=2 es2gears
 */
 
 /*
@@ -831,6 +836,16 @@ main(int argc, char *argv[])
  
    /* associate the egl-context with the egl-surface */
    eglMakeCurrent(egl_display, egl_surface, egl_surface, egl_context);
+
+   /* Enable display synchronisation and buffering
+    *    0 - no sync and no buffering
+    *    1 - sync and double buffering
+    *    2 - sync and triple buffering
+    */
+   if (eglSwapInterval(egl_display, 1) != EGL_TRUE) {
+      fprintf(stderr, "Unable to initialize eglSwapInterval (eglError: %d)\n", eglGetError());
+      return 1;
+   }
 
    /* Setting up SIGTERM, SIGINT and SIGQUIT handler */
    struct sigaction action;
