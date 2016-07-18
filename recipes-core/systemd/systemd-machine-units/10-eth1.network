@@ -2,5 +2,5 @@
 Name=eth1
 
 [Network]
-DHCP=yes
+DHCP=ipv4
 Address=192.168.4.11/24
