@@ -1,7 +1,7 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 #This setup adds about 1.3MB to the 4.4MB of the all disabled configuration
-PACKAGECONFIG ??= "lz4 kmod networkd resolved"
+PACKAGECONFIG ??= "sysusers lz4 kmod networkd resolved"
 
 PACKAGECONFIG[nls] = "--enable-nls,--disable-nls,intltool-native"
 PACKAGECONFIG[acl] = "--enable-acl,--disable-acl,acl"
