@@ -15,8 +15,6 @@ LIC_FILES_CHKSUM = "file://cldemo.c;beginline=4;endline=18;md5=00379499873043e96
 DEPENDS += "virtual/opencl"
 
 SRC_URI = "file://cldemo.c"
-SRC_URI[md5sum] = "06c9df8712bfb78013ae306cc8bfd5de"
-SRC_URI[sha256sum] = "ca415096d0219997de5aeb5df5e08cef75cff3f6f43da56dae2bf2ed6cd965a7"
 
 PR = "r4"
 
