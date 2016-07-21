@@ -20,12 +20,9 @@ inherit pkgconfig
 
 DEPENDS += "virtual/egl virtual/libgles2"
 
-PR = "r2"
+PR = "r3"
 
-do_unpack_append () {
-    import shutil
-    shutil.copy("${WORKDIR}/es2gears.c", "${S}")
-}
+S = "${WORKDIR}"
 
 do_compile () {
     ${CC} ${CFLAGS} ${LDFLAGS} -o ${B}/es2gears ${S}/es2gears.c -Wall \
