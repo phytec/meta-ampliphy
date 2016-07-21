@@ -34,10 +34,6 @@ INHERIT += "image-mklibs"
 #run QA tests on recipes
 #INHERIT += "recipe_sanity"
 
-# Prefer libjpeg-turbo
-PREFERRED_PROVIDER_jpeg = "libjpeg-turbo"
-PREFERRED_PROVIDER_jpeg-native = "libjpeg-turbo-native"
-
 PACKAGE_CLASSES ?= "package_ipk"
 
 # All images build with the distribution get the version package
