@@ -30,7 +30,7 @@ do_compile () {
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 744 ${B}/cldemo ${D}${bindir}/cldemo
+    install -m 755 ${B}/cldemo ${D}${bindir}/cldemo
 }
 
 RDEPENDS_${PN} += "libopencl"
