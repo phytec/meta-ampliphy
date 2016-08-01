@@ -34,6 +34,8 @@
           NOTE: For i.MX6/Freescale/NXP OpenGL libraries you must set the
           environment variable FB_MULTI_BUFFER, too. Example:
               $ FB_MULTI_BUFFER=2 es2gears
+    2016-08-01: Wadim Egorov <w.egorov@phytec.de>
+        - use GL_VIEWPORT to set the width and height of gears
 */
 
 /*
@@ -760,6 +762,7 @@ int
 main(int argc, char *argv[])
 {
    int ret;
+   GLint vp[4];
 
 #if defined(LINUX) && defined(EGL_API_FB)
    /* i.MX6 specific framebuffer initialization */
@@ -863,9 +866,9 @@ main(int argc, char *argv[])
    /* i.MX6 specific */
    fbGetDisplayGeometry(native_display, &width, &height);
 #else
-   /* TODO */
-   height = 400;
-   width = 800;
+   glGetIntegerv(GL_VIEWPORT, vp);
+   height = vp[3];
+   width = vp[2];
 #endif
    gears_reshape(width, height);
 
