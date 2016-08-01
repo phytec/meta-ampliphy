@@ -35,6 +35,3 @@ do_install() {
     install -d ${D}${bindir}
     install -m 755 ${B}/es2gears ${D}${bindir}/es2gears
 }
-
-RDEPENDS_${PN} += "libegl"
-RDEPENDS_${PN} += "libgles2"
