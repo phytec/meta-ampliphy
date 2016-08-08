@@ -1,0 +1,74 @@
+From 5f113f99addeb65d14e223f25453d2f75961e1a4 Mon Sep 17 00:00:00 2001
+From: Stefan Christ <s.christ@phytec.de>
+Date: Tue, 12 May 2015 15:54:02 +0200
+Subject: [PATCH] Makefile: fix some build issues
+
+- Use LIBS for libraries, because LDFLAGS maybe overwritten by build
+  environment
+- Create directories before installing files into them
+- Use '?=' so bitbake can overwrite Makefile defaults
+
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
+---
+ Makefile | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 4786711..e10221d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -15,36 +15,40 @@
+ 
+ EXEC = clinfo
+ 
+-CFLAGS = -Wall -O3 -std=c99
+-LDFLAGS =
++CFLAGS ?= -Wall -O3 -std=c99
++LDFLAGS ?=
++LIBS ?=
+ 
+ ifeq ($(shell uname),Darwin)
+-	LDFLAGS += -framework OpenCL
++	LIBS += -framework OpenCL
+ else
+-	LDFLAGS += -lOpenCL -lm
++	LIBS += -lOpenCL -lm
+ endif
+ 
+-prefix = /usr/local
+-bindir = bin
+-mandir = share/man/man1
++prefix ?= /usr/local
++bindir ?= bin
++mandir ?= share/man/man1
+ 
+ 
+-CC = cc
+-RM = rm -f
+-INSTALL = install
++CC ?= cc
++RM ?= rm -f
++INSTALL ?= install
+ 
+ .PHONY: clean install uninstall
+ 
+ all: $(EXEC)
+ 
+ $(EXEC): clinfo.c
+-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
++	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
+ 
+ clean:
+ 	$(RM) $(EXEC)
+ 
+ install: $(EXEC)
++	$(INSTALL) -d $(prefix)
++	$(INSTALL) -d $(prefix)/$(bindir)
+ 	$(INSTALL) $(EXEC) $(prefix)/$(bindir)/
++	$(INSTALL) -d $(prefix)/$(mandir)
+ 	$(INSTALL) clinfo.1 $(prefix)/$(mandir)/$(EXEC).1
+ 
+ uninstall:
+-- 
+1.9.1
+

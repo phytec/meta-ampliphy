@@ -1,0 +1,16 @@
+#!/bin/sh
+if [ -e /dev/input/res-touchscreen ] && [ -e /dev/input/touchscreen0 ]; then
+    if [ ! -e /etc/pointercal ]; then
+        #res. touchscreen is not calibrate. We should do this first
+        /usr/bin/ts_calibrate
+    fi
+    export QT_QPA_EGLFS_TSLIB=1
+    export QT_QPA_FB_TSLIB=1
+    export TSLIB_TSDEVICE="/dev/input/touchscreen0"
+fi
+
+if [ $# -eq 0 ]; then
+    echo 'usage: qtLauncher <your_qt_application>'
+else
+    $@ #run the application
+fi

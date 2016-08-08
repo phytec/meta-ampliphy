@@ -1,0 +1,20 @@
+[Unit]
+Description=Autostart Qt 5 Demo
+Wants=systemd-udev-settle.service
+After=systemd-udev-settle.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/qtLauncher /usr/bin/QtDemo
+
+# Detach the framebuffer console from fb0 before starting the QtDemo and
+# reattach it after QtDemo has stopped.
+# See <linux>/Documentation/fb/fbcon.txt for details.
+# NOTE: The dash "-" allows the commands to fail, e.g. if no virtual console
+# was started.
+# FIXME Is there a better command without shell invocation?
+ExecStartPre=-/bin/sh -c "echo 0 > /sys/devices/virtual/vtconsole/vtcon1/bind"
+ExecStopPost=-/bin/sh -c "echo 1 > /sys/devices/virtual/vtconsole/vtcon1/bind"
+
+[Install]
+WantedBy=multi-user.target

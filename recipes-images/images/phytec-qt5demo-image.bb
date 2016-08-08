@@ -1,0 +1,42 @@
+# Copyright (C) 2014 Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+# Released under the MIT license (see COPYING.MIT for the terms)
+SUMMARY =  "This image is designed to be a development image for Qt 5 \
+            Embedded userspace applications."
+
+require recipes-images/images/phytec-headless-image.bb
+
+IMAGE_FEATURES += "splash ssh-server-openssh hwcodecs qtcreator-debug eclipse-debug"
+
+LICENSE = "MIT"
+
+inherit core-image distro_features_check populate_sdk_qt5
+
+# this is a pure qt5 embedded demo image without X
+CONFLICT_DISTRO_FEATURES = "x11 wayland"
+REQUIRED_DISTRO_FEATURES = "opengl"
+
+IMAGE_INSTALL += "\
+    packagegroup-base \
+    \
+    packagegroup-gstreamer \
+    \
+    qtbase \
+    qtbase-plugins \
+    qtbase-fonts \
+    qtsvg \
+    qtsvg-plugins \
+    qtdeclarative \
+    qtdeclarative-plugins \
+    qtdeclarative-qmlplugins \
+    qtquickcontrols-qmlplugins \
+    qtmultimedia \
+    qtmultimedia-plugins \
+    qtmultimedia-qmlplugins \
+    qtwebkit \
+    qtwebkit-qmlplugins \
+    qt5everywheredemo \
+    qt5-opengles2-test \
+    phytec-qtdemo \
+    ${@bb.utils.contains("MACHINE_FEATURES", "sgx", "omap3-sgx-modules libgles2 libegl", "",d)} \
+"
+
