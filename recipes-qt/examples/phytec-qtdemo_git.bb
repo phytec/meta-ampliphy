@@ -39,7 +39,13 @@ FILES_${PN}-democontent = "${datadir}/${PN}/html ${datadir}/${PN}/images"
 FILES_${PN}-video = "${datadir}/${PN}/videos"
 LICENSE_${PN}-video = "CC-BY-3.0"
 
-RDEPENDS_${PN} += "qtgraphicaleffects-qmlplugins qtmultimedia-qmlplugins qtfreevirtualkeyboard qtquickcontrols-qmlplugins"
+RDEPENDS_${PN} += "\
+    qtgraphicaleffects-qmlplugins \
+    qtmultimedia-qmlplugins \
+    qtfreevirtualkeyboard \
+    qtquickcontrols-qmlplugins \
+    qtbase-fonts \
+"
 RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
 
 do_install_append() {

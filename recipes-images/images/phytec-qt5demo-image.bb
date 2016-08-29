@@ -20,21 +20,6 @@ IMAGE_INSTALL += "\
     \
     packagegroup-gstreamer \
     \
-    qtbase \
-    qtbase-plugins \
-    qtbase-fonts \
-    qtsvg \
-    qtsvg-plugins \
-    qtdeclarative \
-    qtdeclarative-plugins \
-    qtdeclarative-qmlplugins \
-    qtquickcontrols-qmlplugins \
-    qtmultimedia \
-    qtmultimedia-plugins \
-    qtmultimedia-qmlplugins \
-    qtwebkit \
-    qtwebkit-qmlplugins \
-    qt5everywheredemo \
     qt5-opengles2-test \
     phytec-qtdemo \
 "
