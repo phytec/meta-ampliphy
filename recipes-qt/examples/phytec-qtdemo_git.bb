@@ -45,6 +45,7 @@ RDEPENDS_${PN} += "\
     qtfreevirtualkeyboard \
     qtquickcontrols-qmlplugins \
     qtbase-fonts \
+    qtwebkit \
 "
 RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
 
