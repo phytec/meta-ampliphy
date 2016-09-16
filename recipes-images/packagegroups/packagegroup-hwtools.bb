@@ -9,7 +9,6 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
-    arm-memspeed \
     usbutils \
     ethtool \
     i2c-tools \
@@ -37,5 +36,6 @@ RDEPENDS_${PN} = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
 "
 
-# those packages depend on the specific layers
+# Those packages depend on a specific SoC architecture
+RDEPENDS_${PN}_append_arm = " arm-memspeed"
 RDEPENDS_${PN}_append_ti33x = " phyedit"
