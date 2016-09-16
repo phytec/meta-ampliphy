@@ -11,7 +11,7 @@ IMAGE_INSTALL = " \
     packagegroup-hwtools \
     packagegroup-benchmark \
     packagegroup-userland \
-    ${@bb.utils.contains("MACHINE_FEATURES", "alsa", "packagegroup-audio", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "wlan", "packagegroup-wifi", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "bluetooth", "packagegroup-bluetooth", "", d)} \
+    ${@bb.utils.contains("COMBINED_FEATURES", "alsa", "packagegroup-audio", "", d)} \
+    ${@bb.utils.contains("COMBINED_FEATURES", "wifi", "packagegroup-wifi", "", d)} \
+    ${@bb.utils.contains("COMBINED_FEATURES", "bluetooth", "packagegroup-bluetooth", "", d)} \
 "

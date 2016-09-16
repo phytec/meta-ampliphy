@@ -16,7 +16,6 @@ RDEPENDS_${PN} = " \
     devmem2 \
     iw \
     bc \
-    ${@bb.utils.contains("MACHINE_FEATURES", "touchscreen", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
     fbtest \
     libdrm-tests \
     memedit \
@@ -32,8 +31,9 @@ RDEPENDS_${PN} = " \
     mtd-utils-ubifs \
     mtd-utils-misc \
     iproute2 \
-    ${@bb.utils.contains("MACHINE_FEATURES", "can", "can-utils", "", d)} \
     bumprts \
+    ${@bb.utils.contains("MACHINE_FEATURES", "can", "can-utils", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "resistivetouch", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
 "
 
