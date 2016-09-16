@@ -13,6 +13,5 @@ RDEPENDS_${PN} = " \
     alsa-utils-scripts \
     alsa-state \
     vorbis-tools \
-    ${@bb.utils.contains("DISTRO_FEATURES", "alsa", "libao-plugin-libalsa", "", d)} \
-    ${@bb.utils.contains("DISTRO_FEATURES", "pulseaudio", "libao-plugin-libpulse", "", d)} \
+    libao-plugin-libalsa \
 "
