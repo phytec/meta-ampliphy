@@ -10,6 +10,7 @@ inherit packagegroup
 
 RDEPENDS_${PN} = " \
     alsa-utils \
+    alsa-utils-scripts \
     alsa-state \
     vorbis-tools \
     ${@bb.utils.contains("DISTRO_FEATURES", "alsa", "libao-plugin-libalsa", "", d)} \
