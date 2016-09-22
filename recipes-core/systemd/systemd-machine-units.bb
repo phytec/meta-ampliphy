@@ -30,15 +30,15 @@ do_install() {
     for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.network); do
         install -m 0644 "$file" ${D}${systemd_unitdir}/network/
     done
-    install -d ${D}${systemd_unitdir}/system/
+    install -d ${D}${systemd_system_unitdir}/
     for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.service); do
-        install -m 0644 "$file" ${D}${systemd_unitdir}/system/
+        install -m 0644 "$file" ${D}${systemd_system_unitdir}/
     done
 }
 
 # Ship directory "/lib/systemd/system" explicitly in case it is empty. Avoids:
 #     QA Issue: systemd-machine-units: Files/directories were installed but not shipped
 FILES_${PN}_append = " \
-    ${systemd_unitdir}/system/ \
+    ${systemd_system_unitdir} \
     ${systemd_unitdir}/network/ \
 "

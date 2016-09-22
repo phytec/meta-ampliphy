@@ -52,7 +52,7 @@ RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
 do_install_append() {
     install -d ${D}${bindir}
     ln -sf ${datadir}/${PN}/phytec-qtdemo ${D}${bindir}/QtDemo
-    install -Dm 0644 ${WORKDIR}/phytec-qtdemo.service ${D}${systemd_unitdir}/system/phytec-qtdemo.service
+    install -Dm 0644 ${WORKDIR}/phytec-qtdemo.service ${D}${systemd_system_unitdir}/phytec-qtdemo.service
     install -Dm 0644 ${WORKDIR}/PhyKitDemo.conf ${D}/.config/Phytec/PhyKitDemo.conf
 
     # democontent
