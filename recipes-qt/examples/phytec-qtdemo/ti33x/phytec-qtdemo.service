@@ -1,7 +1,7 @@
 [Unit]
 Description=Autostart Qt 5 Demo
-Requires=pvr-init.service
-After=pvr-init.service
+Requires=rc.pvr.service
+After=rc.pvr.service
 
 [Service]
 Type=simple
