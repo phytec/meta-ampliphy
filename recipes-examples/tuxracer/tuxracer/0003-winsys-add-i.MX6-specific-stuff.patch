@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Stefan Lengfeld <s.lengfeld@phytec.de>
+Date: Thu, 27 Oct 2016 16:06:45 +0200
+Subject: [PATCH] winsys: add i.MX6 specific stuff
+
+Signed-off-by: Stefan Lengfeld <s.lengfeld@phytec.de>
+---
+ winsys.cpp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/winsys.cpp b/winsys.cpp
+index edc5289..7bde95c 100644
+--- a/winsys.cpp
++++ b/winsys.cpp
+@@ -215,9 +215,16 @@ void CWinsys::Init () {
+ 
+ #if defined(HAVE_GL_GLES1)
+     #if defined(EGL_API_FB)
++        #if defined(LINUX) && defined(EGL_API_FB)
++    /* i.MX6 specific framebuffer initialization */
++    int fdnumber = 0;
++    EGLNativeDisplayType native_display = fbGetDisplayByIndex(fdnumber);
++    EGLNativeWindowType native_window = fbCreateWindow(native_display, 0, 0, 0, 0); // maximal values
++        #else
+     /* Default initializied copied from Qt sourcecode */
+     EGLNativeDisplayType native_display = EGL_DEFAULT_DISPLAY;
+     EGLNativeWindowType native_window = 0;
++        #endif
+ 
+     g_eglDisplay = eglGetDisplay(native_display);
+     if (g_eglDisplay == EGL_NO_DISPLAY)
+-- 
+1.9.1
+

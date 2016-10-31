@@ -1,0 +1,45 @@
+From bd94222b504c039f36026ffeffb66329af14bc95 Mon Sep 17 00:00:00 2001
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Fri, 28 Oct 2016 12:15:06 +0200
+Subject: [PATCH 2/2] Remove CXXFLAGS/LDFLAGS assignment
+
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ Makefile | 16 ----------------
+ 1 file changed, 16 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index e3fbaec..6397617 100644
+--- a/Makefile
++++ b/Makefile
+@@ -53,27 +53,11 @@ else
+     LD = $(CXX)
+     OBJ_EXT = o
+ 
+-    CXXFLAGS = -Wall -Wextra -O2 -DOS_LINUX -I/usr/include/freetype2
+-    LDFLAGS  = -lSDL -lSDL_image -lSDL_mixer -lfreetype 
+-
+     ifdef PROFILE
+       CXXFLAGS += -pg
+       LDFLAGS += -pg
+     endif #PROFILE
+ 
+-    ifdef GLES
+-      CXXFLAGS += -DHAVE_GL_GLES1
+-      LDFLAGS  += -lGLESv1_CM -lEGL
+-      #Pandaboard
+-      CXXFLAGS += -I/usr/lib/pvr-omap4-egl/include
+-      LDFLAGS  += -L/usr/lib/pvr-omap4-egl
+-      #Raspberry Pi
+-      CXXFLAGS += -I/opt/vc/include
+-      CXXFLAGS += -I/opt/vc/include/interface/vcos/pthreads
+-      LDFLAGS  += -L/opt/vc/lib
+-    else
+-      LDFLAGS += -lGL -lGLU
+-    endif #GLES
+   endif #Darwin
+ endif #Windows_NT
+ 
+-- 
+1.9.1
+
