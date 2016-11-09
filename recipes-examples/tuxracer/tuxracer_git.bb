@@ -5,10 +5,10 @@
 DESCRIPTION = "This is a fork of extremetuxracer (http://extremetuxracer.com)\
 focussing on cross-platform, performance & OpenGL-ES support."
 HOMEPAGE = "http://extremetuxracer.com"
-LICENSE = "GPL"
-LIC_FILES_CHKSUM = "file://README.md;md5=fb126c6a5877651e7fca42e220714225"
+LICENSE = "GPLv2+"
+LIC_FILES_CHKSUM = "file://main.cpp;beginline=1;endline=16;md5=0027c39c1fd4ac94c7efe6cbe2d4c1f8"
 
-PR = "r0"
+PR = "r1"
 
 S = "${WORKDIR}/git"
 PV = "1.0+git${SRCPV}"
