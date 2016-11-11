@@ -44,7 +44,9 @@ RDEPENDS_${PN} += "\
     qtmultimedia-qmlplugins \
     qtfreevirtualkeyboard \
     qtquickcontrols-qmlplugins \
-    qtbase-fonts \
+    ttf-dejavu-sans \
+    ttf-dejavu-sans-mono \
+    ttf-dejavu-serif \
     qtwebkit \
 "
 RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
