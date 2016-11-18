@@ -1,0 +1,34 @@
+From 8ec7147033e3deea6006c2c445fe3ed3bc9fe17d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Thu, 10 Nov 2016 17:15:50 +0100
+Subject: [PATCH] qdeclarativegeomap: fix compilation on armv7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ src/imports/location/qdeclarativegeomap.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/imports/location/qdeclarativegeomap.cpp b/src/imports/location/qdeclarativegeomap.cpp
+index ad2b78d..8a02910 100644
+--- a/src/imports/location/qdeclarativegeomap.cpp
++++ b/src/imports/location/qdeclarativegeomap.cpp
+@@ -885,11 +885,11 @@ void QDeclarativeGeoMap::fitViewportToGeoShape()
+     if (bboxHeight == 0 && bboxWidth == 0)
+         return;
+ 
+-    double zoomRatio = qMax(bboxWidth / (width() - margins),
++    qreal zoomRatio = qMax(bboxWidth / (width() - margins),
+                             bboxHeight / (height() - margins));
+     // fixme: use log2 with c++11
+     zoomRatio = std::log(zoomRatio) / std::log(2.0);
+-    double newZoom = qMax(minimumZoomLevel(), m_map->mapController()->zoom()
++    qreal newZoom = qMax(minimumZoomLevel(), m_map->mapController()->zoom()
+                           - zoomRatio);
+     setZoomLevel(newZoom);
+     m_validRegion = true;
+-- 
+1.9.1
+
