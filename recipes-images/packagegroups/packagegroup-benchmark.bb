@@ -13,6 +13,7 @@ RDEPENDS_${PN} = " \
     iperf \
     iperf3 \
     lmbench \
+    pmbw \
     rt-tests \
     evtest \
     perf \
