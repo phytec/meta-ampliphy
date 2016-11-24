@@ -1,0 +1,31 @@
+From f6f2e151fa3e1628a028797b5005d7a7a97432b1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?V=C3=ADctor=20Manuel=20J=C3=A1quez=20Leal?=
+ <vjaquez@igalia.com>
+Date: Sun, 15 May 2016 11:51:22 +0200
+Subject: [PATCH] kmssink: use trace level for buffer render log
+
+Instead of using debug level for logging each buffer rendered, use trace
+level.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=766466
+(cherry picked from commit e87772dd4c6e784ed8cf882d80e761e663a47b7b)
+---
+ sys/kms/gstkmssink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index de2b4c3..cfeeadf 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -1075,7 +1075,7 @@ gst_kms_sink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
+   if (fb_id == 0)
+     goto buffer_invalid;
+ 
+-  GST_DEBUG_OBJECT (self, "displaying fb %d", fb_id);
++  GST_TRACE_OBJECT (self, "displaying fb %d", fb_id);
+ 
+   {
+     if ((crop = gst_buffer_get_video_crop_meta (buffer))) {
+-- 
+1.9.1
+

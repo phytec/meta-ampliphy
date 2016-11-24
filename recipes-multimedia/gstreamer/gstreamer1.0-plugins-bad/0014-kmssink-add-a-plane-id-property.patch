@@ -1,0 +1,98 @@
+From 5d4f792d4559d086add3c16add20bc07b6bfe624 Mon Sep 17 00:00:00 2001
+From: Javier Martinez Canillas <javier@osg.samsung.com>
+Date: Tue, 28 Jun 2016 20:51:56 -0400
+Subject: [PATCH] kmssink: add a plane-id property
+
+Without setting the DRM_CLIENT_CAP_UNIVERSAL_PLANES capability bit, only
+overlay planes are made available for compatibility with legacy clients.
+
+But if a CRTC doesn't have an overlay plane associated, then kmssink is
+not able to find a plane for the CRTC and the pipeline will fail, i.e:
+
+ERROR                kmssink gstkmssink.c:482:gst_kms_sink_start:<kmssink0> Could not find a plane for crtc
+
+This patch adds a plane-id property to the kmssink element so a specific
+plane can be used in case that a CRTC has only a primary plane associated.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=768183
+(cherry picked from commit c2cd60db0feaebb827fe8eb3bbfc85040abf49da)
+
+Conflicts:
+	docs/plugins/gst-plugins-bad-plugins.args
+---
+ sys/kms/gstkmssink.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index 90ce3ff..3c1c954 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -73,6 +73,7 @@ enum
+ {
+   PROP_DRIVER_NAME = 1,
+   PROP_CONNECTOR_ID,
++  PROP_PLANE_ID,
+   PROP_N
+ };
+ 
+@@ -391,7 +392,10 @@ gst_kms_sink_start (GstBaseSink * bsink)
+   if (!pres)
+     goto plane_resources_failed;
+ 
+-  plane = find_plane_for_crtc (self->fd, res, pres, crtc->crtc_id);
++  if (self->plane_id == -1)
++    plane = find_plane_for_crtc (self->fd, res, pres, crtc->crtc_id);
++  else
++    plane = drmModeGetPlane (self->fd, self->plane_id);
+   if (!plane)
+     goto plane_failed;
+ 
+@@ -1153,6 +1157,9 @@ gst_kms_sink_set_property (GObject * object, guint prop_id,
+     case PROP_CONNECTOR_ID:
+       sink->conn_id = g_value_get_int (value);
+       break;
++    case PROP_PLANE_ID:
++      sink->plane_id = g_value_get_int (value);
++      break;
+     default:
+       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+       break;
+@@ -1174,6 +1181,9 @@ gst_kms_sink_get_property (GObject * object, guint prop_id,
+     case PROP_CONNECTOR_ID:
+       g_value_set_int (value, sink->conn_id);
+       break;
++    case PROP_PLANE_ID:
++      g_value_set_int (value, sink->plane_id);
++      break;
+     default:
+       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+       break;
+@@ -1197,6 +1207,7 @@ gst_kms_sink_init (GstKMSSink * sink)
+ {
+   sink->fd = -1;
+   sink->conn_id = -1;
++  sink->plane_id = -1;
+   gst_poll_fd_init (&sink->pollfd);
+   sink->poll = gst_poll_new (TRUE);
+   gst_video_info_init (&sink->vinfo);
+@@ -1259,6 +1270,17 @@ gst_kms_sink_class_init (GstKMSSinkClass * klass)
+       "Connector ID", "DRM connector id", -1, G_MAXINT32, -1,
+       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_CONSTRUCT);
+ 
++   /**
++   * kmssink:plane-id:
++   *
++   * There could be several planes associated with a CRTC.
++   * By default the first plane that's possible to use with a given
++   * CRTC is tried.
++   */
++  g_properties[PROP_PLANE_ID] = g_param_spec_int ("plane-id",
++      "Plane ID", "DRM plane id", -1, G_MAXINT32, -1,
++      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_CONSTRUCT);
++
+   g_object_class_install_properties (gobject_class, PROP_N, g_properties);
+ }
+ 
+-- 
+1.9.1
+

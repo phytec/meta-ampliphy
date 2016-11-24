@@ -1,0 +1,85 @@
+From 7be84833c2c15fce3036d6b95b7805ca6f39d351 Mon Sep 17 00:00:00 2001
+From: Javier Martinez Canillas <javier@osg.samsung.com>
+Date: Tue, 28 Jun 2016 16:07:43 -0400
+Subject: [PATCH] kmssink: fallback to universal planes if no overlay plane is
+ found
+
+Without setting the DRM_CLIENT_CAP_UNIVERSAL_PLANES capability bit, only
+overlay planes are made available for compatibility with legacy clients.
+
+But if a CRTC doesn't have an overlay plane associated, then kmssink is
+not able to find a plane for the CRTC and the pipeline will fail, i.e:
+
+ERROR                kmssink gstkmssink.c:482:gst_kms_sink_start:<kmssink0> Could not find a plane for crtc
+
+If no overlay planes were found for a given CRTC, fallback to universal
+planes so DRM will also return primary planes that can be used instead.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=768183
+
+Signed-off-by: Javier Martinez Canillas <javier@osg.samsung.com>
+(cherry picked from commit 34c88dca2d977638bf6669d321bf92eea566cbf3)
+---
+ sys/kms/gstkmssink.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index 3c1c954..6790ad6 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -352,9 +352,11 @@ gst_kms_sink_start (GstBaseSink * bsink)
+   drmModeCrtc *crtc;
+   drmModePlaneRes *pres;
+   drmModePlane *plane;
++  gboolean universal_planes;
+   gboolean ret;
+ 
+   self = GST_KMS_SINK (bsink);
++  universal_planes = FALSE;
+   ret = FALSE;
+   res = NULL;
+   conn = NULL;
+@@ -388,6 +390,11 @@ gst_kms_sink_start (GstBaseSink * bsink)
+   if (!crtc)
+     goto crtc_failed;
+ 
++retry_find_plane:
++  if (universal_planes &&
++      drmSetClientCap (self->fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1))
++    goto set_cap_failed;
++
+   pres = drmModeGetPlaneResources (self->fd);
+   if (!pres)
+     goto plane_resources_failed;
+@@ -472,6 +479,12 @@ crtc_failed:
+     goto bail;
+   }
+ 
++set_cap_failed:
++  {
++    GST_ERROR_OBJECT (self, "Could not set universal planes capability bit");
++    goto bail;
++  }
++
+ plane_resources_failed:
+   {
+     GST_ERROR_OBJECT (self, "drmModeGetPlaneResources failed: %s (%d)",
+@@ -481,8 +494,13 @@ plane_resources_failed:
+ 
+ plane_failed:
+   {
+-    GST_ERROR_OBJECT (self, "Could not find a plane for crtc");
+-    goto bail;
++    if (universal_planes) {
++      GST_ERROR_OBJECT (self, "Could not find a plane for crtc");
++      goto bail;
++    } else {
++      universal_planes = TRUE;
++      goto retry_find_plane;
++    }
+   }
+ }
+ 
+-- 
+1.9.1
+

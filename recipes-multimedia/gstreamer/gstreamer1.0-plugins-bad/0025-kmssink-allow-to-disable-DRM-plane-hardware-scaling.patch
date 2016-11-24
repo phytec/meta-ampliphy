@@ -1,0 +1,133 @@
+From e2b3aea363997f912c64f6988f142f65a783fcea Mon Sep 17 00:00:00 2001
+From: Stefan Lengfeld <s.lengfeld@phytec.de>
+Date: Wed, 23 Nov 2016 14:07:24 +0100
+Subject: [PATCH] kmssink: allow to disable DRM plane hardware scaling
+
+Some DRM planes/drivers maybe not support hardware scaling. Playing a
+video that does not fit exactly fails with non-obvious error message:
+
+    drmModeSetPlane failed: Invalid argument (-22)
+
+Fix this by adding a property for the user. If scale is set to false,
+the sink does not try to scale the image to fullscreen via the DRM
+plane. Tested on SoC i.MX6  and kernel 4.1.x with
+
+    $ gst-launch-1.0 uridecodebin uri=file:///usr/share/phytec-qtdemo/videos/caminandes.webm ! \
+        videoscale ! \
+        videoconvert ! \
+        video/x-raw,format=YUY2 ! \
+        kmssink connector-id=32 driver-name="imx-drm" scale=false
+    # Plays the video at it's original size of 800x480
+
+    $ gst-launch-1.0 uridecodebin uri=file:///usr/share/phytec-qtdemo/videos/caminandes.webm ! \
+        videoscale ! \
+        videoconvert ! \
+        video/x-raw,format=YUY2,height=100,width=1000 ! \
+        kmssink connector-id=32 driver-name="imx-drm" scale=false
+    # Plays the video at the odd size 1000x100
+
+Signed-off-by: Stefan Lengfeld <s.lengfeld@phytec.de>
+---
+ sys/kms/gstkmssink.c | 27 +++++++++++++++++++++++----
+ sys/kms/gstkmssink.h |  1 +
+ 2 files changed, 24 insertions(+), 4 deletions(-)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index 523de7e..db5cec4 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -75,6 +75,7 @@ enum
+   PROP_DRIVER_NAME = 1,
+   PROP_CONNECTOR_ID,
+   PROP_PLANE_ID,
++  PROP_SCALE,
+   PROP_N
+ };
+ 
+@@ -1073,13 +1074,13 @@ gst_kms_sink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
+     src.y = crop->y;
+   }
+ 
+-  src.w = GST_VIDEO_SINK_WIDTH (self);
+-  src.h = GST_VIDEO_SINK_HEIGHT (self);
++  src.w = GST_VIDEO_INFO_WIDTH (&self->vinfo);
++  src.h = GST_VIDEO_INFO_HEIGHT (&self->vinfo);
+ 
+   dst.w = self->hdisplay;
+   dst.h = self->vdisplay;
+ 
+-  gst_video_sink_center_rect (src, dst, &result, TRUE);
++  gst_video_sink_center_rect (src, dst, &result, self->scale);
+ 
+   if (crop) {
+     src.w = crop->width;
+@@ -1125,7 +1126,9 @@ set_plane_failed:
+         result.w, result.h, src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w,
+         dst.h);
+     GST_ELEMENT_ERROR (self, RESOURCE, FAILED,
+-        (NULL), ("drmModeSetPlane failed: %s (%d)", strerror (-ret), ret));
++        (NULL),
++        ("drmModeSetPlane failed: %s (%d) Maybe HW scaling is not supported.",
++            strerror (-ret), ret));
+     goto bail;
+   }
+ no_disp_ratio:
+@@ -1154,6 +1157,9 @@ gst_kms_sink_set_property (GObject * object, guint prop_id,
+     case PROP_PLANE_ID:
+       sink->plane_id = g_value_get_int (value);
+       break;
++    case PROP_SCALE:
++      sink->scale = g_value_get_boolean (value);
++      break;
+     default:
+       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+       break;
+@@ -1178,6 +1184,9 @@ gst_kms_sink_get_property (GObject * object, guint prop_id,
+     case PROP_PLANE_ID:
+       g_value_set_int (value, sink->plane_id);
+       break;
++    case PROP_SCALE:
++      g_value_set_boolean (value, sink->scale);
++      break;
+     default:
+       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+       break;
+@@ -1202,6 +1211,7 @@ gst_kms_sink_init (GstKMSSink * sink)
+   sink->fd = -1;
+   sink->conn_id = -1;
+   sink->plane_id = -1;
++  sink->scale = TRUE;
+   gst_poll_fd_init (&sink->pollfd);
+   sink->poll = gst_poll_new (TRUE);
+   gst_video_info_init (&sink->vinfo);
+@@ -1274,6 +1284,15 @@ gst_kms_sink_class_init (GstKMSSinkClass * klass)
+       "Plane ID", "DRM plane id", -1, G_MAXINT32, -1,
+       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_CONSTRUCT);
+ 
++  /**
++  * kmssink:scale:
++  *
++  * Use scaling on DRM planes. Needs driver/hardware support.
++  */
++  g_properties[PROP_SCALE] = g_param_spec_boolean ("scale",
++      "Scale", "Use DRM plane Hardware scaling", TRUE,
++      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
++
+   g_object_class_install_properties (gobject_class, PROP_N, g_properties);
+ }
+ 
+diff --git a/sys/kms/gstkmssink.h b/sys/kms/gstkmssink.h
+index 494f440..91af14b 100644
+--- a/sys/kms/gstkmssink.h
++++ b/sys/kms/gstkmssink.h
+@@ -52,6 +52,7 @@ struct _GstKMSSink {
+   gint conn_id;
+   gint crtc_id;
+   gint plane_id;
++  gboolean scale;
+   guint pipe;
+ 
+   /* crtc data */
+-- 
+1.9.1
+

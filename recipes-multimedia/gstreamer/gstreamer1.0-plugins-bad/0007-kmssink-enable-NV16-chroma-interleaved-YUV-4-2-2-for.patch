@@ -1,0 +1,26 @@
+From d7465165e94ca9e949027b4b899d9e54d69a922d Mon Sep 17 00:00:00 2001
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Fri, 12 Feb 2016 14:17:32 +0100
+Subject: [PATCH] kmssink: enable NV16 (chroma-interleaved YUV 4:2:2) format
+
+https://bugzilla.gnome.org/show_bug.cgi?id=761059
+(cherry picked from commit 360e9343f9732ee4f03cd35a40a731ce5e988ad5)
+---
+ sys/kms/gstkmsutils.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sys/kms/gstkmsutils.c b/sys/kms/gstkmsutils.c
+index ab94019..e7f605d 100644
+--- a/sys/kms/gstkmsutils.c
++++ b/sys/kms/gstkmsutils.c
+@@ -60,6 +60,7 @@ static const struct
+   DEF_FMT (YUV422, Y42B),
+   DEF_FMT (NV12, NV12),
+   DEF_FMT (NV21, NV21),
++  DEF_FMT (NV16, NV16),
+ 
+ #undef DEF_FMT
+ };
+-- 
+1.9.1
+

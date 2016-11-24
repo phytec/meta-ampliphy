@@ -1,0 +1,55 @@
+From ec4903ea336204b2a1d13dc2bfa43676773b99a7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?V=C3=ADctor=20Manuel=20J=C3=A1quez=20Leal?=
+ <vjaquez@igalia.com>
+Date: Fri, 20 May 2016 19:25:57 +0200
+Subject: [PATCH] kmsbufferpool: error only if no allocator
+
+Do not expect an allocator from the configuration, but expect to have already
+one set.
+
+(cherry picked from commit f778a3f19a905d6ea80f1e30003bbfbd91f18db6)
+---
+ sys/kms/gstkmsbufferpool.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/sys/kms/gstkmsbufferpool.c b/sys/kms/gstkmsbufferpool.c
+index c69a4f3..329135c 100644
+--- a/sys/kms/gstkmsbufferpool.c
++++ b/sys/kms/gstkmsbufferpool.c
+@@ -85,13 +85,14 @@ gst_kms_buffer_pool_set_config (GstBufferPool * pool, GstStructure * config)
+   gst_buffer_pool_config_get_allocator (config, &allocator, &params);
+ 
+   /* not our allocator, not our buffers */
+-  if (!allocator || !GST_IS_KMS_ALLOCATOR (allocator))
+-    goto wrong_allocator;
+-
+-  if (priv->allocator)
+-    gst_object_unref (priv->allocator);
+-  if ((priv->allocator = allocator))
+-    gst_object_ref (allocator);
++  if (allocator && GST_IS_KMS_ALLOCATOR (allocator)) {
++    if (priv->allocator)
++      gst_object_unref (priv->allocator);
++    if ((priv->allocator = allocator))
++      gst_object_ref (allocator);
++  }
++  if (!priv->allocator)
++    goto no_allocator;
+ 
+   priv->vinfo = vinfo;
+ 
+@@ -118,9 +119,9 @@ wrong_caps:
+         "failed getting geometry from caps %" GST_PTR_FORMAT, caps);
+     return FALSE;
+   }
+-wrong_allocator:
++no_allocator:
+   {
+-    GST_WARNING_OBJECT (pool, "invalid allocator: %" GST_PTR_FORMAT, allocator);
++    GST_WARNING_OBJECT (pool, "no valid allocator in pool");
+     return FALSE;
+   }
+ }
+-- 
+1.9.1
+

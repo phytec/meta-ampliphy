@@ -1,0 +1,36 @@
+From e7fa122aedb4d5ee89ec2767e7e1661ed625b8c0 Mon Sep 17 00:00:00 2001
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Wed, 19 Oct 2016 14:54:44 +0200
+Subject: [PATCH] kmssink: do not get kms bo pitch for planar formats
+
+The API is ill defined for planar formats in case of dumb BOs,
+do not use the reported stride in those cases.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=773473
+(cherry picked from commit 4f19d5d20a3a15fc43f52f1f18b5c94a69aac157)
+---
+ sys/kms/gstkmsallocator.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/sys/kms/gstkmsallocator.c b/sys/kms/gstkmsallocator.c
+index e031848..bd89400 100644
+--- a/sys/kms/gstkmsallocator.c
++++ b/sys/kms/gstkmsallocator.c
+@@ -320,8 +320,12 @@ gst_kms_allocator_add_fb (GstKMSAllocator * alloc, GstKMSMemory * kmsmem,
+       bo_handles[i] = bo_handles[0];
+ 
+     /* Get the bo pitch calculated by the kms driver.
+-     * If it's defined, it will overwrite the video info's stride */
+-    kms_bo_get_prop (kmsmem->bo, KMS_PITCH, &pitch);
++     * If it's defined, it will overwrite the video info's stride.
++     * Since the API is completely undefined for planar formats,
++     * only do this for interleaved formats.
++     */
++    if (num_planes == 1)
++      kms_bo_get_prop (kmsmem->bo, KMS_PITCH, &pitch);
+   } else {
+     for (i = 0; i < num_planes; i++)
+       bo_handles[i] = kmsmem->gem_handle[i];
+-- 
+1.9.1
+

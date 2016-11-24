@@ -1,0 +1,49 @@
+From 83eed267f1b1ac8cc53229ba07450bde3d96d442 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?V=C3=ADctor=20Manuel=20J=C3=A1quez=20Leal?=
+ <vjaquez@igalia.com>
+Date: Fri, 4 Mar 2016 16:53:58 +0100
+Subject: [PATCH] kmssink: keep last rendered buffer in memory
+
+https://bugzilla.gnome.org/show_bug.cgi?id=761059
+(cherry picked from commit 7d06cf329722ab50d086094f3618f5b31d8a1031)
+---
+ sys/kms/gstkmssink.c | 3 +++
+ sys/kms/gstkmssink.h | 1 +
+ 2 files changed, 4 insertions(+)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index ec75e24..11f0185 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -482,6 +482,7 @@ gst_kms_sink_stop (GstBaseSink * bsink)
+ 
+   self = GST_KMS_SINK (bsink);
+ 
++  gst_buffer_replace (&self->last_buffer, NULL);
+   gst_caps_replace (&self->allowed_caps, NULL);
+   gst_object_replace ((GstObject **) & self->pool, NULL);
+   gst_object_replace ((GstObject **) & self->allocator, NULL);
+@@ -1099,6 +1100,8 @@ gst_kms_sink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
+   if (!gst_kms_sink_sync (self))
+     goto bail;
+ 
++  gst_buffer_replace (&self->last_buffer, buffer);
++
+   res = GST_FLOW_OK;
+ 
+ bail:
+diff --git a/sys/kms/gstkmssink.h b/sys/kms/gstkmssink.h
+index 1f9c0e1..317afbc 100644
+--- a/sys/kms/gstkmssink.h
++++ b/sys/kms/gstkmssink.h
+@@ -65,6 +65,7 @@ struct _GstKMSSink {
+   GstCaps *allowed_caps;
+   GstBufferPool *pool;
+   GstAllocator *allocator;
++  GstBuffer *last_buffer;
+ 
+   gchar *devname;
+ 
+-- 
+1.9.1
+

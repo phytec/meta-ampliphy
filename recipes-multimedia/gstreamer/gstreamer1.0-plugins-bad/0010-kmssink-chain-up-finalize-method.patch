@@ -1,0 +1,35 @@
+From 0d4f8864d8c0bde3ebc8dc4cb67c4d2ffddf686a Mon Sep 17 00:00:00 2001
+From: Guillaume Desmottes <guillaume.desmottes@collabora.co.uk>
+Date: Wed, 18 May 2016 12:30:05 +0300
+Subject: [PATCH] kmssink: chain up finalize method
+
+https://bugzilla.gnome.org/show_bug.cgi?id=766597
+(cherry picked from commit 7ffe5da49fa2e4e8f4e8104785a19e5e88074922)
+---
+ sys/kms/gstkmssink.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index 9c849a3..de2b4c3 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -62,6 +62,7 @@
+ GST_DEBUG_CATEGORY_STATIC (gst_kms_sink_debug);
+ #define GST_CAT_DEFAULT gst_kms_sink_debug
+ 
++#define parent_class gst_kms_sink_parent_class
+ G_DEFINE_TYPE_WITH_CODE (GstKMSSink, gst_kms_sink, GST_TYPE_VIDEO_SINK,
+     GST_DEBUG_CATEGORY_INIT (GST_CAT_DEFAULT, GST_PLUGIN_NAME, 0,
+         GST_PLUGIN_DESC));
+@@ -1185,6 +1186,8 @@ gst_kms_sink_finalize (GObject * object)
+   sink = GST_KMS_SINK (object);
+   g_clear_pointer (&sink->devname, g_free);
+   gst_poll_free (sink->poll);
++
++  G_OBJECT_CLASS (parent_class)->finalize (object);
+ }
+ 
+ static void
+-- 
+1.9.1
+

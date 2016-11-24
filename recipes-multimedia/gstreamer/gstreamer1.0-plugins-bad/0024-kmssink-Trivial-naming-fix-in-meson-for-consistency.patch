@@ -1,0 +1,26 @@
+From 29ee8ea54eac4a26e0ed22d7ee062f4e99f0127c Mon Sep 17 00:00:00 2001
+From: Arun Raghavan <arun@osg.samsung.com>
+Date: Mon, 14 Nov 2016 23:11:11 +0530
+Subject: [PATCH] kmssink: Trivial naming fix in meson for consistency
+
+(cherry picked from commit 3e1a23033786c4f76df73147931de71868de6c46)
+---
+ sys/kms/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sys/kms/meson.build b/sys/kms/meson.build
+index 10f8fd9..9e0c99c 100644
+--- a/sys/kms/meson.build
++++ b/sys/kms/meson.build
+@@ -9,7 +9,7 @@ libdrm_dep = dependency('libdrm', version : '>= 2.4.55', required : false)
+ libkms_dep = dependency('libkms', required : false)
+ 
+ if libdrm_dep.found() and libkms_dep.found()
+-  gstkmssink = library('gstkms',
++  gstkmssink = library('gstkmssink',
+     kmssink_sources,
+     c_args : gst_plugins_bad_args,
+     include_directories : [configinc],
+-- 
+1.9.1
+

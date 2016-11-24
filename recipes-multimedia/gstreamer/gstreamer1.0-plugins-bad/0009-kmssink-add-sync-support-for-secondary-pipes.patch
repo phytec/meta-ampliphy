@@ -1,0 +1,88 @@
+From 190e97f15aad611053c431be65c2a6ed5cbb1091 Mon Sep 17 00:00:00 2001
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Thu, 14 Apr 2016 12:46:58 +0200
+Subject: [PATCH] kmssink: add sync support for secondary pipes
+
+The vblank event request must specify the crtc for which to request
+the event. This fixes kmssink synchronisation for crtcs other than
+the first.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=765064
+(cherry picked from commit b2c58d3bc5bcd4c3a437b0e26df72edd8e605499)
+---
+ sys/kms/gstkmssink.c | 17 +++++++++++++----
+ sys/kms/gstkmssink.h |  1 +
+ 2 files changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index 11f0185..9c849a3 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -125,7 +125,8 @@ find_plane_for_crtc (int fd, drmModeRes * res, drmModePlaneRes * pres,
+ }
+ 
+ static drmModeCrtc *
+-find_crtc_for_connector (int fd, drmModeRes * res, drmModeConnector * conn)
++find_crtc_for_connector (int fd, drmModeRes * res, drmModeConnector * conn,
++    guint * pipe)
+ {
+   int i;
+   int crtc_id;
+@@ -151,8 +152,11 @@ find_crtc_for_connector (int fd, drmModeRes * res, drmModeConnector * conn)
+   for (i = 0; i < res->count_crtcs; i++) {
+     crtc = drmModeGetCrtc (fd, res->crtcs[i]);
+     if (crtc) {
+-      if (crtc_id == crtc->crtc_id)
++      if (crtc_id == crtc->crtc_id) {
++        if (pipe)
++          *pipe = i;
+         return crtc;
++      }
+       drmModeFreeCrtc (crtc);
+     }
+   }
+@@ -167,7 +171,7 @@ connector_is_used (int fd, drmModeRes * res, drmModeConnector * conn)
+   drmModeCrtc *crtc;
+ 
+   result = FALSE;
+-  crtc = find_crtc_for_connector (fd, res, conn);
++  crtc = find_crtc_for_connector (fd, res, conn, NULL);
+   if (crtc) {
+     result = crtc->buffer_id != 0;
+     drmModeFreeCrtc (crtc);
+@@ -376,7 +380,7 @@ gst_kms_sink_start (GstBaseSink * bsink)
+   if (!conn)
+     goto connector_failed;
+ 
+-  crtc = find_crtc_for_connector (self->fd, res, conn);
++  crtc = find_crtc_for_connector (self->fd, res, conn, &self->pipe);
+   if (!crtc)
+     goto crtc_failed;
+ 
+@@ -794,6 +798,11 @@ gst_kms_sink_sync (GstKMSSink * self)
+         },
+   };
+ 
++  if (self->pipe == 1)
++    vbl.request.type |= DRM_VBLANK_SECONDARY;
++  else if (self->pipe > 1)
++    vbl.request.type |= self->pipe << DRM_VBLANK_HIGH_CRTC_SHIFT;
++
+   waiting = TRUE;
+   if (!self->has_async_page_flip) {
+     ret = drmWaitVBlank (self->fd, &vbl);
+diff --git a/sys/kms/gstkmssink.h b/sys/kms/gstkmssink.h
+index 317afbc..494f440 100644
+--- a/sys/kms/gstkmssink.h
++++ b/sys/kms/gstkmssink.h
+@@ -52,6 +52,7 @@ struct _GstKMSSink {
+   gint conn_id;
+   gint crtc_id;
+   gint plane_id;
++  guint pipe;
+ 
+   /* crtc data */
+   guint16 hdisplay, vdisplay;
+-- 
+1.9.1
+

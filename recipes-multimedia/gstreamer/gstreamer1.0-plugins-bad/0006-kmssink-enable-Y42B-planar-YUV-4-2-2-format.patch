@@ -1,0 +1,26 @@
+From baace7d25eaecfd76e0f5a2a944261af383ee4d7 Mon Sep 17 00:00:00 2001
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Fri, 12 Feb 2016 14:17:13 +0100
+Subject: [PATCH] kmssink: enable Y42B (planar YUV 4:2:2) format
+
+https://bugzilla.gnome.org/show_bug.cgi?id=761059
+(cherry picked from commit bdb62b265817ce6664344a2a5041494786ea56c9)
+---
+ sys/kms/gstkmsutils.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sys/kms/gstkmsutils.c b/sys/kms/gstkmsutils.c
+index 77061b7..ab94019 100644
+--- a/sys/kms/gstkmsutils.c
++++ b/sys/kms/gstkmsutils.c
+@@ -57,6 +57,7 @@ static const struct
+   /* DEF_FMT (YVYU, ???), */
+   DEF_FMT (YUV420, I420),
+   DEF_FMT (YVU420, YV12),
++  DEF_FMT (YUV422, Y42B),
+   DEF_FMT (NV12, NV12),
+   DEF_FMT (NV21, NV21),
+ 
+-- 
+1.9.1
+

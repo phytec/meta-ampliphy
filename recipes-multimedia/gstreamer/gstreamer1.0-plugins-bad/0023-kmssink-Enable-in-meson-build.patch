@@ -1,0 +1,84 @@
+From cbac899d520c370b66394ed1cddbeff9875e0327 Mon Sep 17 00:00:00 2001
+From: Arun Raghavan <arun@osg.samsung.com>
+Date: Mon, 14 Nov 2016 21:03:20 +0530
+Subject: [PATCH] kmssink: Enable in meson build
+
+(cherry picked from commit 9f6ffdf3485f52618e2d49b4dc58e399056c5f65)
+
+Conflicts:
+	sys/meson.build
+---
+ sys/kms/meson.build | 21 +++++++++++++++++++++
+ sys/meson.build     | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 53 insertions(+)
+ create mode 100644 sys/kms/meson.build
+ create mode 100644 sys/meson.build
+
+diff --git a/sys/kms/meson.build b/sys/kms/meson.build
+new file mode 100644
+index 0000000..10f8fd9
+--- /dev/null
++++ b/sys/kms/meson.build
+@@ -0,0 +1,21 @@
++kmssink_sources = [
++  'gstkmsallocator.c',
++  'gstkmsbufferpool.c',
++  'gstkmssink.c',
++  'gstkmsutils.c',
++]
++
++libdrm_dep = dependency('libdrm', version : '>= 2.4.55', required : false)
++libkms_dep = dependency('libkms', required : false)
++
++if libdrm_dep.found() and libkms_dep.found()
++  gstkmssink = library('gstkms',
++    kmssink_sources,
++    c_args : gst_plugins_bad_args,
++    include_directories : [configinc],
++    dependencies : [gstbase_dep, gstvideo_dep, gstallocators_dep, libdrm_dep,
++                    libkms_dep],
++    install : true,
++    install_dir : plugins_install_dir,
++  )
++endif
+diff --git a/sys/meson.build b/sys/meson.build
+new file mode 100644
+index 0000000..c3457d9
+--- /dev/null
++++ b/sys/meson.build
+@@ -0,0 +1,32 @@
++#FIXME
++#subdir('acmenc')
++#subdir('acmmp3dec')
++#subdir('androidmedia')
++#subdir('applemedia')
++#subdir('avc')
++subdir('bluez')
++#subdir('cdrom')
++subdir('d3dvideosink')
++#subdir('decklink')
++subdir('directsound')
++#subdir('dshowdecwrapper')
++#subdir('dshowsrcwrapper')
++#subdir('dshowvideosink')
++subdir('dvb')
++#subdir('dxr3')
++#subdir('fbdev')
++subdir('kms')
++#subdir('linsys')
++subdir('msdk')
++#subdir('nvenc')
++#subdir('opensles')
++#subdir('pvr2d')
++#subdir('qcam')
++#subdir('shm')
++#subdir('uvch264')
++#subdir('vcd')
++#subdir('vdpau')
++subdir('wasapi')
++#subdir('wininet')
++subdir('winks')
++subdir('winscreencap')
+-- 
+1.9.1
+

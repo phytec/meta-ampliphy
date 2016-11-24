@@ -1,0 +1,47 @@
+From 1e8b9e0ebc475cc9713b7283e589bdbd6232fb71 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?V=C3=ADctor=20Manuel=20J=C3=A1quez=20Leal?=
+ <vjaquez@igalia.com>
+Date: Sun, 15 May 2016 11:52:55 +0200
+Subject: [PATCH] kmssink: frame copy log in performance category
+
+Log the message when the frame is going to be copy (worse case) under the
+performance log category.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=766466
+(cherry picked from commit 3b872650aa3612c755cc8a6f79132d3907a61871)
+---
+ sys/kms/gstkmssink.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index cfeeadf..90ce3ff 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -60,12 +60,14 @@
+ #define GST_PLUGIN_DESC "Video sink using the Linux kernel mode setting API"
+ 
+ GST_DEBUG_CATEGORY_STATIC (gst_kms_sink_debug);
++GST_DEBUG_CATEGORY_STATIC (CAT_PERFORMANCE);
+ #define GST_CAT_DEFAULT gst_kms_sink_debug
+ 
+ #define parent_class gst_kms_sink_parent_class
+ G_DEFINE_TYPE_WITH_CODE (GstKMSSink, gst_kms_sink, GST_TYPE_VIDEO_SINK,
+     GST_DEBUG_CATEGORY_INIT (GST_CAT_DEFAULT, GST_PLUGIN_NAME, 0,
+-        GST_PLUGIN_DESC));
++        GST_PLUGIN_DESC);
++    GST_DEBUG_CATEGORY_GET (CAT_PERFORMANCE, "GST_PERFORMANCE"));
+ 
+ enum
+ {
+@@ -991,7 +993,7 @@ gst_kms_sink_get_input_buffer (GstKMSSink * self, GstBuffer * inbuf)
+   if (gst_kms_sink_import_dmabuf (self, inbuf, &buf))
+     return buf;
+ 
+-  GST_LOG_OBJECT (self, "frame copy");
++  GST_CAT_INFO_OBJECT (CAT_PERFORMANCE, self, "frame copy");
+ 
+   if (!gst_buffer_pool_set_active (self->pool, TRUE))
+     goto activate_pool_failed;
+-- 
+1.9.1
+

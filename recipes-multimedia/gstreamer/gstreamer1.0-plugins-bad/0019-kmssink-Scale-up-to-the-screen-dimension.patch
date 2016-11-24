@@ -1,0 +1,31 @@
+From b2ac48ccf0b3f5e92e4676b0bb6504965abbe824 Mon Sep 17 00:00:00 2001
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Date: Thu, 8 Sep 2016 11:23:57 -0400
+Subject: [PATCH] kmssink: Scale up to the screen dimension
+
+In most display sink, the logic is to use as much as possible
+of the given window. In this case, the window is the screen,
+hence it's logical to scale up.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=767422
+(cherry picked from commit 753c423784a3f24c217e37770272499449c8af61)
+---
+ sys/kms/gstkmssink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index 8057429..8508b0d 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -1102,7 +1102,7 @@ gst_kms_sink_show_frame (GstVideoSink * vsink, GstBuffer * buf)
+   dst.w = self->hdisplay;
+   dst.h = self->vdisplay;
+ 
+-  gst_video_sink_center_rect (src, dst, &result, FALSE);
++  gst_video_sink_center_rect (src, dst, &result, TRUE);
+ 
+   if (crop) {
+     src.w = crop->width;
+-- 
+1.9.1
+
