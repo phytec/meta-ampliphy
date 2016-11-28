@@ -17,6 +17,10 @@ S = "${WORKDIR}/git"
 
 inherit autotools
 
+# the hand coded asm uses r11, which therefore cannot be used for storing
+# the frame pointer when debugging on arm
+SELECTED_OPTIMIZATION_remove_arm = "-fno-omit-frame-pointer"
+
 PACKAGES =+ "${PN}-stats2gnuplot"
 
 FILES_${PN}-stats2gnuplot = "${bindir}/stats2gnuplot"
