@@ -23,6 +23,8 @@ PACKAGECONFIG_append = " pcre"
 SRC_URI_append = " file://res-touchscreen.rules"
 SRC_URI_append = " file://qtLauncher"
 
+QT_QPA_DEFAULT_PLATFORM ??= "eglfs"
+
 # Set default QT_QPA_PLATFORM for all phytec boards
 do_configure_prepend() {
         # adapt qmake.conf to our needs
@@ -31,7 +33,7 @@ do_configure_prepend() {
         # Insert QT_QPA_PLATFORM into qmake.conf
         cat >> ${S}/mkspecs/linux-oe-g++/qmake.conf <<EOF
 
-QT_QPA_DEFAULT_PLATFORM = eglfs
+QT_QPA_DEFAULT_PLATFORM = ${QT_QPA_DEFAULT_PLATFORM}
 
 load(qt_config)
 
