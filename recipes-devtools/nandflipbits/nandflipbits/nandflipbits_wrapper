@@ -1,0 +1,50 @@
+#!/bin/sh
+
+PRGM=nandflipbits
+CMD=/usr/bin/$PRGM
+
+OFFSET=0
+SKIP=8
+COUNT=4
+
+MTD_DEVICE=
+PRINT_HELP=0
+NO_ARGS=1
+
+if [ ! -f $CMD ]
+then
+	echo "error: $PRGM isn't installed!"
+	exit 1
+fi
+
+while getopts o:s:c:d:h opt
+do
+   case $opt in
+       o) OFFSET=$OPTARG;;
+       s) SKIP=$OPTARG;;
+       c) COUNT=$OPTARG;;
+       d) MTD_DEVICE=$OPTARG;NO_ARGS=0;;
+       h) PRINT_HELP=1;;
+   esac
+done
+
+if [ $PRINT_HELP -eq 1 -o $NO_ARGS -eq 1 ]
+then
+	echo "usage: $0 [OPTIONS] -d <mtd-device>"
+	echo "    -o <n>    start with an offset of <n> bytes (default: 0)"
+	echo "    -s <m>    skip <m> bytes at each iteration (default: 8)"
+	echo "    -c <p>    perform <p> write operations (default: 4)"
+
+	exit 1
+fi
+
+i=0
+addr=$OFFSET
+until [ $i -eq $COUNT ]
+do
+	BITFLIP=$((RANDOM % 7))
+	echo "$CMD $MTD_DEVICE $BITFLIP@$addr"
+	$CMD $MTD_DEVICE $BITFLIP@$addr
+	addr=$((addr + SKIP))
+	i=$((i+1))
+done
