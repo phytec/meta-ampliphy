@@ -25,7 +25,6 @@ RDEPENDS_${PN} = " \
     gstreamer1.0-plugins-good-multifile \
     gstreamer1.0-plugins-good-video4linux2 \
     gstreamer1.0-plugins-bad-bayer \
-    gstreamer1.0-plugins-bad-kmssink \
     gstreamer1.0-plugins-bad-fbdevsink \
     gstreamer1.0-plugins-bad-videoparsersbad \
     gst-plugin-i2c \
