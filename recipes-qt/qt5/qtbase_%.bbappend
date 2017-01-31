@@ -42,10 +42,6 @@ load(qt_config)
 EOF
 }
 
-#skip QA tests for examples
-INSANE_SKIP_${PN}-examples-dev += "libdir"
-INSANE_SKIP_${PN}-examples-dbg += "libdir"
-
 do_install_append () {
 	install -d ${D}${nonarch_base_libdir}/udev/rules.d
 	install -m 0644 ${WORKDIR}/res-touchscreen.rules ${D}${nonarch_base_libdir}/udev/rules.d/
