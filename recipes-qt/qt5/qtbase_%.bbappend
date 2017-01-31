@@ -6,7 +6,7 @@ RDEPENDS_${PN}_append = " tslib-conf tslib-calibrate"
 PACKAGECONFIG_MULTIMEDIA_append = " alsa"
 PACKAGECONFIG_DEFAULT_append = " tslib"
 
-QT_CONFIG_FLAGS_append = " -tslib -qreal float"
+QT_CONFIG_FLAGS_append = " -tslib "
 
 #this is necessary for qtquickcontrols-qmlplugins
 PACKAGECONFIG_append = " accessibility"
