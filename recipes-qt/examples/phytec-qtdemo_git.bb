@@ -42,7 +42,7 @@ LICENSE_${PN}-video = "CC-BY-3.0"
 RDEPENDS_${PN} += "\
     qtgraphicaleffects-qmlplugins \
     qtmultimedia-qmlplugins \
-    qtfreevirtualkeyboard \
+    qtvirtualkeyboard \
     qtquickcontrols-qmlplugins \
     ttf-dejavu-sans \
     ttf-dejavu-sans-mono \
