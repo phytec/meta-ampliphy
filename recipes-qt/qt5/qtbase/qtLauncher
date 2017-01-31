@@ -9,8 +9,6 @@ if [ -e /dev/input/res-touchscreen ] && [ -e /dev/input/touchscreen0 ]; then
     export TSLIB_TSDEVICE="/dev/input/touchscreen0"
 fi
 
-export QT_QPA_FONTDIR=/usr/share/fonts/truetype
-
 if [ $# -eq 0 ]; then
     echo 'usage: qtLauncher <your_qt_application>'
 else

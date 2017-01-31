@@ -8,6 +8,8 @@ PACKAGECONFIG_DEFAULT_append = " tslib"
 
 QT_CONFIG_FLAGS_append = " -tslib "
 
+PACKAGECONFIG_FONTS = "fontconfig"
+
 #this is necessary for qtquickcontrols-qmlplugins
 PACKAGECONFIG_append = " accessibility"
 
