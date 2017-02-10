@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/robclark/kmscube"
 LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://kmscube.c;beginline=1;endline=23;md5=8b309d4ee67b7315ff7381270dd631fb"
 
-DEPENDS = "libdrm libgbm"
+DEPENDS = "virtual/egl virtual/libgles2 libdrm libgbm"
 
 inherit autotools pkgconfig
 
