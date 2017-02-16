@@ -37,3 +37,5 @@ do_install() {
     install -d ${D}${bindir}
     install -m 755 ${B}/drmgears ${D}${bindir}/drmgears
 }
+
+COMPATIBLE_MACHINE = "rk3288"
