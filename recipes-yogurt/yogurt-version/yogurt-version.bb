@@ -10,8 +10,8 @@ SRC_URI = "file://lsb_release"
 PACKAGES = "${PN}"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-def get_layers(bb, d):
-    layers = (bb.data.getVar("BBLAYERS", d, 1) or "").split()
+def get_layers(d):
+    layers = (d.getVar("BBLAYERS", d, 1) or "").split()
     layers_branch_rev = ["%-17s = \"%s:%s\"" % (os.path.basename(i), \
         base_get_metadata_git_branch(i, None).strip().strip('()'), \
         base_get_metadata_git_revision(i, None)) \
@@ -42,7 +42,7 @@ do_install() {
 	echo "Revision: ${METADATA_REVISION}" >> ${D}${sysconfdir}/yogurt-version
 	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/yogurt-version
 
-	echo "${@get_layers(bb, d)}" > ${D}${sysconfdir}/yogurt-build-info
+	echo "${@get_layers(d)}" > ${D}${sysconfdir}/yogurt-build-info
 
 	echo "VERSION=\"${DISTRO_VERSION}\"" > ${D}${sysconfdir}/os-release
 	echo "NAME=\"Yogurt\"" >> ${D}${sysconfdir}/os-release
