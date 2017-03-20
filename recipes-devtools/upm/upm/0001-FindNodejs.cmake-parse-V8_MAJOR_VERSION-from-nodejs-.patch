@@ -1,0 +1,52 @@
+From 7acc97b2d9f366513e2a95a86a889df426f7e689 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
+Date: Mon, 13 Feb 2017 16:05:53 +0100
+Subject: [PATCH] FindNodejs.cmake: parse V8_MAJOR_VERSION from nodejs header
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Current version fails to build with a cross compile toolchain. We can
+use the headers from nodejs to parse the version numbers instead of
+executing node, which will not work in a cross setup. As no other
+version gets used in the current src tree, only convert V8 major for a
+start.
+
+Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+---
+ cmake/modules/FindNode.cmake | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/cmake/modules/FindNode.cmake b/cmake/modules/FindNode.cmake
+index c28484e..1c4e29e 100644
+--- a/cmake/modules/FindNode.cmake
++++ b/cmake/modules/FindNode.cmake
+@@ -40,6 +40,10 @@ find_path (V8_ROOT_DIR "v8.h" PATHS ${NODEJS_INCLUDE_DIRS})
+ if (NOT V8_ROOT_DIR)
+   unset(NODEJS_INCLUDE_DIRS)
+   message(ERROR " - v8.h not found")
++else()
++  message(STATUS "Parsing v8 version from header...")
++  file(STRINGS "${V8_ROOT_DIR}/v8-version.h" V8HEADER)
++  STRING(REGEX REPLACE ".*V8_MAJOR_VERSION ([0-9]+).*" "\\1" V8_VERSION_MAJOR "${V8HEADER}")
+ endif()
+ 
+ # Check that uv.h is in NODEJS_INCLUDE_DIRS
+@@ -81,10 +85,12 @@ if (NODEJS_EXECUTABLE)
+         set (NODE_VERSION_MAJOR "0")
+         set (NODE_VERSION_MINOR "10")
+         set (NODE_VERSION_PATCH "30")
+-        set (V8_VERSION_MAJOR "3")
++        if ("${V8_VERSION_MAJOR}" STREQUAL "")
++            set (V8_VERSION_MAJOR "3")
++        endif()
+         set (V8_VERSION_MINOR "28")
+         set (V8_VERSION_PATCH "72")
+-        set (V8_VERSION_STRING "3.28.72")
++        set (V8_VERSION_STRING "${V8_VERSION_MAJOR}.28.72")
+         message ("defaulted to node 0.10.30")
+     endif ()
+     string (REGEX REPLACE "\n" "" NODE_VERSION_STRING ${NODE_VERSION_STRING})
+-- 
+1.9.1
+

@@ -1,0 +1,840 @@
+From e86df782c29332d7194b19ac49ec1f7a30ca8185 Mon Sep 17 00:00:00 2001
+From: Norbert Wesp <nwesp@phytec.de>
+Date: Fri, 10 Feb 2017 14:36:34 +0100
+Subject: [PATCH 1/6] tcs37727: Added upm support for color sensor TCS37727
+
+TCS37727 is a Color Light-To-Digital Converter. I also added
+the manufacturer 'ams' of TCS37727. Examples will be added
+at a later commit.
+
+Signed-off-by: Norbert Wesp <nwesp@phytec.de>
+---
+ src/groups.md                   |  57 ++-----
+ src/tcs37727/CMakeLists.txt     |   5 +
+ src/tcs37727/javaupm_tcs37727.i |  19 +++
+ src/tcs37727/jsupm_tcs37727.i   |   8 +
+ src/tcs37727/pyupm_tcs37727.i   |  15 ++
+ src/tcs37727/tcs37727.cpp       | 349 ++++++++++++++++++++++++++++++++++++++++
+ src/tcs37727/tcs37727.hpp       | 289 +++++++++++++++++++++++++++++++++
+ 7 files changed, 696 insertions(+), 46 deletions(-)
+ create mode 100644 src/tcs37727/CMakeLists.txt
+ create mode 100644 src/tcs37727/javaupm_tcs37727.i
+ create mode 100644 src/tcs37727/jsupm_tcs37727.i
+ create mode 100644 src/tcs37727/pyupm_tcs37727.i
+ create mode 100644 src/tcs37727/tcs37727.cpp
+ create mode 100644 src/tcs37727/tcs37727.hpp
+
+diff --git a/src/groups.md b/src/groups.md
+index e907141..d56759c 100644
+--- a/src/groups.md
++++ b/src/groups.md
+@@ -81,7 +81,7 @@ and is not meant to be installed anywhere.
+ @brief Light sensors with special function: Color recognition
+ 
+ 
+-@defgroup compass Compass/Gyro/Magnetometers
++@defgroup compass Compass/Gyro/Magnometers
+ @ingroup bycat
+ @brief Measure magnetic field to give rotation or heading
+ 
+@@ -275,6 +275,11 @@ and is not meant to be installed anywhere.
+ @brief Amphenol
+ 
+ 
++@defgroup ams ams AG
++@ingroup byman
++@brief ams AG
++
++
+ @defgroup bosch Bosch
+ @ingroup byman
+ @brief Bosch
+@@ -360,6 +365,11 @@ and is not meant to be installed anywhere.
+ @brief Silicon Labs
+ 
+ 
++@defgroup sparkfun Sparkfun
++@ingroup byman
++@brief Sparkfun
++
++
+ @defgroup stmicro STMicroelectronics
+ @ingroup byman
+ @brief STMicroelectronics
+@@ -375,51 +385,6 @@ and is not meant to be installed anywhere.
+ @brief Veris Industries
+ 
+ 
+-@defgroup aeon Aeon Labs
+-@ingroup byman
+-@brief Aeon Labs
+-
+-
+-@defgroup trane Trane
+-@ingroup byman
+-@brief Trane Incorporated
+-
+-
+-@defgroup avago Avago Technologies
+-@ingroup byman
+-@brief Avago Technologies
+-
+-
+-@defgroup catnip Catnip Electronics
+-@ingroup byman
+-@brief Catnip Electronics
+-
+-
+-@defgroup kionix Kionix Incorporated
+-@ingroup byman
+-@brief Kionix Incorporated
+-
+-
+-@defgroup maxbotix Maxbotix
+-@ingroup byman
+-@brief Maxbotix
+-
+-
+-@defgroup maxim Maxim Integrated
+-@ingroup byman
+-@brief Maxim Integrated
+-
+-
+-@defgroup sainsmart sainSMART
+-@ingroup byman
+-@brief sainSMART
+-
+-
+-@defgroup semtech Semtech Corporation
+-@ingroup byman
+-@brief Semtech Corporation
+-
+-
+ ### Groups for the various Starter Kits ###
+ 
+ 
+diff --git a/src/tcs37727/CMakeLists.txt b/src/tcs37727/CMakeLists.txt
+new file mode 100644
+index 0000000..7046b95
+--- /dev/null
++++ b/src/tcs37727/CMakeLists.txt
+@@ -0,0 +1,5 @@
++set (libname "tcs37727")
++set (libdescription "Color Sensor")
++set (module_src ${libname}.cpp)
++set (module_hpp ${libname}.hpp)
++upm_module_init()
+diff --git a/src/tcs37727/javaupm_tcs37727.i b/src/tcs37727/javaupm_tcs37727.i
+new file mode 100644
+index 0000000..ac6c4bc
+--- /dev/null
++++ b/src/tcs37727/javaupm_tcs37727.i
+@@ -0,0 +1,19 @@
++%module javaupm_tcs37727
++%include "../upm.i"
++
++%{
++    #include "tcs37727.hpp"
++%}
++
++%include "tcs37727.hpp"
++
++%pragma(java) jniclasscode=%{
++    static {
++        try {
++            System.loadLibrary("javaupm_tcs37727");
++        } catch (UnsatisfiedLinkError e) {
++            System.err.println("Native code library failed to load. \n" + e);
++            System.exit(1);
++        }
++    }
++%}
+\ No newline at end of file
+diff --git a/src/tcs37727/jsupm_tcs37727.i b/src/tcs37727/jsupm_tcs37727.i
+new file mode 100644
+index 0000000..823d6a3
+--- /dev/null
++++ b/src/tcs37727/jsupm_tcs37727.i
+@@ -0,0 +1,8 @@
++%module jsupm_tcs37727
++%include "../upm.i"
++
++%{
++    #include "tcs37727.hpp"
++%}
++
++%include "tcs37727.hpp"
+diff --git a/src/tcs37727/pyupm_tcs37727.i b/src/tcs37727/pyupm_tcs37727.i
+new file mode 100644
+index 0000000..a9a48c2
+--- /dev/null
++++ b/src/tcs37727/pyupm_tcs37727.i
+@@ -0,0 +1,15 @@
++// Include doxygen-generated documentation
++%include "pyupm_doxy2swig.i"
++%module pyupm_tcs37727
++%include "../upm.i"
++
++%feature("autodoc", "3");
++
++#ifdef DOXYGEN
++%include "tcs37727_doc.i"
++#endif
++
++%include "tcs37727.hpp"
++%{
++    #include "tcs37727.hpp"
++%}
+diff --git a/src/tcs37727/tcs37727.cpp b/src/tcs37727/tcs37727.cpp
+new file mode 100644
+index 0000000..aa0add0
+--- /dev/null
++++ b/src/tcs37727/tcs37727.cpp
+@@ -0,0 +1,349 @@
++/*
++ * Author: Norbert Wesp <nwesp@phytec.de>
++ * Copyright (c) 2017 Phytec Messtechnik GmbH.
++ *
++ * based on: RIOT-driver tcs37727 by Johann Fischer <j.fischer@phytec.de>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
++ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
++ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include <iostream>
++#include <string>
++#include <stdexcept>
++
++#include <unistd.h>
++#include <stdlib.h>
++#include <endian.h>
++
++#include "tcs37727.hpp"
++
++using namespace upm;
++
++TCS37727::TCS37727(int bus, int atime_us, int devAddr) : m_i2ControlCtx(bus) {
++    s_data->red = 0;
++    s_data->green = 0;
++    s_data->blue = 0;
++    s_data->clear = 0;
++    s_data->lux = 0;
++    s_data->ct = 0;
++    s_again = 4;
++
++    m_name = TCS37727_NAME;
++
++    m_controlAddr = devAddr;
++    m_bus = bus;
++
++    mraa::Result ret = m_i2ControlCtx.address(m_controlAddr);
++    if (ret != mraa::SUCCESS) {
++        throw std::invalid_argument(std::string(__FUNCTION__) +
++                                    ": mraa_i2c_address() failed");
++    }
++
++    if (checkID() != 0) {
++        /* sensor_id does not match! maybe wrong sensor chosen? */
++        throw std::invalid_argument(std::string(__FUNCTION__) +
++                                    ": checkID() failed");
++    }
++
++    ret = m_i2ControlCtx.writeReg(TCS37727_CONTROL, TCS37727_CONTROL_AGAIN_4);
++    if (ret != mraa::SUCCESS) {
++        throw std::invalid_argument(std::string(__FUNCTION__) +
++                                    ": mraa_i2c_write_byte_data() failed");
++    }
++
++    ret = m_i2ControlCtx.writeReg(TCS37727_ATIME,
++                                             TCS37727_ATIME_TO_REG(atime_us));
++    if (ret != mraa::SUCCESS) {
++        throw std::invalid_argument(std::string(__FUNCTION__) +
++                                    ": mraa_i2c_write_byte_data() failed");
++    }
++
++    s_atime_us = atime_us;
++}
++
++int
++TCS37727::checkID(void)
++{
++    uint8_t id;
++
++    id = m_i2ControlCtx.readReg(TCS37727_DEVICE_ID_REG);
++
++    if (id != TCS37727_DEVICE_ID) {
++        return -1;
++    }
++
++    return 0;
++}
++
++int
++TCS37727::setActive(void)
++{
++    uint8_t reg;
++
++    reg = m_i2ControlCtx.readReg(TCS37727_ENABLE);
++
++    reg |= (TCS37727_ENABLE_AEN | TCS37727_ENABLE_PON);
++
++    mraa::Result ret = m_i2ControlCtx.writeReg(TCS37727_ENABLE, reg);
++    if (ret != mraa::SUCCESS) {
++        throw std::invalid_argument(std::string(__FUNCTION__) +
++                                    ": mraa_i2c_write_byte_data() failed");
++        return -1;
++    }
++    return 0;
++}
++
++int
++TCS37727::setStandby(void)
++{
++    uint8_t reg;
++
++    reg = m_i2ControlCtx.readReg(TCS37727_ENABLE);
++
++    reg &= ~TCS37727_ENABLE_AEN;
++    if (!(reg & TCS37727_ENABLE_PEN)) {
++        reg &= ~TCS37727_ENABLE_PON;
++    }
++
++    mraa::Result ret = m_i2ControlCtx.writeReg(TCS37727_ENABLE, reg);
++    if (ret != mraa::SUCCESS) {
++        throw std::invalid_argument(std::string(__FUNCTION__) +
++                                    ": mraa_i2c_write_byte_data() failed");
++        return -1;
++    }
++    return 0;
++}
++
++uint8_t
++TCS37727::trimGain(int rawc)
++{
++    uint8_t reg_again = 0;
++    int val_again = s_again;
++    uint8_t reg;
++
++    if (rawc < TCS37727_AG_THRESHOLD_LOW) {
++        switch (val_again) {
++            case 1:
++                reg_again = TCS37727_CONTROL_AGAIN_4;
++                val_again = 4;
++                break;
++
++            case 4:
++                reg_again = TCS37727_CONTROL_AGAIN_16;
++                val_again = 16;
++                break;
++
++            case 16:
++                reg_again = TCS37727_CONTROL_AGAIN_60;
++                val_again = 60;
++                break;
++
++            case 60:
++            default:
++                return -1;
++        }
++    }
++    else if (rawc > TCS37727_AG_THRESHOLD_HIGH) {
++        switch (val_again) {
++            case 60:
++                reg_again = TCS37727_CONTROL_AGAIN_16;
++                val_again = 16;
++                break;
++
++            case 16:
++                reg_again = TCS37727_CONTROL_AGAIN_4;
++                val_again = 4;
++                break;
++
++            case 4:
++                reg_again = TCS37727_CONTROL_AGAIN_1;
++                val_again = 1;
++                break;
++
++            case 1:
++            default:
++                return -1;
++        }
++    }
++    else {
++        return 0;
++    }
++
++    reg = m_i2ControlCtx.readReg(TCS37727_CONTROL);
++
++    reg &= ~TCS37727_CONTROL_AGAIN_MASK;
++    reg |= reg_again;
++
++    mraa::Result ret = m_i2ControlCtx.writeReg(TCS37727_CONTROL, reg);
++    if (ret != mraa::SUCCESS) {
++        throw std::invalid_argument(std::string(__FUNCTION__) +
++                                    ": mraa_i2c_write_byte_data() failed");
++        return -1;
++    }
++    
++    s_again = val_again;
++
++    return 0;
++
++}
++
++int
++TCS37727::sampleData(void)
++{
++    uint8_t buf[8];
++    int num = 0;
++
++    num = m_i2ControlCtx.readBytesReg((TCS37727_INC_TRANS | TCS37727_CDATA),
++                                                                      buf, 8);
++    if (num != 8) {
++        /* not enough values were read */
++        return -1;
++    }
++
++    int32_t tmpc = ((uint16_t)buf[1] << 8) | buf[0];
++    int32_t tmpr = ((uint16_t)buf[3] << 8) | buf[2];
++    int32_t tmpg = ((uint16_t)buf[5] << 8) | buf[4];
++    int32_t tmpb = ((uint16_t)buf[7] << 8) | buf[6];
++
++    /* Remove IR component as described in the DN40.  */
++    int32_t ir = (tmpr + tmpg + tmpb - tmpc) >> 1;
++    tmpr -= ir;
++    tmpg -= ir;
++    tmpb -= ir;
++
++    /* Color temperature calculation as described in the DN40. */
++    int32_t ct = (CT_COEF_IF * tmpb) / tmpr + CT_OFFSET_IF;
++
++    /* Lux calculation as described in the DN40.  */
++    int32_t gi = R_COEF_IF * tmpr + G_COEF_IF * tmpg + B_COEF_IF * tmpb;
++    /* TODO: add Glass Attenuation Factor GA compensation */
++    int32_t cpl = (s_atime_us * s_again) / DGF_IF;
++    int32_t lux = gi / cpl;
++
++    /* Autogain */
++    trimGain(tmpc);
++
++    s_data->red = (tmpr < 0) ? 0 : (tmpr * 1000) / cpl;
++    s_data->green = (tmpg < 0) ? 0 : (tmpg * 1000) / cpl;
++    s_data->blue = (tmpb < 0) ? 0 : (tmpb * 1000) / cpl;
++    s_data->clear = (tmpb < 0) ? 0 : (tmpc * 1000) / cpl;
++    s_data->lux = (lux < 0) ? 0 : lux;
++    s_data->ct = (ct < 0) ? 0 : ct;
++
++    return 0;
++}
++
++uint32_t
++TCS37727::getChannelRed(int bSampleData)
++{
++    if (bSampleData) {
++        if (sampleData() != 0) {
++            /* error in read values from reg */
++            return 999;
++        }
++    }
++
++    return s_data->red;
++}
++
++uint32_t
++TCS37727::getChannelGreen(int bSampleData)
++{
++    if (bSampleData) {
++        if (sampleData() != 0) {
++            /* error in read values from reg */
++            return 999;
++        }
++    }
++
++    return s_data->green;
++}
++
++uint32_t
++TCS37727::getChannelBlue(int bSampleData)
++{
++    if (bSampleData) {
++        if (sampleData() != 0) {
++            /* error in read values from reg */
++            return 999;
++        }
++    }
++
++    return s_data->blue;
++}
++
++uint32_t
++TCS37727::getChannelClear(int bSampleData)
++{
++    if (bSampleData) {
++        if (sampleData() != 0) {
++            /* error in read values from reg */
++            return 999;
++        }
++    }
++
++    return s_data->clear;
++}
++
++uint32_t
++TCS37727::getLux(int bSampleData)
++{
++    if (bSampleData) {
++        if (sampleData() != 0) {
++            /* error in read values from reg */
++            return 999;
++        }
++    }
++
++    return s_data->lux;
++}
++
++uint32_t
++TCS37727::getColorTemperature(int bSampleData)
++{
++    if (bSampleData) {
++        if (sampleData() != 0) {
++            /* error in read values from reg */
++            return 999;
++        }
++    }
++
++    return s_data->ct;
++}
++
++int
++TCS37727::getData(tcs37727_data_t* data, int bSampleData)
++{
++    if (bSampleData) {
++        if (sampleData() != 0) {
++            /* error in read values from reg */
++            return -1;
++        }
++    }
++
++    data->red = s_data->red;
++    data->green = s_data->green;
++    data->blue = s_data->blue;
++    data->clear = s_data->clear;
++    data->lux = s_data->lux;
++    data->ct = s_data->ct;
++
++    return 0;
++}
+diff --git a/src/tcs37727/tcs37727.hpp b/src/tcs37727/tcs37727.hpp
+new file mode 100644
+index 0000000..bde823c
+--- /dev/null
++++ b/src/tcs37727/tcs37727.hpp
+@@ -0,0 +1,289 @@
++/*
++ * Author: Norbert Wesp <nwesp@phytec.de>
++ * Copyright (c) 2017 Phytec Messtechnik GmbH.
++ *
++ * based on: RIOT-driver tcs37727 by Johann Fischer <j.fischer@phytec.de>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
++ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
++ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#pragma once
++
++#include <string>
++#include <mraa/i2c.hpp>
++#include <stdint.h>
++#include <stdbool.h>
++
++#define TCS37727_NAME "TCS37727"
++#define TCS37727_I2C_ADDRESS   0x29
++#define TCS37727_DEVICE_ID     0x49
++#define TCS37727_DEVICE_ID_REG 0x92
++
++#define TCS37727_ATIME_DEFAULT     200000  /* Default RGBC integration time */
++#define TCS37727_AG_THRESHOLD_LOW  200
++#define TCS37727_AG_THRESHOLD_HIGH (65535 - TCS37727_AG_THRESHOLD_LOW)
++
++
++/* TCS37727 Register Map */
++#define TCS37727_ENABLE  0x80 /* Enables states and interrupts */
++#define TCS37727_ATIME   0x81 /* RGBC time */
++#define TCS37727_PTIME   0x82 /* Proximity time */
++#define TCS37727_WTIME   0x83 /* Wait time */
++#define TCS37727_AILTL   0x04 /* Clear interrupt low threshold low byte */
++#define TCS37727_AILTH   0x05 /* Clear interrupt low threshold high byte */
++#define TCS37727_AIHTL   0x06 /* Clear interrupt high threshold low byte */
++#define TCS37727_AIHTH   0x07 /* Clear interrupt high threshold high byte */
++#define TCS37727_PILTL   0x08 /* Proximity inter. low threshold low byte */
++#define TCS37727_PILTH   0x09 /* Proximity inter. low threshold high byte */
++#define TCS37727_PIHTL   0x0A /* Proximity inter. high threshold low byte */
++#define TCS37727_PIHTH   0x0B /* Proximity inter. high threshold high byte */
++#define TCS37727_PERS    0x8C /* Interrupt persistence filters */
++#define TCS37727_CONFIG  0x8D /* Configuration */
++#define TCS37727_PPULSE  0x8E /* Proximity pulse count */
++#define TCS37727_CONTROL 0x8F /* Gain control register */
++#define TCS37727_STATUS  0x93 /* Device status */
++#define TCS37727_CDATA   0x14 /* Clear ADC data low byte */
++#define TCS37727_CDATAH  0x15 /* Clear ADC data high byte */
++#define TCS37727_RDATA   0x16 /* Red ADC data low byte */
++#define TCS37727_RDATAH  0x17 /* Red ADC data high byte */
++#define TCS37727_GDATA   0x18 /* Green ADC data low byte */
++#define TCS37727_GDATAH  0x19 /* Green ADC data high byte */
++#define TCS37727_BDATA   0x1A /* Blue ADC data low byte */
++#define TCS37727_BDATAH  0x1B /* Blue ADC data high byte */
++#define TCS37727_PDATA   0x1C /* Proximity ADC data low byte */
++#define TCS37727_PDATAH  0x1D /* Proximity ADC data high byte */
++
++/* TCS37727 Command Register */
++#define TCS37727_BYTE_TRANS 0x80 /* Repeated byte protocol transaction */
++#define TCS37727_INC_TRANS  0xA0 /* Auto-increment protocol transaction */
++#define TCS37727_SF_PICLR   0xE5 /* Proximity interrupt clear */
++#define TCS37727_SF_CICLR   0xE6 /* Clear channel interrupt clear */
++#define TCS37727_SF_PCICLR  0xE7 /* Proximity & Clear channel inter. clear */
++
++/* TCS37727 Enable Register */
++#define TCS37727_ENABLE_PIEN (1 << 5) /* Proximity interrupt enable */
++#define TCS37727_ENABLE_AIEN (1 << 4) /* Clear channel interrupt enable */
++#define TCS37727_ENABLE_WEN  (1 << 3) /* Wait enable */
++#define TCS37727_ENABLE_PEN  (1 << 2) /* Proximity enable */
++#define TCS37727_ENABLE_AEN  (1 << 1) /* RGBC enable, actives 2-channel ADC */
++#define TCS37727_ENABLE_PON  (1 << 0) /* Power ON */
++
++/* TCS37727 Control Register */
++#define TCS37727_CONTROL_PDRIVE_100  0x00 /* 100 mA LED Drive Strength */
++#define TCS37727_CONTROL_PDRIVE_50   0x04 /* 50 mA LED Drive Strength */
++#define TCS37727_CONTROL_PDRIVE_25   0x08 /* 25 mA LED Drive Strength */
++#define TCS37727_CONTROL_PDRIVE_12   0x0C /* 12.5 mA LED Drive Strength */
++#define TCS37727_CONTROL_PDRIVE_MASK 0x0C /* PDRIVE Mask */
++#define TCS37727_CONTROL_AGAIN_1     0x00 /* 1 × gain RGBC Gain Value */
++#define TCS37727_CONTROL_AGAIN_4     0x01 /* 4 × gain RGBC Gain Value */
++#define TCS37727_CONTROL_AGAIN_16    0x02 /* 16 × gain RGBC Gain Value */
++#define TCS37727_CONTROL_AGAIN_60    0x03 /* 60 × gain RGBC Gain Value */
++#define TCS37727_CONTROL_AGAIN_MASK  0x03 /* AGAIN Mask */
++
++/* TCS37727 ATIME register values */
++#define TCS37727_ATIME_MIN 2400   /* 2.4ms integr. time, max count 1024 */
++#define TCS37727_ATIME_MAX 614000 /* 614ms integr. time, max count 0xffff */
++
++#define TCS37727_ATIME_TO_REG(val) (256 - (uint8_t)((val) / 2400))
++#define TCS37727_ATIME_TO_US(reg)  ((256 - (uint8_t)(reg)) * 2400)
++
++/* Coefficients for Lux and CT Equations (DN40) */
++/* Coefficients in integer format, multiplied by 1000 */
++#define DGF_IF        310
++#define R_COEF_IF     136
++#define G_COEF_IF    1000
++#define B_COEF_IF    -444
++#define CT_COEF_IF   3810
++#define CT_OFFSET_IF 1391
++
++namespace upm {
++
++typedef struct {
++    uint32_t red;           /**< IR compensated channels red */
++    uint32_t green;         /**< IR compensated channels green */
++    uint32_t blue;          /**< IR compensated channels blue */
++    uint32_t clear;         /**< channels clear */
++    uint32_t lux;           /**< Lux */
++    uint32_t ct;            /**< Color temperature */
++} tcs37727_data_t;
++
++/**
++ * @brief TCS37727 Color Light-To-Digital Converter
++ * @defgroup tcs37727 libupm-tcs37727
++ * @ingroup ams i2c color
++ */
++
++/**
++ * @library tcs37727
++ * @sensor tcs37727
++ * @comname TCS37727 Color Light-To-Digital Converter
++ * @type color
++ * @man ams
++ * @web http://ams.com/eng/Products/Light-Sensors
++ * @con i2c
++ *
++ * @brief API for the TCS37727 Color Light-To-Digital Converter
++ *
++ * Description in web-link above:
++ * The TCS3772 device family provides red, green, blue, and clear (RGBC) light
++ * sensing and, when coupled with an external IR LED, proximity detection.
++ * These devices detect light intensity under a variety of lighting conditions
++ * and through a variety of attenuation materials, including dark glass. The
++ * proximity detection feature allows a large dynamic range of operation for
++ * accurate short distance detection, such as in a cell phone, for detecting
++ * when the user positions the phone close to their ear. An internal state
++ * machine provides the ability to put the device into a low power state in
++ * between proximity and RGBC measurements providing very low average power
++ * consumption.
++ *
++ * @snippet tcs37727.cxx Interesting
++ */
++class TCS37727 {
++    public:
++        /**
++         *
++         * Instantiates an TCS37727 object
++         * Settings: Gain 4x, Proximity Detection off
++         *
++         * @param bus Number of the used bus
++         * @param atime_us RGBC integration time
++         * @param devAddr Address of the used I2C device
++         */
++        TCS37727 (int bus, int atime_us=TCS37727_ATIME_DEFAULT,
++                               int devAddr=TCS37727_I2C_ADDRESS);
++
++        /**
++         * Check device_id of sensor
++         *
++         * @return  0 on success
++         *         -1 on error
++         */
++        int checkID(void);
++
++        /**
++         * Set active mode, this enables periodic RGBC measurements
++         *
++         * @return  0 on success
++         *         -1 on error
++         */
++        int setActive(void);
++
++        /**
++         * Set standby mode, this disables periodic RGBC measurements
++         * Also turns off the sensor when proximity measurement is disabled
++         *
++         * @return  0 on success
++         *         -1 on error
++         */
++        int setStandby(void);
++
++        /**
++         * 
++         */
++        uint8_t trimGain(int rawc);
++
++        /**
++         * Read out data of regs and call further function
++         * Also saves converted values to variables
++         *
++         * @return  0 on success
++         *         -1 on error
++         */
++        int sampleData(void);
++
++        /**
++         * Get the calculated channel red color
++         *
++         * @param bSampleData Flag to read sensor
++         * @return The channel red color on success
++         *         999 on error
++         */
++        uint32_t getChannelRed(int bSampleData = 0);
++
++        /**
++         * Get the calculated channel green color
++         *
++         * @param bSampleData Flag to read sensor
++         * @return The channel green color on success
++         *         999 on error
++         */
++        uint32_t getChannelGreen(int bSampleData = 0);
++
++        /**
++         * Get the calculated channel blue color
++         *
++         * @param bSampleData Flag to read sensor
++         * @return The channel blue color on success
++         *         999 on error
++         */
++        uint32_t getChannelBlue(int bSampleData = 0);
++
++        /**
++         * Get the calculated channel clear color
++         *
++         * @param bSampleData Flag to read sensor
++         * @return The channel clear color on success
++         *         999 on error
++         */
++        uint32_t getChannelClear(int bSampleData = 0);
++
++        /**
++         * Get the calculated lux value
++         *
++         * @param bSampleData Flag to read sensor
++         * @return The lux value on success
++         *         999 on error
++         */
++        uint32_t getLux(int bSampleData = 0);
++
++        /**
++         * Get the calculated color temperature
++         *
++         * @param bSampleData Flag to read sensor
++         * @return The color temperature on success
++         *         999 on error
++         */
++        uint32_t getColorTemperature(int bSampleData = 0);
++
++        /**
++         * Get calculated sensor values
++         *
++         * @param data Calculated sensor values 
++         * @param bSampleData Flag to read sensor
++         * @return  0 on success
++         *         -1 on error
++         */
++        int getData(tcs37727_data_t* data, int bSampleData = 0);
++    
++    private:
++
++        std::string m_name;
++
++        int m_controlAddr;
++        int m_bus;
++        mraa::I2c m_i2ControlCtx;
++
++        int s_atime_us;              /* atime value conveted to microseconds */
++        int s_again;                 /* amount of gain */
++
++        tcs37727_data_t s_data[1];
++    };
++
++}
+-- 
+1.9.1
+
