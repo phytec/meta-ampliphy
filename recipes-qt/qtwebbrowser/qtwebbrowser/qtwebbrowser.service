@@ -5,7 +5,8 @@ After=systemd-udev-settle.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/qtLauncher /usr/bin/qtwebbrowser
+ExecStart=/usr/bin/qtLauncher /usr/bin/qtwebbrowser http://localhost
+Environment=BROWSER_APP_MODE=1
 
 # Detach the framebuffer console from fb0 before starting the QtDemo and
 # reattach it after QtDemo has stopped.

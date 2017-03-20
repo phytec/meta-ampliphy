@@ -11,12 +11,16 @@ QT_MODULE_BRANCH = "dev"
 
 SRC_URI += " \
     file://0001-project-fix-install-path-for-poky.patch \
+    file://0002-qtwebbrowser-add-application-mode.patch \
     file://${PN}.service \
 "
 
 SRCREV = "023733af5523a5ad84359926224fa106001215f4"
 
 DEPENDS = "qtbase qtdeclarative qtwebengine"
+
+PACKAGECONFIG ?= ""
+PACKAGECONFIG[desktop] = "-DDESKTOP_BUILD,,"
 
 SYSTEMD_SERVICE_${PN} = "${PN}.service"
 
