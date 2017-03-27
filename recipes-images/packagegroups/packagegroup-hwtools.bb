@@ -39,3 +39,4 @@ RDEPENDS_${PN} = " \
 # Those packages depend on a specific SoC architecture
 RDEPENDS_${PN}_append_arm = " arm-memspeed"
 RDEPENDS_${PN}_append_ti33x = " phyedit"
+RDEPENDS_${PN}_append_rk3288 = " rkeeprom"
