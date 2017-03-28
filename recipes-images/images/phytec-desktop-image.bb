@@ -22,4 +22,5 @@ IMAGE_INSTALL += "\
     \
     qt5-opengles2-test \
     phytec-qtdemo \
+    qtwebbrowser \
 "
