@@ -9,6 +9,9 @@ Type=simple
 ExecStart=/usr/bin/wait-for-server.sh /usr/bin/qtwebbrowser http://localhost
 Environment=BROWSER_APP_MODE=1
 
+#Enable Chromium Remote Debugging Protocol
+#Environment=QTWEBENGINE_REMOTE_DEBUGGING=192.168.3.11:1234
+
 # Detach the framebuffer console from fb0 before starting the QtDemo and
 # reattach it after QtDemo has stopped.
 # See <linux>/Documentation/fb/fbcon.txt for details.
