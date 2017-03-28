@@ -9,7 +9,7 @@ User=root
 LimitNOFILE=infinity
 LimitNPROC=infinity
 LimitCORE=infinity
-TimeoutStartSec=8
+TimeoutSec=infinity
 PIDFile=/home/root/.pm2/pm2.pid
 Environment=PM2_HOME=/home/root/.pm2
 # mraa hardware access module:
