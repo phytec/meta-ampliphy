@@ -2,10 +2,11 @@
 Description=Autostart Qtwebbrowser
 Wants=systemd-udev-settle.service
 After=systemd-udev-settle.service
+After=phytec-node-server.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/qtLauncher /usr/bin/qtwebbrowser http://localhost
+ExecStart=/usr/bin/wait-for-server.sh /usr/bin/qtwebbrowser http://localhost
 Environment=BROWSER_APP_MODE=1
 
 # Detach the framebuffer console from fb0 before starting the QtDemo and
