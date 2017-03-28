@@ -7,6 +7,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 SRC_URI = " \
     ftp://ftp.phytec.de/pub/Software/Linux/BSP-Yocto-HTML5/${PN}/${PN}-v${PV}.tar.gz;unpack=false \
     file://phytec-node-server.service \
+    file://html5demo-env.sh \
 "
 SRC_URI[md5sum] = "623b6c4677bb1ad13c8c421c0b194040"
 SRC_URI[sha256sum] = "443052543b5795520365cace52bc02cc91580b3b71577e9e415f2a990481a462"
@@ -27,6 +28,7 @@ do_install () {
     mkdir -p ${D}${PREFIX}
     tar --no-same-owner -xpf ${WORKDIR}/${PN}-v${PV}.tar.gz -C ${D}${PREFIX}
     install -Dm 0644 ${WORKDIR}/phytec-node-server.service ${D}${systemd_system_unitdir}/phytec-node-server.service
+    install -Dm 0644 ${WORKDIR}/html5demo-env.sh ${D}${sysconfdir}/profile.d/html5demo-env.sh
 }
 
 FILES_${PN} = "/"

@@ -1,0 +1,1 @@
+export BROWSER_APP_MODE=1
