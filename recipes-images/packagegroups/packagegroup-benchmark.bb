@@ -10,7 +10,6 @@ RDEPENDS_${PN} = " \
     bonnie++ \
     hdparm \
     iozone3 \
-    iperf \
     iperf3 \
     lmbench \
     pmbw \
