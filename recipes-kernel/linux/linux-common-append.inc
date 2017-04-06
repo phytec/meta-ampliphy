@@ -5,4 +5,4 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/features:"
 SRC_URI_append = " file://mtd-tests.cfg"
 KERNEL_MODULES_RDEPENDS_BLACKLIST += "${MTD_TEST_PACKAGES}"
 
-LOCALVERSION = "-${DISTRO_VERSION}"
+LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION', True))}"
