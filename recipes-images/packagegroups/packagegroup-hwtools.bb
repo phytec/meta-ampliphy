@@ -29,6 +29,7 @@ RDEPENDS_${PN} = " \
     mtd-utils \
     mtd-utils-ubifs \
     mtd-utils-misc \
+    nandflipbits \
     iproute2 \
     bumprts \
     ${@bb.utils.contains("MACHINE_FEATURES", "can", "can-utils", "", d)} \
