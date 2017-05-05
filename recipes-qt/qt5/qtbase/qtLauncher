@@ -4,6 +4,9 @@ if [ -e /dev/input/res-touchscreen ] && [ -e /dev/input/touchscreen0 ]; then
         #res. touchscreen is not calibrate. We should do this first
         /usr/bin/ts_calibrate
     fi
+    #forbid libinput when using resistive touchscreens
+    export QT_QPA_EGLFS_NO_LIBINPUT=1
+    #enable tslib
     export QT_QPA_EGLFS_TSLIB=1
     export QT_QPA_FB_TSLIB=1
     export TSLIB_TSDEVICE="/dev/input/touchscreen0"
