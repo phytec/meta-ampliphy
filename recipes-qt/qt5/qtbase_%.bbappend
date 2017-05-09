@@ -1,12 +1,9 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-DEPENDS_append = " tslib"
 RDEPENDS_${PN}_append = " tslib-conf tslib-calibrate"
 
 PACKAGECONFIG_MULTIMEDIA_append = " alsa"
 PACKAGECONFIG_DEFAULT_append = " tslib"
-
-QT_CONFIG_FLAGS_append = " -tslib "
 
 PACKAGECONFIG_FONTS = "fontconfig"
 
