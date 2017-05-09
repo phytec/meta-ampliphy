@@ -48,6 +48,19 @@ RDEPENDS_${PN} += "\
     ttf-dejavu-sans-mono \
     ttf-dejavu-serif \
     qtwebkit \
+    gstreamer1.0-libav \
+    gstreamer1.0-plugins-base-audioconvert \
+    gstreamer1.0-plugins-base-audioresample \
+    gstreamer1.0-plugins-base-playback \
+    gstreamer1.0-plugins-base-typefindfunctions \
+    gstreamer1.0-plugins-base-videoconvert \
+    gstreamer1.0-plugins-base-videoscale \
+    gstreamer1.0-plugins-base-volume \
+    gstreamer1.0-plugins-base-vorbis \
+    gstreamer1.0-plugins-good-autodetect \
+    gstreamer1.0-plugins-good-matroska \
+    gstreamer1.0-plugins-good-ossaudio \
+    gstreamer1.0-plugins-good-videofilter \
 "
 RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
 
