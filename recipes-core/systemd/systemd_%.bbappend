@@ -35,6 +35,6 @@ do_install_append () {
 #    meta/recipes-core/systemd/systemd/00-create-volatile.conf
 # the line must be removed completely in tmp.conf.
 do_install_append() {
-    sed -i 's/^v \/var\/tmp.*$//g' \
+    sed -i 's/^q \/var\/tmp.*$//g' \
         ${D}${exec_prefix}/lib/tmpfiles.d/tmp.conf
 }
