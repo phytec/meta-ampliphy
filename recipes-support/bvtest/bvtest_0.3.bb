@@ -1,4 +1,4 @@
-# Copyright (C) 2016 PHYTEC Messtechnik GmbH,
+# Copyright (C) 2017 PHYTEC Messtechnik GmbH,
 # Author: Stefan Christ <s.christ@phytec.de>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
@@ -14,8 +14,8 @@ SRC_URI = "git://git.phytec.de/${PN};branch=${BRANCH};protocol=git"
 S = "${WORKDIR}/git"
 
 # NOTE: Keep sha1sum in sync with recipe version and git tag
-SRCREV = "a6ef209f5b5a9da5b16d866fa8d950ded9a80174"
-PV = "0.2+git${SRCPV}"
+SRCREV = "02eceed7d837042cbf301193b77ebeb8a9d257f7"
+PV = "0.3+git${SRCPV}"
 
 PR = "r0"
 
