@@ -21,8 +21,8 @@ SRC_URI = " \
     file://phytec-qtdemo.service \
     file://PhyKitDemo.conf \
 "
-SRCREV = "f2ede77804bc7783ff31ff7075ce34cb186f379a"
-PV = "0.5+git${SRCPV}"
+SRCREV = "a87a81f12e2819d5ea79d93a4239476e28d90d0b"
+PV = "0.6+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
