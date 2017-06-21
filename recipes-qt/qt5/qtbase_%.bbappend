@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-RDEPENDS_${PN}_append = " tslib-conf tslib-calibrate"
+RDEPENDS_qtbase_append = " tslib-conf tslib-calibrate"
 
 PACKAGECONFIG_MULTIMEDIA_append = " alsa"
 PACKAGECONFIG_DEFAULT_append = " tslib"
