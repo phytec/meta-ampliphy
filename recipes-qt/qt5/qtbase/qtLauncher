@@ -1,4 +1,7 @@
 #!/bin/sh
+# use interactive shell environment for machine specific env vars
+. /etc/profile
+
 if [ -e /dev/input/res-touchscreen ] && [ -e /dev/input/touchscreen0 ]; then
     if [ ! -e /etc/pointercal ]; then
         #res. touchscreen is not calibrate. We should do this first
