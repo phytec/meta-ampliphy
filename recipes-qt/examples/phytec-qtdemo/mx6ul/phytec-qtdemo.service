@@ -1,0 +1,15 @@
+[Unit]
+Description=Autostart Qt 5 Demo
+Wants=systemd-udev-settle.service
+After=systemd-udev-settle.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/qtLauncher /usr/bin/QtDemo
+
+# Reattaching the framebuffer console does not work for imx6ul
+ExecStartPre=-/bin/sh -c "echo 0 > /sys/class/graphics/fbcon/cursor_blink"
+ExecStopPost=-/bin/sh -c "systemctl restart getty@tty1"
+
+[Install]
+WantedBy=multi-user.target
