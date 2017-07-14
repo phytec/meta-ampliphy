@@ -5,7 +5,7 @@ DISTRO_VERSION_rk3288 = "RK3288-PD-pyro"
 VENDOR = "phytec"
 TARGET_VENDOR = "-${VENDOR}"
 
-SDK_VENDOR = "-${DISTRO}sdk"
+SDK_VENDOR = "-${VENDOR}sdk"
 SDK_VERSION := "${@'${DISTRO_VERSION}'.replace('snapshot-${DATE}','snapshot')}"
 SDK_NAME = "${VENDOR}-${DISTRO}-${TCLIBC}-${SDK_ARCH}-${IMAGE_BASENAME}-${TUNE_PKGARCH}"
 SDKPATH = "/opt/${VENDOR}-${DISTRO}/${SDK_VERSION}"
