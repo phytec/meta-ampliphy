@@ -10,7 +10,7 @@ ExecStart=/usr/bin/qtLauncher /usr/bin/QtDemo
 # Detaching the framebuffer console from fb0 crashes for am335x ti kernel
 # We need to live with the workaround for now
 ExecStartPre=-/bin/sh -c "echo 0 > /sys/class/graphics/fbcon/cursor_blink"
-ExecStopPost=-/bin/sh -c "systemctl restart getty@tty1"
+ExecStopPost=-/bin/sh -c "systemctl restart getty@tty1; echo -n -e '\033[9;0]' > /dev/tty0"
 
 [Install]
 WantedBy=multi-user.target
