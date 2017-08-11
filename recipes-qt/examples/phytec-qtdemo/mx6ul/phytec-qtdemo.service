@@ -5,6 +5,7 @@ After=systemd-udev-settle.service
 
 [Service]
 Type=simple
+User=root
 ExecStart=/usr/bin/qtLauncher /usr/bin/QtDemo
 
 # Reattaching the framebuffer console does not work for imx6ul
