@@ -21,8 +21,8 @@ SRC_URI = " \
     file://phytec-qtdemo.service \
     file://PhyKitDemo.conf \
 "
-SRCREV = "a87a81f12e2819d5ea79d93a4239476e28d90d0b"
-PV = "0.6+git${SRCPV}"
+SRCREV = "62a1038d277ac3aa978120e908ed8eca77480952"
+PV = "1.0+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
@@ -35,19 +35,14 @@ PACKAGES += "${PN}-democontent ${PN}-videos"
 FILES_${PN} = "${datadir} ${bindir} ${systemd_unitdir} /.config"
 FILES_${PN}-dbg = "${datadir}/${PN}/.debug"
 FILES_${PN}-dev = "/usr/src"
-FILES_${PN}-democontent = "${datadir}/${PN}/html ${datadir}/${PN}/images"
+FILES_${PN}-democontent = "${datadir}/${PN}/images"
 FILES_${PN}-video = "${datadir}/${PN}/videos"
 LICENSE_${PN}-video = "CC-BY-3.0"
 
 RDEPENDS_${PN} += "\
-    qtgraphicaleffects-qmlplugins \
     qtmultimedia-qmlplugins \
     qtvirtualkeyboard \
-    qtquickcontrols-qmlplugins \
-    ttf-dejavu-sans \
-    ttf-dejavu-sans-mono \
-    ttf-dejavu-serif \
-    qtwebkit \
+    qtquickcontrols2-qmlplugins \
     gstreamer1.0-libav \
     gstreamer1.0-plugins-base-audioconvert \
     gstreamer1.0-plugins-base-audioresample \
@@ -71,8 +66,6 @@ do_install_append() {
     install -Dm 0644 ${WORKDIR}/PhyKitDemo.conf ${D}/.config/Phytec/PhyKitDemo.conf
 
     # democontent
-    install -d ${D}${datadir}/${PN}/html
-    cp -r ${S}/phytec_offline/* ${D}${datadir}/${PN}/html
     install -d ${D}${datadir}/${PN}/images
     for f in ${S}/images/page_phytec_*.png; do \
         install -Dm 0644 $f ${D}${datadir}/${PN}/images/
