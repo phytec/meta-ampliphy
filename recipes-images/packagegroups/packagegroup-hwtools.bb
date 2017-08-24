@@ -16,7 +16,6 @@ RDEPENDS_${PN} = " \
     iw \
     bc \
     fbtest \
-    kmsxx \
     libdrm-tests \
     memedit \
     memtester \
