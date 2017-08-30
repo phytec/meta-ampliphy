@@ -12,7 +12,10 @@ PACKAGECONFIG_append = " pcre"
 
 #input devices
 PACKAGECONFIG_append = " libinput xkbcommon-evdev"
-PACKAGECONFIG_DEFAULT = "dbus udev widgets tools libs freetype"
+PACKAGECONFIG_DEFAULT = "dbus udev libs freetype"
+
+#for qt widget applications add this in your layer
+#PACKAGECONFIG_append = " widgets"
 
 SRC_URI_append = " file://res-touchscreen.rules"
 SRC_URI_append = " file://qtLauncher"
