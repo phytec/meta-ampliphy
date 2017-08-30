@@ -7,16 +7,7 @@ PACKAGECONFIG_DEFAULT_append = " tslib"
 
 PACKAGECONFIG_FONTS = "fontconfig"
 
-#this is necessary for qtquickcontrols-qmlplugins
-PACKAGECONFIG_append = " accessibility"
-
-#this is required by qtwebkit
-PACKAGECONFIG_append = " icu"
-
-#this is required by our demo application, qtwebkit cookie database
-PACKAGECONFIG_append = " sql-sqlite"
-
-#fix for 5.5
+#use system libraries wherever possible
 PACKAGECONFIG_append = " pcre"
 
 #input devices
