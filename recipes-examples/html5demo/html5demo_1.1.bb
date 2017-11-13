@@ -2,7 +2,7 @@ DESCRIPTION = "This recipes deploys an HTML5 application release to the target \
 root filesystem. It combines a node.js server application and a browser client \
 Application."
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SRC_URI = " \
     ftp://ftp.phytec.de/pub/Software/Linux/BSP-Yocto-HTML5/${PN}/${PN}-v${PV}.tar.gz;unpack=false \
