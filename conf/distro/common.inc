@@ -6,7 +6,7 @@ VENDOR = "phytec"
 TARGET_VENDOR = "-${VENDOR}"
 
 SDK_VENDOR = "-${VENDOR}sdk"
-SDK_VERSION := "${@'${DISTRO_VERSION}'.replace('snapshot-${DATE}','snapshot')}"
+SDK_VERSION = "${DISTRO_VERSION}"
 SDK_NAME = "${VENDOR}-${DISTRO}-${TCLIBC}-${SDK_ARCH}-${IMAGE_BASENAME}-${TUNE_PKGARCH}"
 SDKPATH = "/opt/${VENDOR}-${DISTRO}/${SDK_VERSION}"
 
