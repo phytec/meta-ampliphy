@@ -7,9 +7,6 @@ PACKAGECONFIG_DEFAULT_append = " tslib"
 
 PACKAGECONFIG_FONTS = "fontconfig"
 
-#use system libraries wherever possible
-PACKAGECONFIG_append = " pcre"
-
 #input devices
 PACKAGECONFIG_append = " libinput xkbcommon-evdev"
 PACKAGECONFIG_DEFAULT = "dbus udev libs freetype"
