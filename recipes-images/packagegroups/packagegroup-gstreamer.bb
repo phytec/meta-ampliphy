@@ -27,6 +27,7 @@ RDEPENDS_${PN} = " \
     gstreamer1.0-plugins-bad-bayer \
     gstreamer1.0-plugins-bad-fbdevsink \
     gstreamer1.0-plugins-bad-videoparsersbad \
+    gstreamer1.0-plugins-bad-kms \
     gst-plugin-i2c \
 "
 
