@@ -15,6 +15,12 @@ if [ -e /dev/input/res-touchscreen ] && [ -e /dev/input/touchscreen0 ]; then
     export TSLIB_TSDEVICE="/dev/input/touchscreen0"
 fi
 
+export QT_QPA_PLATFORM=@QT_QPA_PLATFORM@
+
+# Common Debug Settings
+#export QT_DEBUG_PLUGINS=1
+#export QT_LOGGING_RULES=qt.qpa.*=true
+
 if [ $# -eq 0 ]; then
     echo 'usage: qtLauncher <your_qt_application>'
 else
