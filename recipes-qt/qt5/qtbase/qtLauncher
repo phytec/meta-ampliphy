@@ -16,7 +16,7 @@ if [ -e /dev/input/res-touchscreen ] && [ -e /dev/input/touchscreen0 ]; then
 fi
 
 # disable qt's audiosink if no audio present
-ls -1 /dev/audio* > /dev/null 2>&1
+ls -1 /dev/snd/pcm* > /dev/null 2>&1
 if [ "$?" != "0" ]; then
     export QT_GSTREAMER_PLAYBIN_AUDIOSINK=fakesink
 fi
