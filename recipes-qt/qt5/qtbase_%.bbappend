@@ -16,6 +16,7 @@ PACKAGECONFIG_DEFAULT = "dbus udev libs freetype"
 
 SRC_URI += "file://res-touchscreen.rules \
             file://qtLauncher \
+            file://eglfs_kms.config \
 "
 
 QT_QPA_PLATFORM ??= "eglfs"
@@ -25,7 +26,11 @@ do_install_append () {
 	install -d ${D}${nonarch_base_libdir}/udev/rules.d
 	install -m 0644 ${WORKDIR}/res-touchscreen.rules ${D}${nonarch_base_libdir}/udev/rules.d/
 
+	install -d ${D}/${sysconfdir}
+	install -m 0644 ${WORKDIR}/eglfs_kms.config ${D}/${sysconfdir}/eglfs_kms.config
+
 	install -d ${D}/${bindir}
 	install -m 0755 ${WORKDIR}/qtLauncher ${D}/${bindir}/qtLauncher
 	sed -i 's,@QT_QPA_PLATFORM@,${QT_QPA_PLATFORM},g' ${D}/${bindir}/qtLauncher
+	sed -i 's,@QT_QPA_EGLFS_KMS_CONFIG@,${sysconfdir}/eglfs_kms.config,g' ${D}/${bindir}/qtLauncher
 }

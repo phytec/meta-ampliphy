@@ -16,6 +16,7 @@ if [ -e /dev/input/res-touchscreen ] && [ -e /dev/input/touchscreen0 ]; then
 fi
 
 export QT_QPA_PLATFORM=@QT_QPA_PLATFORM@
+export QT_QPA_EGLFS_KMS_CONFIG=@QT_QPA_EGLFS_KMS_CONFIG@
 
 # Common Debug Settings
 #export QT_DEBUG_PLUGINS=1
