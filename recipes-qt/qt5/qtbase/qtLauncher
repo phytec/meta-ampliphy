@@ -15,6 +15,12 @@ if [ -e /dev/input/res-touchscreen ] && [ -e /dev/input/touchscreen0 ]; then
     export TSLIB_TSDEVICE="/dev/input/touchscreen0"
 fi
 
+# disable qt's audiosink if no audio present
+ls -1 /dev/audio* > /dev/null 2>&1
+if [ "$?" != "0" ]; then
+    export QT_GSTREAMER_PLAYBIN_AUDIOSINK=fakesink
+fi
+
 export QT_QPA_PLATFORM=@QT_QPA_PLATFORM@
 export QT_QPA_EGLFS_KMS_CONFIG=@QT_QPA_EGLFS_KMS_CONFIG@
 
