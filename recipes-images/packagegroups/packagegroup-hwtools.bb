@@ -20,6 +20,7 @@ RDEPENDS_${PN} = " \
     memedit \
     memtester \
     e2fsprogs-mke2fs \
+    dosfstools \
     e2fsprogs-tune2fs \
     e2fsprogs-resize2fs \
     parted \
