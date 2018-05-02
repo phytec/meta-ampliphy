@@ -1,0 +1,48 @@
+Index: gst-plugins-good-1.8.3/sys/v4l2/gstv4l2object.c
+===================================================================
+--- gst-plugins-good-1.8.3.orig/sys/v4l2/gstv4l2object.c
++++ gst-plugins-good-1.8.3/sys/v4l2/gstv4l2object.c
+@@ -1244,6 +1244,12 @@ gst_v4l2_object_v4l2fourcc_to_video_form
+     case V4L2_PIX_FMT_GREY:    /*  8  Greyscale     */
+       format = GST_VIDEO_FORMAT_GRAY8;
+       break;
++    case V4L2_PIX_FMT_Y10:
++      format = GST_VIDEO_FORMAT_GRAY10_LE;
++      break;
++    case V4L2_PIX_FMT_Y12:
++      format = GST_VIDEO_FORMAT_GRAY12_LE;
++      break;
+     case V4L2_PIX_FMT_Y16:
+       format = GST_VIDEO_FORMAT_GRAY16_LE;
+       break;
+@@ -1474,6 +1480,8 @@ gst_v4l2_object_v4l2fourcc_to_bare_struc
+       structure = gst_structure_new_empty ("video/x-vp8");
+       break;
+     case V4L2_PIX_FMT_GREY:    /*  8  Greyscale     */
++    case V4L2_PIX_FMT_Y10:
++    case V4L2_PIX_FMT_Y12:
+     case V4L2_PIX_FMT_Y16:
+     case V4L2_PIX_FMT_Y16_BE:
+     case V4L2_PIX_FMT_XRGB555:
+@@ -1562,8 +1570,6 @@ gst_v4l2_object_v4l2fourcc_to_bare_struc
+     case V4L2_PIX_FMT_HI240:   /*  8  8-bit color   */
+     case V4L2_PIX_FMT_Y4:
+     case V4L2_PIX_FMT_Y6:
+-    case V4L2_PIX_FMT_Y10:
+-    case V4L2_PIX_FMT_Y12:
+     case V4L2_PIX_FMT_Y10BPACK:
+     case V4L2_PIX_FMT_YUV444:
+     case V4L2_PIX_FMT_YUV555:
+@@ -1793,6 +1799,12 @@ gst_v4l2_object_get_caps_info (GstV4l2Ob
+       case GST_VIDEO_FORMAT_GRAY8:
+         fourcc = V4L2_PIX_FMT_GREY;
+         break;
++      case GST_VIDEO_FORMAT_GRAY10_LE:
++        fourcc = V4L2_PIX_FMT_Y10;
++        break;
++      case GST_VIDEO_FORMAT_GRAY12_LE:
++        fourcc = V4L2_PIX_FMT_Y12;
++        break;
+       case GST_VIDEO_FORMAT_GRAY16_LE:
+         fourcc = V4L2_PIX_FMT_Y16;
+         break;
