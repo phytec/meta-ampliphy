@@ -1,0 +1,32 @@
+From 13fde50e061f3f314c1f0b907402ddab827b7718 Mon Sep 17 00:00:00 2001
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Date: Thu, 22 Mar 2018 10:31:06 +0100
+Subject: [PATCH] HACK: save_raw_image: added numeric Y16_2X8 mbus code
+
+The VM050 supports a 16bpp mode which is transmitted by 2x 8bpp values.
+A corresponding MBUS code has been added to our kernel but that's not
+upstream and phytec-kernel only.
+
+Add this numeric code as-is for now.
+
+Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+---
+ src/save_raw_image.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/save_raw_image.c b/src/save_raw_image.c
+index 496103dfdf25..8efa1bae8da1 100644
+--- a/src/save_raw_image.c
++++ b/src/save_raw_image.c
+@@ -216,6 +216,7 @@ static const struct pm_format pm_formats[] = {
+ 	{"YVYU8", V4L2_PIX_FMT_YVYU, V4L2_MBUS_FMT_YVYU8_2X8},
+ 	{"YVYU10", V4L2_PIX_FMT_YVYU, V4L2_MBUS_FMT_YVYU10_2X10},
+ 	{"YVYU12", V4L2_PIX_FMT_YVYU, V4L2_MBUS_FMT_YVYU12_2X12},
++	{"Y16_2X8", V4L2_PIX_FMT_Y16, 0x2041},
+ 	{"\0", 0, 0},
+ };
+ 
+-- 
+2.7.4
+
