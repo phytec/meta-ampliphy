@@ -1,0 +1,23 @@
+Index: v4l-utils-1.12.3/utils/media-ctl/libv4l2subdev.c
+===================================================================
+--- v4l-utils-1.12.3.orig/utils/media-ctl/libv4l2subdev.c
++++ v4l-utils-1.12.3/utils/media-ctl/libv4l2subdev.c
+@@ -782,12 +782,18 @@ const char *v4l2_subdev_pixelcode_to_str
+ enum v4l2_mbus_pixelcode v4l2_subdev_string_to_pixelcode(const char *string)
+ {
+ 	unsigned int i;
++	char *e;
++	unsigned long v;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(mbus_formats); ++i) {
+ 		if (strcmp(mbus_formats[i].name, string) == 0)
+ 			return mbus_formats[i].code;
+ 	}
+ 
++	v = strtoul(string, &e, 0);
++	if (*e == '\0')
++		return v;
++
+ 	return (enum v4l2_mbus_pixelcode)-1;
+ }
+ 
