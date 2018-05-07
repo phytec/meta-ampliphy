@@ -10,10 +10,10 @@ SECTION = "examples"
 
 # Archive created with
 #   $ unzip v4l2_c-examples.zip
-#   $ mv v4l2_c-examples_V1.0\ -\ Kopie/ phytec-v4l2-c-examples-0.4
-#   $ find phytec-v4l2-c-examples-0.4 -exec "touch" "{}" ";"
-#   $ find phytec-v4l2-c-examples-0.4 -name "*.sh" -exec "chmod" "+x" "{}" ";"
-#   $ tar --owner=root --group=root -czf phytec-v4l2-c-examples-0.4.tar.gz phytec-v4l2-c-examples-0.4/
+#   $ mv phytec-v4l2-c-examples-0.4/ phytec-v4l2-c-examples-0.5
+#   $ find phytec-v4l2-c-examples-0.5 -exec "touch" "{}" ";"
+#   $ find phytec-v4l2-c-examples-0.5 -name "*.sh" -exec "chmod" "+x" "{}" ";"
+#   $ tar --owner=root --group=root -czf phytec-v4l2-c-examples-0.5.tar.gz phytec-v4l2-c-examples-0.5/
 SRC_URI = "file://${PN}-${PV}.tar.gz"
 
 PR = "r0"
