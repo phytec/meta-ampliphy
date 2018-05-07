@@ -12,8 +12,8 @@ DEPENDS += "gstreamer1.0 gstreamer1.0-plugins-base"
 PR = "r1"
 
 SRC_URI = "git://git.phytec.de/gst-plugin-i2c;branch=master"
-SRCREV = "fbf8f9b7aa002e96224a41194b1c8d0a617e775e"
-PV = "1.0.0+git${SRCPV}"
+SRCREV = "89eeee83a120a954f4b718918dccde1c6fab2de2"
+PV = "1.1.0+git${SRCPV}"
 S = "${WORKDIR}/git"
 
 inherit autotools pkgconfig
