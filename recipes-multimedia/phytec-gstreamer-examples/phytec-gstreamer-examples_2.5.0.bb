@@ -12,14 +12,14 @@ PR = "r0"
 
 # Archive created via
 #   $ unzip gstreamer_examples.zip
-#   $ mv gstreamer_examples phytec-gstreamer-examples-2.4.3
-#   $ rm phytec-gstreamer-examples-2.4.3/tools/i2c
-#   $ cp phytec-gstreamer-examples-2.4.2/tools/i2c.c phytec-gstreamer-examples-2.4.3/tools/
-#   $ cp phytec-gstreamer-examples-2.4.2/COPYING.MIT  phytec-gstreamer-examples-2.4.3/
-#   $ find phytec-gstreamer-examples-2.4.3/ -exec "touch" "{}" ";"
-#   $ find phytec-gstreamer-examples-2.4.3/ -name "*.sh" -exec "chmod" "+x" "{}" ";"
-#   $ tar --owner=root --group=root -czf phytec-gstreamer-examples-2.4.3.tar.gz \
-#        phytec-gstreamer-examples-2.4.3/
+#   $ mv gstreamer_examples phytec-gstreamer-examples-2.5.0
+#   $ rm phytec-gstreamer-examples-2.5.0/tools/i2c
+#   $ cp phytec-gstreamer-examples-2.4.3/tools/i2c.c phytec-gstreamer-examples-2.5.0/tools/
+#   $ cp phytec-gstreamer-examples-2.4.3/COPYING.MIT  phytec-gstreamer-examples-2.5.0/
+#   $ find phytec-gstreamer-examples-2.5.0/ -exec "touch" "{}" ";"
+#   $ find phytec-gstreamer-examples-2.5.0/ -name "*.sh" -exec "chmod" "+x" "{}" ";"
+#   $ tar --owner=root --group=root -czf phytec-gstreamer-examples-2.5.0.tar.gz \
+#        phytec-gstreamer-examples-2.5.0/
 SRC_URI = "file://${PN}-${PV}.tar.gz"
 
 GSTREAMER_EXAMPLES_DIR = "${datadir}/${PN}"
