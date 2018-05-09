@@ -3,9 +3,8 @@ DESCRIPTION = "Gstreamer plugin using the VITA 1300 Sensor image data conversion
 SECTION = "multimedia"
 HOMEPAGE = "https://git.phytec.de/gst-vita-1300-remapper/"
 
-# TODO Fix licence in source code
-LICENSE = "GPLv3"
-LIC_FILES_CHKSUM = "file://COPYING;md5=e431e272f5b8a6a4f948a910812f235e"
+LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 BRANCH = "master"
 SRC_URI = "git://git.phytec.de/gst-vita-1300-remapper;branch=${BRANCH}"
@@ -13,8 +12,8 @@ SRC_URI = "git://git.phytec.de/gst-vita-1300-remapper;branch=${BRANCH}"
 S = "${WORKDIR}/git"
 
 # NOTE: Keep sha1sum in sync with recipe version and git tag
-SRCREV = "c47c4b3df4ba5f67106a289867af5d973e4fc1ab"
-PV = "0.3+git${SRCPV}"
+SRCREV = "80871a43c811de45e4296e828bd4816c9932c18f"
+PV = "0.3.1+git${SRCPV}"
 
 PR = "r0"
 
