@@ -1,4 +1,4 @@
-# Copyright (C) 2015 Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+# Copyright (C) 2015 PHYTEC Messtechnik GmbH
 # Released under the MIT license (see COPYING.MIT for the terms)
 
 DESCRIPTION = "This is a demo software showing some Qt Features"

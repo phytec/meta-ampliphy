@@ -1,4 +1,4 @@
-# Copyright (C) 2015 Christian Hemp <c.hemp@phytec.de>
+# Copyright (C) 2015 PHYTEC Messtechnik GmbH
 # Released under the MIT license (see COPYING.MIT for the terms)
 
 DESCRIPTION = "Phytec Gstreamer examples"
