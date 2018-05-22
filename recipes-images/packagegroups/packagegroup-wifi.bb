@@ -1,6 +1,3 @@
-# Copyright (C) 2015 Stefan Christ <s.christ@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Phytec wifi software"
 LICENSE = "MIT"
 

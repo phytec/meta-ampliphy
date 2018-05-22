@@ -1,6 +1,3 @@
-# Copyright (C) 2014 Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Userlandtools for gstreamer and cameras"
 LICENSE = "MIT"
 
