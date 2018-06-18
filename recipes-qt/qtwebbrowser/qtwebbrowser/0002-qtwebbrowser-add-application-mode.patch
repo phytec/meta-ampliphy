@@ -1,7 +1,7 @@
-From 0febc4cc96eb8e19e6be8620919f90b7aa4640fd Mon Sep 17 00:00:00 2001
+From 715ba974f82b9272dc9d73aa0bb51bdbf8d51c1e Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
-Date: Tue, 7 Mar 2017 10:23:17 +0100
-Subject: [PATCH 2/2] qtwebbrowser: add application mode
+Date: Mon, 18 Jun 2018 15:18:57 +0200
+Subject: [PATCH] qtwebbrowser: add application mode
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -11,28 +11,30 @@ navigation, history and settings. All functionally must then come from
 the web application. Virtual keyboard still works as expected.
 
 Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
+Signed-off-by: Janine Hagemann <j.hagemann@phytec.de>
 ---
- src/main.cpp          |  12 ++-
+ src/main.cpp          |  13 ++-
  src/qml/AppMain.qml   |  13 +++
  src/qml/AppWindow.qml | 232 ++++++++++++++++++++++++++++++++++++++++++++++++++
  src/resources.qrc     |   2 +
- 4 files changed, 258 insertions(+), 1 deletion(-)
+ 4 files changed, 259 insertions(+), 1 deletion(-)
  create mode 100644 src/qml/AppMain.qml
  create mode 100644 src/qml/AppWindow.qml
 
 diff --git a/src/main.cpp b/src/main.cpp
-index 2181f15..f8a9681 100644
+index 2181f15..4fab45f 100644
 --- a/src/main.cpp
 +++ b/src/main.cpp
-@@ -35,6 +35,7 @@
+@@ -35,6 +35,8 @@
  #include "touchmockingapplication.h"
  #endif
  
++#include <QtCore/QDebug>
 +#include <QString>
  #include <QGuiApplication>
  #include <QQmlContext>
  #include <QQmlEngine>
-@@ -51,6 +52,12 @@ static QObject *engine_factory(QQmlEngine *engine, QJSEngine *scriptEngine)
+@@ -51,6 +53,12 @@ static QObject *engine_factory(QQmlEngine *engine, QJSEngine *scriptEngine)
  
  int main(int argc, char **argv)
  {
@@ -45,7 +47,7 @@ index 2181f15..f8a9681 100644
      qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
  
      //do not use any plugins installed on the device
-@@ -92,7 +99,10 @@ int main(int argc, char **argv)
+@@ -92,7 +100,10 @@ int main(int argc, char **argv)
      view.setFlags(Qt::Window | Qt::WindowTitleHint);
      view.setResizeMode(QQuickView::SizeRootObjectToView);
      view.setColor(Qt::black);
@@ -327,5 +329,5 @@ index 0ca7710..9eb84fd 100644
          <file>qml/FeaturePermissionBar.qml</file>
          <file>qml/MockTouchPoint.qml</file>
 -- 
-1.9.1
+2.7.4
 
