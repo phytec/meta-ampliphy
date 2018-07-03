@@ -25,9 +25,10 @@ do_install_prepend() {
 }
 
 do_install_append() {
-	#Check if the first line is identical to Phytec's certificate
-	if grep -q "MIIGMTCCBBmgAwIBAgIJAIK5NohgNtqBMA0GCSqGSIb3DQEBCwUAMIGuMQswCQYD" ${WORKDIR}/${RAUC_KEYRING_FILE}; then
-		bbwarn "You're using Phytec's Development Key. Please choose your own!"
+	# check for problematic certificate setups
+	shasum=$(sha256sum "${WORKDIR}/${RAUC_KEYRING_FILE}" | cut -d' ' -f1)
+	if [ "$shasum" = "0b275b5cba70771b1ab055fa0f72402f141a39789dc057b46ef6a82cec6de60c" ]; then
+		bbwarn "You're using Phytec's Development Certificate for signing rauc bundles. Please create your own!"
 	fi
 
 	install -d ${D}${bindir}
