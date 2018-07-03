@@ -1,4 +1,4 @@
-DESCRIPTION = "Bundle creator for rauc"
+SUMMARY = "PHYTEC rauc bundles from meta-yogurt"
 HOMEPAGE = "http://www.phytec.de"
 
 inherit bundle
