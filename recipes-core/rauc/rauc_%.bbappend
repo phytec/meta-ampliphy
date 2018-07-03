@@ -12,9 +12,11 @@ SRC_URI_append := " \
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-SYSTEMD_PACKAGES += "update-usb"
-SYSTEMD_SERVICE_update-usb = "update-usb@.service"
-SYSTEMD_AUTO_ENABLE_update-usb = "enable"
+PACKAGES =+ "rauc-update-usb"
+
+SYSTEMD_PACKAGES += "rauc-update-usb"
+SYSTEMD_SERVICE_rauc-update-usb = "update-usb@.service"
+SYSTEMD_AUTO_ENABLE_rauc-update-usb = "enable"
 
 do_install_prepend() {
 	# check for default system.conf from meta-rauc
@@ -48,12 +50,10 @@ do_install_append() {
 	install -m 0644 ${WORKDIR}/version ${D}${sysconfdir}/rauc/version
 }
 
-FILES_${PN} += " \
+FILES_rauc-update-usb += " \
     ${bindir}/update_usb.sh \
     ${systemd_unitdir}/system/update-usb@.service \
     ${base_libdir}/udev/rules.d/10-update-usb.rules \
 "
-RDEPENDS_${PN}_append = " bash"
+RDEPENDS_rauc-update-usb_append = " bash"
 
-PACKAGES =+ "update-usb"
-RRECOMMENDS_${PN}_append = " update-usb"
