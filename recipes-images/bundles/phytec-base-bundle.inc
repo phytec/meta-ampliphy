@@ -17,7 +17,10 @@ RAUC_SLOT_kernel[type] ?= "kernel"
 
 RAUC_SLOT_dtb ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_dtb[type] ?= "file"
-RAUC_SLOT_dtb[file] ?= "${KERNEL_DEVICETREE}"
+RAUC_SLOT_dtb[file] ?= "${@first_dtb(d)}"
+def first_dtb(d):
+    dtbs = d.getVar('KERNEL_DEVICETREE')
+    return dtbs.split()[0]
 
 RAUC_KEY_FILE ?= "${CERT_PATH}/ca.key.pem"
 RAUC_CERT_FILE ?= "${CERT_PATH}/ca.cert.pem"
