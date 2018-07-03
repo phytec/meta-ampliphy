@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${CERT_PATH}:"
+FILESEXTRAPATHS_prepend := "${CERT_PATH}/dev:"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI_append := " \
@@ -37,8 +37,8 @@ do_install_prepend() {
 do_install_append() {
 	# check for problematic certificate setups
 	shasum=$(sha256sum "${WORKDIR}/${RAUC_KEYRING_FILE}" | cut -d' ' -f1)
-	if [ "$shasum" = "0b275b5cba70771b1ab055fa0f72402f141a39789dc057b46ef6a82cec6de60c" ]; then
-		bbwarn "You're using Phytec's Development Certificate for signing rauc bundles. Please create your own!"
+	if [ "$shasum" = "91efd86dfbffa360c909b06b54902348075c5ba7902ad1ec30d25527a1f8ca09" ]; then
+		bbwarn "You're including Phytec's Development Keyring in the rauc bundle. Please create your own!"
 	fi
 
 	install -d ${D}${bindir}

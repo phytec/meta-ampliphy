@@ -22,5 +22,5 @@ def first_dtb(d):
     dtbs = d.getVar('KERNEL_DEVICETREE')
     return dtbs.split()[0]
 
-RAUC_KEY_FILE ?= "${CERT_PATH}/ca.key.pem"
-RAUC_CERT_FILE ?= "${CERT_PATH}/ca.cert.pem"
+RAUC_KEY_FILE ?= "${CERT_PATH}/dev/private/development-1.key.pem"
+RAUC_CERT_FILE ?= "${CERT_PATH}/dev/development-1.cert.pem"
