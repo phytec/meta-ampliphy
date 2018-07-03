@@ -15,7 +15,12 @@ SYSTEMD_SERVICE_update-usb = "update-usb@.service"
 SYSTEMD_AUTO_ENABLE_update-usb = "enable"
 
 do_install_prepend() {
-	cp ${WORKDIR}/${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'system_emmc.conf', 'system_nand.conf', d)} ${WORKDIR}/system.conf
+	# check for default system.conf from meta-rauc
+	shasum=$(sha256sum "${WORKDIR}/system.conf" | cut -d' ' -f1)
+	if [ "$shasum" = "cb8c74d6fefea692c4284bb80ec24385c74f3c46a921b8f57334c7a5a3cf1312" ]; then
+		bbnote "No project specific system.conf has been provided. We use the Phytec RDK specific config files."
+		cp ${WORKDIR}/${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'system_emmc.conf', 'system_nand.conf', d)} ${WORKDIR}/system.conf
+	fi
 	sed -i -e 's!@DISTRO@!${DISTRO}!g' ${WORKDIR}/system.conf
 	echo "${DISTRO_VERSION}" > ${WORKDIR}/version
 }
