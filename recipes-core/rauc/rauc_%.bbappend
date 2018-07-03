@@ -55,5 +55,3 @@ FILES_rauc-update-usb += " \
     ${systemd_unitdir}/system/update-usb@.service \
     ${base_libdir}/udev/rules.d/10-update-usb.rules \
 "
-RDEPENDS_rauc-update-usb_append = " bash"
-
