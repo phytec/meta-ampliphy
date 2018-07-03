@@ -8,7 +8,7 @@ RAUC_BUNDLE_VERSION ?= "${DISTRO_VERSION}"
 
 RAUC_BUNDLE_SLOTS ?= "rootfs kernel dtb"
 
-RAUC_SLOT_rootfs ?= "phytec-headless-image"
+RAUC_SLOT_rootfs[type] ?= "image"
 RAUC_SLOT_rootfs[fstype] ?= "ubifs"
 
 RAUC_SLOT_kernel ?= "${PREFERRED_PROVIDER_virtual/kernel}"
