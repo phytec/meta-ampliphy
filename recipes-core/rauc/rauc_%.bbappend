@@ -10,6 +10,8 @@ SRC_URI_append := " \
     file://system_emmc.conf \
 "
 
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+
 SYSTEMD_PACKAGES += "update-usb"
 SYSTEMD_SERVICE_update-usb = "update-usb@.service"
 SYSTEMD_AUTO_ENABLE_update-usb = "enable"
