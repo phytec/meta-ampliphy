@@ -8,7 +8,6 @@ SRC_URI_append := " \
     file://rauc_downgrade_barrier.sh \
     file://system_nand.conf \
     file://system_emmc.conf \
-    file://hawkbit.config \
 "
 
 SYSTEMD_PACKAGES += "update-usb"
@@ -40,14 +39,12 @@ do_install_append() {
 
 	install -d ${D}${sysconfdir}/rauc
 	install -m 0644 ${WORKDIR}/version ${D}${sysconfdir}/rauc/version
-	install -m 0644 ${WORKDIR}/hawkbit.config ${D}${sysconfdir}/rauc/hawkbit.config
 }
 
 FILES_${PN} += " \
     ${bindir}/update_usb.sh \
     ${systemd_unitdir}/system/update-usb@.service \
     ${base_libdir}/udev/rules.d/10-update-usb.rules \
-    ${sysconfdif}/rauc/hawkbit.config \
 "
 RDEPENDS_${PN}_append = " bash"
 
