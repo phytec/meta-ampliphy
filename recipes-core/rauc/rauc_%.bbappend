@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/openssl:"
+FILESEXTRAPATHS_prepend := "${CERT_PATH}:"
 FILESEXTRAPATHS_prepend := "${THISDIR}/shared:"
 FILESEXTRAPATHS_prepend_ti33x := "${THISDIR}/ti33x:"
 FILESEXTRAPATHS_prepend_rk3288 := "${THISDIR}/rk3288:"

@@ -5,8 +5,6 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/COPYING.MIT;md5=0835ade698e0bcf
 
 inherit bundle
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/openssl:"
-
 RAUC_BUNDLE_COMPATIBLE_ti33x ?= "${DISTRO}"
 RAUC_BUNDLE_VERSION ?= "${DISTRO_VERSION}"
 
@@ -22,6 +20,5 @@ RAUC_SLOT_dtb ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_dtb[type] ?= "file"
 RAUC_SLOT_dtb[file] ?= "${KERNEL_DEVICETREE}"
 
-# TODO Fix these pathes
-RAUC_KEY_FILE ?= "${WORKDIR}/ca.key.pem"
-RAUC_CERT_FILE ?= "${WORKDIR}/ca.cert.pem"
+RAUC_KEY_FILE ?= "${CERT_PATH}/ca.key.pem"
+RAUC_CERT_FILE ?= "${CERT_PATH}/ca.cert.pem"
