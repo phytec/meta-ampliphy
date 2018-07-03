@@ -25,7 +25,7 @@ do_install_prepend() {
 		bbnote "No project specific system.conf has been provided. We use the Phytec RDK specific config files."
 		cp ${WORKDIR}/${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'system_emmc.conf', 'system_nand.conf', d)} ${WORKDIR}/system.conf
 	fi
-	sed -i -e 's!@DISTRO@!${DISTRO}!g' ${WORKDIR}/system.conf
+	sed -i -e 's!@MACHINE@!${MACHINE}!g' ${WORKDIR}/system.conf
 	echo "${DISTRO_VERSION}" > ${WORKDIR}/version
 }
 

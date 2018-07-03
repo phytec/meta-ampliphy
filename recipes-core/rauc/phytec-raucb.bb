@@ -3,7 +3,7 @@ HOMEPAGE = "http://www.phytec.de"
 
 inherit bundle
 
-RAUC_BUNDLE_COMPATIBLE_ti33x ?= "${DISTRO}"
+RAUC_BUNDLE_COMPATIBLE ?= "${MACHINE}"
 RAUC_BUNDLE_VERSION ?= "${DISTRO_VERSION}"
 
 RAUC_BUNDLE_SLOTS ?= "rootfs kernel dtb"
