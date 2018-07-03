@@ -1,54 +1,25 @@
-#!/bin/bash
+#!/bin/sh
 
-VERSION_FILE=/etc/rauc/version
+VERSION_FILE=/etc/rauc/downgrade_barrier_version
 MANIFEST_FILE=${RAUC_UPDATE_SOURCE}/manifest.raucm
 
-if [ ! -f ${VERSION_FILE} ]
-then
-        exit 1
-fi
-if [ ! -f ${MANIFEST_FILE} ]
-then
-        exit 2
-fi
+[ ! -f ${VERSION_FILE} ] && exit 1
+[ ! -f ${MANIFEST_FILE} ] && exit 2
 
-VERSION=`cat ${VERSION_FILE}`
-BUNDLE_VERSION=`grep "version" -rI ${MANIFEST_FILE}`
+VERSION=`cat ${VERSION_FILE} | cut -d 'r' -f 2`
+BUNDLE_VERSION=`grep "version" -rI ${MANIFEST_FILE} | cut -d 'r' -f 3`
 
-SOC=`echo ${VERSION} | cut -d '-' -f 1`
-RELEASE=`echo ${VERSION} | cut -d '-' -f 3`
+# check from empty or unset variables
+[ -z "${VERSION}" ] && exit 3
+[ -z "${BUNDLE_VERSION}" ] && exit 4
 
-YEAR=`echo ${RELEASE} | cut -d '.' -f 1`
-MAJOR=`echo ${RELEASE} | cut -d '.' -f 2`
-MINOR=`echo ${RELEASE} | cut -d '.' -f 3`
+# developer mode, allow all updates if version is r0
+[ ${VERSION} -eq 0 ] && exit 0
 
-if [[ ! ${RELEASE} =~ [0-9\.] ]]
-then
-        echo "Seems like this rootfs contains a next image. Skip version check..."
-        exit 0
-fi
-
-TMP=`echo ${BUNDLE_VERSION} | cut -d '=' -f 2`
-BUNDLE_RELEASE=`echo ${TMP} | cut -d '-' -f 3`
-
-BUNDLE_YEAR=`echo ${BUNDLE_RELEASE} | cut -d '.' -f 1`
-BUNDLE_MAJOR=`echo ${BUNDLE_RELEASE} | cut -d '.' -f 2`
-BUNDLE_MINOR=`echo ${BUNDLE_RELEASE} | cut -d '.' -f 3`
-
-if [[ $((${BUNDLE_YEAR})) -ge $((${YEAR})) ]]
-then
-	exit 0
+# downgrade barrier
+if [ ${VERSION} -gt ${BUNDLE_VERSION} ]; then
+	echo "Downgrade barrier blocked rauc update! CODE5\n"
 else
-	if [[ $((${BUNDLE_MAJOR})) -ge $((${MAJOR})) ]]
-	then
-		exit 0
-	else
-		if [[ $((${BUNDLE_MINOR})) -ge $((${MINOR})) ]]
-		then
-			exit 0
-		else
-			exit 3
-		fi
-	fi
+	exit 0
 fi
-exit 4
+exit 5

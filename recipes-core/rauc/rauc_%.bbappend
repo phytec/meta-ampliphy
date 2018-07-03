@@ -18,6 +18,10 @@ SYSTEMD_PACKAGES += "rauc-update-usb"
 SYSTEMD_SERVICE_rauc-update-usb = "update-usb@.service"
 SYSTEMD_AUTO_ENABLE_rauc-update-usb = "enable"
 
+# configure the downgrade barrier, here you could move back from a
+# production system to a development mode by setting r0
+DOWNGRADE_BARRIER_VERSION ?= "${RAUC_BUNDLE_VERSION}"
+
 do_install_prepend() {
 	# check for default system.conf from meta-rauc
 	shasum=$(sha256sum "${WORKDIR}/system.conf" | cut -d' ' -f1)
@@ -26,7 +30,8 @@ do_install_prepend() {
 		cp ${WORKDIR}/${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'system_emmc.conf', 'system_nand.conf', d)} ${WORKDIR}/system.conf
 	fi
 	sed -i -e 's!@MACHINE@!${MACHINE}!g' ${WORKDIR}/system.conf
-	echo "${DISTRO_VERSION}" > ${WORKDIR}/version
+
+	echo "${DOWNGRADE_BARRIER_VERSION}" > ${WORKDIR}/downgrade_barrier_version
 }
 
 do_install_append() {
@@ -47,7 +52,7 @@ do_install_append() {
 	install -m 0666 ${WORKDIR}/10-update-usb.rules ${D}${nonarch_base_libdir}/udev/rules.d/
 
 	install -d ${D}${sysconfdir}/rauc
-	install -m 0644 ${WORKDIR}/version ${D}${sysconfdir}/rauc/version
+	install -m 0644 ${WORKDIR}/downgrade_barrier_version ${D}${sysconfdir}/rauc/downgrade_barrier_version
 }
 
 FILES_rauc-update-usb += " \

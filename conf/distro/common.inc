@@ -5,6 +5,13 @@ DISTRO_VERSION_rk3288 = "RK3288-PD-master"
 VENDOR = "phytec"
 TARGET_VENDOR = "-${VENDOR}"
 
+# The bundle version interacts with the downgrade barrier.
+# "r0" as version, disables the downgrade barrier. If a
+# downgrade barrier is set with r1, you have to increase
+# the version for every update. In that way old security
+# vulnerabilities cannot be exploited.
+RAUC_BUNDLE_VERSION ?= "r0"
+
 SDK_VENDOR = "-${VENDOR}sdk"
 SDK_VERSION := "${DISTRO_VERSION}"
 SDK_NAME = "${VENDOR}-${DISTRO}-${TCLIBC}-${SDK_ARCH}-${IMAGE_BASENAME}-${TUNE_PKGARCH}"
