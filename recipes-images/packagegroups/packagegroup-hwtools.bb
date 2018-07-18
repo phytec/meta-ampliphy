@@ -30,6 +30,7 @@ RDEPENDS_${PN} = " \
     nandflipbits \
     iproute2 \
     bumprts \
+    serial-test \
     ${@bb.utils.contains("MACHINE_FEATURES", "can", "can-utils", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "resistivetouch", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
