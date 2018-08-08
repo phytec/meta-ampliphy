@@ -46,3 +46,8 @@ PACKAGE_CLASSES ?= "package_ipk"
 # All images build with the distribution get the version package
 IMAGE_INSTALL_append = " os-release"
 PREFERRED_PROVIDER_os-release = "yogurt-version"
+
+# Move listet checks from ERROR_QA to WARN_QA (defined in insane.bbclass)
+ERROR_TO_WARN_QA = "version-going-backwards"
+ERROR_QA_remove = "${ERROR_TO_WARN_QA}"
+WARN_QA_append = " ${ERROR_TO_WARN_QA}"
