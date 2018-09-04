@@ -6,8 +6,7 @@ SRC_URI_append := " \
     file://update-usb@.service \
     file://update_usb.sh \
     file://rauc_downgrade_barrier.sh \
-    file://system_nand.conf \
-    file://system_emmc.conf \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'file://system_emmc.conf', 'file://system_nand.conf', d)} \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
