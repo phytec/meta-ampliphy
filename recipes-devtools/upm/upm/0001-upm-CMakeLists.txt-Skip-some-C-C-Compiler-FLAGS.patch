@@ -1,0 +1,42 @@
+From bef277d19718a868d45878ce94e8a6673b08ceee Mon Sep 17 00:00:00 2001
+From: Norbert Wesp <n.wesp@phytec.de>
+Date: Wed, 7 Nov 2018 13:02:01 +0100
+Subject: [PATCH] upm: CMakeLists.txt: Skip some C/C++-Compiler-FLAGS
+
+With the standard compiler FLAGS for C/C++ we get some WARNINGs,
+which will be shown as ERRORS because of configuration.
+To get rid of them for build right now, we simply disable this WARNINGs.
+
+Signed-off-by: Norbert Wesp <n.wesp@phytec.de>
+---
+ CMakeLists.txt | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 03b7e13a..59d5b7af 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -93,6 +93,9 @@ endfunction ()
+ # Enable -Wall
+ # GCC-6 added -Wmisleading-indentation to -Wall, skip these for now
+ set (C_CXX_WARNING_FLAGS -Wall
++    -Wno-unused-result
++    -Wno-int-conversion
++    -Wno-maybe-uninitialized
+     -Wno-misleading-indentation
+     -Wno-strict-aliasing
+     -Wno-deprecated-declarations # Temp fix for MRAA deprecated methods
+@@ -116,9 +119,9 @@ upm_add_compile_flags(C ${C_CXX_WARNING_FLAGS}
+ # unsupported flags
+ upm_add_compile_flags(CXX ${C_CXX_WARNING_FLAGS}
+   -Wnon-virtual-dtor
+-  -Woverloaded-virtual
+   -Wsign-compare
+   -Wreorder)
++# -Woverloaded-virtual
+ 
+ # Allow exception error handling for Android C++
+ if (ANDROID)
+-- 
+2.17.1
+
