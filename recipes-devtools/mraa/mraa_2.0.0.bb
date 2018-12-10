@@ -8,6 +8,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=4b92a3b497d7943042a6db40c088c3f2"
 SRC_URI = "https://github.com/intel-iot-devkit/mraa/archive/v${PV}.tar.gz"
 SRC_URI[md5sum] = "1a5d8eaab441655c1e8741e35a702b3e"
 SRC_URI[sha256sum] = "c9f3c3741c6894be5516adecfe6b55a38960b6718b268a9afd645f7955e5a716"
+SRC_URI += "\
+            file://0001-FindNodejs.cmake-parse-V8_MAJOR_VERSION-from-nodejs-.patch \
+            file://0002-phyboard-mira-add-platform-support.patch"
 
 S = "${WORKDIR}/${PN}-${PV}"
 
