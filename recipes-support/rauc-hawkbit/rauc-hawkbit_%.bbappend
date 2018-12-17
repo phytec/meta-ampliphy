@@ -1,5 +1,7 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
+DEPENDS += "python3-setuptools-scm-native"
+
 SRC_URI +=  "file://config.cfg"
 
 do_patch_append() {
