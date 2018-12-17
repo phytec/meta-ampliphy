@@ -1,2 +1,0 @@
-PACKAGECONFIG = "zlib openssl"
-EXTRA_OECONF_append = " ${PACKAGECONFIG_CONFARGS}"
