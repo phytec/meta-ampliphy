@@ -1,0 +1,1 @@
+export QT_QPA_EGLFS_INTEGRATION=none
