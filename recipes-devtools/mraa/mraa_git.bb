@@ -13,4 +13,4 @@ SRCREV = "23fd11c4f73d368de4ece44d4735bde6c8db08eb"
 S = "${WORKDIR}/git"
 
 COMPATIBLE_MACHINE  =  "phyboard-wega"
-COMPATIBLE_MACHINE .= "|phyboard-mira-imx6-13"
+COMPATIBLE_MACHINE .= "|phyboard-mira"
