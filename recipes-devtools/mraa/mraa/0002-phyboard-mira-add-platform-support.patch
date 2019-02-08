@@ -1,6 +1,6 @@
-From 46f3c16465ff77ab3a36125791c98af71dd23ad8 Mon Sep 17 00:00:00 2001
+From ad62486df06b1829bd46714b22b34fa1fe246693 Mon Sep 17 00:00:00 2001
 From: Norbert Wesp <n.wesp@phytec.de>
-Date: Mon, 10 Dec 2018 16:00:41 +0100
+Date: Fri, 8 Feb 2019 09:32:57 +0100
 Subject: [PATCH] phyboard-mira: add platform support
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -10,20 +10,22 @@ Add platform support in mraa v2.0.0
 
 Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
 Signed-off-by: Norbert Wesp <n.wesp@phytec.de>
+
+%% original patch: 0002-phyboard-mira-add-platform-support.patch
 ---
  README.md                         |   2 +
  api/mraa/types.h                  |   1 +
  api/mraa/types.hpp                |   1 +
  docs/index.java.md                |   1 +
  docs/index.md                     |   1 +
- docs/phyboard-mira.md             | 151 ++++++++++++++++++++++
- include/arm/mira.h                |  51 ++++++++
+ docs/phyboard-mira.md             | 151 ++++++++++++++++++++++++++++
+ include/arm/mira.h                |  51 ++++++++++
  src/CMakeLists.txt                |   1 +
- src/arm/arm.c                     |   8 +-
- src/arm/mira.c                    | 205 ++++++++++++++++++++++++++++++
+ src/arm/arm.c                     |   9 +-
+ src/arm/mira.c                    | 205 ++++++++++++++++++++++++++++++++++++++
  src/arm/phyboard.c                |   1 +
  src/python/python2/docs/index.rst |   1 +
- 12 files changed, 423 insertions(+), 1 deletion(-)
+ 12 files changed, 424 insertions(+), 1 deletion(-)
  create mode 100644 docs/phyboard-mira.md
  create mode 100644 include/arm/mira.h
  create mode 100644 src/arm/mira.c
@@ -316,7 +318,7 @@ index 35c5488..ecf7204 100644
    ${PROJECT_SOURCE_DIR}/src/arm/de_nano_soc.c
  )
 diff --git a/src/arm/arm.c b/src/arm/arm.c
-index 62d6b2e..eb6753e 100644
+index 62d6b2e..b4c4e37 100644
 --- a/src/arm/arm.c
 +++ b/src/arm/arm.c
 @@ -31,6 +31,7 @@
@@ -327,16 +329,17 @@ index 62d6b2e..eb6753e 100644
  #include "arm/raspberry_pi.h"
  #include "mraa_internal.h"
  
-@@ -102,6 +103,8 @@ mraa_arm_platform()
+@@ -102,6 +103,9 @@ mraa_arm_platform()
              platform_type = MRAA_96BOARDS;
          else if (mraa_file_contains("/proc/device-tree/compatible", "raspberrypi,"))
              platform_type = MRAA_RASPBERRY_PI;
-+        else if (mraa_file_contains("/sys/firmware/devicetree/base/model", "phyBOARD-MIRA"))
++        else if (mraa_file_contains("/sys/firmware/devicetree/base/model", "phyBOARD-MIRA") ||
++		 mraa_file_contains("/sys/firmware/devicetree/base/model", "phyBOARD-Mira"))
 +            platform_type = MRAA_PHYBOARD_MIRA;
      }
  
      switch (platform_type) {
-@@ -114,7 +117,10 @@ mraa_arm_platform()
+@@ -114,7 +118,10 @@ mraa_arm_platform()
          case MRAA_PHYBOARD_WEGA:
              plat = mraa_phyboard();
              break;
@@ -584,5 +587,5 @@ index 4a4ff77..5cb7321 100644
     * `UP <../up.html>`_
     * `UP Squared<../up2.html>`_
 -- 
-2.17.1
+2.7.4
 
