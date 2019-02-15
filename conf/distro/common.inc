@@ -52,3 +52,7 @@ PREFERRED_PROVIDER_os-release = "yogurt-version"
 ERROR_TO_WARN_QA = "version-going-backwards"
 ERROR_QA_remove = "${ERROR_TO_WARN_QA}"
 WARN_QA_append = " ${ERROR_TO_WARN_QA}"
+
+# suppress meta-virtualization useless warning when building
+# without virtualization distro feature
+SKIP_META_VIRT_SANITY_CHECK = "1"
