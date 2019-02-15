@@ -1,4 +1,4 @@
-DEPENDS += "openssl10 docker"
+DEPENDS += "openssl docker"
 RDEPENDS_${PN} += "virtual/libiothsm docker"
 INSANE_SKIP_${PN} += "dev-deps"
 
