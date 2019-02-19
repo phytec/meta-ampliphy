@@ -57,6 +57,11 @@ RDEPENDS_${PN} += "\
     gstreamer1.0-plugins-good-ossaudio \
     gstreamer1.0-plugins-good-videofilter \
 "
+
+RDEPENDS_${PN}_remove_mx6ul = "\
+    qtmultimedia-qmlplugins \
+"
+
 RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
 
 do_install_append() {

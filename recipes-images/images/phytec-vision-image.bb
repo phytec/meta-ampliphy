@@ -21,3 +21,7 @@ IMAGE_INSTALL += "\
     opencv \
     gstreamer1.0-plugins-bad-opencv \
 "
+
+IMAGE_INSTALL_remove_mx6ul = "\
+    qt5-opengles2-test \
+"

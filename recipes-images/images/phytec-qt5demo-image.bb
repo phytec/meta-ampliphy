@@ -19,3 +19,7 @@ IMAGE_INSTALL += "\
     qt5-opengles2-test \
     phytec-qtdemo \
 "
+
+IMAGE_INSTALL_remove_mx6ul = "\
+    qt5-opengles2-test \
+"
