@@ -8,7 +8,6 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 PR = "r23"
 inherit systemd
 
-NATIVE_SYSTEMD_SUPPORT = "1"
 ALLOW_EMPTY_${PN} = "1"
 
 # Don't generate empty -dbg package
@@ -34,9 +33,7 @@ do_install() {
     done
 }
 
-# Ship directory "/lib/systemd/system" explicitly in case it is empty. Avoids:
-#     QA Issue: systemd-machine-units: Files/directories were installed but not shipped
-FILES_${PN}_append = " \
+FILES_${PN} = "\
     ${systemd_system_unitdir} \
     ${systemd_unitdir}/network/ \
 "
