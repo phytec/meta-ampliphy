@@ -21,9 +21,7 @@ SRC_URI = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "can", "file://can0.service", "", d)} \
 "
 
-SYSTEMD_SERVICE_${PN} = " \
-    ${@bb.utils.contains("MACHINE_FEATURES", "can", "can0.service", "", d)} \
-"
+SYSTEMD_SERVICE_${PN} = "${@bb.utils.contains("MACHINE_FEATURES", "can", "can0.service", "", d)}"
 
 do_install() {
     install -d ${D}${systemd_unitdir}/network/
