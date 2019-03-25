@@ -4,7 +4,7 @@
 DESCRIPTION = "Phytec Gstreamer examples"
 HOMEPAGE = "http://www.phytec.de"
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=f7ef7ac2ba19b104c3d5c03ecc22eb12"
+LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 
 SECTION = "multimedia"
 
@@ -21,14 +21,13 @@ PR = "r0"
 #        phytec-gstreamer-examples-imx6ul-2.0/
 
 SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Applications/${PN}-${PV}.tar.gz"
-SRC_URI[md5sum] = "8ba0146ccd03452e342de1491aef8a51"
-SRC_URI[sha256sum] = "46e2e1561a519cd7df6bc2c5c9d2edfeb5993b88ba4de83a817dd761ffc62087"
+SRC_URI[md5sum] = "d9d40b704cf119923baa03b17f15f2fa"
+SRC_URI[sha256sum] = "60c17b3ecfa8446b123da24d82f2cbc17b85cf77b221164570b9214b4fc693f3"
 
 GSTREAMER_EXAMPLES_DIR = "${datadir}/phytec-gstreamer-examples"
 
-do_compile() {
-	${CC} ${CFLAGS} ${LDFLAGS} -o tools/i2c tools/i2c.c
-}
+do_configure[noexec] = "1"
+do_compile[noexec] = "1"
 
 do_install() {
 	DESTDIR="${D}${GSTREAMER_EXAMPLES_DIR}"
@@ -47,8 +46,6 @@ do_install() {
 		install -m 0755 ${scripts} ${DESTDIR}/${scripts}
 	done
 
-	install -m 0755 tools/i2c ${DESTDIR}/tools
-
 	# Create link in home folder for old documentation
 	install -d ${D}/home/root
 	ln -s ${GSTREAMER_EXAMPLES_DIR} ${D}/home/root/gstreamer_examples
@@ -58,11 +55,9 @@ FILES_${PN} += " \
     /home/root/ \
     ${GSTREAMER_EXAMPLES_DIR} \
 "
-FILES_${PN}-dbg = " \
-    ${prefix}/src \
-    ${GSTREAMER_EXAMPLES_DIR}/tools/.debug \
-"
+
 RDEPENDS_${PN} += " \
+	bash \
 	gst-plugin-i2c \
 	media-ctl \
 	v4l-utils \
