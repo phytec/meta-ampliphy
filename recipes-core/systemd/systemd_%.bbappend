@@ -1,7 +1,16 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 #This setup adds about 1.3MB to the 4.4MB of the all disabled configuration
-PACKAGECONFIG ??= "sysusers lz4 kmod networkd resolved"
+PACKAGECONFIG ??= "\
+    ${@bb.utils.filter('DISTRO_FEATURES', 'efi ldconfig pam selinux usrmerge', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'rfkill', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'xkbcommon', '', d)} \
+    kmod \
+    lz4 \
+    networkd \
+    resolved \
+    sysusers \
+"
 
 PACKAGECONFIG[acl] = "-Dacl=true,-Dacl=false,acl"
 PACKAGECONFIG[kmod] = "-Dkmod=true,-Dkmod=false,kmod,libkmod"
