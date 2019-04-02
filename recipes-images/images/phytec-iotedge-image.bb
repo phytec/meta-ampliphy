@@ -10,6 +10,7 @@ IMAGE_INSTALL = " \
     openssh \
     chrony \
     chronyc \
+    iproute2 \
     \
     docker \
     iotedge-cli \
