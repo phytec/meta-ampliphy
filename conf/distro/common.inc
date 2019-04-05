@@ -56,3 +56,16 @@ WARN_QA_append = " ${ERROR_TO_WARN_QA}"
 # suppress meta-virtualization useless warning when building
 # without virtualization distro feature
 SKIP_META_VIRT_SANITY_CHECK = "1"
+
+VIRTUAL-RUNTIME_dev_manager = "udev"
+VIRTUAL-RUNTIME_init_manager = "systemd"
+DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
+VIRTUAL-RUNTIME_login_manager = "busybox"
+VIRTUAL-RUNTIME_syslog = ""
+VIRTUAL-RUNTIME_initscripts = ""
+
+# some default locales
+IMAGE_LINGUAS ?= "de-de fr-fr en-us"
+
+PREFERRED_VERSION_mraa = "2.0.%"
+PREFERRED_VERSION_upm = "1.7.%"
