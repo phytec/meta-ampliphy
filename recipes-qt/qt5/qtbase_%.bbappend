@@ -8,7 +8,7 @@ PACKAGECONFIG_DEFAULT_append = " tslib"
 PACKAGECONFIG_FONTS = "fontconfig"
 
 #input devices
-PACKAGECONFIG_append = " libinput xkbcommon-evdev"
+PACKAGECONFIG_append = " libinput xkbcommon"
 PACKAGECONFIG_DEFAULT = "dbus udev libs freetype"
 
 #for qt widget applications add this in your layer
