@@ -9,10 +9,9 @@ PACKAGECONFIG_FONTS = "fontconfig"
 
 #input devices
 PACKAGECONFIG_append = " libinput xkbcommon"
-PACKAGECONFIG_DEFAULT = "dbus udev libs freetype"
-
-#for qt widget applications add this in your layer
-#PACKAGECONFIG_append = " widgets"
+PACKAGECONFIG_DEFAULT = "dbus udev libs freetype \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'qtwidgets', 'widgets', '', d)} \
+"
 
 SRC_URI += "file://res-touchscreen.rules \
             file://qtLauncher \
