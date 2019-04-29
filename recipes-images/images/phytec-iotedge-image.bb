@@ -15,4 +15,7 @@ IMAGE_INSTALL = " \
     docker \
     iotedge-cli \
     iotedge-daemon \
+    \
+    weston \
+    weston-init \
 "
