@@ -39,7 +39,7 @@ RDEPENDS_${PN} += " \
     qtbase-staticdev \
     qttranslations-qtbase \
     qttranslations-qthelp \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'widgets', '${USE_WIDGETS}', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'qtwidgets', '${USE_WIDGETS}', '', d)} \
     qtconnectivity-dev \
     qtconnectivity-mkspecs \
     ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'qtconnectivity-qmlplugins', '', d)} \
