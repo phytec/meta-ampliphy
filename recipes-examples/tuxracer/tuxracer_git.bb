@@ -38,7 +38,7 @@ do_install () {
 	install -m 0755 ${S}/etr ${D}${gamesdir}/etr/etr
 }
 
-DEPENDS += " libpng libpng12 virtual/egl virtual/libgles1 virtual/libgles2 libsdl libsdl-image libsdl-mixer freetype freetype-native"
+DEPENDS += " libpng virtual/egl virtual/libgles1 virtual/libgles2 libsdl libsdl-image libsdl-mixer freetype freetype-native"
 
 FILES_${PN} += " \
 	${pkgdata} \
