@@ -7,11 +7,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=66493d54e65bfc12c7983ff2e884f37f"
 
 DEPENDS = "libjpeg-turbo mraa"
 
-SRC_URI = "https://github.com/intel-iot-devkit/upm/archive/v${PV}.tar.gz \
-           file://0001-upm-CMakeLists.txt-Skip-some-C-C-Compiler-FLAGS.patch \
-"
-SRC_URI[md5sum] = "c60b87b9ff2ee4135e16f62e099487e8"
-SRC_URI[sha256sum] = "66ac1a869b0b06144a3ebe96c20b2e4195ec9c1879d14bde77ac706d237dfca8"
+SRC_URI = "https://github.com/intel-iot-devkit/upm/archive/v${PV}.tar.gz;downloadfilename=upm-${PV}.tar.gz"
+SRC_URI[md5sum] = "9a514218e744769ff4ed392f008e6ba1"
+SRC_URI[sha256sum] = "7dd2f4165b71e071d100b58d6a392f3cf57b0f257c82ffabf49e931b5ed6bc23"
 
 S = "${WORKDIR}/${PN}-${PV}"
 
