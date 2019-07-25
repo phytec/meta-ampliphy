@@ -4,7 +4,7 @@ check for hardware problems. The kernel includes \
 the Minimal RAM-based Initial Root Filesystem (initramfs), which finds the \
 first 'init' program more efficiently."
 
-PACKAGE_INSTALL = "busybox-initramfs base-files base-passwd ${ROOTFS_BOOTSTRAP_INSTALL} \
+PACKAGE_INSTALL = "initramfs-boot base-files base-passwd ${ROOTFS_BOOTSTRAP_INSTALL} \
   packagegroup-hwtools \
   iperf3 \
 "
