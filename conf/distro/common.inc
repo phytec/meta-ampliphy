@@ -68,6 +68,3 @@ VIRTUAL-RUNTIME_initscripts = ""
 IMAGE_LINGUAS ?= "de-de fr-fr en-us"
 
 PREFERRED_VERSION_mraa = "2.0.%"
-
-#rust security flags
-require conf/distro/include/rust_security_flags.inc
