@@ -13,6 +13,6 @@ RDEPENDS_${PN} = " \
     rt-tests \
     evtest \
     perf \
-    stress \
+    stress-ng \
     ${@bb.utils.contains("DISTRO_FEATURES", "systemd", "systemd-analyze", "",d)} \
 "
