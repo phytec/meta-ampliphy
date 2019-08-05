@@ -10,7 +10,7 @@ SRCREV = "3fa6cbef8b7fc3c55a49a622735eb1021b8a5963"
 
 S = "${WORKDIR}/git/edgelet/hsm-sys/azure-iot-hsm-c"
 
-DEPENDS += "openssl"
+DEPENDS += "openssl10"
 PROVIDES += "virtual/libiothsm"
 RPROVIDES_${PN} += "virtual/libiothsm"
 
