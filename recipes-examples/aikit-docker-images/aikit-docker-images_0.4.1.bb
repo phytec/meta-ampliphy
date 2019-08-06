@@ -11,8 +11,8 @@ SRC_URI = " \
     file://aikit-docker-images.service \
     file://aikit-docker-images.py \
 "
-SRC_URI[md5sum] = "73d7bab295bd82b249289497cade7c6a"
-SRC_URI[sha256sum] = "f4aebe63eecee5096ebcd7e95e8f1ef4f836e65b3fa70f501fca7e007d129385"
+SRC_URI[md5sum] = "4bebe2fdeb81596b8553311aa0f195c5"
+SRC_URI[sha256sum] = "3faba2298d7a261a7503c6ceaa2886c951b47f75021c2d781e501ffe999b56d9"
 
 inherit systemd
 

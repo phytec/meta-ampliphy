@@ -8,8 +8,8 @@ import sys
 
 CONTAINER_MODEL = 'model'
 CONTAINER_DEMO = 'demo'
-IMAGE_MODEL = 'phytecorg/aidemo-customvision-model-hands:0.3.1'
-IMAGE_DEMO = 'phytecorg/aidemo-customvision-demo:0.3.1'
+IMAGE_MODEL = 'phytecorg/aidemo-customvision-model:0.4.1'
+IMAGE_DEMO = 'phytecorg/aidemo-customvision-demo:0.4.1'
 NETWORK = 'aikit'
 
 def stop_containers():
@@ -36,7 +36,8 @@ def remove_network():
 
 def run_containers():
     subprocess.run(['docker', 'run', '--rm', '--name', CONTAINER_MODEL,
-        '--network', NETWORK, '-p', '80:80', '-d', IMAGE_MODEL], check=True)
+        '--network', NETWORK, '-p', '8877:8877', '-d', IMAGE_MODEL, '--port',
+        '8877', 'hands'], check=True)
     subprocess.run(['docker', 'run', '--rm', '--name', CONTAINER_DEMO,
         '--network', NETWORK, '--device', '/dev/video0',
         '-e', 'QT_QPA_PLATFORM=wayland', '-e', 'XDG_RUNTIME_DIR=/run/user/0',
