@@ -42,7 +42,7 @@ RDEPENDS_${PN} = " \
 
 # Those packages depend on a specific SoC architecture
 RDEPENDS_${PN}_append_arm = " arm-memspeed"
-RDEPENDS_${PN}_append_mx6 = " mmdc"
-RDEPENDS_${PN}_append_imx = " bbu"
+RDEPENDS_${PN}_append_mx6 = " mmdc bbu"
+RDEPENDS_${PN}_append_mx6ul = " mmdc bbu"
 RDEPENDS_${PN}_append_rk3288 = " rkeeprom"
 RDEPENDS_${PN}_append_ti33x = " phyedit bbu"
