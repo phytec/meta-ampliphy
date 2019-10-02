@@ -12,6 +12,8 @@ PACKAGECONFIG_append = " libinput xkbcommon"
 PACKAGECONFIG_DEFAULT = "dbus udev libs freetype \
     ${@bb.utils.contains('DISTRO_FEATURES', 'qtwidgets', 'widgets', '', d)} \
 "
+# accessibility is necessary for qtquickcontrols-qmlplugins
+PACKAGECONFIG_DEFAULT += "accessibility"
 
 SRC_URI += "file://res-touchscreen.rules \
             file://qtLauncher \
