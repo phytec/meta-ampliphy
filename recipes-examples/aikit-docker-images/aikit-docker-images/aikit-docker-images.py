@@ -57,6 +57,7 @@ def run_containers():
         'weston-start && sleep 1 && aidemo-customvision-demo -x'], check=True)
 
 def start(args):
+    stop_containers()
     create_network()
     run_containers()
     return 0
