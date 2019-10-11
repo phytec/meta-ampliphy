@@ -16,7 +16,4 @@ IMAGE_INSTALL = " \
     iotedge-cli \
     iotedge-daemon \
     aikit-docker-images \
-    \
-    weston \
-    weston-init \
 "
