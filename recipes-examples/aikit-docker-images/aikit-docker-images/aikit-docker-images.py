@@ -9,7 +9,7 @@ import sys
 CONTAINER_MODEL = 'model'
 CONTAINER_DEMO = 'demo'
 IMAGE_MODEL = 'phytecorg/aidemo-customvision-model:0.4.1'
-IMAGE_DEMO = 'phytecorg/aidemo-customvision-demo:0.4.1'
+IMAGE_DEMO = 'phytecorg/aidemo-customvision-demo:0.5.0'
 NETWORK = 'aikit'
 
 def stop_containers():
@@ -35,13 +35,26 @@ def remove_network():
         subprocess.run(['docker', 'network', 'rm', NETWORK], check=True)
 
 def run_containers():
-    subprocess.run(['docker', 'run', '--rm', '--name', CONTAINER_MODEL,
-        '--network', NETWORK, '-p', '8877:8877', '-d', IMAGE_MODEL, '--port',
-        '8877', 'hands'], check=True)
-    subprocess.run(['docker', 'run', '--rm', '--name', CONTAINER_DEMO,
-        '--network', NETWORK, '--device', '/dev/video0',
-        '-e', 'QT_QPA_PLATFORM=wayland', '-e', 'XDG_RUNTIME_DIR=/run/user/0',
-        '-v', '/run/user/0:/run/user/0', '-d', IMAGE_DEMO], check=True)
+    subprocess.run(['docker', 'run',
+        '--rm',
+        '--name', CONTAINER_MODEL,
+        '--network', NETWORK,
+        '-p', '8877:8877',
+        '-d', IMAGE_MODEL,
+        '--port', '8877', 'hands'], check=True)
+    subprocess.run(['docker', 'run',
+        '--rm',
+        '--privileged',
+        '--name', CONTAINER_DEMO,
+        '--network', NETWORK,
+        '--device', '/dev/video0',
+        '-e', 'QT_QPA_PLATFORM=wayland',
+        '-e', 'QT_WAYLAND_FORCE_DPI=192',
+        '-e', 'QT_WAYLAND_DISABLE_WINDOWDECORATION=1',
+        '-e', 'XDG_RUNTIME_DIR=/run/user/0',
+        '-v', '/run/user/0:/run/user/0',
+        '-d', IMAGE_DEMO, '/bin/bash', '-c',
+        'weston-start && sleep 1 && aidemo-customvision-demo -x'], check=True)
 
 def start(args):
     create_network()
