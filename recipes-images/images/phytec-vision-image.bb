@@ -18,6 +18,8 @@ IMAGE_INSTALL += "\
     phytec-qtdemo \
     opencv \
     gstreamer1.0-plugins-bad-opencv \
+    \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'qtwayland qtwayland-plugins weston weston-init', '', d)} \
 "
 
 IMAGE_INSTALL_remove_mx6ul = "\
