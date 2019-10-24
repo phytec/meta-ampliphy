@@ -21,6 +21,7 @@ IMAGE_INSTALL += "\
     yavta \
     \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'qtwayland qtwayland-plugins weston weston-init', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)} \
 "
 
 IMAGE_INSTALL_remove_mx6ul = "\
