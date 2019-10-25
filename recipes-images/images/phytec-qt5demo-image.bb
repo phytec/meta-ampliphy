@@ -9,8 +9,6 @@ LICENSE = "MIT"
 
 inherit distro_features_check populate_sdk_qt5
 
-CONFLICT_DISTRO_FEATURES = "x11"
-
 IMAGE_INSTALL += "\
     packagegroup-base \
     \
@@ -18,6 +16,8 @@ IMAGE_INSTALL += "\
     \
     qt5-opengles2-test \
     phytec-qtdemo \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'qtwayland qtwayland-plugins weston weston-init', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)} \
 "
 
 IMAGE_INSTALL_remove_mx6ul = "\
