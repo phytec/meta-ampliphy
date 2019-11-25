@@ -52,4 +52,8 @@ RDEPENDS_${PN}_append_mx8m = " \
     phytec-v4l2-c-examples \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
+    imx-gst1.0-plugin-gplay \
+    imx-gst1.0-plugin \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-bad \
 "
