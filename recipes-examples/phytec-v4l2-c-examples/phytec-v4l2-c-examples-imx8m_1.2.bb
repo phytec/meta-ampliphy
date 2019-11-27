@@ -7,14 +7,14 @@ SECTION = "examples"
 
 # Archive created with
 #   $ unzip v4l2-c_examples.zip
-#   $ mv v4l2-c_examples_V2.0 phytec-v4l2-c-examples-imx8m-2.0
-#   $ find phytec-v4l2-c-examples-imx8m-2.0 -exec "touch" "{}" ";"
-#   $ find phytec-v4l2-c-examples-imx8m-2.0 -name "*.sh" -exec "chmod" "+x" "{}" ";"
-#   $ tar --owner=root --group=root -czf phytec-v4l2-c-examples-imx8m-2.0.tar.gz phytec-v4l2-c-examples-imx8m-2.0/
+#   $ mv v4l2-c_examples phytec-v4l2-c-examples-imx8m-1.2
+#   $ find phytec-v4l2-c-examples-imx8m-1.2 -exec "touch" "{}" ";"
+#   $ find phytec-v4l2-c-examples-imx8m-1.2 -name "*.sh" -exec "chmod" "+x" "{}" ";"
+#   $ tar --owner=root --group=root -czf phytec-v4l2-c-examples-imx8m-1.2.tar.gz phytec-v4l2-c-examples-imx8m-1.2/
 
 SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Applications/${PN}-${PV}.tar.gz"
-SRC_URI[md5sum] = "88f91556cbdcaf00762c4592f16648b2"
-SRC_URI[sha256sum] = "5682875591a57bc3298955bac4743cf6189af5e31747b5a7d438422f03bfef1c"
+SRC_URI[md5sum] = "374b99ce58798528ca69027be1f0db94"
+SRC_URI[sha256sum] = "fe974ff5cd390d8b00f83faba7eaa81f72b7c18c74cf2a528bffc67d2cefdd7c"
 
 PR = "r0"
 
