@@ -17,8 +17,8 @@ PR = "r0"
 #        phytec-gstreamer-examples-imx8m-2.0/
 
 SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Applications/${PN}-${PV}.tar.gz"
-SRC_URI[md5sum] = "6a95ce2e3f3e86ef7c934470ebc5c76c"
-SRC_URI[sha256sum] = "c53658267db3134b27e93e2fe2c435ed688b8c21ac6db56531ef8db588b708e5"
+SRC_URI[md5sum] = "3528a68977faa58ec4d71bd428c0b5d2"
+SRC_URI[sha256sum] = "4178d7cf605d3de492cd0cdc1ef26c867c37632bb7bb17f0b72c559ea866667e"
 
 GSTREAMER_EXAMPLES_DIR = "${datadir}/phytec-gstreamer-examples"
 
