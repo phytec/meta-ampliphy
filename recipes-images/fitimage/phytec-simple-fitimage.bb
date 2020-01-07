@@ -3,7 +3,7 @@ DESCRIPTION = "FIT-Image with one Kernel and one devicetree"
 LICENSE = "MIT"
 
 REQUIRED_DISTRO_FEATURES = "secureboot"
-inherit distro_features_check
+inherit features_check
 
 inherit fitimage
 

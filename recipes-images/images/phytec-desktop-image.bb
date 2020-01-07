@@ -7,7 +7,7 @@ IMAGE_FEATURES += "splash package-management ssh-server-openssh hwcodecs"
 
 LICENSE = "MIT"
 
-inherit distro_features_check populate_sdk_qt5
+inherit features_check populate_sdk_qt5
 
 REQUIRED_DISTRO_FEATURES = "wayland"
 
