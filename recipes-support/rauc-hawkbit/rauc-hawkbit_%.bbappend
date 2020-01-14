@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI +=  "file://config.cfg"
+SRC_URI += "file://config.cfg"
 
 do_patch_append() {
     bb.note("copying config.cfg from meta layer to source dir")
