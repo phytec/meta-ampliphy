@@ -20,6 +20,5 @@ RDEPENDS_${PN} = " \
     pulseaudio-module-sine-source \
     pulseaudio-module-rtp-send \
     pulseaudio-module-rtp-recv \
-    laird-sterling-etsi \
-    brcm-patchram-plus \
+    linux-firmware-bcm43430 \
 "
