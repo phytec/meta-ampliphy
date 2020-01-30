@@ -13,6 +13,5 @@ RDEPENDS_${PN} = " \
     hostapd \
     linux-firmware-wl12xx \
     wl12xx-calibrator \
-    laird-sterling-etsi \
-    brcm-patchram-plus \
+    linux-firmware-bcm43430 \
 "
