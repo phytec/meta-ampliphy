@@ -30,7 +30,8 @@ QA_LOG = "1"
 
 # Log information on images and packages
 INHERIT += "buildhistory"
-BUILDHISTORY_COMMIT = "1"
+# Uncomment to disable commits
+#BUILDHISTORY_COMMIT = "0"
 INHERIT += "buildstats"
 
 # Prelink images
