@@ -18,6 +18,9 @@ SDK_VERSION := "${DISTRO_VERSION}"
 SDK_NAME = "${VENDOR}-${DISTRO}-${TCLIBC}-${SDK_ARCH}-${IMAGE_BASENAME}-${TUNE_PKGARCH}"
 SDKPATH = "/opt/${VENDOR}-${DISTRO}/${SDK_VERSION}"
 
+#Overrides depend on Distro Features
+OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','secureboot',':secureboot', '',d)}"
+
 #activate config checker
 INHERIT += "sanity"
 
