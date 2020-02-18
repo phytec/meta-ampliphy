@@ -20,6 +20,7 @@ SDKPATH = "/opt/${VENDOR}-${DISTRO}/${SDK_VERSION}"
 
 #Overrides depend on Distro Features
 OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','secureboot',':secureboot', '',d)}"
+OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','protectionshield',':${PROTECTION_SHIELD_LEVEL}', '',d)}"
 
 #activate config checker
 INHERIT += "sanity"
