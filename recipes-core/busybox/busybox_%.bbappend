@@ -7,6 +7,10 @@ SRC_URI += "file://select-resize.cfg"
 SRC_URI += "file://deselect-ip-tool.cfg"
 SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "sysvinit", "", "file://deselect-ifupdown.cfg", d)}"
 SRC_URI += "file://select-showkey.cfg"
+
+SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "secureboot", "file://select-blockdev.cfg", "", d)}"
+SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "secureboot", "file://select-poweroff.cfg", "", d)}"
+
 SRC_URI[vardeps] += "DISTRO_FEATURES"
 
 SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "systemd", "file://deselect-syslogd-klogd.cfg", "", d)}"
