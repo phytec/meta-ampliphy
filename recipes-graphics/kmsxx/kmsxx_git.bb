@@ -23,4 +23,6 @@ inherit python3native cmake update-alternatives
 do_install() {
     install -d ${D}${bindir}
     install -m 755 ${B}/bin/kmsview ${D}${bindir}/kmsview
+    install -m 755 ${B}/bin/kmstest ${D}${bindir}/kmstestscreen
+    install -m 755 ${B}/bin/kmsblank ${D}${bindir}/kmsblank
 }
