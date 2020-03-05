@@ -3,6 +3,9 @@ DESCRIPTION = "no graphics support in this image"
 LICENSE = "MIT"
 inherit core-image
 
+include security/userauthentication.inc
+include security/fileencryption.inc
+
 IMAGE_ROOTFS_SIZE ?= "8192"
 
 IMAGE_INSTALL = " \
