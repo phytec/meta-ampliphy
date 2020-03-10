@@ -8,6 +8,7 @@
 BOOTLOADER_SIGN ??= "true"
 BOOTLOADER_SIGN[type] = "boolean"
 
+CERT_PATH ??= "${OEROOT}/../../phytec-dev-ca"
 # for NXP i.MX6
 BOOTLOADER_SIGN_IMG_PATH_mx6 ??= "${CERT_PATH}/nxp_habv4_pki/crts/IMG1_1_sha256_4096_65537_v3_usr_crt.pem"
 BOOTLOADER_SIGN_CSF_PATH_mx6 ??= "${CERT_PATH}/nxp_habv4_pki/crts/CSF1_1_sha256_4096_65537_v3_usr_crt.pem"

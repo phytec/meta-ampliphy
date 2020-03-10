@@ -1,6 +1,9 @@
 SUMMARY = "PHYTEC rauc bundles from meta-yogurt"
 HOMEPAGE = "http://www.phytec.de"
 
+DEPENDS += "phytec-dev-ca-native"
+do_bundle[depends] += "phytec-dev-ca-native:do_install"
+
 inherit bundle
 
 RAUC_BUNDLE_DESCRIPTION ?= "PHYTEC rauc bundle based on ${DISTRO_VERSION}"
