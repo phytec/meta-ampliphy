@@ -47,7 +47,7 @@ do_unpack_prepend() {
 
     os.makedirs(boot_dir)
 
-    for files in ibfs.split(" "):
+    for files in ibfs.split():
         src = files.split(";")[0]
         dst = "{}/{}".format(boot_dir, files.split(";")[-1])
 
