@@ -76,5 +76,5 @@ do_deploy_append() {
     ln -sf ${IMAGE_NAME}.boot.tar.gz ${DEPLOYDIR}/boot.tar.gz
 }
 
-RAUC_KEY_FILE ?= "${CERT_PATH}/dev/private/development-1.key.pem"
-RAUC_CERT_FILE ?= "${CERT_PATH}/dev/development-1.cert.pem"
+RAUC_KEY_FILE ?= "${CERT_PATH}/rauc/private/development-1.key.pem"
+RAUC_CERT_FILE ?= "${CERT_PATH}/rauc/development-1.cert.pem"

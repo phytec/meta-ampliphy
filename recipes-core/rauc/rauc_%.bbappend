@@ -1,5 +1,8 @@
-FILESEXTRAPATHS_prepend := "${CERT_PATH}/dev:"
+FILESEXTRAPATHS_prepend := "${CERT_PATH}/rauc:"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+
+# set path to the rauc keyring, which is installed in the image
+RAUC_KEYRING_FILE ?= "${CERT_PATH}/rauc/ca.cert.pem"
 
 SRC_URI_append := " \
     file://10-update-usb.rules \
