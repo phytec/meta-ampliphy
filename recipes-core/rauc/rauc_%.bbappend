@@ -1,6 +1,9 @@
 FILESEXTRAPATHS_prepend := "${CERT_PATH}/rauc:"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
+DEPENDS += "phytec-dev-ca-native"
+do_fetch[depends] += "phytec-dev-ca-native:do_install"
+
 # set path to the rauc keyring, which is installed in the image
 RAUC_KEYRING_FILE ?= "${CERT_PATH}/rauc/ca.cert.pem"
 
