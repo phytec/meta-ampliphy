@@ -65,3 +65,5 @@ FILES_rauc-update-usb += " \
     ${systemd_unitdir}/system/update-usb@.service \
     ${base_libdir}/udev/rules.d/10-update-usb.rules \
 "
+
+RDEPENDS_${PN} += "${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-imx', 'libubootenv-bin', '', d)}"
