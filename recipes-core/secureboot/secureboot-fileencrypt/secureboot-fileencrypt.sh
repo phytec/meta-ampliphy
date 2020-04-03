@@ -41,7 +41,7 @@ checkresponse() {
 # Main
 #------------------------------------------------------------------------------
 
-mkdir -p /proc /sys /dev /secrets
+mkdir -p /proc /sys /dev /mnt_secrets
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
 mount -t devtmpfs devtmpfs /dev
@@ -65,17 +65,34 @@ root="$(findfs ${root})"
 mkdir -p /newroot
 if echo "$root" | grep -q "mmc"; then
     #mmc or emmc => key example is in partition 3
-    secret=${root%?}3
-    mount ${secret} /secrets
+    count=$(ls ${root%?}* | wc -l)
+    i=1
+    secret=""
+    while [ $i -le $count ]
+    do
+        for arg in $(blkid ${root%?}${i}); do
+            case "${arg}" in
+                LABEL=*) eval ${arg};;
+            esac
+        done
+        if echo "$LABEL" | grep -q "boot"; then
+            secret=${root%?}${i}
+            i=$count
+        fi
+        let i=i+1
+    done
+    [ ${#secret} -eq 0 ] && do_login
+    mount ${secret} /mnt_secrets
 
-    test -f /secrets/secure_key.blob
-    checkresponse 0 "No secure_key.blob for Fileencryption in folder /secrets"
-    keyctl add secure rootfs  "load `cat /secrets/secure_key.blob`" @u
+    test -f /mnt_secrets/secrets/secure_key.blob
+    checkresponse 0 "No secure_key.blob for Fileencryption in folder /mnt_secrets/secrets"
+    keyctl add secure rootfs  "load `cat /mnt_secrets/secrets/secure_key.blob`" @u
     checkresponse 1 "Key error"
     dmsetup create encrootfs --table "0 $(blockdev --getsz ${root}) crypt aes-xts-plain64 :64:secure:rootfs 0 ${root} 0"
     checkresponse 1 "Fileencryption error"
     mount /dev/dm-0 /newroot
     checkresponse 1 "encrypted mount error"
+    umount /mnt_secrets
 else
     #Nand or net is not encrypted
     mount ${root} /newroot
