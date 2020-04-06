@@ -13,6 +13,9 @@ SRC_URI_append := " \
     file://update_usb.sh \
     file://rauc_downgrade_barrier.sh \
     ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'file://system_emmc.conf', 'file://system_nand.conf', d)} \
+    file://rauc-pre-install.sh \
+    file://rauc-handle-secrets.sh \
+    file://rauc-post-install.sh \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -47,6 +50,9 @@ do_install_append() {
 	fi
 
 	install -d ${D}${bindir}
+	install -d ${D}${libdir}
+	install -d ${D}${libdir}/rauc
+
 	install -m 0774 ${WORKDIR}/update_usb.sh ${D}${bindir}
 	install -m 0774 ${WORKDIR}/rauc_downgrade_barrier.sh ${D}${bindir}
 
@@ -58,6 +64,10 @@ do_install_append() {
 
 	install -d ${D}${sysconfdir}/rauc
 	install -m 0644 ${WORKDIR}/downgrade_barrier_version ${D}${sysconfdir}/rauc/downgrade_barrier_version
+
+	install -m 0774 ${WORKDIR}/rauc-pre-install.sh ${D}${libdir}/rauc
+	install -m 0774 ${WORKDIR}/rauc-handle-secrets.sh ${D}${libdir}/rauc
+	install -m 0774 ${WORKDIR}/rauc-post-install.sh ${D}${libdir}/rauc
 }
 
 FILES_rauc-update-usb += " \
