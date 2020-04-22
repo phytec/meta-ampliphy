@@ -5,7 +5,7 @@ AUTHOR = "Brendan Le Foll, Tom Ingleby"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING;md5=66493d54e65bfc12c7983ff2e884f37f"
 
-inherit distutils-base pkgconfig python-dir cmake
+inherit distutils3-base pkgconfig python3-dir cmake
 
 EXTRA_OECMAKE_append = " -DINSTALLTOOLS:BOOL=ON -DFIRMATA=ON -DPYTHON2_PACKAGES_PATH:FILEPATH=../${PYTHON_SITEPACKAGES_DIR} -DBASE_LIB_INSTALL_DIR=${base_libdir} -DCMAKE_SKIP_RPATH=ON"
 

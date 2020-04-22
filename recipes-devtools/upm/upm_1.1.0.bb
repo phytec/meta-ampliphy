@@ -21,7 +21,7 @@ SRC_URI += "\
 SRC_URI[md5sum] = "a5d64c79346220e68c62a42607cb20f9"
 SRC_URI[sha256sum] = "81d53b754c261075e7b58502bcfba6bd92a94399c9eece0ddd11a85d74356877"
 
-inherit distutils-base pkgconfig python-dir cmake
+inherit distutils3-base pkgconfig python3-dir cmake
 
 CFLAGS_append_edison = " -msse3 -mfpmath=sse"
 
