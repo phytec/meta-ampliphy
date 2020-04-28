@@ -10,8 +10,8 @@ LimitNOFILE=infinity
 LimitNPROC=infinity
 LimitCORE=infinity
 TimeoutSec=infinity
-PIDFile=/home/root/.pm2/pm2.pid
-Environment=PM2_HOME=/home/root/.pm2
+PIDFile=/root/.pm2/pm2.pid
+Environment=PM2_HOME=/root/.pm2
 # mraa hardware access module:
 Environment=NODE_PATH=/usr/lib/node_modules
 Environment=NODE_ENV=production

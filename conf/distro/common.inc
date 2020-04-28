@@ -74,3 +74,7 @@ VIRTUAL-RUNTIME_initscripts = ""
 IMAGE_LINGUAS ?= "de-de fr-fr en-us"
 
 PREFERRED_VERSION_mraa = "2.0.%"
+
+# default value in bitbake.conf of poky is '/home/root'
+# change to '/root' as this is preferred path
+ROOT_HOME ?= "/root"
