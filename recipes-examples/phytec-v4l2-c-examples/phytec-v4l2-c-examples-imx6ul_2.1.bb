@@ -37,12 +37,12 @@ do_install() {
     done
 
     # Create link in home folder for old documentation
-    install -d ${D}/home/root
-    ln -s ${INSTALL_DIR} ${D}/home/root/v4l2_c-examples
+    install -d ${D}${ROOT_HOME}
+    ln -s ${INSTALL_DIR} ${D}${ROOT_HOME}/v4l2_c-examples
 }
 
 FILES_${PN} += " \
-    /home/root/ \
+    ${ROOT_HOME}/ \
     ${datadir}/phytec-v4l2-c-examples \
 "
 RDEPENDS_${PN} += " \

@@ -47,12 +47,12 @@ do_install() {
 	done
 
 	# Create link in home folder for old documentation
-	install -d ${D}/home/root
-	ln -s ${GSTREAMER_EXAMPLES_DIR} ${D}/home/root/gstreamer_examples
+	install -d ${D}${ROOT_HOME}
+	ln -s ${GSTREAMER_EXAMPLES_DIR} ${D}${ROOT_HOME}/gstreamer_examples
 }
 
 FILES_${PN} += " \
-    /home/root/ \
+    ${ROOT_HOME}/ \
     ${GSTREAMER_EXAMPLES_DIR} \
 "
 

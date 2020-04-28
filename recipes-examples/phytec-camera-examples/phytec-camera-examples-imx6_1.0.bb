@@ -50,14 +50,14 @@ do_install() {
 	find ${DESTDIR} -type f -iname "*.py" -exec chmod 0755 {} \;
 
 	# Create link in home folder for old documentation
-	install -d ${D}/home/root
-	ln -s ${datadir}/phytec-gstreamer-examples ${D}/home/root/gstreamer-examples
-	ln -s ${datadir}/phytec-v4l2_c-examples ${D}/home/root/v4l2_c-examples
-	ln -s ${datadir}/phytec-opencv-examples ${D}/home/root/opencv-examples
+	install -d ${D}${ROOT_HOME}
+	ln -s ${datadir}/phytec-gstreamer-examples ${D}${ROOT_HOME}/gstreamer-examples
+	ln -s ${datadir}/phytec-v4l2_c-examples ${D}${ROOT_HOME}/v4l2_c-examples
+	ln -s ${datadir}/phytec-opencv-examples ${D}${ROOT_HOME}/opencv-examples
 }
 
 FILES_${PN} += " \
-    /home/root/ \
+    ${ROOT_HOME}/ \
     ${datadir}/phytec-gstreamer-examples \
     ${datadir}/phytec-v4l2_c-examples \
     ${datadir}/phytec-opencv-examples \

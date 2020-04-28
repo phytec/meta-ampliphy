@@ -32,7 +32,7 @@ SYSTEMD_SERVICE_${PN} = "phytec-qtdemo.service"
 
 PACKAGES += "${PN}-democontent ${PN}-videos"
 
-FILES_${PN} = "${datadir} ${bindir} ${systemd_unitdir} /home/root/.config"
+FILES_${PN} = "${datadir} ${bindir} ${systemd_unitdir} ${ROOT_HOME}/.config"
 FILES_${PN}-dbg = "${datadir}/${PN}/.debug"
 FILES_${PN}-dev = "/usr/src"
 FILES_${PN}-democontent = "${datadir}/${PN}/images"
@@ -68,7 +68,7 @@ do_install_append() {
     install -d ${D}${bindir}
     ln -sf ${datadir}/${PN}/phytec-qtdemo ${D}${bindir}/QtDemo
     install -Dm 0644 ${WORKDIR}/phytec-qtdemo.service ${D}${systemd_system_unitdir}/phytec-qtdemo.service
-    install -Dm 0644 ${WORKDIR}/PhyKitDemo.conf ${D}/home/root/.config/Phytec/PhyKitDemo.conf
+    install -Dm 0644 ${WORKDIR}/PhyKitDemo.conf ${D}${ROOT_HOME}/.config/Phytec/PhyKitDemo.conf
 
     # democontent
     install -d ${D}${datadir}/${PN}/images
