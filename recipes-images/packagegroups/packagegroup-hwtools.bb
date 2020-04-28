@@ -39,6 +39,7 @@ RDEPENDS_${PN} = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
     kmsxx \
     lmsensors-fancontrol \
+    nfs-utils-client \
 "
 
 # Those packages depend on a specific SoC architecture
