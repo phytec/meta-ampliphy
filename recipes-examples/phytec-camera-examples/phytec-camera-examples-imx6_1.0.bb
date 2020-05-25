@@ -64,15 +64,15 @@ FILES_${PN} += " \
 "
 
 RDEPENDS_${PN} += " \
-	bash \
-	python3 \
-	media-ctl \
-	v4l-utils \
-	gstreamer1.0 \
-	gstreamer1.0-plugins-good-multifile \
-	gstreamer1.0-plugins-good-video4linux2 \
-	gstreamer1.0-plugins-bad-fbdevsink \
-	gstreamer1.0-plugins-bad-bayer \
-	gstreamer1.0-plugins-good-jpeg \
-	gstreamer1.0-plugin-bayer2rgb-neon \
+    bash \
+    python3 \
+    media-ctl \
+    v4l-utils \
+    gstreamer1.0 \
+    gstreamer1.0-plugins-good-multifile \
+    gstreamer1.0-plugins-good-video4linux2 \
+    gstreamer1.0-plugins-bad-fbdevsink \
+    gstreamer1.0-plugins-bad-bayer \
+    gstreamer1.0-plugins-good-jpeg \
+    gstreamer1.0-plugin-bayer2rgb-neon \
 "
