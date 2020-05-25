@@ -75,4 +75,5 @@ RDEPENDS_${PN} += " \
     gstreamer1.0-plugins-bad-bayer \
     gstreamer1.0-plugins-good-jpeg \
     gstreamer1.0-plugin-bayer2rgb-neon \
+    gstreamer1.0-plugin-pseudocolor \
 "
