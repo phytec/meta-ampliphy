@@ -51,9 +51,13 @@ LOGLEVEL="$(sysctl -n kernel.printk)"
 sysctl -q -w kernel.printk=4
 
 for arg in $(cat /proc/cmdline); do
-	case "${arg}" in
-		rescue=1|root=*) eval ${arg};;
-	esac
+    case "${arg}" in
+	rescue=1|root=*|rootfstype=*) eval ${arg};;
+    esac
+    if echo ${arg} | grep -q "ubi.mtd"; then
+	ubimtd=$(echo ${arg##*ubi.mtd=})
+    fi
+
 done
 
 # Translate "PARTUUID=..." to real device
@@ -61,6 +65,11 @@ root="$(findfs ${root})"
 
 # go to login, when requested
 [ -n "${rescue}" ] && do_login
+# go to login, when ubifs
+if [ "${rootfstype}" == "ubifs" ]; then
+    printf "Please use FITImage without ramdisk for ubifs!\n"
+    do_login
+fi
 
 mkdir -p /newroot
 if echo "$root" | grep -q "mmc"; then
@@ -94,7 +103,7 @@ if echo "$root" | grep -q "mmc"; then
     checkresponse 1 "encrypted mount error"
     umount /mnt_secrets
 else
-    #Nand or net is not encrypted
+    # Net is not encrypted
     mount ${root} /newroot
 fi
 
