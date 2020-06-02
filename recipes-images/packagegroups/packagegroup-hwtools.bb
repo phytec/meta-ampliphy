@@ -31,6 +31,7 @@ RDEPENDS_${PN} = " \
     iproute2 \
     bumprts \
     serial-test \
+    serialcheck \
     rs485test \
     libgpiod \
     phytool \
