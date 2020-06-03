@@ -10,13 +10,12 @@ QT_MODULE = "qt-apps-qtwebbrowser"
 QT_MODULE_BRANCH = "dev"
 
 SRC_URI += " \
-    file://0001-project-fix-install-path-for-poky.patch \
     file://0002-qtwebbrowser-add-application-mode.patch \
     file://wait-for-server.sh \
     file://${PN}.service \
 "
 
-SRCREV = "023733af5523a5ad84359926224fa106001215f4"
+SRCREV = "93637d1b4f32a1f73613f70b29544f232059d600"
 
 DEPENDS = "qtbase qtdeclarative qtwebengine"
 
@@ -24,6 +23,8 @@ PACKAGECONFIG ?= ""
 PACKAGECONFIG[desktop] = "-DDESKTOP_BUILD,,"
 
 SYSTEMD_SERVICE_${PN} = "${PN}.service"
+
+EXTRA_QMAKEVARS_PRE += "INSTALL_PREFIX=${bindir}"
 
 do_install_append() {
     install -Dm 0644 ${WORKDIR}/${PN}.service ${D}${systemd_system_unitdir}/${PN}.service
