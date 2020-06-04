@@ -4,16 +4,22 @@ distinguished_name = dn
 req_extensions = ext
 input_password = PASSPHRASE
 # Extension to add when the -x509 option is used.
-x509_extensions     = v3_ca
+x509_extensions     = v3_inter
 
 [dn]
-CN = PHYTEC Messtechnik GmbH PHYTEC BSP CA
-O = PHYTEC Messtechnik GmbH
+CN = PHYTEC-rauc
+emailAddress = info@phytec.de
+OU = PHYTEC
+O = SW
+L = Mainz
+C = DE
+ST = Rheinland-Pfalz
 
 [ext]
 #subjectAltName = DNS:www.phytec.de,DNS:phytec.de
 
-[ v3_ca ]
+[ v3_inter ]
 subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always,issuer
-basicConstraints = CA:true
+basicConstraints =critical, CA:true
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
