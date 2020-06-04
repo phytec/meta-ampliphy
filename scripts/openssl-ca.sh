@@ -533,22 +533,22 @@ EOF
     openssl genpkey -algorithm RSA -out private/ca.key.pem \
         -pkeyopt rsa_keygen_bits:$kl -pkeyopt rsa_keygen_pubexp:65537
 
-    #if [ -f ${MAINCAPATH}/mainca-rsa.crt.pem ]; then
-    #    echo "Main RSA CA ${MAINCAPATH}/mainca-rsa.crt  exist and will be used"
-    #    openssl req -config $BASEDIR/scripts/rauc_creation.cnf -new \
-    #    -sha256 -key $RAUCPATH/private/ca.key.pem -out $RAUCPATH/ca.csr.pem
-    #    cd $MAINCAPATH
-    #    openssl ca -config openssl.cnf -batch \
-    #    -passin file:${MAINCAPATH}/keys/key_pass.txt \
-    #    -in $RAUCPATH/ca.csr.pem -out $RAUCPATH/ca.cert.pem
-    #else
+    if [ -f ${MAINCAPATH}/mainca-rsa.crt.pem ]; then
+        echo "Main RSA CA ${MAINCAPATH}/mainca-rsa.crt  exist and will be used"
+        openssl req -config $BASEDIR/scripts/rauc_creation.cnf -new \
+        -sha256 -key $RAUCPATH/private/ca.key.pem -out $RAUCPATH/ca.csr.pem
+        cd $MAINCAPATH
+        openssl ca -config openssl.cnf -batch \
+        -passin file:${MAINCAPATH}/keys/key_pass.txt \
+        -in $RAUCPATH/ca.csr.pem -out $RAUCPATH/ca.cert.pem
+    else
         cd $RAUCPATH
         printf "Self signed Certificate for the rauc bundle intependent\n"
         printf "from the main ca will be created \n"
         openssl req -batch -config $BASEDIR/scripts/rauc_creation.cnf \
             -new -x509 -extensions v3_ca -key private/ca.key.pem \
             -out ca.cert.pem -days 65535
-    #fi
+    fi
     echo "Development Signing Keys 1"
     cd $RAUCPATH
     openssl genpkey -algorithm RSA -out private/development-1.key.pem \
@@ -556,7 +556,7 @@ EOF
         -pkeyopt rsa_keygen_pubexp:65537
     openssl req -new -sha256 -key $RAUCPATH/private/development-1.key.pem \
         -out $RAUCPATH/development-1.csr.pem \
-        -subj "/O=$ORG/CN=$ORG Development-1"
+        -subj "/O=SW/CN=$ORG Development-1"
 
     openssl ca -config openssl.cnf -batch -extensions v3_leaf \
         -in development-1.csr.pem -out development-1.cert.pem
