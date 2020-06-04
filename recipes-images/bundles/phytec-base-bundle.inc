@@ -78,3 +78,4 @@ do_deploy_append() {
 
 RAUC_KEY_FILE ?= "${CERT_PATH}/rauc/private/development-1.key.pem"
 RAUC_CERT_FILE ?= "${CERT_PATH}/rauc/development-1.cert.pem"
+BUNDLE_ARGS += " --intermediate=${CERT_PATH}/rauc/ca.cert.pem"
