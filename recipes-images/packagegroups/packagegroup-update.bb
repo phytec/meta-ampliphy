@@ -7,6 +7,6 @@ inherit packagegroup
 
 RDEPENDS_${PN} += " \
     rauc \
-    rauc-hawkbit \
+    rauc-hawkbit-updater \
     rauc-update-usb \
 "
