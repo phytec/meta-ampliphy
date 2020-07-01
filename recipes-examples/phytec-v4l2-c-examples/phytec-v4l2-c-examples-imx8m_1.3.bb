@@ -12,7 +12,7 @@ SECTION = "examples"
 #   $ find phytec-v4l2-c-examples-imx8m-1.2 -name "*.sh" -exec "chmod" "+x" "{}" ";"
 #   $ tar --owner=root --group=root -czf phytec-v4l2-c-examples-imx8m-1.2.tar.gz phytec-v4l2-c-examples-imx8m-1.2/
 
-SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Applications/${PN}-${PV}.tar.gz"
+SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
 SRC_URI[md5sum] = "b449898f638eb92e8c50191b4e2b41ee"
 SRC_URI[sha256sum] = "8fd983d6abee45c8f90d0c85c247483404fbde3b6616d06cb8a239c85aa306c8"
 

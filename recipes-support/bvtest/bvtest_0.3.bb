@@ -9,7 +9,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING;md5=a662ae2ca7498feb1c64188c76ea6f0e"
 
 BRANCH = "master"
-SRC_URI = "git://git.phytec.de/${PN};branch=${BRANCH};protocol=git \
+SRC_URI = "git://git.phytec.de/${BPN};branch=${BRANCH};protocol=git \
            file://0001-HACK-save_raw_image-added-numeric-Y16_2X8-mbus-code.patch \
 "
 
