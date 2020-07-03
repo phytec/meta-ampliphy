@@ -24,13 +24,13 @@ BOOTLOADER_SIGN_SRKFUSE_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/SRK_1_2_3_4_ta
 #       Signing FIT image                        #
 #Linux Kernel, Devicetree and optional Initramfs)#
 ##################################################
-FITIMAGE_SIGN ??= "true"
+FITIMAGE_SIGN ?= "true"
 FITIMAGE_SIGN[type] = "boolean"
 
-FITIMAGE_SIGNER ??= "customer"
-FITIMAGE_PUBKEY_SIGNATURE_PATH ??= "${WORKDIR}/signature_node.dtsi"
+FITIMAGE_SIGNER ?= "customer"
+FITIMAGE_PUBKEY_SIGNATURE_PATH ?= "${WORKDIR}/signature_node.dtsi"
 
-FITIMAGE_SIGN_KEY_PATH ??= "${CERT_PATH}/fit/FIT-4096.key"
-FITIMAGE_HASH ??= "sha256"
-FITIMAGE_SIGNATURE_ENCRYPTION ??= "rsa4096"
-FITIMAGE_SIGNER_VERSION ??= "vPD20.0.0"
+FITIMAGE_SIGN_KEY_PATH ?= "${CERT_PATH}/fit/FIT-4096.key"
+FITIMAGE_HASH ?= "sha256"
+FITIMAGE_SIGNATURE_ENCRYPTION ?= "rsa4096"
+FITIMAGE_SIGNER_VERSION ?= "vPD20.0.0"
