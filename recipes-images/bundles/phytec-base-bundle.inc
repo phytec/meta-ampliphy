@@ -12,7 +12,7 @@ RAUC_BUNDLE_COMPATIBLE ?= "${MACHINE}"
 
 RAUC_BUNDLE_SLOTS ?= " \
     rootfs \
-    ${@bb.utils.contains('MACHINE_FEATURES','emmc','boot','kernel dtb', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES','emmc','boot bootloader','kernel dtb', d)} \
 "
 
 RAUC_SLOT_rootfs[type] ?= "image"
@@ -20,6 +20,10 @@ RAUC_IMAGE_FSTYPE ?= "${@bb.utils.contains('MACHINE_FEATURES','emmc','tar.gz','u
 
 RAUC_SLOT_kernel ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_kernel[type] ?= "kernel"
+
+RAUC_SLOT_bootloader ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
+RAUC_SLOT_bootloader[type] ?= "boot"
+RAUC_SLOT_bootloader[file] ?= "emmc-boot.img"
 
 RAUC_SLOT_dtb ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_dtb[type] ?= "file"
@@ -69,6 +73,18 @@ do_unpack_append() {
     if os.path.isfile("%s/boot.tar.gz" % deploy_dir):
         os.remove("%s/boot.tar.gz" % deploy_dir)
 }
+
+do_emmc_boot() {
+    if ${@bb.utils.contains('MACHINE_FEATURES','emmc','true','false', d)}; then
+        if [ "${PREFERRED_PROVIDER_virtual/bootloader}" = "u-boot-imx" ]; then
+            dd if=${DEPLOY_DIR_IMAGE}/imx-boot of=${DEPLOY_DIR_IMAGE}/emmc-boot.img bs=1k seek=33
+        elif [ "${PREFERRED_PROVIDER_virtual/bootloader}" = "barebox" ]; then
+            ln -sf barebox.bin ${DEPLOY_DIR_IMAGE}/emmc-boot.img
+        fi
+    fi
+}
+
+addtask emmc_boot before do_unpack
 
 do_deploy_append() {
     install -d ${DEPLOYDIR}
