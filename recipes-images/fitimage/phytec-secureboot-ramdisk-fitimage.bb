@@ -15,7 +15,7 @@ FITIMAGE_SLOT_kernel[file] ?= "${KERNEL_IMAGETYPE}"
 
 FITIMAGE_SLOT_fdt ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 FITIMAGE_SLOT_fdt[type] ?= "fdt"
-FITIMAGE_SLOT_fdt[file] ?= "${KERNEL_DEVICETREE}"
+FITIMAGE_SLOT_fdt[file] ?= "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])}"
 
 FITIMAGE_SLOT_ramdisk ?= "phytec-secureboot-ramdisk-image"
 FITIMAGE_SLOT_ramdisk[type] ?= "ramdisk"
