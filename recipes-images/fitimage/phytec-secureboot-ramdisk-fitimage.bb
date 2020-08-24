@@ -11,7 +11,7 @@ FITIMAGE_SLOTS ?= "kernel fdt ramdisk"
 
 FITIMAGE_SLOT_kernel ?=  "${PREFERRED_PROVIDER_virtual/kernel}"
 FITIMAGE_SLOT_kernel[type] ?= "kernel"
-FITIMAGE_SLOT_kernel[file] ?= "zImage"
+FITIMAGE_SLOT_kernel[file] ?= "${KERNEL_IMAGETYPE}"
 
 FITIMAGE_SLOT_fdt ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 FITIMAGE_SLOT_fdt[type] ?= "fdt"
