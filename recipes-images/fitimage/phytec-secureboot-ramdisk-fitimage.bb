@@ -1,5 +1,5 @@
-SUMMARY = "Phytec's FIT-Image without ramdisk"
-DESCRIPTION = "FIT-Image with one Kernel and one devicetree"
+SUMMARY = "Phytec's FIT-Image with secureboot ramdisk"
+DESCRIPTION = "FIT-Image with a single kernel, devicetree and secureboot ramdisk"
 LICENSE = "MIT"
 
 REQUIRED_DISTRO_FEATURES = "secureboot"
