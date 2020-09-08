@@ -14,7 +14,7 @@ esac
 # Set a colored prompt if the terminal supports it
 case "$TERM" in
     xterm-color|*-256color)
-        PS1="\e[1;36m\u@\h\e[0m:\e[1;34m\W\e[0m"
+        PS1="\[\e[1;36m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\W\[\e[0m\]"
         COLOR_OPTION="--color=auto"
         ;;
     *)
