@@ -60,7 +60,7 @@ do_install_append() {
 	install -m 0644 ${WORKDIR}/update-usb@.service ${D}${systemd_unitdir}/system/
 
 	install -d ${D}${base_libdir}/udev/rules.d/
-	install -m 0666 ${WORKDIR}/10-update-usb.rules ${D}${nonarch_base_libdir}/udev/rules.d/
+	install -m 0644 ${WORKDIR}/10-update-usb.rules ${D}${nonarch_base_libdir}/udev/rules.d/
 
 	install -d ${D}${sysconfdir}/rauc
 	install -m 0644 ${WORKDIR}/downgrade_barrier_version ${D}${sysconfdir}/rauc/downgrade_barrier_version
