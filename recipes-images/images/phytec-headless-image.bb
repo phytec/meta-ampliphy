@@ -22,3 +22,6 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("COMBINED_FEATURES", "3g", "packagegroup-3g", "", d)} \
     tzdata \
 "
+
+IMAGE_INSTALL_append_mx6 = " firmwared"
+IMAGE_INSTALL_append_mx6ul = " firmwared"
