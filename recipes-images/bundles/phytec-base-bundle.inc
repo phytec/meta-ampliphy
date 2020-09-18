@@ -36,7 +36,7 @@ RAUC_SLOT_boot ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_boot[type] ?= "file"
 RAUC_SLOT_boot[file] ?= "boot.tar.gz"
 
-do_unpack_prepend() {
+python do_unpack_prepend() {
     import shutil
     import subprocess
     import os
@@ -69,7 +69,7 @@ do_unpack_prepend() {
     os.symlink(tarpath, "%s/boot.tar.gz" % deploy_dir)
 }
 
-do_unpack_append() {
+python do_unpack_append() {
     if os.path.isfile("%s/boot.tar.gz" % deploy_dir):
         os.remove("%s/boot.tar.gz" % deploy_dir)
 }
