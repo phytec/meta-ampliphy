@@ -84,7 +84,7 @@ do_emmc_boot() {
     fi
 }
 
-addtask emmc_boot before do_unpack
+addtask emmc_boot after do_fetch before do_unpack
 
 do_deploy_append() {
     install -d ${DEPLOYDIR}
