@@ -62,7 +62,8 @@ python do_unpack_prepend() {
 
     tarfile = d.expand("${IMAGE_NAME}.boot.tar.gz")
     tarpath = "%s/%s" % (archives_dir, tarfile)
-    subprocess.call(["tar", "-czhf", tarpath, "-C", boot_dir, "."])
+    subprocess.call(["tar", "-czhf", tarpath, "-C", boot_dir, ".",
+            "--owner=0", "--group=0"])
 
     if os.path.islink("%s/boot.tar.gz" % deploy_dir):
         os.remove("%s/boot.tar.gz" % deploy_dir)
