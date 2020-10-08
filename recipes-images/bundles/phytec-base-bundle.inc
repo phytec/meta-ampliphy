@@ -75,14 +75,18 @@ python do_unpack_append() {
         os.remove("%s/boot.tar.gz" % deploy_dir)
 }
 
-do_emmc_boot() {
-    if ${@bb.utils.contains('MACHINE_FEATURES','emmc','true','false', d)}; then
-        if [ "${PREFERRED_PROVIDER_virtual/bootloader}" = "u-boot-imx" ]; then
-            dd if=${DEPLOY_DIR_IMAGE}/imx-boot of=${DEPLOY_DIR_IMAGE}/emmc-boot.img bs=1k seek=33
-        elif [ "${PREFERRED_PROVIDER_virtual/bootloader}" = "barebox" ]; then
-            ln -sf barebox.bin ${DEPLOY_DIR_IMAGE}/emmc-boot.img
-        fi
-    fi
+python do_emmc_boot() {
+    import subprocess
+
+    create_img = {
+        "u-boot-imx": ["dd", d.expand("if=${DEPLOY_DIR_IMAGE}/imx-boot"),
+                       d.expand("of=${DEPLOY_DIR_IMAGE}/emmc-boot.img"),
+                       "bs=1k", "seek=33"],
+        "barebox": ["ln", "-sf", "barebox.bin",
+                    d.expand("${DEPLOY_DIR_IMAGE}/emmc-boot.img")]
+    }
+    if "emmc" in d.expand("${MACHINE_FEATURES}"):
+        subprocess.call(create_img[d.expand("${PREFERRED_PROVIDER_virtual/bootloader}")])
 }
 
 addtask emmc_boot after do_fetch before do_unpack
