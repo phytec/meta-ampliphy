@@ -46,7 +46,7 @@ def bootloader_dependencies(d):
     else:
         return d.expand("${PREFERRED_PROVIDER_virtual/bootloader}")
 
-python do_unpack_prepend() {
+python do_configure_prepend() {
     import shutil
     import subprocess
     import os
@@ -80,7 +80,7 @@ python do_unpack_prepend() {
     os.symlink(tarpath, "%s/boot.tar.gz" % deploy_dir)
 }
 
-python do_unpack_append() {
+python do_configure_append() {
     if os.path.isfile("%s/boot.tar.gz" % deploy_dir):
         os.remove("%s/boot.tar.gz" % deploy_dir)
 }
