@@ -11,7 +11,5 @@ RDEPENDS_${PN} = " \
     wpa-supplicant \
     iw \
     hostapd \
-    linux-firmware-wl12xx \
-    wl12xx-calibrator \
     linux-firmware-bcm43430 \
 "
