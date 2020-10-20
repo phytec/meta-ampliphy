@@ -9,4 +9,5 @@ RDEPENDS_${PN} += " \
     rauc \
     rauc-hawkbit-updater \
     rauc-update-usb \
+    casync \
 "
