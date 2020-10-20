@@ -1,0 +1,63 @@
+From 20138e65f54c8edb6021be348c3105b9e9ba5e21 Mon Sep 17 00:00:00 2001
+From: Martin Schwan <m.schwan@phytec.de>
+Date: Tue, 13 Oct 2020 16:54:06 +0200
+Subject: [PATCH 2/2] WORKAROUND: src/update_handler: Enable support for casync
+ with boot-emmc
+
+Enable support for the case where casync is used to update image files
+in "boot-emmc" typed slots. At the moment this is merely a workaround
+than a proper implementation, as casync will not utilize a seed for
+"boot-emmc" typed slots and thus will essentially copy the complete
+binary.
+
+Signed-off-by: Martin Schwan <m.schwan@phytec.de>
+---
+ src/update_handler.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
+
+diff --git a/src/update_handler.c b/src/update_handler.c
+index 9ddc3f9..d51773b 100644
+--- a/src/update_handler.c
++++ b/src/update_handler.c
+@@ -1489,7 +1489,6 @@ static gboolean img_to_boot_emmc_handler(RaucImage *image, RaucSlot *dest_slot,
+ 	g_autofree gchar *part_active_str = NULL;
+ 	g_autofree gchar *realdev = NULL;
+ 	gint part_active_after;
+-	g_autoptr(GUnixOutputStream) outstream = NULL;
+ 	GError *ierror = NULL;
+ 	g_autoptr(RaucSlot) part_slot = NULL;
+ 
+@@ -1561,19 +1560,9 @@ static gboolean img_to_boot_emmc_handler(RaucImage *image, RaucSlot *dest_slot,
+ 		goto out;
+ 	}
+ 
+-	/* open */
+-	g_message("Opening slot device partition %s", part_slot->device);
+-	outstream = open_slot_device(part_slot, &out_fd, &ierror);
+-	if (outstream == NULL) {
+-		g_propagate_error(error, ierror);
+-		res = FALSE;
+-		goto out;
+-	}
+-
+-	/* copy */
+-	g_message("Copying image to slot device partition %s",
+-			part_slot->device);
+-	res = copy_raw_image(image, outstream, &ierror);
++	/* open and copy */
++	g_message("Writing image to slot device partition %s", part_slot->device);
++	res = write_image_to_dev(image, part_slot, &ierror);
+ 	if (!res) {
+ 		g_propagate_error(error, ierror);
+ 		goto out;
+@@ -1735,6 +1724,7 @@ RaucUpdatePair updatepairs[] = {
+ 	{"*.img", "vfat", img_to_fs_handler},
+ 	{"*.squashfs", "ubivol", img_to_ubivol_handler},
+ #if ENABLE_EMMC_BOOT_SUPPORT == 1
++	{"*.img.caibx", "boot-emmc", img_to_boot_emmc_handler},
+ 	{"*.img", "boot-emmc", img_to_boot_emmc_handler},
+ 	{"*", "boot-emmc", NULL},
+ #endif
+-- 
+2.23.0
+
