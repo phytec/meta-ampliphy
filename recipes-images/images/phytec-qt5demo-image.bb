@@ -7,7 +7,7 @@ IMAGE_FEATURES += "splash ssh-server-openssh hwcodecs qtcreator-debug"
 
 LICENSE = "MIT"
 
-inherit features_check populate_sdk_qt5
+inherit populate_sdk_qt5
 
 IMAGE_INSTALL += "\
     packagegroup-base \
