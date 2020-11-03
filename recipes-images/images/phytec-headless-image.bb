@@ -4,7 +4,7 @@ LICENSE = "MIT"
 inherit core-image
 
 include security/userauthentication.inc
-include security/fileencryption.inc
+include security/simple-fitimage.inc
 
 IMAGE_ROOTFS_SIZE ?= "8192"
 
