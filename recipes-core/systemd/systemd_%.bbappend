@@ -21,7 +21,7 @@ PACKAGECONFIG[gnuefi] = "-Dgnu-efi=true,-Dgnu-efi=false,"
 PACKAGECONFIG[udev-hwdb] = "-Dhwdb=true,-Dhwdb=false,"
 
 RRECOMMENDS_${PN}_remove = "systemd-compat-units"
-RDEPENDS_${PN} += "systemd-machine-units"
+RDEPENDS_${PN} += "systemd-conf"
 
 # Should be fixed in poky recipe
 do_install_append () {
