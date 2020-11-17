@@ -1,13 +1,5 @@
 # Adds secure boot configuration and PKI tree creation
 
-python __anonymous() {
-    soclist = d.getVar("SOC_FAMILY")
-    if soclist is None:
-        bb.fatal("Error: SOC family for this machine is not known. Secureboot not available")
-    supported_list = ["mx6", "mx6ul", "mx8mm"]
-    if not any(family in supported_list for family in soclist.split(":")):
-        bb.fatal("Error: secureboot is not supported for the selected machine")
-}
 #default secure boot configuration
 # Barebox_SIGN and FITIMAGE_SIGN is relevant by activated sign-image
 ######################################
