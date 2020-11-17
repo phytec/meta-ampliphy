@@ -18,6 +18,9 @@ do_install_append() {
     for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.service); do
         install -m 0644 "$file" ${D}${systemd_system_unitdir}/
     done
+
+    rm -rf ${D}${systemd_unitdir}/network/wired.network
+    rm -rf ${D}${systemd_unitdir}/network/80-wired.network
 }
 
 FILES_${PN} += "\
