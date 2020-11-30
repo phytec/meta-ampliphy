@@ -1,5 +1,7 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
+inherit systemd
+
 SRC_URI += " \
     file://10-watchdog.conf \
     file://10-eth0.network \
