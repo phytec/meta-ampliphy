@@ -8,7 +8,6 @@ do_fetch[depends] += "phytec-dev-ca-native:do_install"
 RAUC_KEYRING_FILE ?= "${CERT_PATH}/main-ca/mainca-rsa.crt.pem"
 
 SRC_URI += " \
-    file://0001-src-update_handler-Reorder-.img.caibx-fallback-handl.patch \
     file://0002-WORKAROUND-src-update_handler-Enable-support-for-cas.patch \
     file://10-update-usb.rules \
     file://update-usb@.service \
