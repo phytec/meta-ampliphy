@@ -35,7 +35,7 @@ DOWNGRADE_BARRIER_VERSION ?= "${RAUC_BUNDLE_VERSION}"
 do_install_prepend() {
 	# check for default system.conf from meta-rauc
 	shasum=$(sha256sum "${WORKDIR}/system.conf" | cut -d' ' -f1)
-	if [ "$shasum" = "cb8c74d6fefea692c4284bb80ec24385c74f3c46a921b8f57334c7a5a3cf1312" ]; then
+	if [ "$shasum" = "27ec3e7595315fbb283d1a95e870f6a76a2c296b39866fd8ffb01669c1b39942" ]; then
 		bbnote "No project specific system.conf has been provided. We use the Phytec RDK specific config files."
 		cp ${WORKDIR}/${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'system_emmc.conf', 'system_nand.conf', d)} ${WORKDIR}/system.conf
 	fi
