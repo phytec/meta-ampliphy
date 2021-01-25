@@ -14,4 +14,11 @@ SRC_URI_append_secureboot = " \
     file://crypto-api.cfg \
 "
 
+
+SRC_URI_append_kernelmodsign = " \
+    file://kernel-modsign.cfg \
+"
+
+inherit ${@bb.utils.contains('DISTRO_FEATURES', 'kernelmodsign', 'kernel-modsign', '', d)}
+
 LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION', True))}"
