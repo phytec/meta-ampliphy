@@ -12,6 +12,7 @@ if [ "$1" == '' ] ||  [ "$1" == '-h' ]; then
     echo "-f Create FIT-Image Key"
     echo "-r Create rauc keys"
     echo "-k Keytype (rsa or ecc, default rsa)"
+    echo "-K Generate kernel module signing key"
     echo "-C Set path to CA"
     echo "-P Set path for initial folder"
     echo
@@ -35,6 +36,9 @@ RAUCKEY=0
 RAUCDIR="rauc"
 RAUCPATH=""
 
+MODSIGKEY=0
+MODSIGDIR="kernel_modsign"
+
 KEYTYPE="rsa"
 
 DO_CSTSIGN=false
@@ -43,8 +47,7 @@ BASECA="$(pwd)/openssl-ca"
 BASEDIR="$(pwd)"
 
 DO_CREATEMAINCA=false
-
-while getopts ':abfkmrsC:P:' OPTION ; do
+while getopts ':abfkKmrsC:P:' OPTION ; do
     case "$OPTION" in
     b) BOOTLOADERKEY=1;;
     f) FITIMAGEKEY=1;;
@@ -53,6 +56,7 @@ while getopts ':abfkmrsC:P:' OPTION ; do
     m) DO_CREATEMAINCA=true;;
     s) DO_CSTSIGN=true;;
     k) KEYTYPE=$OPTARG;;
+    K) MODSIGKEY=1;;
     r) RAUCKEY=1;;
     C) BASECA=$OPTARG;;
     P) BASEDIR=$OPTARG;;
@@ -165,8 +169,7 @@ if $DO_CSTSIGN; then
 fi
 
 if [ $BOOTLOADERKEY -eq 1 ]
-then
-    BOOTLOODERPATH="$BASECA"/"$BOOTLOADERDIR"
+then BOOTLOODERPATH="$BASECA"/"$BOOTLOADERDIR"
     if [ -e $BOOTLOODERPATH ]; then
         echo "Bootloader Path $BOOTLOODERPATH already exists"
         exit 1
@@ -560,4 +563,17 @@ EOF
 
     openssl ca -config openssl.cnf -batch -extensions v3_leaf \
         -in development-1.csr.pem -out development-1.cert.pem
+fi
+if [ $MODSIGKEY -eq 1 ] ; then
+    MODSIGPATH="$BASECA"/$MODSIGDIR
+    if [ -d "$MODSIGPATH" ] ; then
+        echo "Kernel modsigning key already exists"
+        exit 1
+    fi >&2
+    mkdir -p "$MODSIGPATH"
+    cd "$MODSIGPATH"
+    openssl req -new -nodes -utf8 -sha256 -days 36500 -batch -x509 \
+         -config $BASEDIR/scripts/kernel_modsign.cnf \
+         -outform PEM -out kernel_modsign.pem \
+         -keyout kernel_modsign.pem
 fi
