@@ -5,7 +5,7 @@ SUMMARY =  "This image is designed to show development of camera and \
 
 IMAGE_FEATURES += "splash ssh-server-openssh hwcodecs qtcreator-debug"
 IMAGE_FEATURES += "\
-    ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'x11-base', '', d)}\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '', bb.utils.contains('DISTRO_FEATURES', 'x11', 'x11-base', '', d), d)}\
 "
 
 LICENSE = "MIT"
