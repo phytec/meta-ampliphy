@@ -3,6 +3,11 @@ DISTRO_FEATURES += "secureboot"
 DISTRO_FEATURES_NATIVE += "secureboot"
 DISTRO_FEATURES_NATIVESDK += "secureboot"
 
+#kernel-modsign
+DISTRO_FEATURES += "kernelmodsign"
+DISTRO_FEATURES_NATIVE += "kernelmodsign"
+DISTRO_FEATURES_NATIVESDK += "kernelmodsign"
+
 #add protection shield level
 #shieldlow - shieldmedium - shieldhigh
 DISTRO_FEATURES += "protectionshield"
