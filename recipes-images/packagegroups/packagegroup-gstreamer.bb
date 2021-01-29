@@ -45,10 +45,20 @@ RDEPENDS_${PN}_append_mx6ul = " \
     gstreamer1.0-plugins-bad-zbar \
 "
 
-RDEPENDS_${PN}_append_mx8m = " \
+RDEPENDS_${PN}_append_mx8mq = " \
     phytec-gstreamer-examples-imx8m \
     bvtest \
     phytec-v4l2-c-examples-imx8m \
+    gstreamer1.0-plugins-bad-geometrictransform \
+    gstreamer1.0-plugins-bad-zbar \
+    imx-gst1.0-plugin-gplay \
+    imx-gst1.0-plugin \
+    gstreamer1.0-plugins-bad \
+"
+
+RDEPENDS_${PN}_append_mx8mm = " \
+    phytec-camera-examples-imx8mm \
+    bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
     imx-gst1.0-plugin-gplay \
