@@ -65,3 +65,12 @@ RDEPENDS_${PN}_append_mx8mm = " \
     imx-gst1.0-plugin \
     gstreamer1.0-plugins-bad \
 "
+
+RDEPENDS_${PN}_append_mx8mp = " \
+    bvtest \
+    gstreamer1.0-plugins-bad-geometrictransform \
+    gstreamer1.0-plugins-bad-zbar \
+    imx-gst1.0-plugin-gplay \
+    imx-gst1.0-plugin \
+    gstreamer1.0-plugins-bad \
+"
