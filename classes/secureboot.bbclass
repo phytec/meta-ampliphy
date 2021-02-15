@@ -31,3 +31,4 @@ FITIMAGE_SIGNER_VERSION ?= "vPD20.0.0"
 
 FITIMAGE_SIGN_mx8mm ?= "false"
 FITIMAGE_SIGN_mx8mn ?= "false"
+FITIMAGE_SIGN_mx8mp ?= "false"
