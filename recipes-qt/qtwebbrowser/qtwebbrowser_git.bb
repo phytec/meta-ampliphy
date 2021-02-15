@@ -12,7 +12,7 @@ QT_MODULE_BRANCH = "dev"
 SRC_URI += " \
     file://0002-qtwebbrowser-add-application-mode.patch \
     file://wait-for-server.sh \
-    file://${PN}.service \
+    file://${BPN}.service \
 "
 
 SRCREV = "93637d1b4f32a1f73613f70b29544f232059d600"
@@ -22,12 +22,12 @@ DEPENDS = "qtbase qtdeclarative qtwebengine"
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[desktop] = "-DDESKTOP_BUILD,,"
 
-SYSTEMD_SERVICE_${PN} = "${PN}.service"
+SYSTEMD_SERVICE_${PN} = "${BPN}.service"
 
 EXTRA_QMAKEVARS_PRE += "INSTALL_PREFIX=${bindir}"
 
 do_install_append() {
-    install -Dm 0644 ${WORKDIR}/${PN}.service ${D}${systemd_system_unitdir}/${PN}.service
+    install -Dm 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
     install -Dm 0755 ${WORKDIR}/wait-for-server.sh ${D}${bindir}/wait-for-server.sh
 }
 

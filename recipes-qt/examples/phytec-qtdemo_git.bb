@@ -33,10 +33,10 @@ SYSTEMD_SERVICE_${PN} = "phytec-qtdemo.service"
 PACKAGES += "${PN}-democontent ${PN}-videos"
 
 FILES_${PN} = "${datadir} ${bindir} ${systemd_unitdir} ${ROOT_HOME}/.config"
-FILES_${PN}-dbg = "${datadir}/${PN}/.debug"
+FILES_${PN}-dbg = "${datadir}/${BPN}/.debug"
 FILES_${PN}-dev = "/usr/src"
-FILES_${PN}-democontent = "${datadir}/${PN}/images"
-FILES_${PN}-video = "${datadir}/${PN}/videos"
+FILES_${PN}-democontent = "${datadir}/${BPN}/images"
+FILES_${PN}-video = "${datadir}/${BPN}/videos"
 LICENSE_${PN}-video = "CC-BY-3.0"
 
 RDEPENDS_${PN} += "\
@@ -66,16 +66,16 @@ RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
 
 do_install_append() {
     install -d ${D}${bindir}
-    ln -sf ${datadir}/${PN}/phytec-qtdemo ${D}${bindir}/QtDemo
+    ln -sf ${datadir}/${BPN}/phytec-qtdemo ${D}${bindir}/QtDemo
     install -Dm 0644 ${WORKDIR}/phytec-qtdemo.service ${D}${systemd_system_unitdir}/phytec-qtdemo.service
     install -Dm 0644 ${WORKDIR}/PhyKitDemo.conf ${D}${ROOT_HOME}/.config/Phytec/PhyKitDemo.conf
 
     # democontent
-    install -d ${D}${datadir}/${PN}/images
+    install -d ${D}${datadir}/${BPN}/images
     for f in ${S}/images/page_phytec_*.png; do \
-        install -Dm 0644 $f ${D}${datadir}/${PN}/images/
+        install -Dm 0644 $f ${D}${datadir}/${BPN}/images/
     done
 
     # videos
-    install -Dm 0644 ${S}/media/caminandes.webm ${D}${datadir}/${PN}/videos/caminandes.webm
+    install -Dm 0644 ${S}/media/caminandes.webm ${D}${datadir}/${BPN}/videos/caminandes.webm
 }

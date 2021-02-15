@@ -5,7 +5,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SRC_URI = " \
-    ftp://ftp.phytec.de/pub/Software/Linux/BSP-Yocto-HTML5/${PN}/${PN}-v${PV}.tar.gz;unpack=false \
+    ftp://ftp.phytec.de/pub/Software/Linux/BSP-Yocto-HTML5/${BPN}/${BPN}-v${PV}.tar.gz;unpack=false \
     file://phytec-node-server.service \
     file://html5demo-env.sh \
 "
@@ -26,7 +26,7 @@ PREFIX = "/"
 # Install the files to ${D}${PREFIX}
 do_install () {
     mkdir -p ${D}${PREFIX}
-    tar --no-same-owner -xpf ${WORKDIR}/${PN}-v${PV}.tar.gz -C ${D}${PREFIX}
+    tar --no-same-owner -xpf ${WORKDIR}/${BPN}-v${PV}.tar.gz -C ${D}${PREFIX}
     install -Dm 0644 ${WORKDIR}/phytec-node-server.service ${D}${systemd_system_unitdir}/phytec-node-server.service
     install -Dm 0644 ${WORKDIR}/html5demo-env.sh ${D}${sysconfdir}/profile.d/html5demo-env.sh
 }

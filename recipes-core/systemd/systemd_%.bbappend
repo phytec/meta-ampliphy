@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
 
 #This setup adds about 1.3MB to the 4.4MB of the all disabled configuration
 PACKAGECONFIG ??= "\

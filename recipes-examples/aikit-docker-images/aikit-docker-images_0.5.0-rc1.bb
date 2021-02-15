@@ -7,7 +7,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SRC_URI = " \
-    ftp://ftp.phytec.de/pub/Software/Linux/BSP-Yocto-IoTEdge/aikit-docker-images/${PN}-${PV}.tar.gz;unpack=false \
+    ftp://ftp.phytec.de/pub/Software/Linux/BSP-Yocto-IoTEdge/aikit-docker-images/${BPN}-${PV}.tar.gz;unpack=false \
     file://aikit-docker-images.service \
     file://aikit-docker-images.py \
 "
@@ -33,7 +33,7 @@ PREFIX = "${localstatedir}/lib"
 
 fakeroot do_install () {
     mkdir -p ${D}${PREFIX}
-    tar --no-same-owner -xpf ${WORKDIR}/${PN}-${PV}.tar.gz -C ${D}${PREFIX}
+    tar --no-same-owner -xpf ${WORKDIR}/${BPN}-${PV}.tar.gz -C ${D}${PREFIX}
     install -Dm 0644 ${WORKDIR}/aikit-docker-images.service ${D}${systemd_system_unitdir}/aikit-docker-images.service
     install -Dm 0755 ${WORKDIR}/aikit-docker-images.py ${D}${bindir}/aikit-docker-images
 }

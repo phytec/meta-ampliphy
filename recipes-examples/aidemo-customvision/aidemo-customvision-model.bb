@@ -17,8 +17,8 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install() {
-    mkdir -p ${D}${datadir}/${PN}
-    cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${datadir}/${PN}
+    mkdir -p ${D}${datadir}/${BPN}
+    cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${datadir}/${BPN}
 }
 
 RDEPENDS_${PN} += " \
@@ -28,5 +28,5 @@ RDEPENDS_${PN} += " \
     python3-flask \
     python3-waitress \
 "
-FILES_${PN} = "${datadir}/${PN}"
+FILES_${PN} = "${datadir}/${BPN}"
 INSANE_SKIP_${PN} = "file-rdeps"

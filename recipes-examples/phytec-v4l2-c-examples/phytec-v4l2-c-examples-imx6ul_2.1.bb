@@ -15,7 +15,7 @@ SECTION = "examples"
 #   $ find phytec-v4l2-c-examples-imx6ul-2.0 -name "*.sh" -exec "chmod" "+x" "{}" ";"
 #   $ tar --owner=root --group=root -czf phytec-v4l2-c-examples-imx6ul-2.0.tar.gz phytec-v4l2-c-examples-imx6ul-2.0/
 
-SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Applications/${PN}-${PV}.tar.gz"
+SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
 SRC_URI[md5sum] = "957657c661c647c76dc6da50ca6669d0"
 SRC_URI[sha256sum] = "8a313796f0c849ac4697cdd1e6b7b39f58451210be0934019d7decdbdff1d209"
 

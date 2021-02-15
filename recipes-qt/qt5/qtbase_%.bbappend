@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
 
 PACKAGECONFIG_MULTIMEDIA_append = " alsa"
 PACKAGECONFIG_DEFAULT_append = " tslib"

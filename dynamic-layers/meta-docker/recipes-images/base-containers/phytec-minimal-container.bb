@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 IMAGE_CLASSES += "image_type_docker"
 IMAGE_FSTYPES = "docker"
 
-DOCKER_IMAGE_NAME_EXPORT ?= "${PN}:${PV}-${DISTRO_VERSION}"
+DOCKER_IMAGE_NAME_EXPORT ?= "${BPN}:${PV}-${DISTRO_VERSION}"
 
 inherit core-image
 
