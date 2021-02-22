@@ -77,4 +77,7 @@ FILES_rauc-update-usb += " \
     ${base_libdir}/udev/rules.d/10-update-usb.rules \
 "
 
-RDEPENDS_${PN} += "${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-imx', 'libubootenv-bin', '', d)}"
+RDEPENDS_${PN} += " \
+    ${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-imx', 'libubootenv-bin', '', d)} \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'dosfstools e2fsprogs', '', d)} \
+"
