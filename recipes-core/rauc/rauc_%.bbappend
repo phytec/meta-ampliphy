@@ -60,7 +60,7 @@ do_install_append() {
 	install -d ${D}${systemd_unitdir}/system/
 	install -m 0644 ${WORKDIR}/update-usb@.service ${D}${systemd_unitdir}/system/
 
-	install -d ${D}${base_libdir}/udev/rules.d/
+	install -d ${D}${nonarch_base_libdir}/udev/rules.d/
 	install -m 0644 ${WORKDIR}/10-update-usb.rules ${D}${nonarch_base_libdir}/udev/rules.d/
 
 	install -d ${D}${sysconfdir}/rauc
@@ -74,7 +74,7 @@ do_install_append() {
 FILES_rauc-update-usb += " \
     ${bindir}/update_usb.sh \
     ${systemd_unitdir}/system/update-usb@.service \
-    ${base_libdir}/udev/rules.d/10-update-usb.rules \
+    ${nonarch_base_libdir}/udev/rules.d/10-update-usb.rules \
 "
 
 RDEPENDS_${PN} += " \
