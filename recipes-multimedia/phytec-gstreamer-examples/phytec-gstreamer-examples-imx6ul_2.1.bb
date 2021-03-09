@@ -20,7 +20,7 @@ PR = "r0"
 #   $ tar --owner=root --group=root -czf phytec-gstreamer-examples-imx6ul-2.0.tar.gz \
 #        phytec-gstreamer-examples-imx6ul-2.0/
 
-SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
+SRC_URI = "https://download.phytec.de/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
 SRC_URI[md5sum] = "d9d40b704cf119923baa03b17f15f2fa"
 SRC_URI[sha256sum] = "60c17b3ecfa8446b123da24d82f2cbc17b85cf77b221164570b9214b4fc693f3"
 

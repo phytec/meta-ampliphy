@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 inherit pkgconfig
 
 SRC_URI = " \
-    ftp://ftp.phytec.de/pub/Software/Linux/Applications/phytec-dev-ca-${PV}.tar.gz;name=tarball \
+    https://download.phytec.de/Software/Linux/Applications/phytec-dev-ca-${PV}.tar.gz;name=tarball \
 "
 
 INSANE_SKIP_${PN} += "already-stripped"

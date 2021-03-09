@@ -5,7 +5,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SRC_URI = " \
-    ftp://ftp.phytec.de/pub/Software/Linux/BSP-Yocto-HTML5/${BPN}/${BPN}-v${PV}.tar.gz;unpack=false \
+    https://download.phytec.de/Software/Linux/BSP-Yocto-HTML5/${BPN}/${BPN}-v${PV}.tar.gz;unpack=false \
     file://phytec-node-server.service \
     file://html5demo-env.sh \
 "
