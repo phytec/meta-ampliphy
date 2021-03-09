@@ -26,7 +26,7 @@ PR = "r0"
 #   $ tar -czf phytec-camera-examples-imx6-1.2.tar.gz \
 #     phytec-camera-examples-imx6-1.2/
 
-SRC_URI = "ftp://ftp.phytec.de/pub/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
+SRC_URI = "https://download.phytec.de/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
 SRC_URI[md5sum] = "f9bf7fb8236b824c5d264fb5f9c878af"
 SRC_URI[sha256sum] = "c7f8497e892fb0f208bd7d4f91b211e00441c5886cc264b0232806bf5e45e38d"
 

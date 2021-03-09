@@ -7,7 +7,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SRC_URI = " \
-    ftp://ftp.phytec.de/pub/Software/Linux/BSP-Yocto-IoTEdge/aikit-docker-images/${BPN}-${PV}.tar.gz;unpack=false \
+    https://download.phytec.de/Software/Linux/BSP-Yocto-IoTEdge/aikit-docker-images/${BPN}-${PV}.tar.gz;unpack=false \
     file://aikit-docker-images.service \
     file://aikit-docker-images.py \
 "
