@@ -67,6 +67,7 @@ RDEPENDS_${PN}_append_mx8mm = " \
 "
 
 RDEPENDS_${PN}_append_mx8mp = " \
+    phytec-camera-examples-imx8mp \
     bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
