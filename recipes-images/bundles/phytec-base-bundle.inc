@@ -1,4 +1,4 @@
-SUMMARY = "PHYTEC rauc bundles from meta-yogurt"
+SUMMARY = "PHYTEC rauc bundles from meta-ampliphy"
 HOMEPAGE = "http://www.phytec.de"
 
 DEP_BOOTLOADER = "${@bootloader_dependencies(d)}"
