@@ -37,17 +37,17 @@ def get_layers(d):
 
 do_install() {
 	install -d ${D}${sysconfdir}
-	echo "Yogurt ${DISTRO_VERSION} (${DISTRO_CODENAME})" > ${D}${sysconfdir}/yogurt-version
-	echo "Built from branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/yogurt-version
-	echo "Revision: ${METADATA_REVISION}" >> ${D}${sysconfdir}/yogurt-version
-	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/yogurt-version
+	echo "ampliPHY ${DISTRO_VERSION} (${DISTRO_CODENAME})" > ${D}${sysconfdir}/ampliphy-version
+	echo "Built from branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/ampliphy-version
+	echo "Revision: ${METADATA_REVISION}" >> ${D}${sysconfdir}/ampliphy-version
+	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/ampliphy-version
 
-	echo "${@get_layers(d)}" > ${D}${sysconfdir}/yogurt-build-info
+	echo "${@get_layers(d)}" > ${D}${sysconfdir}/ampliphy-build-info
 
 	echo "VERSION=\"${DISTRO_VERSION}\"" > ${D}${sysconfdir}/os-release
-	echo "NAME=\"Yogurt\"" >> ${D}${sysconfdir}/os-release
-	echo "ID=\"yogurt\"" >> ${D}${sysconfdir}/os-release
-	echo "PRETTY_NAME=\"The Yogurt Distribution ${DISTRO_VERSION}\"" >> ${D}${sysconfdir}/os-release
+	echo "NAME=\"ampliPHY\"" >> ${D}${sysconfdir}/os-release
+	echo "ID=\"ampliphy\"" >> ${D}${sysconfdir}/os-release
+	echo "PRETTY_NAME=\"The ampliPHY Distribution ${DISTRO_VERSION}\"" >> ${D}${sysconfdir}/os-release
 	echo "ANSI_COLOR=\"1;35\"" >> ${D}${sysconfdir}/os-release
 	echo "HOME_URL=\"http://www.phytec.de\"" >> ${D}${sysconfdir}/os-release
 

@@ -1,6 +1,6 @@
 #!/bin/sh
-VERSION="$(cat /etc/yogurt-version | head -n1 | awk '{print $2}')"
-CODENAME="$(cat /etc/yogurt-version | head -n1 | awk '{print $3}'|sed 's/(\|)//g')"
+VERSION="$(cat /etc/ampliphy-version | head -n1 | awk '{print $2}')"
+CODENAME="$(cat /etc/ampliphy-version | head -n1 | awk '{print $3}'|sed 's/(\|)//g')"
 
 
 case $1 in
@@ -9,34 +9,34 @@ case $1 in
 	;;
 "-i")
 	if [ "$2" = "-s" ] ; then
-		echo "Yogurt"
+		echo "ampliPHY"
 	else
-		echo "Distributor ID: Yogurt"
+		echo "Distributor ID: ampliPHY"
 	fi
 	;;
 "-is")
-	echo "Yogurt"
+	echo "ampliPHY"
 	;;
 "-si")
-	echo "Yogurt"
+	echo "ampliPHY"
 	;;
 "-ir")
-	echo "Distributor ID: Yogurt"
+	echo "Distributor ID: ampliPHY"
 	echo "Release:        $VERSION"
 	;;
 "-irc")
-	echo "Distributor ID: Yogurt"
+	echo "Distributor ID: ampliPHY"
 	echo "Release:        $VERSION"
 	echo "Codename:       $CODENAME"
 	;;
 "-d")
-	echo "Description:    Yogurt GNU/Linux $VERSION ($CODENAME)"
+	echo "Description:    ampliPHY GNU/Linux $VERSION ($CODENAME)"
 	;;
 "-ds")
-	echo "Yogurt GNU/Linux $VERSION ($CODENAME)"
+	echo "ampliPHY GNU/Linux $VERSION ($CODENAME)"
 	;;
 "-sd")
-	echo "Yogurt GNU/Linux $VERSION ($CODENAME)"
+	echo "ampliPHY GNU/Linux $VERSION ($CODENAME)"
 	;;
 "-r")
 	if [ "$2" = "-s" ] ; then
@@ -50,7 +50,7 @@ case $1 in
 	;;
 "-ri")
 	echo "Release:        $VERSION"
-	echo "Distributor ID: Yogurt"
+	echo "Distributor ID: ampliPHY"
 	;;
 "-c")
 	if [ "$2" = "-s" ] ; then
@@ -60,8 +60,8 @@ case $1 in
 	fi
 	;;
 "-a")
-	echo "Distributor ID: Yogurt"
-	echo "Description:    Yogurt GNU/Linux $VERSION ($CODENAME)"
+	echo "Distributor ID: ampliPHY"
+	echo "Description:    ampliPHY GNU/Linux $VERSION ($CODENAME)"
 	echo "Release:        $VERSION" 
 	echo "Codename:       $CODENAME"
 	;;

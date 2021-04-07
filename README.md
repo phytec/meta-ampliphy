@@ -1,5 +1,5 @@
-meta-yogurt
-===========
+meta-ampliphy
+=============
 
 This layer is a custom distribution based on poky for PHYTEC Boards.
 All recipes are provided by the MIT licensing Terms unless otherwise noted.
