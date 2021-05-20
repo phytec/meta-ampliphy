@@ -22,7 +22,8 @@ do_install_append() {
         install -m 0644 "$file" ${D}${systemd_system_unitdir}/
     done
 
-    install -m 0644 ${WORKDIR}/10-watchdog.conf ${D}${systemd_unitdir}/system.conf.d/10-watchdog.conf
+    [ -e ${WORKDIR}/10-watchdog.conf ] && \
+      install -m 0644 ${WORKDIR}/10-watchdog.conf ${D}${systemd_unitdir}/system.conf.d/10-watchdog.conf
 
     rm -rf ${D}${systemd_unitdir}/network/wired.network
     rm -rf ${D}${systemd_unitdir}/network/80-wired.network
