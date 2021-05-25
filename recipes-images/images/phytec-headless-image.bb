@@ -3,7 +3,7 @@ DESCRIPTION = "no graphics support in this image"
 LICENSE = "MIT"
 inherit core-image
 
-include security/userauthentication.inc
+require security/setrootpassword.inc
 include security/simple-fitimage.inc
 
 IMAGE_ROOTFS_SIZE ?= "8192"
@@ -21,6 +21,7 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("COMBINED_FEATURES", "bluetooth", "packagegroup-bluetooth", "", d)} \
     ${@bb.utils.contains("COMBINED_FEATURES", "3g", "packagegroup-3g", "", d)} \
     tzdata \
+    ${@bb.utils.contains("DISTRO_FEATURES", "protectionshield", "phytec-example-users", "", d)} \
 "
 
 IMAGE_INSTALL_append_mx6 = " firmwared"
