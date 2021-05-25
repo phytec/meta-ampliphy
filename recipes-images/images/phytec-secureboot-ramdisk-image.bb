@@ -13,7 +13,7 @@ IMAGE_LINGUAS = ""
 
 IMAGE_FSTYPES = "cpio.gz"
 
-include security/userauthentication.inc
+include security/setrootpassword.inc
 
 # Do not pollute the initrd image with rootfs features
 
