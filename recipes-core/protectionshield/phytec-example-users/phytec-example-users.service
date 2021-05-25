@@ -1,0 +1,13 @@
+[Unit]
+Description=Set individual password for users
+After=systemd-user-sessions.service
+After=rc-local.service
+Before=getty.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/bin/setpassword
+
+[Install]
+WantedBy=multi-user.target
