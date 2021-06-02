@@ -43,9 +43,6 @@ INHERIT += "buildstats"
 # Prelink images
 INHERIT += "image-prelink"
 
-# optimize lib sizes with mklibs
-INHERIT += "image-mklibs"
-
 #run QA tests on recipes
 #INHERIT += "recipe_sanity"
 
