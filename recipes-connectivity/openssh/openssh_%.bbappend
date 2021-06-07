@@ -3,15 +3,14 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
 set_password_rules(){
 
     if [ "${@bb.utils.filter('IMAGE_FEATURES', 'debug-tweaks',d)}" ]; then
-        bbwarn "!! Please deactivate debug-tweaks for the Protectionshield Level medium and high"
+        bbwarn "!! Please deactivate debug-tweaks for the Protectionshield Level"
     fi
     if [ "${@bb.utils.filter('IMAGE_FEATURES', 'allow-empty-password', d)}" ]; then
-        bbwarn "!! Please deactivate allow-empty-password for the Protectionshield Level medium and high"
+        bbwarn "!! Please deactivate allow-empty-password for the Protectionshield Level"
     fi
-    if [ "${@bb.utils.filter('IMAGE_FEATURES', 'allow-root-login',d)}" ]; then
-        bbwarn "!! Please deactivate allow-root-login for the Protectionshield Level medium and high"
+    if [ "${@bb.utils.filter('IMAGE_FEATURES', 'empty-root-password',d)}" ]; then
+        bbwarn "!! Please deactivate debug-tweaks for the Protectionshield Level"
     fi
-
     sed -i -e 's:PasswordAuthentication no:PasswordAuthentication yes:' ${D}${sysconfdir}/ssh/sshd_config
     sed -i -e 's:#PasswordAuthentication yes:PasswordAuthentication yes:' ${D}${sysconfdir}/ssh/sshd_config
     sed -i -e 's:PermitEmptyPasswords yes:PermitEmptyPasswords no:' ${D}${sysconfdir}/ssh/sshd_config
@@ -23,11 +22,19 @@ set_password_rules(){
     fi
 }
 
+do_install_append_shieldlow() {
+    set_password_rules
+}
+
 do_install_append_shieldmedium() {
     set_password_rules
 }
 
 do_install_append_shieldhigh() {
+    if [ "${@bb.utils.filter('IMAGE_FEATURES', 'allow-root-login',d)}" ]; then
+        bbwarn "!! Please deactivate allow-root-login for the Protectionshield Level High"
+    fi
+
     set_password_rules
     sed -i -e 's:PermitRootLogin yes:PermitRootLogin no:' ${D}${sysconfdir}/ssh/sshd_config
 }
