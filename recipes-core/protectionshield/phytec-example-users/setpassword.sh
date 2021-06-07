@@ -2,7 +2,7 @@
 SetRootPassword=yes
 #userlist=($(awk -F":" '($2 == "!" || $2 == "") {print $1}' /etc/shadow))
 userlist=($(awk -F":" '{ if (substr($2,1,1) ~ /^[*! ]/ ) print $1}' /etc/shadow))
-mac=$(cat /sys/class/net/eth0/address | tr -d ':')
+mac=$(cat /sys/class/net/eth0/address | tr -d ':' | tr '[a-z]' '[A-Z]')
 for name in "${userlist[@]}"
 do
     uid=($(awk -v name=${name} -F":" '{ if ($1 == name) print $3}' /etc/passwd))
