@@ -1,6 +1,3 @@
-# Copyright (C) 2020 Maik Otto <m.otto@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Development PHYTEC CA with test keys.\
                 Please create and use your own certificates and keys!"
 LICENSE = "MIT"
