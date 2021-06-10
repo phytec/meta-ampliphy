@@ -9,21 +9,21 @@ PR = "r0"
 
 # Archive created via
 #   $ mkdir phytec-camera-examples
-#   $ unzip gstreamer-examples_V1.1.zip
-#   $ mv gstreamer-examples_V1.1 phytec-camera-examples/phytec-gstreamer-examples
-#   $ mv v4l2_c-examples_V1.1/ phytec-camera-examples/phytec-v4l2_c-examples
-#   $ mv opencv-examples_V1.1/ phytec-camera-examples/phytec-opencv-examples
+#   $ unzip gstreamer-examples.zip
+#   $ mv gstreamer-examples phytec-camera-examples/phytec-gstreamer-examples
+#   $ mv v4l2_c-examples/ phytec-camera-examples/phytec-v4l2_c-examples
+#   $ mv opencv-examples/ phytec-camera-examples/phytec-opencv-examples
 #   $ mv phytec-camera-examples/phytec-gstreamer-examples/COPYING.MIT \
 #   $ phytec-camera-examples/
-#   $ mv phytec-camera-examples phytec-camera-examples-imx8mp-1.1
-#   $ find phytec-camera-examples-imx8mp-1.1/ -exec "touch" "{}" ";"
-#   $ find phytec-camera-examples-imx8mp-1.1/ -name "*.sh" -or -iname "*.py" -exec "chmod" "+x" "{}" ";"
-#   $ tar -czf phytec-camera-examples-imx8mp-1.1.tar.gz \
-#     phytec-camera-examples-imx8mp-1.1/
+#   $ mv phytec-camera-examples phytec-camera-examples-imx8mp-1.2
+#   $ find phytec-camera-examples-imx8mp-1.2/ -exec "touch" "{}" ";"
+#   $ find phytec-camera-examples-imx8mp-1.2/ -name "*.sh" -or -iname "*.py" -exec "chmod" "+x" "{}" ";"
+#   $ tar -czf phytec-camera-examples-imx8mp-1.2.tar.gz \
+#     phytec-camera-examples-imx8mp-1.2/
 
 SRC_URI = "https://download.phytec.de/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
-SRC_URI[md5sum] = "a0b0666613d52ba7180c315ac3002893"
-SRC_URI[sha256sum] = "2e526b292be339c24d8455561c9b45147ebb1ab0c06d37100b390acc63aae278"
+SRC_URI[md5sum] = "da0b6f40c523ff5bded929ec6a3d181c"
+SRC_URI[sha256sum] = "75b61ce088dcda1ce858c10a4ff77fb091b3cf594e66e9ca3f908d38ef93aab2"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
