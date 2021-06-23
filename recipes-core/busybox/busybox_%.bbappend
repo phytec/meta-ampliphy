@@ -23,5 +23,3 @@ SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "systemd", "file://deselect-
 RRECOMMENDS_busybox_remove = "${@bb.utils.contains("DISTRO_FEATURES", "systemd", "busybox-udhcpc", "", d)}"
 
 SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "tiny", "file://poky-tiny.cfg", "", d)}"
-
-SRC_URI_remove = "file://0001-mount-support-the-sizelimit-and-offset-option-for-lo.patch"
