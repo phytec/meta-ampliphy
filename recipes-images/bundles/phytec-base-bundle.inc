@@ -6,6 +6,11 @@ DEPENDS += "phytec-dev-ca-native ${DEP_BOOTLOADER}"
 do_bundle[depends] += "phytec-dev-ca-native:do_install"
 do_emmc_boot[depends] += "${DEP_BOOTLOADER}:do_deploy"
 
+# The offset of imx-boot image in eMMC boot partitions. Set a sensible default
+# here for our bundle to build. The actual value should be set in the machine
+# configuration.
+IMX_BOOT_SEEK_EMMC ??= "0"
+
 inherit bundle
 
 RAUC_BUNDLE_DESCRIPTION ?= "PHYTEC rauc bundle based on ${DISTRO_VERSION}"
@@ -96,7 +101,7 @@ python do_emmc_boot() {
     create_img = {
         "u-boot-imx": ["dd", d.expand("if=${DEPLOY_DIR_IMAGE}/imx-boot"),
                        d.expand("of=${DEPLOY_DIR_IMAGE}/emmc-boot.img"),
-                       "bs=1k", "seek=33"],
+                       "bs=1k", d.expand("seek=${IMX_BOOT_SEEK_EMMC}")],
         "barebox": ["ln", "-sf", "barebox.bin",
                     d.expand("${DEPLOY_DIR_IMAGE}/emmc-boot.img")]
     }
