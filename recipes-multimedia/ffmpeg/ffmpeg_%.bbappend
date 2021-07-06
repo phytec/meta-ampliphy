@@ -8,7 +8,17 @@ PACKAGECONFIG_remove = "x264"
 #   encoders, decoders, hwaccels, muxers, demuxers,
 #   parsers, bitstream filters, protocols, input devices,
 #   output devices, devices, filters
-EXTRA_OECONF_append = " --disable-everything"
+EXTRA_OECONF_append = " \
+--disable-everything \
+--enable-zlib \
+--enable-decoders \
+--disable-decoder=mp3 \
+--disable-decoder=aac \
+--disable-decoder=h264 \
+--disable-decoder=rpza \
+--disable-decoder=mpeg4 \
+--disable-decoder=mpeg2video \
+"
 
 # only with openssl set manually in PACKAGECONFIG,
 # codecs that require --enable-nonfree will be used
