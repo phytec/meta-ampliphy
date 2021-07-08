@@ -16,11 +16,13 @@ DEPENDS = "qtbase qtdeclarative"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 PR = "r0"
 
+SERVICE = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'phytec-qtdemo-wl.service', 'phytec-qtdemo.service', d)}"
 SRC_URI = " \
     git://git.phytec.de/phyRDKDemo \
-    file://phytec-qtdemo.service \
     file://PhyKitDemo.conf \
+    file://${SERVICE} \
 "
+
 SRCREV = "5fd5a82ccee3347be2b9bc61f13ee604b9ae22fd"
 PV = "1.6+git${SRCPV}"
 
@@ -67,7 +69,7 @@ RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
 do_install_append() {
     install -d ${D}${bindir}
     ln -sf ${datadir}/${BPN}/phytec-qtdemo ${D}${bindir}/QtDemo
-    install -Dm 0644 ${WORKDIR}/phytec-qtdemo.service ${D}${systemd_system_unitdir}/phytec-qtdemo.service
+    install -Dm 0644 ${WORKDIR}/${SERVICE} ${D}${systemd_system_unitdir}/phytec-qtdemo.service
     install -Dm 0644 ${WORKDIR}/PhyKitDemo.conf ${D}${ROOT_HOME}/.config/Phytec/PhyKitDemo.conf
 
     # democontent
