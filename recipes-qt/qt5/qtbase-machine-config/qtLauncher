@@ -31,6 +31,11 @@ export QT_WAYLAND_SHELL_INTEGRATION=xdg-shell
 #export QT_DEBUG_PLUGINS=1
 #export QT_LOGGING_RULES=qt.qpa.*=true
 
+# For Wayland/Xwayland weston systems redirect XDG_RUNTIME_DIR to weston user
+if [ `id -u weston 2>/dev/null` ]; then
+    export XDG_RUNTIME_DIR=/run/user/`id -u weston`
+fi
+
 if [ $# -eq 0 ]; then
     echo 'usage: qtLauncher <your_qt_application>'
 else
