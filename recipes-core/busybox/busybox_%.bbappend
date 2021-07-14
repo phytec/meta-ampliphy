@@ -3,6 +3,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
 SRC_URI += "file://select-nice.cfg"
 SRC_URI += "file://select-cksum.cfg"
 SRC_URI += "file://select-resize.cfg"
+SRC_URI += "file://select-dd-ibs-obs.cfg"
 
 SRC_URI += "file://deselect-ip-tool.cfg"
 SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "sysvinit", "", "file://deselect-ifupdown.cfg", d)}"
