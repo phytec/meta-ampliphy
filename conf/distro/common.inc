@@ -1,8 +1,8 @@
 DISTRO_VERSION ??= "UNASSIGNED"
-DISTRO_VERSION_mx6 = "BSP-Yocto-i.MX6-gatesgarth"
-DISTRO_VERSION_mx6ul = "BSP-Yocto-i.MX6UL-gatesgarth"
-DISTRO_VERSION_ti33x = "BSP-Yocto-AM335x-gatesgarth"
-DISTRO_VERSION_rk3288 = "BSP-Yocto-RK3288-gatesgarth"
+DISTRO_VERSION_mx6 = "BSP-Yocto-Ampliphy-i.MX6-gatesgarth"
+DISTRO_VERSION_mx6ul = "BSP-Yocto-Ampliphy-i.MX6UL-gatesgarth"
+DISTRO_VERSION_ti33x = "BSP-Yocto-Ampliphy-AM335x-gatesgarth"
+DISTRO_VERSION_rk3288 = "BSP-Yocto-Ampliphy-RK3288-gatesgarth"
 VENDOR = "phytec"
 TARGET_VENDOR = "-${VENDOR}"
 
