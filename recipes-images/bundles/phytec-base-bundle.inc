@@ -117,7 +117,7 @@ do_deploy_append() {
     ln -sf ${IMAGE_NAME}.boot.tar.gz ${DEPLOYDIR}/boot.tar.gz
 }
 
-RAUC_KEY_FILE ?= "${CERT_PATH}/rauc/private/development-1.key.pem"
-RAUC_CERT_FILE ?= "${CERT_PATH}/rauc/development-1.cert.pem"
-RAUC_KEYRING_FILE ?= "${CERT_PATH}/rauc/ca.cert.pem"
-BUNDLE_ARGS += " --intermediate=${CERT_PATH}/rauc/ca.cert.pem"
+RAUC_KEY_FILE ?= "${CERT_PATH}/rauc-intermediate/private/development-1.key.pem"
+RAUC_CERT_FILE ?= "${CERT_PATH}/rauc-intermediate/development-1.cert.pem"
+RAUC_KEYRING_FILE ?= "${CERT_PATH}/main-ca/mainca-rsa.crt.pem"
+BUNDLE_ARGS += " --intermediate=${CERT_PATH}/rauc-intermediate/ca.cert.pem"
