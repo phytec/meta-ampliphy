@@ -11,6 +11,7 @@ SRC_URI += "file://select-showkey.cfg"
 
 SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "secureboot", "file://select-blockdev.cfg", "", d)}"
 SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "secureboot", "file://select-poweroff.cfg", "", d)}"
+SRC_URI += "${@bb.utils.contains("DISTRO_FEATURES", "secureboot", "file://select-cttyhack.cfg", "", d)}"
 
 SRC_URI[vardeps] += "DISTRO_FEATURES"
 
