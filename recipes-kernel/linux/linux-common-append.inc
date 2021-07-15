@@ -14,6 +14,20 @@ SRC_URI_append_secureboot = " \
     file://crypto-api.cfg \
 "
 
+SRC_URI_append_trustedkey = " \
+    file://trustedkey-base.cfg \
+"
+SRC_URI_append_trustedtpm = " \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://trustedkey-tpm.cfg', 'file://trustedkey-tee.cfg', d)} \
+"
+
+SRC_URI_append_trustedtee = " \
+    file://trustedkey-tee.cfg \
+"
+
+SRC_URI_append_trustedcaam = " \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://trustedkey-caam.cfg', 'file://trustedkey-tee.cfg', d)} \
+"
 
 SRC_URI_append_kernelmodsign = " \
     file://kernel-modsign.cfg \
