@@ -10,32 +10,21 @@
 
 POWEROFF_TIME="10"
 
-do_poweroff() {
-    printf "\nThe system will poweroff in %s seconds" "${POWEROFF_TIME}"
-    sleep "${POWEROFF_TIME}"
-    sync && poweroff -f
-    exit 0
+set -e
+trap end EXIT
+end() {
+    if [ "$?" -ne 0 ]; then
+        printf "\n[ERROR] Key and Filesystem Initialization" 1>&2
+        printf "\nThe system will poweroff in %s seconds" "${POWEROFF_TIME}"
+        sleep "${POWEROFF_TIME}"
+        sync && poweroff -f
+        exit 0
+    fi
 }
 
 do_login() {
-    for arg in $(cat /proc/cmdline); do
-        case "${arg}" in
-            console=*) eval ${arg};;
-        esac
-    done
-    ttydev="$(echo $console | cut -d',' -f1)"
-    ttybaud="$(echo $console | cut -d',' -f2)"
-    sync && /sbin/getty 115200 /dev/${ttydev}
-    exit 0
-}
-
-checkresponse() {
-    if [ $? -ne 0 ]; then
-        [ ${#} -ge 1 ] && printf "\n[ERROR]: %s\n\n" "${2}"
-        [ $1 -ne 0 ] &&  do_poweroff
-        #go to login
-        do_login
-    fi
+    sync
+    setsid cttyhack /bin/login
 }
 
 # Main
@@ -49,6 +38,11 @@ mount -t devtmpfs devtmpfs /dev
 # Set kernel console loglevel
 LOGLEVEL="$(sysctl -n kernel.printk)"
 sysctl -q -w kernel.printk=4
+
+export PATH=/usr/sbin:/sbin:$PATH
+
+mkdir -p /newroot
+mkdir -p /mnt_secrets/secrets
 
 for arg in $(cat /proc/cmdline); do
     case "${arg}" in
@@ -71,7 +65,6 @@ if [ "${rootfstype}" == "ubifs" ]; then
     do_login
 fi
 
-mkdir -p /newroot
 if echo "$root" | grep -q "mmc"; then
     #mmc or emmc => key example is in partition 3
     count=$(ls ${root%?}* | wc -l)
@@ -93,14 +86,12 @@ if echo "$root" | grep -q "mmc"; then
     [ ${#secret} -eq 0 ] && do_login
     mount ${secret} /mnt_secrets
 
-    test -f /mnt_secrets/secrets/secure_key.blob
-    checkresponse 0 "No secure_key.blob for Fileencryption in folder /mnt_secrets/secrets"
-    keyctl add secure rootfs  "load `cat /mnt_secrets/secrets/secure_key.blob`" @u
-    checkresponse 1 "Key error"
-    dmsetup create encrootfs --table "0 $(blockdev --getsz ${root}) crypt aes-xts-plain64 :64:secure:rootfs 0 ${root} 0"
-    checkresponse 1 "Fileencryption error"
+    test -f /mnt_secrets/secrets/trusted_key.blob
+    keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
+    test -f /mnt_secrets/secrets/encrypted_key.blob
+    keyctl add encrypted rootfs  "load `cat /mnt_secrets/secrets/encrypted_key.blob`" @u
+    dmsetup create encrootfs --table "0 $(blockdev --getsz ${root}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${root} 0"
     mount /dev/dm-0 /newroot
-    checkresponse 1 "encrypted mount error"
     umount /mnt_secrets
 else
     # Net is not encrypted
