@@ -24,6 +24,8 @@ PROTECTION_SHIELD_LEVEL ??= "shieldlow"
 OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','protectionshield',':protectionshield', '',d)}"
 OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','protectionshield',':${PROTECTION_SHIELD_LEVEL}', '',d)}"
 OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','kernelmodsign',':kernelmodsign', '',d)}"
+OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','trustedkey',':trustedkey', '',d)}"
+OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','trustedkey',':${TRUSTEDKEY_PREFERRED}', '',d)}"
 
 #activate config checker
 INHERIT += "sanity"

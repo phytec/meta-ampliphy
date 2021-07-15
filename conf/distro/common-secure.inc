@@ -16,5 +16,10 @@ PROTECTION_SHIELD_LEVEL = "shieldlow"
 #password quality decide about the protection level
 PROTECTION_SHIELD_ROOT_PASSWORD ?= 'root'
 
+DISTRO_FEATURES_append = " trustedkey"
+#trustedtpm - trustedtee - trustedcaam
+TRUSTEDKEY_PREFERRED = "trustedtpm"
+TRUSTEDKEY_PREFERRED_mx6 = "trustedcaam"
+
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
