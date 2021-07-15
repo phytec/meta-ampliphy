@@ -25,9 +25,10 @@ FILES_${PN} = "/"
 # Runtime packages used in 'secureboot-ramdisk-init'
 RDEPENDS_${PN} = " \
     keyutils \
-    util-linux-findfs \
+    util-linux \
     mtd-utils-ubifs \
     e2fsprogs \
     fscryptctl \
     cryptsetup \
+    lvm2 \
 "
