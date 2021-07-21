@@ -51,11 +51,6 @@ def bootloader_dependencies(d):
     else:
         return d.expand("${PREFERRED_PROVIDER_virtual/bootloader}")
 
-# For now, we only use casync with eMMC devices. Since UBIFS makes use of
-# compression, using casync would not be effective and yield unexpected results
-# at the moment.
-RAUC_CASYNC_BUNDLE = "${@bb.utils.contains('MACHINE_FEATURES', 'emmc', '1', '0', d)}"
-
 python do_configure_prepend() {
     import shutil
     import subprocess
