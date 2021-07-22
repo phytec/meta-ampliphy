@@ -30,7 +30,7 @@ do_login() {
 # Main
 #------------------------------------------------------------------------------
 
-mkdir -p /proc /sys /dev /mnt_secrets
+mkdir -p /proc /sys /dev /mnt_secrets /newroot
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
 mount -t devtmpfs devtmpfs /dev
@@ -40,9 +40,6 @@ LOGLEVEL="$(sysctl -n kernel.printk)"
 sysctl -q -w kernel.printk=4
 
 export PATH=/usr/sbin:/sbin:$PATH
-
-mkdir -p /newroot
-mkdir -p /mnt_secrets/secrets
 
 for arg in $(cat /proc/cmdline); do
     case "${arg}" in
@@ -57,8 +54,6 @@ done
 # Translate "PARTUUID=..." to real device
 root="$(findfs ${root})"
 
-# go to login, when requested
-[ -n "${rescue}" ] && do_login
 # go to login, when ubifs
 if [ "${rootfstype}" == "ubifs" ]; then
     printf "Please use FITImage without ramdisk for ubifs!\n"
@@ -85,6 +80,11 @@ if echo "$root" | grep -q "mmc"; then
     done
     [ ${#secret} -eq 0 ] && do_login
     mount ${secret} /mnt_secrets
+
+    mkdir -p /mnt_secrets/secrets
+
+    # go to login, when requested
+    [ -n "${rescue}" ] && do_login
 
     test -f /mnt_secrets/secrets/trusted_key.blob
     keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
