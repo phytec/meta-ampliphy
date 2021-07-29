@@ -46,7 +46,10 @@ for arg in $(cat /proc/cmdline); do
 	rescue=1|root=*|rootfstype=*) eval ${arg};;
     esac
     if echo ${arg} | grep -q "ubi.mtd"; then
-	ubimtd=$(echo ${arg##*ubi.mtd=})
+        ubimtd=$(echo ${arg##*ubi.mtd=})
+    fi
+    if echo ${arg} | grep -q "bootchooser.active"; then
+        bcactive=$(echo ${arg##*bootchooser.active=})
     fi
 
 done
@@ -90,8 +93,29 @@ if echo "$root" | grep -q "mmc"; then
     keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
     test -f /mnt_secrets/secrets/encrypted_key.blob
     keyctl add encrypted rootfs  "load `cat /mnt_secrets/secrets/encrypted_key.blob`" @u
-    dmsetup create encrootfs --table "0 $(blockdev --getsz ${root}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${root} 0"
-    mount /dev/dm-0 /newroot
+    # mount all partitions without label (sign for encrypted partition)
+    count=$(ls ${root%?}* | wc -l)
+    i=1
+    j=0
+    while [ $i -le $count ]
+    do
+        for arg in $(blkid ${root%?}${i}); do
+            case "${arg}" in
+                 LABEL=*) eval ${arg};;
+            esac
+        done
+        if [ ! -n "${LABEL}" ]; then
+            dmsetup create root${j} --table "0 $(blockdev --getsz ${root%?}${i}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${root%?}${i} 0"
+            let j=j+1
+        fi
+        let i=i+1
+        unset LABEL
+    done
+    if [ -n "${bcactive}" ]; then
+        mount /dev/dm-${bcactive: -1} /newroot
+    else
+        mount /dev/dm-0 /newroot
+    fi
     umount /mnt_secrets
 else
     # Net is not encrypted
