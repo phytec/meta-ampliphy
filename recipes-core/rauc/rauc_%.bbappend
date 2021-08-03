@@ -35,6 +35,11 @@ DOWNGRADE_BARRIER_VERSION ?= "${RAUC_BUNDLE_VERSION}"
 EMMC_DEV ??= "0"
 NAND_DEV ??= "0"
 
+ROOTFS_0_DEV ??= "/dev/mmcblk${EMMC_DEV}p2"
+ROOTFS_1_DEV ??= "/dev/mmcblk${EMMC_DEV}p4"
+ROOTFS_0_DEV_fileencryption ?= "/dev/dm-0"
+ROOTFS_1_DEV_fileencryption ?= "/dev/dm-1"
+
 # We want system.conf to be fetched before any of the following variables are
 # changed. This is needed because ${WORKDIR}/system.conf is overridden by
 # system_{emmc,nand}.conf and parsed using these variables afterwards. The
@@ -45,6 +50,8 @@ do_fetch[vardeps] += " \
     PREFERRED_PROVIDER_virtual/bootloader \
     EMMC_DEV \
     NAND_DEV \
+    ROOTFS_0_DEV \
+    ROOTFS_1_DEV \
     RAUC_KEYRING_FILE \
     MACHINEOVERRIDES \
 "
@@ -87,6 +94,8 @@ parse_system_conf() {
 			-e 's/@BOOTLOADER@/${@map_system_conf_bootloader(d)}/g' \
 			-e 's/@EMMC_DEV@/${EMMC_DEV}/g' \
 			-e 's/@NAND_DEV@/${NAND_DEV}/g' \
+			-e 's!@ROOTFS_0_DEV@!${ROOTFS_0_DEV}!g' \
+			-e 's!@ROOTFS_1_DEV@!${ROOTFS_1_DEV}!g' \
 			-e 's/@RAUC_KEYRING_FILE@/${@os.path.basename(d.getVar("RAUC_KEYRING_FILE"))}/g' \
 			${@contains_any_delim("MACHINEOVERRIDES", "ti33x rk3288", ":", "-e '/@IF_BOOTLOADER_SLOT@/,/@ENDIF_BOOTLOADER_SLOT@/d'", "", d)} \
 			-e '/@\(IF\|ENDIF\)[A-Z_]\+@/d' \

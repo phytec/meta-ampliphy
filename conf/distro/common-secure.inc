@@ -16,5 +16,9 @@ PROTECTION_SHIELD_LEVEL = "shieldlow"
 #password quality decide about the protection level
 PROTECTION_SHIELD_ROOT_PASSWORD ?= 'root'
 
+# File system encryption
+DISTRO_FEATURES += "fileencryption"
+OVERRIDES_append = ":fileencryption"
+
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
