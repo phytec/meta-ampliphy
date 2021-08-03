@@ -76,7 +76,7 @@ def map_system_conf_bootloader(d):
     }
     return bootloader_map[d.getVar("PREFERRED_PROVIDER_virtual/bootloader")]
 
-do_install_prepend() {
+parse_system_conf() {
 	# check for default system.conf from meta-rauc
 	shasum=$(sha256sum "${WORKDIR}/system.conf" | cut -d' ' -f1)
 	if [ "$shasum" = "27ec3e7595315fbb283d1a95e870f6a76a2c296b39866fd8ffb01669c1b39942" ]; then
@@ -94,6 +94,10 @@ do_install_prepend() {
 	fi
 
 	echo "${DOWNGRADE_BARRIER_VERSION}" > ${WORKDIR}/downgrade_barrier_version
+}
+
+python do_patch_append() {
+    bb.build.exec_func("parse_system_conf", d)
 }
 
 do_install_append() {
