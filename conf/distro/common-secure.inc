@@ -30,5 +30,9 @@ DISTRO_FEATURES:append:mx6 = " hardening"
 DISTRO_FEATURES:append:mx6ul = " hardening"
 OVERRIDES:append = ":hardening"
 
+# File system encryption
+DISTRO_FEATURES += "fileencryption"
+OVERRIDES:append = ":fileencryption"
+
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
