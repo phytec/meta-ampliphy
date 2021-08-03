@@ -30,14 +30,54 @@ SYSTEMD_AUTO_ENABLE_rauc-update-usb = "enable"
 # production system to a development mode by setting r0
 DOWNGRADE_BARRIER_VERSION ?= "${RAUC_BUNDLE_VERSION}"
 
+# Default eMMC and raw NAND device used in the system.conf. These variables must
+# be set in the machine configuration.
+EMMC_DEV ??= "0"
+NAND_DEV ??= "0"
+
+# Based on bb.utils.contains_any() but with a variable delimiter for splitting
+# the values in "variable".
+def contains_any_delim(variable, checkvalues, delimiter, truevalue, falsevalue, d):
+    val = d.getVar(variable)
+    if not val:
+        return falsevalue
+    val = set(val.split(delimiter))
+    if isinstance(checkvalues, str):
+        checkvalues = set(checkvalues.split())
+    else:
+        checkvalues = set(checkvalues)
+    if checkvalues & val:
+        return truevalue
+    return falsevalue
+
+# Returns the correct string for the key "bootloader" used in RAUC's system.conf
+# depending on the currently set bootloader in Yocto. See
+# https://rauc.readthedocs.io/en/latest/reference.html#system-section for all
+# supported values.
+def map_system_conf_bootloader(d):
+    bootloader_map = {
+        "u-boot": "uboot",
+        "u-boot-imx": "uboot",
+        "barebox": "barebox"
+    }
+    return bootloader_map[d.getVar("PREFERRED_PROVIDER_virtual/bootloader")]
+
 do_install_prepend() {
 	# check for default system.conf from meta-rauc
 	shasum=$(sha256sum "${WORKDIR}/system.conf" | cut -d' ' -f1)
 	if [ "$shasum" = "27ec3e7595315fbb283d1a95e870f6a76a2c296b39866fd8ffb01669c1b39942" ]; then
 		bbnote "No project specific system.conf has been provided. We use the Phytec RDK specific config files."
 		cp ${WORKDIR}/${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'system_emmc.conf', 'system_nand.conf', d)} ${WORKDIR}/system.conf
+		sed -i \
+			-e 's/@MACHINE@/${MACHINE}/g' \
+			-e 's/@BOOTLOADER@/${@map_system_conf_bootloader(d)}/g' \
+			-e 's/@EMMC_DEV@/${EMMC_DEV}/g' \
+			-e 's/@NAND_DEV@/${NAND_DEV}/g' \
+			-e 's/@RAUC_KEYRING_FILE@/${@os.path.basename(d.getVar("RAUC_KEYRING_FILE"))}/g' \
+			${@contains_any_delim("MACHINEOVERRIDES", "ti33x rk3288", ":", "-e '/@IF_BOOTLOADER_SLOT@/,/@ENDIF_BOOTLOADER_SLOT@/d'", "", d)} \
+			-e '/@\(IF\|ENDIF\)[A-Z_]\+@/d' \
+			${WORKDIR}/system.conf
 	fi
-	sed -i -e 's!@MACHINE@!${MACHINE}!g' ${WORKDIR}/system.conf
 
 	echo "${DOWNGRADE_BARRIER_VERSION}" > ${WORKDIR}/downgrade_barrier_version
 }
