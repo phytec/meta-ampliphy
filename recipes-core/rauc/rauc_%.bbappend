@@ -35,6 +35,20 @@ DOWNGRADE_BARRIER_VERSION ?= "${RAUC_BUNDLE_VERSION}"
 EMMC_DEV ??= "0"
 NAND_DEV ??= "0"
 
+# We want system.conf to be fetched before any of the following variables are
+# changed. This is needed because ${WORKDIR}/system.conf is overridden by
+# system_{emmc,nand}.conf and parsed using these variables afterwards. The
+# parsing, however, does not do anything unless the template
+# system_{emmc,nand}.conf is copied over before it, which only happens if the
+# default system.conf exists in WORKDIR.
+do_fetch[vardeps] += " \
+    PREFERRED_PROVIDER_virtual/bootloader \
+    EMMC_DEV \
+    NAND_DEV \
+    RAUC_KEYRING_FILE \
+    MACHINEOVERRIDES \
+"
+
 # Based on bb.utils.contains_any() but with a variable delimiter for splitting
 # the values in "variable".
 def contains_any_delim(variable, checkvalues, delimiter, truevalue, falsevalue, d):
