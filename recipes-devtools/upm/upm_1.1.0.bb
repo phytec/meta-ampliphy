@@ -23,7 +23,7 @@ SRC_URI[sha256sum] = "81d53b754c261075e7b58502bcfba6bd92a94399c9eece0ddd11a85d74
 
 inherit distutils3-base pkgconfig python3-dir cmake
 
-CFLAGS:append_edison = " -msse3 -mfpmath=sse"
+CFLAGS:append:edison = " -msse3 -mfpmath=sse"
 
 FILES:${PN}-doc += " ${datadir}/upm/examples/"
 RDEPENDS:${PN} += " mraa"
@@ -82,7 +82,7 @@ INSANE_SKIP:${PN}-java = "debug-files"
 
 export JAVA_HOME="${STAGING_DIR}/${BUILD_SYS}/usr/lib/jvm/openjdk-8-native"
 
-cmake_do_generate_toolchain_file_append() {
+cmake_do_generate_toolchain_file:append() {
   echo "
 set (JAVA_AWT_INCLUDE_PATH ${JAVA_HOME}/include CACHE PATH \"AWT include path\" FORCE)
 set (JAVA_AWT_LIBRARY ${JAVA_HOME}/jre/lib/amd64/libjawt.so CACHE FILEPATH \"AWT Library\" FORCE)

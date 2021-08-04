@@ -77,7 +77,7 @@ INSANE_SKIP:${PN}-java = "debug-files"
 
 export JAVA_HOME="${STAGING_DIR}/${BUILD_SYS}/usr/lib/jvm/openjdk-8-native"
 
-cmake_do_generate_toolchain_file_append() {
+cmake_do_generate_toolchain_file:append() {
   echo "
 set (JAVA_AWT_INCLUDE_PATH ${JAVA_HOME}/include CACHE PATH \"AWT include path\" FORCE)
 set (JAVA_AWT_LIBRARY ${JAVA_HOME}/jre/lib/amd64/libjawt.so CACHE FILEPATH \"AWT Library\" FORCE)
