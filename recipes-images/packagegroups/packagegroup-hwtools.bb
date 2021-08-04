@@ -26,7 +26,6 @@ RDEPENDS_${PN} = " \
     util-linux-blkdiscard \
     mtd-utils \
     mtd-utils-ubifs \
-    mtd-utils-misc \
     nandflipbits-wrapper \
     iproute2 \
     bumprts \
