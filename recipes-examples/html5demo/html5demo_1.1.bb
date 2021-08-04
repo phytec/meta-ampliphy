@@ -14,7 +14,7 @@ SRC_URI[sha256sum] = "443052543b5795520365cace52bc02cc91580b3b71577e9e415f2a9904
 
 inherit allarch systemd
 
-SYSTEMD_SERVICE_${PN} = "phytec-node-server.service"
+SYSTEMD_SERVICE:${PN} = "phytec-node-server.service"
 
 #install process is similar to bin_package.bbclass
 # Skip the unwanted steps
@@ -31,5 +31,5 @@ do_install () {
     install -Dm 0644 ${WORKDIR}/html5demo-env.sh ${D}${sysconfdir}/profile.d/html5demo-env.sh
 }
 
-FILES_${PN} = "/"
-INSANE_SKIP_${PN} = "file-rdeps"
+FILES:${PN} = "/"
+INSANE_SKIP:${PN} = "file-rdeps"

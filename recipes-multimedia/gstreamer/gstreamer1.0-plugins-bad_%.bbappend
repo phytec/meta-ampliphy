@@ -1,4 +1,4 @@
-PACKAGECONFIG_append = " kms"
-PACKAGECONFIG_append_mx6 = " opencv zbar"
-PACKAGECONFIG_append_mx6ul = " opencv zbar"
-PACKAGECONFIG_append_mx8m = " opencv zbar"
+PACKAGECONFIG:append = " kms"
+PACKAGECONFIG:append:mx6 = " opencv zbar"
+PACKAGECONFIG:append:mx6ul = " opencv zbar"
+PACKAGECONFIG:append:mx8m = " opencv zbar"

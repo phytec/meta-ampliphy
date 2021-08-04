@@ -1,8 +1,8 @@
 LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION', True))}"
-DEPENDS_append_secureboot += "phytec-dev-ca-native"
-do_patch_secureboot[depends] += "phytec-dev-ca-native:do_install"
+DEPENDS:append:secureboot += "phytec-dev-ca-native"
+do_patch:secureboot[depends] += "phytec-dev-ca-native:do_install"
 
-python do_env_append() {
+python do_env:append() {
     env_add(d, "boot/initrd",
 """#!/bin/sh
 path="/mnt/tftp"

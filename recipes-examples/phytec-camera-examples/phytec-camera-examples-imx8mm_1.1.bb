@@ -56,14 +56,14 @@ do_install() {
 	ln -s ${datadir}/phytec-opencv-examples ${D}${ROOT_HOME}/opencv-examples
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${ROOT_HOME}/ \
     ${datadir}/phytec-gstreamer-examples \
     ${datadir}/phytec-v4l2_c-examples \
     ${datadir}/phytec-opencv-examples \
 "
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     bash \
     python3 \
     media-ctl \

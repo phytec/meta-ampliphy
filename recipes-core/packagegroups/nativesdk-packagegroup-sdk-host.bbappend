@@ -1,1 +1,1 @@
-RDEPENDS_${PN} += "nativesdk-gettext"
+RDEPENDS:${PN} += "nativesdk-gettext"

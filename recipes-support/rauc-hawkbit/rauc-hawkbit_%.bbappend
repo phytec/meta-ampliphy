@@ -1,8 +1,8 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI += "file://config.cfg"
 
-do_patch_append() {
+do_patch:append() {
     bb.note("copying config.cfg from meta layer to source dir")
     import shutil
     src = d.getVar('WORKDIR') + "/config.cfg"

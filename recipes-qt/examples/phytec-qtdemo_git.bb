@@ -30,18 +30,18 @@ S = "${WORKDIR}/git"
 
 inherit qmake5 systemd
 
-SYSTEMD_SERVICE_${PN} = "phytec-qtdemo.service"
+SYSTEMD_SERVICE:${PN} = "phytec-qtdemo.service"
 
 PACKAGES += "${PN}-democontent ${PN}-videos"
 
-FILES_${PN} = "${datadir} ${bindir} ${systemd_unitdir} ${ROOT_HOME}/.config"
-FILES_${PN}-dbg = "${datadir}/${BPN}/.debug"
-FILES_${PN}-dev = "/usr/src"
-FILES_${PN}-democontent = "${datadir}/${BPN}/images"
-FILES_${PN}-video = "${datadir}/${BPN}/videos"
-LICENSE_${PN}-video = "CC-BY-3.0"
+FILES:${PN} = "${datadir} ${bindir} ${systemd_unitdir} ${ROOT_HOME}/.config"
+FILES:${PN}-dbg = "${datadir}/${BPN}/.debug"
+FILES:${PN}-dev = "/usr/src"
+FILES:${PN}-democontent = "${datadir}/${BPN}/images"
+FILES:${PN}-video = "${datadir}/${BPN}/videos"
+LICENSE:${PN}-video = "CC-BY-3.0"
 
-RDEPENDS_${PN} += "\
+RDEPENDS:${PN} += "\
     qtmultimedia-qmlplugins \
     qtvirtualkeyboard \
     qtquickcontrols2-qmlplugins \
@@ -60,13 +60,13 @@ RDEPENDS_${PN} += "\
     gstreamer1.0-plugins-good-videofilter \
 "
 
-RDEPENDS_${PN}_remove_mx6ul = "\
+RDEPENDS:${PN}:remove:mx6ul = "\
     qtmultimedia-qmlplugins \
 "
 
-RRECOMMENDS_${PN} += "${PN}-democontent ${PN}-videos"
+RRECOMMENDS:${PN} += "${PN}-democontent ${PN}-videos"
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${bindir}
     ln -sf ${datadir}/${BPN}/phytec-qtdemo ${D}${bindir}/QtDemo
     install -Dm 0644 ${WORKDIR}/${SERVICE} ${D}${systemd_system_unitdir}/phytec-qtdemo.service

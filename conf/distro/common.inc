@@ -1,8 +1,8 @@
 DISTRO_VERSION ??= "UNASSIGNED"
-DISTRO_VERSION_mx6 = "BSP-Yocto-Ampliphy-i.MX6-master"
-DISTRO_VERSION_mx6ul = "BSP-Yocto-Ampliphy-i.MX6UL-master"
-DISTRO_VERSION_ti33x = "BSP-Yocto-Ampliphy-AM335x-master"
-DISTRO_VERSION_rk3288 = "BSP-Yocto-Ampliphy-RK3288-master"
+DISTRO_VERSION:mx6 = "BSP-Yocto-Ampliphy-i.MX6-master"
+DISTRO_VERSION:mx6ul = "BSP-Yocto-Ampliphy-i.MX6UL-master"
+DISTRO_VERSION:ti33x = "BSP-Yocto-Ampliphy-AM335x-master"
+DISTRO_VERSION:rk3288 = "BSP-Yocto-Ampliphy-RK3288-master"
 VENDOR = "phytec"
 TARGET_VENDOR = "-${VENDOR}"
 
@@ -19,13 +19,13 @@ SDK_NAME = "${VENDOR}-${DISTRO}-${TCLIBC}-${SDK_ARCH}-${IMAGE_BASENAME}-${TUNE_P
 SDKPATH = "/opt/${VENDOR}-${DISTRO}/${SDK_VERSION}"
 
 #Overrides depend on Distro Features
-OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','secureboot',':secureboot', '',d)}"
+OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','secureboot',':secureboot', '',d)}"
 PROTECTION_SHIELD_LEVEL ??= "shieldlow"
-OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','protectionshield',':protectionshield', '',d)}"
-OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','protectionshield',':${PROTECTION_SHIELD_LEVEL}', '',d)}"
-OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','kernelmodsign',':kernelmodsign', '',d)}"
-OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','trustedkey',':trustedkey', '',d)}"
-OVERRIDES_append = "${@bb.utils.contains('DISTRO_FEATURES','trustedkey',':${TRUSTEDKEY_PREFERRED}', '',d)}"
+OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','protectionshield',':protectionshield', '',d)}"
+OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','protectionshield',':${PROTECTION_SHIELD_LEVEL}', '',d)}"
+OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','kernelmodsign',':kernelmodsign', '',d)}"
+OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','trustedkey',':trustedkey', '',d)}"
+OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','trustedkey',':${TRUSTEDKEY_PREFERRED}', '',d)}"
 
 #activate config checker
 INHERIT += "sanity"
@@ -52,13 +52,13 @@ INHERIT += "image-prelink"
 PACKAGE_CLASSES ?= "package_ipk"
 
 # All images build with the distribution get the version package
-IMAGE_INSTALL_append = " os-release"
+IMAGE_INSTALL:append = " os-release"
 PREFERRED_PROVIDER_os-release = "ampliphy-version"
 
 # Move listet checks from ERROR_QA to WARN_QA (defined in insane.bbclass)
 ERROR_TO_WARN_QA = "version-going-backwards"
-ERROR_QA_remove = "${ERROR_TO_WARN_QA}"
-WARN_QA_append = " ${ERROR_TO_WARN_QA}"
+ERROR_QA:remove = "${ERROR_TO_WARN_QA}"
+WARN_QA:append = " ${ERROR_TO_WARN_QA}"
 
 # suppress meta-virtualization useless warning when building
 # without virtualization distro feature

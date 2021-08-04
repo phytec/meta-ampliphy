@@ -19,10 +19,10 @@ S = "${WORKDIR}/git/modules/demo/src"
 
 inherit qmake5
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     qtbase \
     qtmultimedia-qmlplugins \
     qtquickcontrols2-qmlplugins \
     gstreamer1.0-plugins-bad \
 "
-FILES_${PN} = "${bindir}"
+FILES:${PN} = "${bindir}"

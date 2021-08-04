@@ -16,5 +16,5 @@ do_install() {
 	install -m 0755 nandflipbits_wrapper ${D}${sbindir}
 }
 
-RDEPENDS_${PN} = "mtd-utils"
-FILES_${PN} = "${sbindir}"
+RDEPENDS:${PN} = "mtd-utils"
+FILES:${PN} = "${sbindir}"

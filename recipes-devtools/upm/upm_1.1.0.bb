@@ -23,13 +23,13 @@ SRC_URI[sha256sum] = "81d53b754c261075e7b58502bcfba6bd92a94399c9eece0ddd11a85d74
 
 inherit distutils3-base pkgconfig python3-dir cmake
 
-CFLAGS_append_edison = " -msse3 -mfpmath=sse"
+CFLAGS:append_edison = " -msse3 -mfpmath=sse"
 
-FILES_${PN}-doc += " ${datadir}/upm/examples/"
-RDEPENDS_${PN} += " mraa"
+FILES:${PN}-doc += " ${datadir}/upm/examples/"
+RDEPENDS:${PN} += " mraa"
 
 # override this in local.conf to get a subset of bindings.
-# BINDINGS_pn-upm="python"
+# BINDINGS:pn-upm="python"
 # will result in only the python bindings being built/packaged.
 
 BINDINGS ?= "python nodejs"
@@ -49,36 +49,36 @@ PACKAGECONFIG[java] = "-DBUILDSWIGJAVA=ON, -DBUILDSWIGJAVA=OFF, swig-native open
 # Possible values for PYTHON_PN: "python" or "python3"
 
 # python-upm package containing Python bindings
-FILES_${PYTHON_PN}-${PN} = "${PYTHON_SITEPACKAGES_DIR} \
+FILES:${PYTHON_PN}-${PN} = "${PYTHON_SITEPACKAGES_DIR} \
                        ${datadir}/${BPN}/examples/python/ \
                        ${prefix}/src/debug/${BPN}/${PV}-${PR}/build/src/*/pyupm_* \
                       "
-RDEPENDS_${PYTHON_PN}-${PN} += "${PYTHON_PN} mraa"
-INSANE_SKIP_${PYTHON_PN}-${PN} = "debug-files"
+RDEPENDS:${PYTHON_PN}-${PN} += "${PYTHON_PN} mraa"
+INSANE_SKIP:${PYTHON_PN}-${PN} = "debug-files"
 
 
 ### Node ###
 
 # node-upm package containing Nodejs bindings
-FILES_node-${PN} = "${prefix}/lib/node_modules/ \
+FILES:node-${PN} = "${prefix}/lib/node_modules/ \
                     ${datadir}/${BPN}/examples/javascript/ \
                    "
-RDEPENDS_node-${PN} += "nodejs mraa"
-INSANE_SKIP_node-${PN} = "debug-files"
+RDEPENDS:node-${PN} += "nodejs mraa"
+INSANE_SKIP:node-${PN} = "debug-files"
 
 
 ### Java ###
 
 # upm-java package containing Java bindings
-FILES_${PN}-java = "${libdir}/libjava*.so \
+FILES:${PN}-java = "${libdir}/libjava*.so \
                     ${libdir}/java/ \
                     ${datadir}/${BPN}/examples/java/ \
                     ${prefix}/src/debug/${BPN}/${PV}-${PR}/build/src/*/*javaupm_* \
                     ${libdir}/.debug/libjava*.so \
                    "
 
-RDEPENDS_${PN}-java += "${@bb.utils.contains('PACKAGES', '${PN}-java', 'java2-runtime mraa-java', '', d)}"
-INSANE_SKIP_${PN}-java = "debug-files"
+RDEPENDS:${PN}-java += "${@bb.utils.contains('PACKAGES', '${PN}-java', 'java2-runtime mraa-java', '', d)}"
+INSANE_SKIP:${PN}-java = "debug-files"
 
 export JAVA_HOME="${STAGING_DIR}/${BUILD_SYS}/usr/lib/jvm/openjdk-8-native"
 

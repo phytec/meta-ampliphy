@@ -1,6 +1,6 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += "\
   file://grayxx.patch \
 "
-PACKAGECONFIG_append = " v4l2"
+PACKAGECONFIG:append = " v4l2"

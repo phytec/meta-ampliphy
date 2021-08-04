@@ -5,7 +5,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit packagegroup
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     usbutils \
     ethtool \
     i2c-tools \
@@ -44,8 +44,8 @@ RDEPENDS_${PN} = " \
 "
 
 # Those packages depend on a specific SoC architecture
-RDEPENDS_${PN}_append_arm = " arm-memspeed"
-RDEPENDS_${PN}_append_mx6 = " mmdc bbu"
-RDEPENDS_${PN}_append_mx6ul = " mmdc bbu"
-RDEPENDS_${PN}_append_rk3288 = " rkeeprom"
-RDEPENDS_${PN}_append_ti33x = " phyedit bbu"
+RDEPENDS:${PN}:append:arm = " arm-memspeed"
+RDEPENDS:${PN}:append:mx6 = " mmdc bbu"
+RDEPENDS:${PN}:append:mx6ul = " mmdc bbu"
+RDEPENDS:${PN}:append:rk3288 = " rkeeprom"
+RDEPENDS:${PN}:append:ti33x = " phyedit bbu"

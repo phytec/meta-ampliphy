@@ -1,33 +1,33 @@
 inherit kernel-module-split-blacklist
 include recipes-kernel/linux/mtd_test_packages.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/features:"
-SRC_URI_append = " file://mtd-tests.cfg file://rauc.cfg"
+FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
+SRC_URI:append = " file://mtd-tests.cfg file://rauc.cfg"
 KERNEL_MODULES_RDEPENDS_BLACKLIST += "${MTD_TEST_PACKAGES}"
 
-SRC_URI_append_secureboot = " \
+SRC_URI:append:secureboot = " \
     file://fs_encryption.cfg \
     file://ubifs_encryption.cfg \
     file://dm_crypt_devicemapper.cfg \
     file://crypto-api.cfg \
 "
 
-SRC_URI_append_trustedkey = " \
+SRC_URI:append_trustedkey = " \
     file://trustedkey-base.cfg \
 "
-SRC_URI_append_trustedtpm = " \
+SRC_URI:append_trustedtpm = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://trustedkey-tpm.cfg', 'file://trustedkey-tee.cfg', d)} \
 "
 
-SRC_URI_append_trustedtee = " \
+SRC_URI:append_trustedtee = " \
     file://trustedkey-tee.cfg \
 "
 
-SRC_URI_append_trustedcaam = " \
+SRC_URI:append_trustedcaam = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://trustedkey-caam.cfg', 'file://trustedkey-tee.cfg', d)} \
 "
 
-SRC_URI_append_kernelmodsign = " \
+SRC_URI:append_kernelmodsign = " \
     file://kernel-modsign.cfg \
 "
 

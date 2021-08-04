@@ -27,5 +27,5 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-provision-tpm2", "", d)} \
 "
 
-IMAGE_INSTALL_append_mx6 = " firmwared"
-IMAGE_INSTALL_append_mx6ul = " firmwared"
+IMAGE_INSTALL:append:mx6 = " firmwared"
+IMAGE_INSTALL:append:mx6ul = " firmwared"

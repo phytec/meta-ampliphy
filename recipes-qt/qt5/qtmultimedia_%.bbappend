@@ -1,1 +1,1 @@
-PACKAGECONFIG_append = " gstreamer"
+PACKAGECONFIG:append = " gstreamer"

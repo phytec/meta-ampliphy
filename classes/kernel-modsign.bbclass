@@ -3,10 +3,10 @@
 # Private key and cert for modules signing
 MODSIGN_KEY ?= "${CERT_PATH}/kernel_modsign/kernel_modsign.pem"
 
-DEPENDS_append_secureboot = " phytec-dev-ca-native"
-do_patch_secureboot[depends] += "phytec-dev-ca-native:do_install"
+DEPENDS:append:secureboot = " phytec-dev-ca-native"
+do_patch:secureboot[depends] += "phytec-dev-ca-native:do_install"
 
-do_configure_prepend() {
+do_configure:prepend() {
 	if [ -f "${MODSIGN_KEY}" ]; then
 		shasum=$(sha256sum "${MODSIGN_KEY}" | cut -d' ' -f1)
 		if [ "$shasum" = "f18d3d04bcbdbb8fcbb992bb9a1e65a4b4683d646ef6b50bca26f74fd06e5e7d" ]; then
@@ -18,6 +18,6 @@ do_configure_prepend() {
         fi
 }
 
-do_shared_workdir_append() {
+do_shared_workdir:append() {
 	cp kernel_modsign_key.pem $kerneldir/
 }

@@ -18,5 +18,5 @@ PV = "0.2+git${SRCPV}"
 inherit autotools ptest pkgconfig lib_package
 
 PACKAGES =+ "${PN}-test"
-FILES_${PN}-dbg += "${libdir}/vita-1300_remapper/.debug"
-FILES_${PN}-test += "${libdir}/vita-1300_remapper"
+FILES:${PN}-dbg += "${libdir}/vita-1300_remapper/.debug"
+FILES:${PN}-test += "${libdir}/vita-1300_remapper"

@@ -9,7 +9,7 @@ SRC_URI = " \
     https://download.phytec.de/Software/Linux/Applications/phytec-dev-ca-${PV}.tar.gz;name=tarball \
 "
 
-INSANE_SKIP_${PN} += "already-stripped"
+INSANE_SKIP:${PN} += "already-stripped"
 
 S = "${WORKDIR}"
 DEVCA = "phytec-dev-ca"
@@ -21,7 +21,7 @@ do_install() {
     fi
 }
 
-do_cleanall_append() {
+do_cleanall:append() {
     import shutil
     import os
     src_uri = (d.getVar('CERT_PATH') or "")

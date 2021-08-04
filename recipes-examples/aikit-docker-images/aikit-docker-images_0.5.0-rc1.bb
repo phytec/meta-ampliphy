@@ -16,7 +16,7 @@ SRC_URI[sha256sum] = "70afa7e2289b613501337cceb58358ce05eeb3fe36f23891dd0f0284dc
 
 inherit systemd
 
-SYSTEMD_SERVICE_${PN} = "aikit-docker-images.service"
+SYSTEMD_SERVICE:${PN} = "aikit-docker-images.service"
 
 EXCLUDE_FROM_SHLIBS = "1"
 INHIBIT_DEFAULT_DEPS = "1"
@@ -38,13 +38,13 @@ fakeroot do_install () {
     install -Dm 0755 ${WORKDIR}/aikit-docker-images.py ${D}${bindir}/aikit-docker-images
 }
 
-FILES_${PN} = " \
+FILES:${PN} = " \
     ${localstatedir}/lib/docker \
     ${systemd_system_unitdir}/* \
     ${bindir}/aikit-docker-images \
 "
-RDEPENDS_${PN} = "iotedge-cli iotedge-daemon docker python3"
-INSANE_SKIP_${PN} = " \
+RDEPENDS:${PN} = "iotedge-cli iotedge-daemon docker python3"
+INSANE_SKIP:${PN} = " \
     already-stripped \
     staticdev \
     dev-so \

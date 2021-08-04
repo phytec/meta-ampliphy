@@ -6,7 +6,7 @@ SUMMARY = "secureboot ramdisk required files for file encryption"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 SRC_URI = " \
     file://secureboot-fileencrypt.sh \
 "
@@ -20,10 +20,10 @@ do_install() {
 # Do not create debug/devel packages
 PACKAGES = "${PN}"
 
-FILES_${PN} = "/"
+FILES:${PN} = "/"
 
 # Runtime packages used in 'secureboot-ramdisk-init'
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     keyutils \
     util-linux \
     mtd-utils-ubifs \

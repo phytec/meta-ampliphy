@@ -31,4 +31,4 @@ do_install() {
     install -m 755 ${B}/cldemo ${D}${bindir}/cldemo
 }
 
-RDEPENDS_${PN} += "libopencl"
+RDEPENDS:${PN} += "libopencl"

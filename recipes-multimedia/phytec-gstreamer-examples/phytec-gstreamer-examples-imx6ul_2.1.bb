@@ -51,12 +51,12 @@ do_install() {
 	ln -s ${GSTREAMER_EXAMPLES_DIR} ${D}${ROOT_HOME}/gstreamer_examples
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${ROOT_HOME}/ \
     ${GSTREAMER_EXAMPLES_DIR} \
 "
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
 	bash \
 	gst-plugin-i2c \
 	media-ctl \

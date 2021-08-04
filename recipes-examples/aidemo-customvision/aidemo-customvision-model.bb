@@ -21,12 +21,12 @@ do_install() {
     cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${datadir}/${BPN}
 }
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     tensorflow \
     opencv \
     python3-pillow \
     python3-flask \
     python3-waitress \
 "
-FILES_${PN} = "${datadir}/${BPN}"
-INSANE_SKIP_${PN} = "file-rdeps"
+FILES:${PN} = "${datadir}/${BPN}"
+INSANE_SKIP:${PN} = "file-rdeps"

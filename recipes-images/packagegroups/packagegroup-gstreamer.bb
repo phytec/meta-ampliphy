@@ -5,7 +5,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit packagegroup
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     media-ctl \
     v4l-utils \
     gstreamer1.0 \
@@ -29,7 +29,7 @@ RDEPENDS_${PN} = " \
 "
 
 # Camera tools by PHYTEC
-RDEPENDS_${PN}_append_mx6 = " \
+RDEPENDS:${PN}:append:mx6 = " \
     phytec-camera-examples-imx6 \
     bvtest \
     gstreamer1.0-plugin-vita1300-remapper \
@@ -37,7 +37,7 @@ RDEPENDS_${PN}_append_mx6 = " \
     gstreamer1.0-plugins-bad-zbar \
 "
 
-RDEPENDS_${PN}_append_mx6ul = " \
+RDEPENDS:${PN}:append:mx6ul = " \
     phytec-gstreamer-examples-imx6ul \
     bvtest \
     phytec-v4l2-c-examples-imx6ul \
@@ -45,7 +45,7 @@ RDEPENDS_${PN}_append_mx6ul = " \
     gstreamer1.0-plugins-bad-zbar \
 "
 
-RDEPENDS_${PN}_append_mx8mq = " \
+RDEPENDS:${PN}:append:mx8mq = " \
     phytec-gstreamer-examples-imx8m \
     bvtest \
     phytec-v4l2-c-examples-imx8m \
@@ -56,7 +56,7 @@ RDEPENDS_${PN}_append_mx8mq = " \
     gstreamer1.0-plugins-bad \
 "
 
-RDEPENDS_${PN}_append_mx8mm = " \
+RDEPENDS:${PN}:append:mx8mm = " \
     phytec-camera-examples-imx8mm \
     bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
@@ -66,7 +66,7 @@ RDEPENDS_${PN}_append_mx8mm = " \
     gstreamer1.0-plugins-bad \
 "
 
-RDEPENDS_${PN}_append_mx8mp = " \
+RDEPENDS:${PN}:append:mx8mp = " \
     phytec-camera-examples-imx8mp \
     bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \

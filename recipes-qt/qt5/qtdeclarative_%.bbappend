@@ -1,1 +1,1 @@
-ALLOW_EMPTY_${PN}-plugins = "1"
+ALLOW_EMPTY:${PN}-plugins = "1"

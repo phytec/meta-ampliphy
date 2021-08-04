@@ -21,7 +21,7 @@ FITIMAGE_SLOT_ramdisk ?= "phytec-secureboot-ramdisk-image"
 FITIMAGE_SLOT_ramdisk[type] ?= "ramdisk"
 FITIMAGE_SLOT_ramdisk[fstype] ?= "cpio.gz"
 
-do_deploy_append() {
+do_deploy:append() {
     # check for problematic certificate setups
     shasum=$(sha256sum "${FITIMAGE_SIGN_KEY_PATH}" | cut -d' ' -f1)
     if [ "$shasum" = "fda2863c40b971a6909ff5c278d27988dc14361d10920299c51e9a1a163984dc" ]; then

@@ -14,7 +14,7 @@ DEPENDS = "libdrm python3-pybind11 libevdev"
 
 PACKAGES =+ "${PN}-python"
 
-FILES_${PN}-python += "${libdir}/python*/site-packages"
+FILES:${PN}-python += "${libdir}/python*/site-packages"
 
 S = "${WORKDIR}/git"
 

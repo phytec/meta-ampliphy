@@ -7,7 +7,7 @@ inherit features_check
 inherit useradd
 inherit systemd
 
-SYSTEMD_SERVICE_${PN} = "phytec-example-users.service"
+SYSTEMD_SERVICE:${PN} = "phytec-example-users.service"
 
 SRC_URI = " \
     file://99-phyapix.rules \
@@ -29,14 +29,14 @@ PROTECTIONSHIELD_PHYREADUSER_PASSWORD ??= ''
 #encrypted phyreaduser
 PROTECTIONSHIELD_PHYREADUSER_PASSWORD_shieldlow ??= '-P phyreaduser'
 
-GROUPADD_PARAM_${PN} = "\
+GROUPADD_PARAM:${PN} = "\
     --system phyapix; \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "--system tss", "", d)} \
 "
 
 USERADD_PACKAGES = "${PN}"
 
-USERADD_PARAM_${PN} = " \
+USERADD_PARAM:${PN} = " \
     --uid 1200 --system \
     --shell /bin/sh \
     --create-home \
@@ -69,14 +69,14 @@ do_install() {
     install -m 0755 ${S}/setpassword.sh ${D}${bindir}/setpassword
 }
 
-do_install_append_shieldhigh(){
+do_install:append_shieldhigh(){
     sed -i -e 's:SetRootPassword=yes:SetRootPassword=no:' ${D}${bindir}/setpassword
 }
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     sudo \
 "
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${systemd_unitdir}/system/phytec-example-users.service \
 "
 

@@ -31,9 +31,9 @@ inherit pkgconfig autotools
 
 DEPENDS += "gstreamer1.0-plugins-base gstreamer1.0"
 
-FILES_${PN} += "\
+FILES:${PN} += "\
   ${libdir}/gstreamer-*/*.so \
   ${datadir}/gstpseudocolor/ \
 "
 
-FILES_${PN}-dbg += "${libdir}/gstreamer-*/.debug"
+FILES:${PN}-dbg += "${libdir}/gstreamer-*/.debug"

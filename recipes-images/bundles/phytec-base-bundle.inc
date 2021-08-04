@@ -51,7 +51,7 @@ def bootloader_dependencies(d):
     else:
         return d.expand("${PREFERRED_PROVIDER_virtual/bootloader}")
 
-python do_configure_prepend() {
+python do_configure:prepend() {
     import shutil
     import subprocess
     import os
@@ -85,7 +85,7 @@ python do_configure_prepend() {
     os.symlink(tarpath, "%s/boot.tar.gz" % deploy_dir)
 }
 
-python do_configure_append() {
+python do_configure:append() {
     if os.path.isfile("%s/boot.tar.gz" % deploy_dir):
         os.remove("%s/boot.tar.gz" % deploy_dir)
 }
@@ -106,7 +106,7 @@ python do_emmc_boot() {
 
 addtask emmc_boot after do_fetch before do_unpack
 
-do_deploy_append() {
+do_deploy:append() {
     install -d ${DEPLOYDIR}
     install -m 0644 ${WORKDIR}/archives/${IMAGE_NAME}.boot.tar.gz ${DEPLOYDIR}/${IMAGE_NAME}.boot.tar.gz
     ln -sf ${IMAGE_NAME}.boot.tar.gz ${DEPLOYDIR}/boot.tar.gz

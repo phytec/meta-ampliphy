@@ -7,7 +7,7 @@ inherit packagegroup
 
 # wpa_supplicant and wireless-tools are already install in packagegroup-base-wifi
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     wpa-supplicant \
     iw \
     hostapd \

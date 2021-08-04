@@ -1,6 +1,6 @@
 # remove x264 from default PACKAGECONFIG,
 # because of commercial licensing
-PACKAGECONFIG_remove = "x264"
+PACKAGECONFIG:remove = "x264"
 
 # to be sure, we do not use any components with patents,
 # we also disable all individual component options
@@ -8,7 +8,7 @@ PACKAGECONFIG_remove = "x264"
 #   encoders, decoders, hwaccels, muxers, demuxers,
 #   parsers, bitstream filters, protocols, input devices,
 #   output devices, devices, filters
-EXTRA_OECONF_append = " \
+EXTRA_OECONF:append = " \
 --disable-everything \
 --enable-zlib \
 --enable-decoders \
@@ -24,4 +24,4 @@ EXTRA_OECONF_append = " \
 # codecs that require --enable-nonfree will be used
 #
 # FFmpeg itself is under LGPLv2.1+ and GPLv2+
-LICENSE_FLAGS_WHITELIST_append = " commercial_ffmpeg"
+LICENSE_FLAGS_WHITELIST:append = " commercial_ffmpeg"

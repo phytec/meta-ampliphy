@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 #This setup adds about 1.3MB to the 4.4MB of the all disabled configuration
 PACKAGECONFIG ??= "\
@@ -20,11 +20,11 @@ PACKAGECONFIG[gnutls] = "-Dgnutls=true,-Dgnutls=false,gnutls"
 PACKAGECONFIG[gnuefi] = "-Dgnu-efi=true,-Dgnu-efi=false,"
 PACKAGECONFIG[udev-hwdb] = "-Dhwdb=true,-Dhwdb=false,"
 
-RRECOMMENDS_${PN}_remove = "systemd-compat-units"
-RDEPENDS_${PN} += "systemd-conf"
+RRECOMMENDS:${PN}:remove = "systemd-compat-units"
+RDEPENDS:${PN} += "systemd-conf"
 
 # Should be fixed in poky recipe
-do_install_append () {
+do_install:append () {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'false', 'true', d)}; then
         # Distro features don't contain x11. Don't install tmpfiles
         # configuration for X11.
@@ -43,7 +43,7 @@ do_install_append () {
 # /var/volatile/tmp  in
 #    meta/recipes-core/systemd/systemd/00-create-volatile.conf
 # the line must be removed completely in tmp.conf.
-do_install_append() {
+do_install:append() {
     sed -i 's/^q \/var\/tmp.*$//g' \
         ${D}${exec_prefix}/lib/tmpfiles.d/tmp.conf
 }

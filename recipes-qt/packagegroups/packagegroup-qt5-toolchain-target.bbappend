@@ -1,1 +1,1 @@
-RDEPENDS_${PN}_remove = "qtcharts-dev qtcharts-mkspecs qtcharts-qmlplugins"
+RDEPENDS:${PN}:remove = "qtcharts-dev qtcharts-mkspecs qtcharts-qmlplugins"

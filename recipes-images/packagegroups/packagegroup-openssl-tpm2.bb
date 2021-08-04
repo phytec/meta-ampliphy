@@ -3,9 +3,9 @@ LICENSE = "MIT"
 
 inherit packagegroup
 
-SUMMARY_packagegroup-openssl-tpm2 = "openssl with TPM 2.0 support"
+SUMMARY:packagegroup-openssl-tpm2 = "openssl with TPM 2.0 support"
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     tpm2-tss \
     libtss2 \
     libtss2-mu \

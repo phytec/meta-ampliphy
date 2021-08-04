@@ -1,7 +1,7 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
-RDEPENDS_${PN} += " \
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
+RDEPENDS:${PN} += " \
     lighttpd-module-cgi \
 "
-RRECOMMENDS_${PN} += " \
+RRECOMMENDS:${PN} += " \
     php-cli \
 "

@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 set_password_rules(){
 
@@ -22,15 +22,15 @@ set_password_rules(){
     fi
 }
 
-do_install_append_shieldlow() {
+do_install:append_shieldlow() {
     set_password_rules
 }
 
-do_install_append_shieldmedium() {
+do_install:append_shieldmedium() {
     set_password_rules
 }
 
-do_install_append_shieldhigh() {
+do_install:append_shieldhigh() {
     if [ "${@bb.utils.filter('IMAGE_FEATURES', 'allow-root-login',d)}" ]; then
         bbwarn "!! Please deactivate allow-root-login for the Protectionshield Level High"
     fi

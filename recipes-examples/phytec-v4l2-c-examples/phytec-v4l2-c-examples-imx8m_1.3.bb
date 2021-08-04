@@ -38,11 +38,11 @@ do_install() {
     ln -s ${INSTALL_DIR} ${D}${ROOT_HOME}/v4l2_c-examples
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${ROOT_HOME}/ \
     ${datadir}/phytec-v4l2-c-examples \
 "
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     media-ctl \
     bvtest \
     phytec-gstreamer-examples-imx8m \

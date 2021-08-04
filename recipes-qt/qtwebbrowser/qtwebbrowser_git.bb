@@ -22,16 +22,16 @@ DEPENDS = "qtbase qtdeclarative qtwebengine"
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[desktop] = "-DDESKTOP_BUILD,,"
 
-SYSTEMD_SERVICE_${PN} = "${BPN}.service"
+SYSTEMD_SERVICE:${PN} = "${BPN}.service"
 
 EXTRA_QMAKEVARS_PRE += "INSTALL_PREFIX=${bindir}"
 
-do_install_append() {
+do_install:append() {
     install -Dm 0644 ${WORKDIR}/${BPN}.service ${D}${systemd_system_unitdir}/${BPN}.service
     install -Dm 0755 ${WORKDIR}/wait-for-server.sh ${D}${bindir}/wait-for-server.sh
 }
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     qtvirtualkeyboard \
     qtquickcontrols-qmlplugins \
     qtwebengine-qmlplugins \

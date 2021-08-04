@@ -3,9 +3,9 @@ LICENSE = "MIT"
 
 inherit packagegroup
 
-SUMMARY_packagegroup-pkcs11-tpm2 = "PKCS11 with TPM 2.0 support"
+SUMMARY:packagegroup-pkcs11-tpm2 = "PKCS11 with TPM 2.0 support"
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     opensc \
     libp11 \
     tpm2-pkcs11 \
