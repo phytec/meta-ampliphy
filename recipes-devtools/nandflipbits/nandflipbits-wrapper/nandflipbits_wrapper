@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PRGM=nandflipbits
-CMD=/usr/bin/$PRGM
+CMD=/usr/sbin/$PRGM
 
 OFFSET=0
 SKIP=8

@@ -27,7 +27,7 @@ RDEPENDS_${PN} = " \
     mtd-utils \
     mtd-utils-ubifs \
     mtd-utils-misc \
-    nandflipbits \
+    nandflipbits-wrapper \
     iproute2 \
     bumprts \
     serial-test \
