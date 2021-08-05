@@ -8,6 +8,7 @@ do_fetch[depends] += "phytec-dev-ca-native:do_install"
 RAUC_KEYRING_FILE ?= "${CERT_PATH}/main-ca/mainca-rsa.crt.pem"
 
 SRC_URI += " \
+    file://0001-src-update_handler-generate-only-valid-vfat-label-na.patch \
     file://10-update-usb.rules \
     file://update-usb@.service \
     file://update_usb.sh \
