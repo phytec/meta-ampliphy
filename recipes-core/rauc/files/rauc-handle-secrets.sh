@@ -32,25 +32,8 @@ done
 mkdir -p /tmp/backup_secrets
 mkdir -p /tmp/mnt_secrets
 if echo "$root" | grep -q "mmc"; then
-    #mmc or emmc => key example is in partition boot
-    count=$(ls ${root%?}* | wc -l)
-    i=1
-    secret=""
-    while [ $i -le $count ]
-    do
-        for arg in $(blkid ${root%?}${i}); do
-            case "${arg}" in
-                LABEL=*) eval ${arg};;
-            esac
-        done
-        if echo "$LABEL" | grep -q "boot"; then
-            secret=${root%?}${i}
-            i=$count
-        fi
-        let i=i+1
-    done
-
-    mount ${secret} /tmp/mnt_secrets
+    #mmc or emmc => key example are in the first partition
+    mount ${root%?}1 /tmp/mnt_secrets
 
     if [ $MODE -eq 1 ]; then
         # Backup Mode
