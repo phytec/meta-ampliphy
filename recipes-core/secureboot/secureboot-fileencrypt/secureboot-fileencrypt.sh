@@ -64,25 +64,8 @@ if [ "${rootfstype}" == "ubifs" ]; then
 fi
 
 if echo "$root" | grep -q "mmc"; then
-    #mmc or emmc => key example is in partition 3
-    count=$(ls ${root%?}* | wc -l)
-    i=1
-    secret=""
-    while [ $i -le $count ]
-    do
-        for arg in $(blkid ${root%?}${i}); do
-            case "${arg}" in
-                LABEL=*) eval ${arg};;
-            esac
-        done
-        if echo "$LABEL" | grep -q "boot"; then
-            secret=${root%?}${i}
-            i=$count
-        fi
-        let i=i+1
-    done
-    [ ${#secret} -eq 0 ] && do_login
-    mount ${secret} /mnt_secrets
+    #mmc or emmc => key example is in partition 1
+    mount ${root%?}1 /mnt_secrets
 
     mkdir -p /mnt_secrets/secrets
 
