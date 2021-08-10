@@ -18,15 +18,6 @@ SDK_VERSION := "${DISTRO_VERSION}"
 SDK_NAME = "${VENDOR}-${DISTRO}-${TCLIBC}-${SDK_ARCH}-${IMAGE_BASENAME}-${TUNE_PKGARCH}"
 SDKPATH = "/opt/${VENDOR}-${DISTRO}/${SDK_VERSION}"
 
-#Overrides depend on Distro Features
-OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','secureboot',':secureboot', '',d)}"
-PROTECTION_SHIELD_LEVEL ??= "shieldlow"
-OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','protectionshield',':protectionshield', '',d)}"
-OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','protectionshield',':${PROTECTION_SHIELD_LEVEL}', '',d)}"
-OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','kernelmodsign',':kernelmodsign', '',d)}"
-OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','trustedkey',':trustedkey', '',d)}"
-OVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES','trustedkey',':${TRUSTEDKEY_PREFERRED}', '',d)}"
-
 #activate config checker
 INHERIT += "sanity"
 
