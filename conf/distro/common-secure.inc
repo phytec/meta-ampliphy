@@ -25,5 +25,10 @@ TRUSTEDKEY_PREFERRED = "trustedtpm"
 TRUSTEDKEY_PREFERRED_mx6 = "trustedcaam"
 OVERRIDES_append = ":trustedkey:${TRUSTEDKEY_PREFERRED}"
 
+# Hardening Lite for kernel config
+DISTRO_FEATURES_append_mx6 = " hardening"
+DISTRO_FEATURES_append_mx6ul = " hardening"
+OVERRIDES_append = ":hardening"
+
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
