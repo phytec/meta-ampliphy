@@ -2,16 +2,19 @@
 DISTRO_FEATURES_append = " secureboot"
 DISTRO_FEATURES_NATIVE_append = " secureboot"
 DISTRO_FEATURES_NATIVESDK_append = " secureboot"
+OVERRIDES_append = ":secureboot"
 
 #kernel-modsign
 DISTRO_FEATURES_append = " kernelmodsign"
 DISTRO_FEATURES_NATIVE_append = " kernelmodsign"
 DISTRO_FEATURES_NATIVESDK_append = " kernelmodsign"
+OVERRIDES_append = ":kernelmodsign"
 
 #add protection shield level
 #shieldlow - shieldmedium - shieldhigh
 DISTRO_FEATURES_append = " protectionshield"
 PROTECTION_SHIELD_LEVEL = "shieldlow"
+OVERRIDES_append = ":protectionshield:${PROTECTION_SHIELD_LEVEL}"
 #user root password for shield low and midle
 #password quality decide about the protection level
 PROTECTION_SHIELD_ROOT_PASSWORD ?= 'root'
@@ -20,6 +23,7 @@ DISTRO_FEATURES_append = " trustedkey"
 #trustedtpm - trustedtee - trustedcaam
 TRUSTEDKEY_PREFERRED = "trustedtpm"
 TRUSTEDKEY_PREFERRED_mx6 = "trustedcaam"
+OVERRIDES_append = ":trustedkey:${TRUSTEDKEY_PREFERRED}"
 
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
