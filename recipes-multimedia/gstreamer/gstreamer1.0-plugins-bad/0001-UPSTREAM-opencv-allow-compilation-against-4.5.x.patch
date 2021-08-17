@@ -1,0 +1,28 @@
+From e07c201641fc6b498b11b2dd6e90d54b63333f51 Mon Sep 17 00:00:00 2001
+From: Nicola Murino <nicola.murino@gmail.com>
+Date: Sun, 18 Oct 2020 17:59:44 +0200
+Subject: [PATCH Hardknott+] UPSTREAM: opencv: allow compilation against 4.5.x
+
+Part-of: <https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/-/merge_requests/1709>
+(cherry picked from commit 77f28ee3e71d1c5bd8278967963b08b226515dd1)
+Signed-off-by: Cem Tenruh <c.tenruh@phytec.de>
+---
+ ext/opencv/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ext/opencv/meson.build b/ext/opencv/meson.build
+index 0b0b3fcf1..23f7ed039 100644
+--- a/ext/opencv/meson.build
++++ b/ext/opencv/meson.build
+@@ -65,7 +65,7 @@ if opencv_found
+     endif
+   endforeach
+ else
+-  opencv_dep = dependency('opencv4', version : ['>= 4.0.0', '< 4.5.0'], required : false)
++  opencv_dep = dependency('opencv4', version : ['>= 4.0.0', '< 4.6.0'], required : false)
+   opencv_found = opencv_dep.found()
+   if opencv_found
+     foreach h : libopencv4_headers
+-- 
+2.25.1
+
