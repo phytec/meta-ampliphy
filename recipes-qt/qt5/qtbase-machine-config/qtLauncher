@@ -16,9 +16,25 @@ if [ -e /dev/input/res-touchscreen ] && [ -e /dev/input/touchscreen0 ]; then
     export TSLIB_TSDEVICE="/dev/input/touchscreen0"
 fi
 
-# disable qt's audiosink if no audio present
+# Disable Qt audio, when there is no audio device present.
+# Two conditions must be met for successful audio, otherwise use
+# fakesink:
+# 1. at least one audio pcm device should be registered,
+# 2. one of these audio devices should be available:
+#    2.1 HDMI display is connected (audio over HDMI) or
+#    2.2 external audio codec is present (assume alsa-utils are
+#    installed in that case).
+
+# check if any pcm device is available
 ls -1 /dev/snd/pcm* > /dev/null 2>&1
-if [ "$?" != "0" ]; then
+pcm_status=$?
+# check if HDMI display is connected
+hdmi_status=`cat /sys/class/drm/*HDMI*/status | grep '^connected'`
+# check if alsa-utils are installed
+which aplay > /dev/null 2>&1
+alsa_status=$?
+
+if [ $pcm_status -ne 0 ] || ([ -z "$hdmi_status" ] && [ $alsa_status -ne 0 ]); then
     export QT_GSTREAMER_PLAYBIN_AUDIOSINK=fakesink
 fi
 
