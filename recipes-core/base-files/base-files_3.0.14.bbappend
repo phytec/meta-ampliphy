@@ -12,11 +12,6 @@ do_install_append() {
     install -m 0644 ${WORKDIR}/share/dot.profile ${D}${ROOT_HOME}/.profile
     install -m 0644 ${WORKDIR}/share/dot.bashrc ${D}${ROOT_HOME}/.bashrc
     install -Dm 0644 ${WORKDIR}/base-files.conf ${D}${sysconfdir}/tmpfiles.d/base-files.conf
-
-    # Set QT_GSTREAMER_PLAYBIN_AUDIOSINK=fakesink env variable on machines without audio capabilites
-    if ! ${@bb.utils.contains('MACHINE_FEATURES', 'alsa', 'true','false', d)}; then
-        echo "export QT_GSTREAMER_PLAYBIN_AUDIOSINK=fakesink" >> ${D}${sysconfdir}/profile.d/qt_setup_env.sh
-    fi
 }
 
 do_install_basefilesissue_append() {
