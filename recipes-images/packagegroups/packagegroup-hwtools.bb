@@ -35,7 +35,7 @@ RDEPENDS_${PN} = " \
     rs485test \
     libgpiod \
     phytool \
-    ${@bb.utils.contains("MACHINE_FEATURES", "can", "can-utils can-utils-cantest", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "can", "can-utils can-utils-cantest libsocketcan", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "resistivetouch", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
     kmsxx \
