@@ -1,5 +1,5 @@
 DISTRO_VERSION ??= "UNASSIGNED"
-DISTRO_VERSION_mx6 = "BSP-Yocto-Ampliphy-i.MX6-PD21.1-rc1"
+DISTRO_VERSION_mx6 = "BSP-Yocto-Ampliphy-i.MX6-PD21.1-rc2"
 DISTRO_VERSION_mx6ul = "BSP-Yocto-Ampliphy-i.MX6UL-hardknott"
 DISTRO_VERSION_ti33x = "BSP-Yocto-Ampliphy-AM335x-hardknott"
 DISTRO_VERSION_rk3288 = "BSP-Yocto-Ampliphy-RK3288-hardknott"
