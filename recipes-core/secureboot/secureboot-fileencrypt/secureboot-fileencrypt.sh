@@ -13,18 +13,18 @@ POWEROFF_TIME="10"
 set -e
 trap end EXIT
 end() {
-    if [ "$?" -ne 0 ]; then
-        printf "\n[ERROR] Key and Filesystem Initialization" 1>&2
-        printf "\nThe system will poweroff in %s seconds" "${POWEROFF_TIME}"
-        sleep "${POWEROFF_TIME}"
-        sync && poweroff -f
-        exit 0
-    fi
+	if [ "$?" -ne 0 ]; then
+		printf "\n[ERROR] Key and Filesystem Initialization" 1>&2
+		printf "\nThe system will poweroff in %s seconds" "${POWEROFF_TIME}"
+		sleep "${POWEROFF_TIME}"
+		sync && poweroff -f
+		exit 0
+	fi
 }
 
 do_login() {
-    sync
-    setsid cttyhack /bin/login
+	sync
+	setsid cttyhack /bin/login
 }
 
 # Main
@@ -42,16 +42,15 @@ sysctl -q -w kernel.printk=4
 export PATH=/usr/sbin:/sbin:$PATH
 
 for arg in $(cat /proc/cmdline); do
-    case "${arg}" in
+	case "${arg}" in
 	rescue=1|root=*|rootfstype=*) eval ${arg};;
-    esac
-    if echo ${arg} | grep -q "ubi.mtd"; then
-        ubimtd=$(echo ${arg##*ubi.mtd=})
-    fi
-    if echo ${arg} | grep -q "bootchooser.active"; then
-        bcactive=$(echo ${arg##*bootchooser.active=})
-    fi
-
+	esac
+	if echo ${arg} | grep -q "ubi.mtd"; then
+		ubimtd=$(echo ${arg##*ubi.mtd=})
+	fi
+	if echo ${arg} | grep -q "bootchooser.active"; then
+		bcactive=$(echo ${arg##*bootchooser.active=})
+	fi
 done
 
 # Translate "PARTUUID=..." to real device
@@ -59,50 +58,50 @@ root="$(findfs ${root})"
 
 # go to login, when ubifs
 if [ "${rootfstype}" == "ubifs" ]; then
-    printf "Please use FITImage without ramdisk for ubifs!\n"
-    do_login
+	printf "Please use FITImage without ramdisk for ubifs!\n"
+	do_login
 fi
 
 if echo "$root" | grep -q "mmc"; then
-    #mmc or emmc => key example is in partition 1
-    mount ${root%?}1 /mnt_secrets
+	#mmc or emmc => key example is in partition 1
+	mount ${root%?}1 /mnt_secrets
 
-    mkdir -p /mnt_secrets/secrets
+	mkdir -p /mnt_secrets/secrets
 
-    # go to login, when requested
-    [ -n "${rescue}" ] && do_login
+	# go to login, when requested
+	[ -n "${rescue}" ] && do_login
 
-    test -f /mnt_secrets/secrets/trusted_key.blob
-    keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
-    test -f /mnt_secrets/secrets/encrypted_key.blob
-    keyctl add encrypted rootfs  "load `cat /mnt_secrets/secrets/encrypted_key.blob`" @u
-    # mount all partitions without label (sign for encrypted partition)
-    count=$(ls ${root%?}* | wc -l)
-    i=1
-    j=0
-    while [ $i -le $count ]
-    do
-        for arg in $(blkid ${root%?}${i}); do
-            case "${arg}" in
-                 LABEL=*) eval ${arg};;
-            esac
-        done
-        if [ ! -n "${LABEL}" ]; then
-            dmsetup create root${j} --table "0 $(blockdev --getsz ${root%?}${i}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${root%?}${i} 0"
-            let j=j+1
-        fi
-        let i=i+1
-        unset LABEL
-    done
-    if [ -n "${bcactive}" ]; then
-        mount /dev/dm-${bcactive: -1} /newroot
-    else
-        mount /dev/dm-0 /newroot
-    fi
-    umount /mnt_secrets
+	test -f /mnt_secrets/secrets/trusted_key.blob
+	keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
+	test -f /mnt_secrets/secrets/encrypted_key.blob
+	keyctl add encrypted rootfs  "load `cat /mnt_secrets/secrets/encrypted_key.blob`" @u
+	# mount all partitions without label (sign for encrypted partition)
+	count=$(ls ${root%?}* | wc -l)
+	i=1
+	j=0
+	while [ $i -le $count ]
+	do
+		for arg in $(blkid ${root%?}${i}); do
+			case "${arg}" in
+				 LABEL=*) eval ${arg};;
+			esac
+		done
+		if [ ! -n "${LABEL}" ]; then
+			dmsetup create root${j} --table "0 $(blockdev --getsz ${root%?}${i}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${root%?}${i} 0"
+			let j=j+1
+		fi
+		let i=i+1
+		unset LABEL
+	done
+	if [ -n "${bcactive}" ]; then
+		mount /dev/dm-${bcactive: -1} /newroot
+	else
+		mount /dev/dm-0 /newroot
+	fi
+	umount /mnt_secrets
 else
-    # Net is not encrypted
-    mount ${root} /newroot
+	# Net is not encrypted
+	mount ${root} /newroot
 fi
 
 mount --move /dev /newroot/dev
