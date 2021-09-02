@@ -97,7 +97,7 @@ python do_emmc_boot() {
         "u-boot-imx": ["dd", d.expand("if=${DEPLOY_DIR_IMAGE}/imx-boot"),
                        d.expand("of=${DEPLOY_DIR_IMAGE}/emmc-boot.img"),
                        "bs=1k", d.expand("seek=${IMX_BOOT_SEEK_EMMC}")],
-        "barebox": ["ln", "-sf", "barebox.bin",
+        "barebox": ["ln", "-sf", d.getVar("BAREBOX_BINARY"),
                     d.expand("${DEPLOY_DIR_IMAGE}/emmc-boot.img")]
     }
     if "emmc" in d.expand("${MACHINE_FEATURES}"):
