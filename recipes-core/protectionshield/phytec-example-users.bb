@@ -3,7 +3,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 REQUIRED_DISTRO_FEATURES = "protectionshield"
-inherit distro_features_check
+inherit features_check
 inherit useradd
 inherit systemd
 
