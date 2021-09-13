@@ -44,6 +44,7 @@ RDEPENDS:${PN}:append:mx6ul = " \
     phytec-v4l2-c-examples-imx6ul \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
+    gstreamer1.0-plugins-imx \
 "
 
 RDEPENDS:${PN}:append:mx8mq = " \
