@@ -116,4 +116,4 @@ do_deploy:append() {
 RAUC_KEY_FILE ?= "${CERT_PATH}/rauc-intermediate/private/development-1.key.pem"
 RAUC_CERT_FILE ?= "${CERT_PATH}/rauc-intermediate/development-1.cert.pem"
 RAUC_KEYRING_FILE ?= "${CERT_PATH}/main-ca/mainca-rsa.crt.pem"
-BUNDLE_ARGS += " --intermediate=${CERT_PATH}/rauc-intermediate/ca.cert.pem"
+BUNDLE_ARGS += "--intermediate=${CERT_PATH}/rauc-intermediate/ca.cert.pem"
