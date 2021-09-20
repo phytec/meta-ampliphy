@@ -9,6 +9,7 @@ PACKAGECONFIG ??= "\
     lz4 \
     networkd \
     resolved \
+    timesyncd \
     sysusers \
     logind \
 "
