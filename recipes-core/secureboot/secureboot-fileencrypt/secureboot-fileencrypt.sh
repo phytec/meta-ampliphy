@@ -51,6 +51,9 @@ for arg in $(cat /proc/cmdline); do
 	if echo ${arg} | grep -q "bootchooser.active"; then
 		bcactive=$(echo ${arg##*bootchooser.active=})
 	fi
+	if echo ${arg} | grep -q "rauc.slot"; then
+		bcactive=$(echo ${arg##*rauc.slot=})
+	fi
 done
 
 # Translate "PARTUUID=..." to real device
@@ -71,10 +74,16 @@ if echo "$root" | grep -q "mmc"; then
 	# go to login, when requested
 	[ -n "${rescue}" ] && do_login
 
-	test -f /mnt_secrets/secrets/trusted_key.blob
-	keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
-	test -f /mnt_secrets/secrets/encrypted_key.blob
-	keyctl add encrypted rootfs  "load `cat /mnt_secrets/secrets/encrypted_key.blob`" @u
+	if test -f /mnt_secrets/secrets/trusted_key.blob; then
+		keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
+	fi
+	if test -f /mnt_secrets/secrets/encrypted_key.blob; then
+		keyctl add encrypted rootfs  "load `cat /mnt_secrets/secrets/encrypted_key.blob`" @u
+	fi
+	if test -f /mnt_secrets/secrets/tksecure_key.bb; then
+		caam-keygen import /mnt_secrets/secrets/tksecure_key.bb importkey
+		cat /mnt_secrets/secrets/importkey | keyctl padd logon rootfs: @u
+	fi
 	# mount all partitions without label (sign for encrypted partition)
 	count=$(ls ${root%?}* | wc -l)
 	i=1
@@ -87,7 +96,11 @@ if echo "$root" | grep -q "mmc"; then
 			esac
 		done
 		if [ ! -n "${LABEL}" ]; then
-			dmsetup create root${j} --table "0 $(blockdev --getsz ${root%?}${i}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${root%?}${i} 0"
+			if test -f /mnt_secrets/secrets/tksecure_key.bb; then
+				dmsetup create root${j} --table "0 $(blockdev --getsz ${root%?}${i}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${root%?}${i} 0"
+			else
+				dmsetup create root${j} --table "0 $(blockdev --getsz ${root%?}${i}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${root%?}${i} 0"
+			fi
 			let j=j+1
 		fi
 		let i=i+1
