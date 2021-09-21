@@ -32,3 +32,5 @@ RDEPENDS:${PN} = " \
     cryptsetup \
     lvm2 \
 "
+
+RDEPENDS:${PN}:append:mx8 = " keyctl-caam"
