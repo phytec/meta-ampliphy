@@ -19,11 +19,12 @@ OVERRIDES:append = ":protectionshield:${PROTECTION_SHIELD_LEVEL}"
 #password quality decide about the protection level
 PROTECTION_SHIELD_ROOT_PASSWORD ?= 'root'
 
-DISTRO_FEATURES:append = " trustedkey"
+DISTRO_FEATURES:append:mx6 = " trustedkey"
+DISTRO_FEATURES:append:mx6ul = " trustedkey"
 #trustedtpm - trustedtee - trustedcaam
-TRUSTEDKEY_PREFERRED = "trustedtpm"
-TRUSTEDKEY_PREFERRED:mx6 = "trustedcaam"
-OVERRIDES:append = ":trustedkey:${TRUSTEDKEY_PREFERRED}"
+TRUSTEDKEY_PREFERRED = "trustedcaam"
+OVERRIDES:append:mx6 = ":trustedkey:${TRUSTEDKEY_PREFERRED}"
+OVERRIDES:append:mx6ul = ":trustedkey:${TRUSTEDKEY_PREFERRED}"
 
 # Hardening Lite for kernel config
 DISTRO_FEATURES:append:mx6 = " hardening"
