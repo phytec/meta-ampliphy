@@ -25,3 +25,4 @@ IMAGE_INSTALL = " \
 
 IMAGE_INSTALL_append_mx6 = " firmwared"
 IMAGE_INSTALL_append_mx6ul = " firmwared"
+IMAGE_INSTALL_append_mx8m = " firmwared"
