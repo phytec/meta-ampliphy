@@ -42,6 +42,7 @@ RDEPENDS_${PN} = " \
     lmsensors-fancontrol \
     nfs-utils-client \
     dtc \
+    rauc-flash-nand \
 "
 
 # Those packages depend on a specific SoC architecture
