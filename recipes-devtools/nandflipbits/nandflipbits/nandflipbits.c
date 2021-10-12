@@ -15,6 +15,7 @@
  */
 
 #define PROGRAM_NAME "nandwrite"
+#define VERSION "1"
 
 #include <ctype.h>
 #include <errno.h>
