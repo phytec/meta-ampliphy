@@ -11,6 +11,5 @@ RDEPENDS_${PN} = " \
     wpa-supplicant \
     iw \
     hostapd \
-    linux-firmware-bcm4339 \
-    linux-firmware-bcm43430 \
+    laird-sterling-firmware \
 "
