@@ -27,6 +27,15 @@ do_login() {
 	setsid cttyhack /bin/login
 }
 
+# Load kernel module
+# $1 file name
+load_kernel_module() {
+	MODEXIST=$(find /lib/modules/$(uname -r) -type f -name "$1.ko*")
+	if [ -f "$MODEXIST" ]; then
+		modprobe $1
+	fi
+}
+
 # Main
 #------------------------------------------------------------------------------
 
@@ -71,8 +80,18 @@ if echo "$root" | grep -q "mmc"; then
 
 	mkdir -p /mnt_secrets/secrets
 
+	load_kernel_module tpm_tis_spi
 	# go to login, when requested
 	[ -n "${rescue}" ] && do_login
+
+	if test -f /mnt_secrets/secrets/trusted_key.config; then
+		source /mnt_secrets/secrets/trusted_key.config
+		load_kernel_module trusted source=${trustedsource}
+	else
+		load_kernel_module trusted
+	fi
+	load_kernel_module encrypted-keys
+	load_kernel_module dm-crypt
 
 	if test -f /mnt_secrets/secrets/trusted_key.blob; then
 		keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
