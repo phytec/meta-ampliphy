@@ -39,9 +39,8 @@ RDEPENDS_${PN}_append_mx6 = " \
 "
 
 RDEPENDS_${PN}_append_mx6ul = " \
-    phytec-gstreamer-examples-imx6ul \
+    phytec-camera-examples-imx6ul \
     bvtest \
-    phytec-v4l2-c-examples-imx6ul \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
     gstreamer1.0-plugins-imx \
