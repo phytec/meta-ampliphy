@@ -18,7 +18,7 @@ FILES:${PN}-python += "${libdir}/python*/site-packages"
 
 S = "${WORKDIR}/git"
 
-inherit python3native cmake update-alternatives
+inherit python3native cmake update-alternatives pkgconfig
 
 do_install() {
     install -d ${D}${bindir}
