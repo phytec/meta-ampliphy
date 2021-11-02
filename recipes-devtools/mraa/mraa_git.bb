@@ -1,7 +1,7 @@
 require mraa.inc
 
 #SRC_URI = "https://github.com/intel-iot-devkit/mraa/archive/v${PV}.tar.gz"
-SRC_URI = "git://github.com/intel-iot-devkit/mraa.git"
+SRC_URI = "git://github.com/intel-iot-devkit/mraa.git;branch=master;protocol=https"
 SRC_URI += "\
     file://0001-FindNodejs.cmake-parse-V8_MAJOR_VERSION-from-nodejs-.patch \
     file://0002-phyboard-mira-add-platform-support.patch \

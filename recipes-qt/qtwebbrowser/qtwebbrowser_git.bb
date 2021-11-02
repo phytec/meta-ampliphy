@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.GPLv3;md5=a40e2bb02b1ac431f461afd03ff9d1d6"
 inherit qmake5 systemd
 require recipes-qt/qt5/qt5-git.inc
 
-QT_GIT = "git://github.com/qtproject"
+QT_GIT = "git://github.com/qtproject;branch=master;protocol=https"
 QT_MODULE = "qt-apps-qtwebbrowser"
 QT_MODULE_BRANCH = "dev"
 
