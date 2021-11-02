@@ -7,7 +7,7 @@ PV = "1.0"
 PR = "r2"
 
 BRANCH = "master"
-SRC_URI = "gitsm://github.com/tomba/kmsxx.git;protocol=git;branch=${BRANCH}"
+SRC_URI = "gitsm://github.com/tomba/kmsxx.git;protocol=https;branch=${BRANCH}"
 SRCREV = "b121eeaf11b28c7cecfeb533499abf05130816b4"
 
 DEPENDS = "libdrm python3-pybind11 libevdev"
