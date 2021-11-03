@@ -1,0 +1,2 @@
+# Disable the deepest cpuidle state on boot
+SUBSYSTEM=="cpu", KERNEL=="cpu0", ATTR{cpuidle/state2/disable}="1"
