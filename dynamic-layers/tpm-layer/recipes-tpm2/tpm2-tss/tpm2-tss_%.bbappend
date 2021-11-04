@@ -1,12 +1,8 @@
-DEPENDS += " curl json-c"
-
-PACKAGECONFIG[fapi] = "--enable-fapi"
+PACKAGECONFIG[fapi] = "--enable-fapi,--disable-fapi,curl json-c"
 PACKAGECONFIG += "fapi"
 
-FILES:fapitools = "\
-    ${sysconfdir}/* \
-    ${sysconfdir}/tpm2-tss/* \
-    ${sysconfdir}/sysusers.d/* \
+FILES:${PN} += "\
+    ${sysconfdir}/tmpfiles.d \
+    ${sysconfdir}/tpm2-tss \
+    ${sysconfdir}/sysusers.d \
 "
-
-PACKAGES += "fapitools"
