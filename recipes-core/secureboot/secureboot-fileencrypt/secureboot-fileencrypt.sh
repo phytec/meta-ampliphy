@@ -86,9 +86,9 @@ if echo "$root" | grep -q "mmc"; then
 
 	if test -f /mnt_secrets/secrets/trusted_key.config; then
 		source /mnt_secrets/secrets/trusted_key.config
-		load_kernel_module trusted source=${trustedsource}
+		modprobe -q  trusted source=${trustedsource}
 	else
-		load_kernel_module trusted
+		modprobe -q  trusted
 	fi
 	load_kernel_module encrypted-keys
 	load_kernel_module dm-crypt
