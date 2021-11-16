@@ -29,7 +29,8 @@ DISTRO_FEATURES += "fileencryption"
 OVERRIDES_append = ":fileencryption"
 
 # Enable experimental OP-TEE support
-MACHINE_FEATURES_append_mx8m = " optee"
+MACHINE_FEATURES_append_mx8mm = " optee"
+MACHINE_FEATURES_append_mx8mn = " optee"
 
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
