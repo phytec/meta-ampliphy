@@ -10,6 +10,7 @@ IMAGE_INSTALL = " \
     packagegroup-core-boot \
     packagegroup-hwtools \
     packagegroup-benchmark \
+    packagegroup-update \
     packagegroup-userland \
     packagegroup-rt \
     ${@bb.utils.contains("COMBINED_FEATURES", "alsa", "packagegroup-audio", "", d)} \
