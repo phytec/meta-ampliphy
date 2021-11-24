@@ -10,7 +10,6 @@ IMAGE_INSTALL = " \
     packagegroup-core-boot \
     packagegroup-hwtools \
     packagegroup-benchmark \
-    packagegroup-update \
     packagegroup-userland \
     packagegroup-rt \
     ${@bb.utils.contains("COMBINED_FEATURES", "alsa", "packagegroup-audio", "", d)} \
@@ -22,6 +21,8 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-pkcs11-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-provision-tpm2", "", d)} \
 "
+
+IMAGE_INSTALL:append_update = " packagegroup-update"
 
 IMAGE_INSTALL:append:mx6 = " firmwared"
 IMAGE_INSTALL:append:mx6ul = " firmwared"
