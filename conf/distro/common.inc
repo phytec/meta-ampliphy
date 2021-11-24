@@ -62,6 +62,11 @@ WARN_QA_append = " ${ERROR_TO_WARN_QA}"
 # without virtualization distro feature
 SKIP_META_VIRT_SANITY_CHECK = "1"
 
+# Suppress meta-rauc warning when building without rauc distro feature. We only
+# activate this distro feature when needed in distros tailored for this
+# use-case.
+SKIP_META_RAUC_FEATURE_CHECK = "1"
+
 VIRTUAL-RUNTIME_dev_manager = "udev"
 VIRTUAL-RUNTIME_init_manager = "systemd"
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
