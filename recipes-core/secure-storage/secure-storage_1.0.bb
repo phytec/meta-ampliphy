@@ -31,6 +31,8 @@ RDEPENDS:${PN} = " \
     fscryptctl \
     cryptsetup \
     lvm2 \
+    kernel-module-dm-integrity \
+    kernel-module-dm-verity \
 "
 
 RDEPENDS:${PN}:append:mx8 = " keyctl-caam"

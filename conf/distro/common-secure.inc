@@ -25,8 +25,10 @@ DISTRO_FEATURES:append:mx6ul = " hardening"
 OVERRIDES:append = ":hardening"
 
 # File system encryption
-DISTRO_FEATURES += "fileencryption"
-OVERRIDES:append = ":fileencryption"
+DISTRO_FEATURES += "securestorage"
+# possible values: fileauthorenc , fileauthandenc
+SECURE_STORAGE_TYPE ??= "fileauthandenc"
+OVERRIDES:append = ":securestorage:${SECURE_STORAGE_TYPE}"
 
 # Enable experimental OP-TEE support
 MACHINE_FEATURES:append:mx8mm = " optee"
