@@ -10,5 +10,5 @@ require recipes-images/images/security/${_XTRA_SETUP}.inc
 IMAGE_INSTALL += " \
     ${@bb.utils.contains("DISTRO_FEATURES", "protectionshield", "phytec-example-users", "", d)} \
     rng-tools \
-    keyutils \
+    packagegroup-sks-kernelkeyring \
 "

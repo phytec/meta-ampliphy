@@ -19,8 +19,9 @@ include security/setrootpassword.inc
 
 PACKAGE_INSTALL = " \
     busybox \
+    packagegroup-sks-kernelkeyring \
     ${@bb.utils.contains("DISTRO_FEATURES", "securestorage", "secure-storage", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-provision-tpm2", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-provision-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis-spi", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis", "", d)} \
     rng-tools \

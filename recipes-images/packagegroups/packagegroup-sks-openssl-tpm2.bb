@@ -1,4 +1,5 @@
-DESCRIPTION = "Packagegroup for openssl and TPM2 userspace and utilities."
+DESCRIPTION =  "Packagegroup  Secure Key Storage for openssl and \
+                TPM2 userspace and utilities."
 LICENSE = "MIT"
 
 inherit packagegroup
