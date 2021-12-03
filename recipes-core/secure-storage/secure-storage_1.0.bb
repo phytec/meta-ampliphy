@@ -2,19 +2,19 @@
 # Author: Maik Otto <m.otto@phytec.de>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-SUMMARY = "secureboot ramdisk required files for file encryption"
+SUMMARY = "securestorage ramdisk required files for file authentication and encryption"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
 SRC_URI = " \
-    file://secureboot-fileencrypt.sh \
+    file://securestorage-init.sh \
 "
 
 S = "${WORKDIR}"
 
 do_install() {
-    install -m 0755 secureboot-fileencrypt.sh ${D}/init
+    install -m 0755 securestorage-init.sh ${D}/init
 }
 
 # Do not create debug/devel packages
@@ -22,7 +22,7 @@ PACKAGES = "${PN}"
 
 FILES_${PN} = "/"
 
-# Runtime packages used in 'secureboot-ramdisk-init'
+# Runtime packages used in 'securestorage-ramdisk-init'
 RDEPENDS_${PN} = " \
     keyutils \
     util-linux \
