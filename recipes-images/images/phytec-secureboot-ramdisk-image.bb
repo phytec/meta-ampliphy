@@ -19,7 +19,7 @@ include security/setrootpassword.inc
 
 PACKAGE_INSTALL = " \
     busybox \
-    secureboot-fileencrypt \
+    secure-storage \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-provision-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis-spi", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis", "", d)} \

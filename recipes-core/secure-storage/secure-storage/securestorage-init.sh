@@ -1,8 +1,8 @@
 #!/bin/sh
 #
-#  secureboot-fileencrypt
+#  securestorage-init.sh
 #
-#  Copyright (C) 2020 PHYTEC Messtechnik GmbH,
+#  Copyright (C) 2021 PHYTEC Messtechnik GmbH,
 #  Author: Maik Otto <m.otto@phytec.de>
 #
 #  Released under the MIT license (see COPYING.MIT for the terms)

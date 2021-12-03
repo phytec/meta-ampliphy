@@ -4,7 +4,7 @@ LICENSE = "MIT"
 
 require recipes-images/images/phytec-headless-image.bb
 require recipes-images/images/security/setrootpassword.inc
-_XTRA_SETUP = "${@bb.utils.contains("MACHINE_FEATURES", "emmc", "fileencryption", "simple-fitimage", d)}"
+_XTRA_SETUP = "${@bb.utils.contains("MACHINE_FEATURES", "emmc", "ramdisk-fitimage", "simple-fitimage", d)}"
 require recipes-images/images/security/${_XTRA_SETUP}.inc
 
 IMAGE_INSTALL += " \
