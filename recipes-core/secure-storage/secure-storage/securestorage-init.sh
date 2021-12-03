@@ -92,6 +92,7 @@ if echo "$root" | grep -q "mmc"; then
 	fi
 	load_kernel_module encrypted-keys
 	load_kernel_module dm-crypt
+	load_kernel_module dm-integrity
 
 	if test -f /mnt_secrets/secrets/trusted_key.blob; then
 		keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
@@ -112,23 +113,47 @@ if echo "$root" | grep -q "mmc"; then
 		for arg in $(blkid ${root%?}${i}); do
 			case "${arg}" in
 				 LABEL=*) eval ${arg};;
+				 TYPE=*) eval ${arg};;
 			esac
 		done
+
+		devroot=${root%?}${i}
+		if [ ! -n "${LABEL}" ] &&  [ -n "${TYPE}" ] && [ "${TYPE}" = "DM_integrity" ]; then
+			integritysetup open ${devroot} --integrity sha256 --journal-integrity sha256 introot${j}
+			unset LABEL
+			devroot=/dev/mapper/introot${j}
+			for arg in $(blkid ${devroot}); do
+				case "${arg}" in
+					LABEL=*) eval ${arg};;
+				esac
+			done
+		fi
 		if [ ! -n "${LABEL}" ]; then
 			if test -f /mnt_secrets/secrets/tksecure_key.bb; then
-				dmsetup create root${j} --table "0 $(blockdev --getsz ${root%?}${i}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${root%?}${i} 0"
+				dmsetup create root${j} --table "0 $(blockdev --getsz ${devroot}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${devroot} 0"
 			else
-				dmsetup create root${j} --table "0 $(blockdev --getsz ${root%?}${i}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${root%?}${i} 0"
+				dmsetup create root${j} --table "0 $(blockdev --getsz ${devroot}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${devroot} 0"
 			fi
 			let j=j+1
+		else
+			[ -n "${TYPE}" ] && [ "${TYPE}" = "DM_integrity" ] && let j=j+1
 		fi
 		let i=i+1
 		unset LABEL
+		unset TYPE
 	done
+	dmvalue=0
 	if [ -n "${bcactive}" ]; then
-		mount /dev/dm-${bcactive: -1} /newroot
+		dmvalue=${bcactive: -1}
+		if [ $(ls /dev/dm-* | wc -l) -eq 4 ]; then
+			dmvalue=1
+			[ ${bcactive: -1} -eq 1 ] && dmvalue=3
+		fi
+	fi
+	if [ $(ls /dev/dm-* | wc -l) -eq 0 ]; then
+		mount ${root} /newroot
 	else
-		mount /dev/dm-0 /newroot
+		mount /dev/dm-${dmvalue} /newroot
 	fi
 	umount /mnt_secrets
 else

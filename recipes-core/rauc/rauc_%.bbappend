@@ -38,8 +38,10 @@ NAND_DEV ??= "0"
 
 ROOTFS_0_DEV ??= "/dev/mmcblk${EMMC_DEV}p2"
 ROOTFS_1_DEV ??= "/dev/mmcblk${EMMC_DEV}p4"
-ROOTFS_0_DEV_fileencryption ?= "/dev/dm-0"
-ROOTFS_1_DEV_fileencryption ?= "/dev/dm-1"
+ROOTFS_0_DEV_fileauthorenc ?= "/dev/dm-0"
+ROOTFS_1_DEV_fileauthorenc ?= "/dev/dm-1"
+ROOTFS_0_DEV_fileauthandenc ?= "/dev/dm-1"
+ROOTFS_1_DEV_fileauthandenc ?= "/dev/dm-3"
 
 # We want system.conf to be fetched before any of the following variables are
 # changed. This is needed because ${WORKDIR}/system.conf is overridden by
