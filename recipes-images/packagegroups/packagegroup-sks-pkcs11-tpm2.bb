@@ -1,4 +1,4 @@
-DESCRIPTION = "Packagegroup for PKCS11 with TPM2."
+DESCRIPTION = "Packagegroup Secure Key Storage for PKCS11 with TPM2."
 LICENSE = "MIT"
 
 inherit packagegroup

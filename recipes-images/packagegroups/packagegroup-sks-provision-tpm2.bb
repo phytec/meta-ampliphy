@@ -1,4 +1,4 @@
-DESCRIPTION = "Packagegroup for TPM2 provisioning"
+DESCRIPTION = "Packagegroup Secure Key Storage for TPM2 provisioning"
 LICENSE = "MIT"
 
 inherit packagegroup

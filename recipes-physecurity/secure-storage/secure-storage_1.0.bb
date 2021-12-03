@@ -24,7 +24,6 @@ FILES:${PN} = "/"
 
 # Runtime packages used in 'securestorage-ramdisk-init'
 RDEPENDS:${PN} = " \
-    keyutils \
     util-linux \
     mtd-utils-ubifs \
     e2fsprogs \
@@ -34,5 +33,3 @@ RDEPENDS:${PN} = " \
     kernel-module-dm-integrity \
     kernel-module-dm-verity \
 "
-
-RDEPENDS:${PN}:append:mx8 = " keyctl-caam"
