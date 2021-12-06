@@ -6,6 +6,23 @@ SRC_URI:append = "file://print_issue.sh \
 "
 dirs755:append = " ${sysconfdir}/profile.d"
 
+do_fetch[vardeps] += "EMMC_DEV"
+
+parse_fstab() {
+    sed -i -e 's/@EMMC_DEV@/${EMMC_DEV}/g' ${WORKDIR}/fstab
+}
+clean_fstab() {
+    # /mnt/config does not exist when using a regular (non-RAUC) image
+    sed -i -e '/\/mnt\/config/d' ${WORKDIR}/fstab
+}
+
+python do_patch:append() {
+    if "rauc" in d.getVar("DISTRO_FEATURES").split():
+        bb.build.exec_func("parse_fstab", d)
+    else:
+        bb.build.exec_func("clean_fstab", d)
+}
+
 do_install:append() {
     install -m 0755 ${WORKDIR}/print_issue.sh ${D}${sysconfdir}/profile.d/print_issue.sh
     install -m 0755 ${WORKDIR}/qt_setup_env.sh ${D}${sysconfdir}/profile.d/qt_setup_env.sh
