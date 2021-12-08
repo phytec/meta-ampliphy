@@ -1,0 +1,32 @@
+From 8ed993fa9ebf8c981ae176eca7a6f74b9f171155 Mon Sep 17 00:00:00 2001
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Tue, 7 Dec 2021 09:44:49 +0100
+Subject: [PATCH] allocators: dmabuf: Don't use dmabuf synchronization on i.MX8
+ MM
+
+The i.MX 8MM seems to have coherent DMA for the CSI interface so adding
+synchronization reduces the performance significantly.
+
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+---
+ gst-libs/gst/allocators/gstdmabuf.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/gst-libs/gst/allocators/gstdmabuf.c b/gst-libs/gst/allocators/gstdmabuf.c
+index 5c482f9e15fe..0b23a07c8d1f 100644
+--- a/gst-libs/gst/allocators/gstdmabuf.c
++++ b/gst-libs/gst/allocators/gstdmabuf.c
+@@ -116,8 +116,10 @@ gst_dmabuf_allocator_init (GstDmaBufAllocator * allocator)
+   GstAllocator *alloc = GST_ALLOCATOR_CAST (allocator);
+ 
+   alloc->mem_type = GST_ALLOCATOR_DMABUF;
++  /*
+   alloc->mem_map_full = gst_dmabuf_mem_map;
+   alloc->mem_unmap_full = gst_dmabuf_mem_unmap;
++  */
+ }
+ 
+ /**
+-- 
+2.25.1
+
