@@ -23,3 +23,7 @@ IMAGE_INSTALL += "\
 IMAGE_INSTALL:remove:mx6ul = "\
     qt5-opengles2-test \
 "
+
+IMAGE_INSTALL:remove:mx7d = "\
+    qt5-opengles2-test \
+"

@@ -64,6 +64,10 @@ RDEPENDS:${PN}:remove:mx6ul = "\
     qtmultimedia-qmlplugins \
 "
 
+RDEPENDS:${PN}:remove:mx7d = "\
+    qtmultimedia-qmlplugins \
+"
+
 RRECOMMENDS:${PN} += "${PN}-democontent ${PN}-videos"
 
 do_install:append() {
