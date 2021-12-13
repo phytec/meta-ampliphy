@@ -10,8 +10,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
 SRC_URI = "git://github.com/bingmann/pmbw;protocol=https"
 
-PV = "0.6.2+git${SRCPV}"
-SRCREV = "4a3b37728060a8aba06fc83f157a1965088d79d6"
+PV = "0.6.3+git${SRCPV}"
+SRCREV = "1a2f3ff96e6c9b8f9fc85084909edde6afac34ce"
 
 S = "${WORKDIR}/git"
 
