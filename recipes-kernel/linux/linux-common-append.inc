@@ -2,7 +2,7 @@ inherit kernel-module-split-blacklist
 include recipes-kernel/linux/mtd_test_packages.inc
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
-SRC_URI:append = " file://mtd-tests.cfg file://rauc.cfg"
+SRC_URI:append = " file://mtd-tests.cfg"
 KERNEL_MODULES_RDEPENDS_BLACKLIST += "${MTD_TEST_PACKAGES}"
 
 SRC_URI:append:secureboot = " \
@@ -18,6 +18,9 @@ SRC_URI:append:secureboot = " \
 
 SRC_URI:append_kernelmodsign = " \
     file://kernel-modsign.cfg \
+"
+SRC_URI:append_update = " \
+    file://rauc.cfg \
 "
 
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'kernelmodsign', 'kernel-modsign', '', d)}
