@@ -2,6 +2,7 @@ inherit kernel-module-split-blacklist
 include recipes-kernel/linux/mtd_test_packages.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/features:"
+
 SRC_URI_append = " file://mtd-tests.cfg"
 KERNEL_MODULES_RDEPENDS_BLACKLIST += "${MTD_TEST_PACKAGES}"
 
@@ -15,7 +16,6 @@ SRC_URI_append_secureboot = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://trustedkey-caam.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'file://trustedkey-tee.cfg', '', d)} \
 "
-
 SRC_URI_append_kernelmodsign = " \
     file://kernel-modsign.cfg \
 "
