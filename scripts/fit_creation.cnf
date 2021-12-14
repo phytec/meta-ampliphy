@@ -1,7 +1,6 @@
 [req]
 prompt = no
 distinguished_name = dn
-req_extensions = ext
 input_password = PASSPHRASE
 # Extension to add when the -x509 option is used.
 x509_extensions     = v3_inter
@@ -14,9 +13,6 @@ O = SW
 L = Mainz
 C = DE
 ST = Rheinland-Pfalz
-
-[ext]
-#subjectAltName = DNS:www.phytec.de,DNS:phytec.de
 
 [ v3_inter ]
 # Extensions for a typical CA (`man x509v3_config`).
