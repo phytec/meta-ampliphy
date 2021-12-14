@@ -379,7 +379,8 @@ if $DO_CSTSIGN; then
     echo "Do you want start the SRK creation with hab4_pki_tree.sh (y/n)"
     read start_srkcreation
     if [ $start_srkcreation = "y" ]; then
-        $BASEDIR/hab4_pki_tree.sh
+        cp $BASEDIR/hab4_pki_tree.sh $BOOTLOODERPATH/keys/hab4_pki_tree.sh
+        $BOOTLOODERPATH/keys/hab4_pki_tree.sh
 
         cd $BOOTLOODERPATH/crts
 
@@ -456,7 +457,7 @@ if [ $RAUCKEY -eq 1 ]; then
         echo "RAUC-Image Path $RAUCPATH already exists"
         exit 1
     fi >&2
-    printf "Enter key length in bits for rauc PKI tree: "
+    printf "Enter RSA key length in bits for rauc PKI tree: "
     read kl
     # Confirm that a valid key length has been entered
     case $kl in
@@ -537,11 +538,11 @@ EOF
         -pkeyopt rsa_keygen_bits:$kl -pkeyopt rsa_keygen_pubexp:65537
 
     if [ -f ${MAINCAPATH}/mainca-rsa.crt.pem ]; then
-        echo "Main RSA CA ${MAINCAPATH}/mainca-rsa.crt  exist and will be used"
+        echo "Main RSA CA ${MAINCAPATH}/mainca-rsa.crt exist and will be used"
         openssl req -config $BASEDIR/scripts/rauc_creation.cnf -new \
         -sha256 -key $RAUCPATH/private/ca.key.pem -out $RAUCPATH/ca.csr.pem
         cd $MAINCAPATH
-        openssl ca -config openssl.cnf -batch \
+        openssl ca -config ${MAINCAPATH}/openssl.cnf -batch \
         -passin file:${MAINCAPATH}/keys/key_pass.txt \
         -in $RAUCPATH/ca.csr.pem -out $RAUCPATH/ca.cert.pem
     else
