@@ -9,8 +9,9 @@ end() {
 	fi
 }
 
+version="v1.0"
 usage="
-PHYTEC Install Script for Secure Key Storage
+PHYTEC Install Script ${version} for Secure Key Storage
 
 Usage:  $(basename $0) [PARAMETER] [ACTION]
 
@@ -27,6 +28,7 @@ One of the following action can be selected:
     -d | --deletekeystorage Erase the existing Secure Key Storage
     -l | --loadkeystorage   Load the existing Secure Key Storage
     -h | --help             This Help
+    -v | --version          The version of $(basename $0)
 "
 
 check_keysexist() {
@@ -110,7 +112,7 @@ erase_keystore() {
 #
 # Command line options
 #
-ARGS=$(getopt -n $(basename $0) -o n:dlh -l newkeystorage:,deletekeystorage,loadkeystorage,help -- "$@")
+ARGS=$(getopt -n $(basename $0) -o n:dlvh -l newkeystorage:,deletekeystorage,loadkeystorage,version,help -- "$@")
 VALID_ARGS=$?
 if [ "$VALID_ARGS" != "0" ]; then
 	echo "${usage}"
@@ -142,8 +144,12 @@ do
 		load_keystore
 		exit 0
 		;;
-	--help | -h)
+	-h | --help)
 		echo "${usage}"
+		exit 0
+		;;
+	-v | --version)
+		echo "${version}"
 		exit 0
 		;;
 	*)
