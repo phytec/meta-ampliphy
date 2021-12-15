@@ -29,7 +29,7 @@ The following PARAMETER must be set for new Secure Storage:
     -p | --flashpath <flash device>
     -s | --filesystem <path to root as tgz>
 
-The following PARAMETE can be set for new Secure Storage:
+The following PARAMETER can be set for new Secure Storage:
     -r | --rauc   (A/B system on the flash)
 "
 
