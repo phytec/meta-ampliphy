@@ -9,8 +9,9 @@ end() {
 	fi
 }
 
+version="v1.0"
 usage="
-PHYTEC Install Script for Secure Storage
+PHYTEC Install Script ${version} for Secure Storage
 
 Usage:  $(basename $0) [PARAMETER] [ACTION]
 
@@ -24,6 +25,7 @@ One of the following action can be selected:
                             enc     Encrypted root file system
                             intenc  Encrypted root file system with integrity
     -h | --help             This Help
+    -v | --version          The version of the $(basename $0)
 
 The following PARAMETER must be set for new Secure Storage:
     -p | --flashpath <flash device>
@@ -96,7 +98,7 @@ install_files() {
 #
 # Command line options
 #
-ARGS=$(getopt -n $(basename $0) -o p:s:rn:h -l flashpath:,filesystem:,rauc,newsecurestorage:,help -- "$@")
+ARGS=$(getopt -n $(basename $0) -o p:s:rn:vh -l flashpath:,filesystem:,rauc,newsecurestorage:,version,help -- "$@")
 VALID_ARGS=$?
 if [ "$VALID_ARGS" != "0" ]; then
 	echo "${usage}"
@@ -157,6 +159,10 @@ do
 		;;
 	-h | --help)
 		echo "${usage}"
+		exit 0
+		;;
+	-v | --version)
+		echo "${version}"
 		exit 0
 		;;
 	*)
