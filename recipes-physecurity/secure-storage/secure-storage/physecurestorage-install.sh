@@ -155,7 +155,7 @@ do
 				init_integrity "${FLASH_PATH}p${FLASH_LAYOUT[j]}"
 				echo "encrypted file system with integrity: /dev/dm-1"
 				init_enc "/dev/mapper/introotfs"
-				install_files $i "/dev/dm-1" ${FILE_SYSTEM}
+				install_files $j "/dev/dm-1" ${FILE_SYSTEM}
 				init_encclose
 				init_integrityclose
 				;;
