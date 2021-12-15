@@ -9,7 +9,7 @@ end() {
 	fi
 }
 
-version="v1.0"
+version="v1.1"
 usage="
 PHYTEC Install Script ${version} for Secure Storage
 
@@ -17,7 +17,9 @@ Usage:  $(basename $0) [PARAMETER] [ACTION]
 
 Example:
     $(basename $0) --flashpath /dev/mmcblk0
-    --filesystem /media/phytec-security-image.tgz --rauc --newsecurestorage intenc
+    --filesystem /media/phytec-security-image.tgz --rauc
+    --flashlayout 5,6
+    --newsecurestorage intenc
 
 One of the following action can be selected:
     -n | --newsecurestorage <value>   Create new Secure Storage of type
@@ -30,6 +32,9 @@ One of the following action can be selected:
 The following PARAMETER must be set for new Secure Storage:
     -p | --flashpath <flash device>
     -s | --filesystem <path to root as tgz>
+    -l | --flashlayout <value>    partion number for the rootfs partitions
+                       2,4        rootfs partitions are 2 and 4 (old)
+                       5,6        rootfs partitions are 5 and 6 (new)
 
 The following PARAMETER can be set for new Secure Storage:
     -r | --rauc   (A/B system on the flash)
@@ -37,6 +42,8 @@ The following PARAMETER can be set for new Secure Storage:
 
 FLASH_PATH=""
 FILE_SYSTEM=""
+FLASH_LAYOUT[0]=2
+FLASH_LAYOUT[1]=4
 DORAUC=1
 
 # Check, if keys exists
@@ -98,7 +105,7 @@ install_files() {
 #
 # Command line options
 #
-ARGS=$(getopt -n $(basename $0) -o p:s:rn:vh -l flashpath:,filesystem:,rauc,newsecurestorage:,version,help -- "$@")
+ARGS=$(getopt -n $(basename $0) -o p:s:l:rn:vh -l flashpath:,filesystem:,flashlayout:,rauc,newsecurestorage:,version,help -- "$@")
 VALID_ARGS=$?
 if [ "$VALID_ARGS" != "0" ]; then
 	echo "${usage}"
@@ -111,6 +118,10 @@ do
 	case ${1} in
 	-p | --flashpath) FLASH_PATH="${2}"; shift 2;;
 	-s | --filesystem) FILE_SYSTEM="${2}"; shift 2;;
+	-l | --flashlayout)
+		FLASH_LAYOUT[0]=$(echo ${2} | cut -d',' -f1);
+		FLASH_LAYOUT[1]=$(echo ${2} | cut -d',' -f2);
+		shift 2;;
 	-r | --rauc) DORAUC=2; shift 1;;
 	-n | --newsecurestorage)
 		if [ -z "${FLASH_PATH}" ] || [ -z "${FILE_SYSTEM}" ]; then
@@ -128,21 +139,21 @@ do
 		do
 			case ${2} in
 			int)
-				echo "file system with integrity: ${FLASH_PATH}p${flashpart}"
-				init_integrity "${FLASH_PATH}p${flashpart}"
+				echo "file system with integrity: ${FLASH_PATH}p${FLASH_LAYOUT[j]}"
+				init_integrity "${FLASH_PATH}p${FLASH_LAYOUT[j]}"
 				install_files $j "/dev/mapper/introotfs" ${FILE_SYSTEM}
 				init_integrityclose
 				;;
 			enc)
-				echo "encrypted file system: ${FLASH_PATH}p${flashpart}"
-				init_enc "${FLASH_PATH}p${flashpart}"
+				echo "encrypted file system: ${FLASH_PATH}p${FLASH_LAYOUT[j]}"
+				init_enc "${FLASH_PATH}p${FLASH_LAYOUT[j]}"
 				install_files $j "/dev/dm-0" ${FILE_SYSTEM}
 				init_encclose
 				;;
 			intenc)
-				echo "file system with integrity: ${FLASH_PATH}p${flashpart}"
-				init_integrity "${FLASH_PATH}p${flashpart}"
-				echo "encrypted file system with integrity: /dev/dm-$(expr ${flashpart} - 1)"
+				echo "file system with integrity: ${FLASH_PATH}p${FLASH_LAYOUT[j]}"
+				init_integrity "${FLASH_PATH}p${FLASH_LAYOUT[j]}"
+				echo "encrypted file system with integrity: /dev/dm-1"
 				init_enc "/dev/mapper/introotfs"
 				install_files $i "/dev/dm-1" ${FILE_SYSTEM}
 				init_encclose

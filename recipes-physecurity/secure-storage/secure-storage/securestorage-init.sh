@@ -114,6 +114,7 @@ if echo "$root" | grep -q "mmc"; then
 			case "${arg}" in
 				 LABEL=*) eval ${arg};;
 				 TYPE=*) eval ${arg};;
+				 PTTYPE=*) eval ${arg};;
 			esac
 		done
 
@@ -121,14 +122,16 @@ if echo "$root" | grep -q "mmc"; then
 		if [ ! -n "${LABEL}" ] &&  [ -n "${TYPE}" ] && [ "${TYPE}" = "DM_integrity" ]; then
 			integritysetup open ${devroot} --integrity sha256 --journal-integrity sha256 introot${j}
 			unset LABEL
+			unset PTTYPE
 			devroot=/dev/mapper/introot${j}
 			for arg in $(blkid ${devroot}); do
 				case "${arg}" in
 					LABEL=*) eval ${arg};;
+					PTTYPE=*) eval ${arg};;
 				esac
 			done
 		fi
-		if [ ! -n "${LABEL}" ]; then
+		if [ ! -n "${LABEL}" ] && [ ! -n "${PTTYPE}" ]; then
 			if test -f /mnt_secrets/secrets/tksecure_key.bb; then
 				dmsetup create root${j} --table "0 $(blockdev --getsz ${devroot}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${devroot} 0"
 			else
@@ -141,6 +144,7 @@ if echo "$root" | grep -q "mmc"; then
 		let i=i+1
 		unset LABEL
 		unset TYPE
+		unset PTTYPE
 	done
 	dmvalue=0
 	if [ -n "${bcactive}" ]; then
