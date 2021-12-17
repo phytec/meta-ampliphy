@@ -31,5 +31,4 @@ RDEPENDS:${PN} = " \
     cryptsetup \
     lvm2 \
     kernel-module-dm-integrity \
-    kernel-module-dm-verity \
 "
