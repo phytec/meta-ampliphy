@@ -13,7 +13,7 @@ DEPENDS = " \
     qtdeclarative \
 "
 
-SRC_URI = "git://git.phytec.de/aidemo-customvision"
+SRC_URI = "git://git.phytec.de/aidemo-customvision;branch=master"
 SRCREV = "3a933c00fc5d35ca344df3a90ab85ad8b1d2715a"
 S = "${WORKDIR}/git/modules/demo/src"
 
