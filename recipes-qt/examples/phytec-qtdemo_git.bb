@@ -18,7 +18,7 @@ PR = "r0"
 
 SERVICE = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'phytec-qtdemo-wl.service', 'phytec-qtdemo.service', d)}"
 SRC_URI = " \
-    git://git.phytec.de/phyRDKDemo \
+    git://git.phytec.de/phyRDKDemo;branch=master \
     file://PhyKitDemo.conf \
     file://${SERVICE} \
 "
