@@ -8,6 +8,7 @@ require recipes-qt/qt5/qt5-git.inc
 QT_GIT = "git://github.com/qtproject"
 QT_MODULE = "qt-apps-qtwebbrowser"
 QT_MODULE_BRANCH = "dev"
+QT_GIT_PROTOCOL = "https"
 
 SRC_URI += " \
     file://0002-qtwebbrowser-add-application-mode.patch \
