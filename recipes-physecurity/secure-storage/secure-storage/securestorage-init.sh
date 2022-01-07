@@ -2,7 +2,7 @@
 #
 #  securestorage-init.sh
 #
-#  Copyright (C) 2021 PHYTEC Messtechnik GmbH,
+#  Copyright (C) 2022 PHYTEC Messtechnik GmbH,
 #  Author: Maik Otto <m.otto@phytec.de>
 #
 #  Released under the MIT license (see COPYING.MIT for the terms)
@@ -152,6 +152,11 @@ if echo "$root" | grep -q "mmc"; then
 		if [ $(ls /dev/dm-* | wc -l) -eq 4 ]; then
 			dmvalue=1
 			[ ${bcactive: -1} -eq 1 ] && dmvalue=3
+		fi
+	else
+		dmvalue=0
+		if [ $(ls /dev/dm-* | wc -l) -eq 2 ]; then
+			dmvalue=1
 		fi
 	fi
 	if [ $(ls /dev/dm-* | wc -l) -eq 0 ]; then
