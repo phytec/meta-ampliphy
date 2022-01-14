@@ -10,7 +10,7 @@ SRC_URI += " \
     ${@bb.utils.contains("MACHINE_FEATURES", "can", "file://can0.service", "", d)} \
 "
 
-SRC_URI_append_mx6ul = "file://cpuidle-disable-state.rules"
+SRC_URI_append_mx6ul = " file://cpuidle-disable-state.rules"
 
 SYSTEMD_SERVICE_${PN} = "${@bb.utils.contains("MACHINE_FEATURES", "can", "can0.service", "", d)}"
 
