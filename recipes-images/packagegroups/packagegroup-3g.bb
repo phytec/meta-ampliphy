@@ -5,9 +5,4 @@ inherit packagegroup
 
 RDEPENDS:${PN} = " \
     modemmanager \
-    kernel-module-cdc-acm \
-    kernel-module-cdc-ether \
-    kernel-module-cdc-mbim \
-    kernel-module-cdc-ncm \
-    kernel-module-cdc-wdm \
 "
