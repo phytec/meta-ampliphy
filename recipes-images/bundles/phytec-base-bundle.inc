@@ -1,7 +1,8 @@
 SUMMARY = "PHYTEC rauc bundles from meta-ampliphy"
 HOMEPAGE = "http://www.phytec.de"
 
-DEP_BOOTLOADER = "${@bootloader_dependencies(d)}"
+DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
+DEP_BOOTLOADER:mx8 = "${IMAGE_BOOTLOADER}"
 DEPENDS += "phytec-dev-ca-native ${DEP_BOOTLOADER}"
 do_bundle[depends] += "phytec-dev-ca-native:do_install"
 do_emmc_boot[depends] += "${DEP_BOOTLOADER}:do_deploy"
@@ -38,15 +39,6 @@ def first_dtb(d):
 RAUC_SLOT_boot ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_boot[type] ?= "file"
 RAUC_SLOT_boot[file] ?= "boot.tar.gz"
-
-# Here we need to use the "imx-boot" image because it contains the bootloader and
-# other binaries instead of the sole bootloader "u-boot-imx".
-def bootloader_dependencies(d):
-    if d.expand("${PREFERRED_PROVIDER_virtual/bootloader}") == "u-boot-imx" and \
-       d.expand("${IMAGE_BOOTLOADER}") == "imx-boot":
-            return "imx-boot"
-    else:
-        return d.expand("${PREFERRED_PROVIDER_virtual/bootloader}")
 
 python do_configure:prepend() {
     import shutil
