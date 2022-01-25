@@ -80,23 +80,21 @@ python do_configure_append() {
 }
 
 python do_emmc_boot() {
-    import subprocess
+    if "emmc" in d.getVar("MACHINE_FEATURES"):
+        import subprocess
 
-    create_img = {
-        "imx-boot": ["dd", d.expand("if=${DEPLOY_DIR_IMAGE}/imx-boot"),
-                       d.expand("of=${DEPLOY_DIR_IMAGE}/emmc-boot.img"),
-                       "bs=1k", d.expand("seek=${IMX_BOOT_SEEK_EMMC}")],
-        "barebox": ["ln", "-sf", d.getVar("BAREBOX_BINARY"),
-                    d.expand("${DEPLOY_DIR_IMAGE}/emmc-boot.img")],
-        "u-boot-imx": ["dd", d.expand("if=${DEPLOY_DIR_IMAGE}/u-boot.imx"),
-                       d.expand("of=${DEPLOY_DIR_IMAGE}/emmc-boot.img"),
-                       "bs=1k", "seek=1"]
-    }
-    if "emmc" in d.expand("${MACHINE_FEATURES}"):
-        if  d.expand("${IMAGE_BOOTLOADER}") == "imx-boot":
-            subprocess.call(create_img["imx-boot"])
-        else:
-            subprocess.call(create_img[d.expand("${PREFERRED_PROVIDER_virtual/bootloader}")])
+        bootloader_filename = {
+            "barebox": d.getVar("BAREBOX_BINARY"),
+            "u-boot-imx": "u-boot.imx",
+            "imx-boot": "imx-boot"
+        }
+        cmd = d.expand("dd if=${DEPLOY_DIR_IMAGE}/%s " \
+                       "of=${DEPLOY_DIR_IMAGE}/emmc-boot.img " \
+                       "bs=1k seek=${BOOTLOADER_SEEK_EMMC}" \
+                       % bootloader_filename[d.getVar("DEP_BOOTLOADER")])
+
+        if subprocess.call(cmd.split()) != 0:
+            bb.error("Failed running command '%s'!" % cmd)
 }
 
 addtask emmc_boot after do_fetch before do_unpack
