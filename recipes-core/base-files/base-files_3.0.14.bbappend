@@ -9,7 +9,17 @@ dirs755:append = " ${sysconfdir}/profile.d"
 do_fetch[vardeps] += "EMMC_DEV"
 
 parse_fstab() {
-    sed -i -e 's/@EMMC_DEV@/${EMMC_DEV}/g' ${WORKDIR}/fstab
+    if echo "${MACHINE_FEATURES}" | grep -q "emmc"; then
+        sed -i \
+            -e 's/@CONFIG_DEV@/\/dev\/mmcblk${EMMC_DEV}p3/g' \
+            -e 's/@CONFIG_DEV_TYPE@/auto/g' \
+            ${WORKDIR}/fstab
+    else
+        sed -i \
+            -e 's/@CONFIG_DEV@/ubi0:config/g' \
+            -e 's/@CONFIG_DEV_TYPE@/ubifs/g' \
+            ${WORKDIR}/fstab
+    fi
 }
 clean_fstab() {
     # /mnt/config does not exist when using a regular (non-RAUC) image
