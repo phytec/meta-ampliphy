@@ -16,7 +16,7 @@ S = "${WORKDIR}/${BPN}-${PV}"
 # Depends on mraa which only supports x86 and ARM for now
 COMPATIBLE_HOST = "(x86_64.*|i.86.*|aarch64.*|arm.*)-linux"
 
-inherit distutils3-base cmake
+inherit setuptools3-base cmake
 
 # override this in local.conf to get needed bindings.
 # BINDINGS:pn-upm="python"
