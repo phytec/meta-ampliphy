@@ -14,6 +14,10 @@ FITIMAGE_SLOT_fdt ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 FITIMAGE_SLOT_fdt[type] ?= "fdt"
 FITIMAGE_SLOT_fdt[file] ?= "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])}"
 
+FITIMAGE_SLOT_fdto ?= "${PREFERRED_PROVIDER_virtual/kernel}"
+FITIMAGE_SLOT_fdto[type] ?= "fdto"
+FITIMAGE_SLOT_fdto[file] ?= "${@' '.join(os.path.basename(dtb) for dtb in d.getVar('KERNEL_DEVICETREE').split() if dtb.endswith('.dtbo'))}"
+
 def readfull_bin(path):
     content = None
     with open(path, 'rb') as fd:
