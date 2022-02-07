@@ -35,9 +35,6 @@ INHERIT += "buildhistory"
 #BUILDHISTORY_COMMIT = "0"
 INHERIT += "buildstats"
 
-# Prelink images
-INHERIT += "image-prelink"
-
 #run QA tests on recipes
 #INHERIT += "recipe_sanity"
 
