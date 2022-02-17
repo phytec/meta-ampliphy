@@ -41,6 +41,7 @@ RDEPENDS_${PN} = " \
     kmsxx \
     lmsensors-fancontrol \
     nfs-utils-client \
+    stressapptest \
 "
 
 # Those packages depend on a specific SoC architecture
