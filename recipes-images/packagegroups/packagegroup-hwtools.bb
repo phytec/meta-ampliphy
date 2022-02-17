@@ -43,6 +43,7 @@ RDEPENDS:${PN} = " \
     nfs-utils-client \
     dtc \
     rauc-flash-nand \
+    stressapptest \
 "
 
 # Those packages depend on a specific SoC architecture
