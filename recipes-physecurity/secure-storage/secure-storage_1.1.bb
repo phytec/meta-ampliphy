@@ -1,4 +1,4 @@
-# Copyright (C) 2020 PHYTEC Messtechnik GmbH,
+# Copyright (C) 2022 PHYTEC Messtechnik GmbH,
 # Author: Maik Otto <m.otto@phytec.de>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
@@ -21,14 +21,3 @@ do_install() {
 PACKAGES = "${PN}"
 
 FILES_${PN} = "/"
-
-# Runtime packages used in 'securestorage-ramdisk-init'
-RDEPENDS_${PN} = " \
-    util-linux \
-    mtd-utils-ubifs \
-    e2fsprogs \
-    fscryptctl \
-    cryptsetup \
-    lvm2 \
-    kernel-module-dm-integrity \
-"
