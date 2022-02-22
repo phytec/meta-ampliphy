@@ -15,6 +15,7 @@ require setrootpassword.inc
 PACKAGE_INSTALL = " \
     busybox \
     packagegroup-sks-kernelkeyring \
+    ${@bb.utils.contains("DISTRO_FEATURES", "securestorage", "packagegroup-secure-storage", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis-spi", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis", "", d)} \
     pv \
