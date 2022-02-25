@@ -2,7 +2,7 @@ SUMMARY = "PHYTEC rauc bundles from meta-ampliphy"
 HOMEPAGE = "http://www.phytec.de"
 
 DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
-DEP_BOOTLOADER:mx8 = "${IMAGE_BOOTLOADER}"
+DEP_BOOTLOADER:mx8-nxp-bsp = "${IMAGE_BOOTLOADER}"
 DEPENDS += "phytec-dev-ca-native ${DEP_BOOTLOADER}"
 do_bundle[depends] += "phytec-dev-ca-native:do_install"
 do_emmc_boot[depends] += "${DEP_BOOTLOADER}:do_deploy"

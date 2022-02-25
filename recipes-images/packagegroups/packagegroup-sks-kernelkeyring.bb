@@ -9,4 +9,4 @@ RDEPENDS:${PN} = " \
     kernel-module-encrypted-keys \
 "
 
-RDEPENDS:${PN}:append:mx8 = " keyctl-caam"
+RDEPENDS:${PN}:append:mx8-nxp-bsp = " keyctl-caam"

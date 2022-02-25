@@ -46,7 +46,7 @@ RDEPENDS:${PN}:append:mx6ul = " \
     gstreamer1.0-plugins-imx \
 "
 
-RDEPENDS:${PN}:append:mx8mq = " \
+RDEPENDS:${PN}:append:mx8mq-nxp-bsp = " \
     phytec-camera-examples-imx8mq \
     bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
@@ -56,7 +56,7 @@ RDEPENDS:${PN}:append:mx8mq = " \
     gstreamer1.0-plugins-bad \
 "
 
-RDEPENDS:${PN}:append:mx8mm = " \
+RDEPENDS:${PN}:append:mx8mm-nxp-bsp = " \
     phytec-camera-examples-imx8mm \
     bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
@@ -66,7 +66,7 @@ RDEPENDS:${PN}:append:mx8mm = " \
     gstreamer1.0-plugins-bad \
 "
 
-RDEPENDS:${PN}:append:mx8mp = " \
+RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " \
     phytec-camera-examples-imx8mp \
     bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
