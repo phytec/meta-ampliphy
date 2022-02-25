@@ -24,4 +24,4 @@ EXTRA_OECONF:append = " \
 # codecs that require --enable-nonfree will be used
 #
 # FFmpeg itself is under LGPLv2.1+ and GPLv2+
-LICENSE_FLAGS_WHITELIST:append = " commercial_ffmpeg"
+LICENSE_FLAGS_ACCEPTED:append = " commercial_ffmpeg"
