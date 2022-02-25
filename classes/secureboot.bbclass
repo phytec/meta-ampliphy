@@ -21,6 +21,9 @@ BOOTLOADER_SIGN_SRKFUSE_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/SRK_1_2_3_4_ta
 FITIMAGE_SIGN ?= "true"
 FITIMAGE_SIGN[type] = "boolean"
 
+FITIMAGE_NO_DTB_OVERLAYS ?= "false"
+FITIMAGE_NO_DTB_OVERLAYS[type] = "boolean"
+
 FITIMAGE_SIGNER ?= "customer"
 FITIMAGE_PUBKEY_SIGNATURE_PATH ?= "${WORKDIR}/signature_node.dtsi"
 
