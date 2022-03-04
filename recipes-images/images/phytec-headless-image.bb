@@ -24,6 +24,6 @@ IMAGE_INSTALL = " \
 
 IMAGE_INSTALL:append_update = " packagegroup-update"
 
-IMAGE_INSTALL:append:mx6 = " firmwared"
-IMAGE_INSTALL:append:mx6ul = " firmwared"
+IMAGE_INSTALL:append:mx6-generic-bsp = " firmwared"
+IMAGE_INSTALL:append:mx6ul-generic-bsp = " firmwared"
 IMAGE_INSTALL:append:mx8m-generic-bsp = " firmwared"

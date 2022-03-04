@@ -60,7 +60,7 @@ RDEPENDS:${PN} += "\
     gstreamer1.0-plugins-good-videofilter \
 "
 
-RDEPENDS:${PN}:remove:mx6ul = "\
+RDEPENDS:${PN}:remove:mx6ul-generic-bsp = "\
     qtmultimedia-qmlplugins \
 "
 

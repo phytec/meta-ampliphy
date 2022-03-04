@@ -26,7 +26,7 @@ IMAGE_INSTALL += "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)} \
 "
 
-IMAGE_INSTALL:remove:mx6ul = "\
+IMAGE_INSTALL:remove:mx6ul-generic-bsp = "\
     qt5-opengles2-test \
 "
 

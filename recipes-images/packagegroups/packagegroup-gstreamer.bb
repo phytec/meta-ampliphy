@@ -29,7 +29,7 @@ RDEPENDS:${PN} = " \
 "
 
 # Camera tools by PHYTEC
-RDEPENDS:${PN}:append:mx6 = " \
+RDEPENDS:${PN}:append:mx6-generic-bsp = " \
     phytec-camera-examples-imx6 \
     bvtest \
     gstreamer1.0-plugin-vita1300-remapper \
@@ -38,7 +38,7 @@ RDEPENDS:${PN}:append:mx6 = " \
     gstreamer1.0-plugins-bad \
 "
 
-RDEPENDS:${PN}:append:mx6ul = " \
+RDEPENDS:${PN}:append:mx6ul-generic-bsp = " \
     phytec-camera-examples-imx6ul \
     bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \

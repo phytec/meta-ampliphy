@@ -20,8 +20,8 @@ OVERRIDES:append = ":protectionshield:${PROTECTION_SHIELD_LEVEL}"
 PROTECTION_SHIELD_ROOT_PASSWORD ?= 'root'
 
 # Hardening Lite for kernel config
-DISTRO_FEATURES:append:mx6 = " hardening"
-DISTRO_FEATURES:append:mx6ul = " hardening"
+DISTRO_FEATURES:append:mx6-generic-bsp = " hardening"
+DISTRO_FEATURES:append:mx6ul-generic-bsp = " hardening"
 OVERRIDES:append = ":hardening"
 
 # File system encryption
