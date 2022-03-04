@@ -31,9 +31,9 @@ SECURE_STORAGE_TYPE ??= "fileauthandenc"
 OVERRIDES:append = ":securestorage:${SECURE_STORAGE_TYPE}"
 
 # Enable experimental OP-TEE support
-MACHINE_FEATURES:append:mx8mm = " optee"
-MACHINE_FEATURES:append:mx8mn = " optee"
-MACHINE_FEATURES:append:mx8mp = " optee"
+MACHINE_FEATURES:append:mx8mm-nxp-bsp = " optee"
+MACHINE_FEATURES:append:mx8mn-nxp-bsp = " optee"
+MACHINE_FEATURES:append:mx8mp-nxp-bsp = " optee"
 
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
