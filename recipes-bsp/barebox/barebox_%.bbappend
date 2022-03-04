@@ -1,4 +1,4 @@
-LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION', True))}"
+LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
 DEPENDS:append:secureboot = " phytec-dev-ca-native"
 do_patch:secureboot[depends] += "phytec-dev-ca-native:do_install"
 

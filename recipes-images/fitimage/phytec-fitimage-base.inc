@@ -27,7 +27,7 @@ def readfull_bin(path):
 
 python do_unpack:append() {
     import hashlib
-    hash_sha256 = hashlib.sha256(readfull_bin(d.getVar('FITIMAGE_SIGN_KEY_PATH',True))).hexdigest()
+    hash_sha256 = hashlib.sha256(readfull_bin(d.getVar('FITIMAGE_SIGN_KEY_PATH'))).hexdigest()
     if hash_sha256 == '1e3eb95fe6a7d1e45db761bff6eedafb9291661480e1a1ad10eb6f5b8b9961c1' or hash_sha256 ==  '6f92252aab834bbe8090e92c44f051b2c40db8e3953c8c26c04c14e7ae2db7d8':
         bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the fit-image. Please create your own keys!!")
 }

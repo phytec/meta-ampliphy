@@ -25,4 +25,4 @@ SRC_URI:append_update = " \
 
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'kernelmodsign', 'kernel-modsign', '', d)}
 
-LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION', True))}"
+LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
