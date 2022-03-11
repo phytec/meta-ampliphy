@@ -2,7 +2,7 @@
 # Author: Daniel Schultz <d.schultz@phytec.de>
 
 DESCRIPTION = "This program flips one or more bits of a NAND partition"
-LICENSE = "GPL-2.0"
+LICENSE = "GPL-2.0-only"
 SECTION = "devel"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-only;md5=801f80980d171dd6425610833a22dbe6"
 

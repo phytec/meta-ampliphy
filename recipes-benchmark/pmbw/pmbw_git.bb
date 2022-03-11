@@ -5,7 +5,7 @@ The tool pmbw is a set of assembler routines to measure the parallel memory \
 HOMEPAGE = "http://panthema.net/2013/pmbw/"
 SECTION = "benchmark/tests"
 AUTHOR = "Timo Bingmann"
-LICENSE = "GPLv3"
+LICENSE = "GPL-3.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
 SRC_URI = "git://github.com/bingmann/pmbw;protocol=https;branch=master"

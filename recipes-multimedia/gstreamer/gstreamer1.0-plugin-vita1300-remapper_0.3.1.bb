@@ -3,7 +3,7 @@ DESCRIPTION = "Gstreamer plugin using the VITA 1300 Sensor image data conversion
 SECTION = "multimedia"
 HOMEPAGE = "https://git.phytec.de/gst-vita-1300-remapper/"
 
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 BRANCH = "master"

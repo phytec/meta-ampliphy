@@ -9,7 +9,7 @@ DESCRIPTION = "Simple OpenCL Demo Program"
 HOMEPAGE = "http://svn.clifford.at/tools/trunk/examples/"
 SECTION = "extras"
 
-LICENSE = "GPLv2+"
+LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://cldemo.c;beginline=4;endline=18;md5=00379499873043e963fbafe29a874c64"
 
 DEPENDS += "virtual/opencl"
