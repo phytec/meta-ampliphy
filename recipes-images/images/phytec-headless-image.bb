@@ -22,7 +22,7 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-provision-tpm2", "", d)} \
 "
 
-IMAGE_INSTALL:append_update = " packagegroup-update"
+IMAGE_INSTALL:append:update = " packagegroup-update"
 
 IMAGE_INSTALL:append:mx6-generic-bsp = " firmwared"
 IMAGE_INSTALL:append:mx6ul-generic-bsp = " firmwared"
