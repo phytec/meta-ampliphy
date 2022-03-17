@@ -16,10 +16,10 @@ SRC_URI:append:secureboot = " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://trustedkey-caam.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'file://trustedkey-tee.cfg', '', d)} \
 "
-SRC_URI:append_kernelmodsign = " \
+SRC_URI:append:kernelmodsign = " \
     file://kernel-modsign.cfg \
 "
-SRC_URI:append_update = " \
+SRC_URI:append:update = " \
     file://rauc.cfg \
 "
 
