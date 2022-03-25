@@ -181,12 +181,12 @@ gst_pseudo_color_transform_caps (GstBaseTransform * trans,
 
       if (is_gray) {
         g_value_set_string (&val, "RGB");
-        gst_value_list:append_value (&list, &val);
+        gst_value_list_append_value (&list, &val);
         g_value_unset (&val);
       }
       if (is_rgb) {
         g_value_set_string (&val, "GRAY8");
-        gst_value_list:append_value (&list, &val);
+        gst_value_list_append_value (&list, &val);
         g_value_unset (&val);
       }
 
@@ -197,7 +197,7 @@ gst_pseudo_color_transform_caps (GstBaseTransform * trans,
 
     }
 
-    gst_caps:append_structure (to, structure);
+    gst_caps_append_structure (to, structure);
   }
 
   /* filter the 'to' caps (transform caps) against allowed caps on the pad */
