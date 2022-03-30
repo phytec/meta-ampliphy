@@ -3,12 +3,12 @@ HOMEPAGE = "http://www.phytec.de"
 
 DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
 DEP_BOOTLOADER:mx8-nxp-bsp = "${IMAGE_BOOTLOADER}"
-DEPENDS += "phytec-dev-ca-native ${DEP_BOOTLOADER}"
 do_bundle[depends] += "phytec-dev-ca-native:do_install"
 do_emmc_boot[depends] += "${DEP_BOOTLOADER}:do_deploy"
 
 inherit bundle
 
+DEPENDS += "phytec-dev-ca-native ${DEP_BOOTLOADER}"
 RAUC_BUNDLE_DESCRIPTION ?= "PHYTEC rauc bundle based on ${DISTRO_VERSION}"
 
 RAUC_BUNDLE_FORMAT ?= "verity"
