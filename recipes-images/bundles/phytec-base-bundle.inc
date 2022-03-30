@@ -8,7 +8,7 @@ do_emmc_boot[depends] += "${DEP_BOOTLOADER}:do_deploy"
 
 inherit bundle
 
-DEPENDS += "phytec-dev-ca-native ${DEP_BOOTLOADER}"
+DEPENDS += "phytec-dev-ca-native ${DEP_BOOTLOADER} libp11-native"
 RAUC_BUNDLE_DESCRIPTION ?= "PHYTEC rauc bundle based on ${DISTRO_VERSION}"
 
 RAUC_BUNDLE_FORMAT ?= "verity"
@@ -77,6 +77,18 @@ python do_configure_prepend() {
 python do_configure_append() {
     if os.path.isfile("%s/boot.tar.gz" % deploy_dir):
         os.remove("%s/boot.tar.gz" % deploy_dir)
+}
+
+do_bundle_prepend() {
+        # Workaround: Sets OPENSSL_ENGINES env var, so openssl library does not search in its own sysroot for engines,
+        # but rather in the sysroot of the recipe using do_bundle()
+
+        # dir name depends on the version, so best to extract it from openssl
+        engines_dir=`basename $( openssl version -e | sed -e 's/.*"\(.*\)".*/\1/g')`
+        export OPENSSL_ENGINES="${WORKDIR}/recipe-sysroot-native/usr/lib/${engines_dir}"
+        if [ -n "${RAUC_PKCS11_MODULE}" ] ; then
+            export RAUC_PKCS11_MODULE="${RAUC_PKCS11_MODULE}"
+        fi
 }
 
 python do_emmc_boot() {
