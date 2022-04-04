@@ -16,7 +16,7 @@ end() {
 	fi
 }
 
-version="v0.1"
+version="v0.2"
 SKS_PATH=@SKS_PATH@
 SKS_MOUNTPATH=@SKS_MOUNTPATH@
 SKS_SECRETFOLDER=@SKS_SECRETFOLDER@
@@ -60,6 +60,9 @@ do
 		if [ -z "${FLASH_PATH}" ] || [ -z "${FILE_SYSTEM}" ]; then
 			echo "Set flash path and filesystem first!"
 			exit 4
+		fi
+		if [ -d ${SKS_MOUNTPATH} ]; then
+			umount -q ${SKS_MOUNTPATH}
 		fi
 		dd if=${FILE_SYSTEM} of=${FLASH_PATH} bs=100M
 		sync
