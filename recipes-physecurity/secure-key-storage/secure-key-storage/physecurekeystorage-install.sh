@@ -9,7 +9,7 @@ end() {
 	fi
 }
 
-version="v1.0"
+version="v1.1"
 usage="
 PHYTEC Install Script ${version} for Secure Key Storage
 
@@ -49,6 +49,7 @@ init_keystore() {
 	trustedtpm|trustedtee|trustedcaam)
 		if [ $(expr match ${1} 'trustedtpm') -gt 0 ]; then
 			echo "Init TPM"
+			modprobe -q tpm_tis_spi
 			tpm2_clear
 			tpm2_createprimary --hierarchy=o --key-algorithm=rsa --key-context=prim.ctx
 			tpm2_evictcontrol --hierarchy=o --object-context=prim.ctx 0x81000001
@@ -85,6 +86,9 @@ init_keystore() {
 load_keystore() {
 	if test -f /mnt_secrets/secrets/trusted_key.config; then
 		source /mnt_secrets/secrets/trusted_key.config
+		if [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
+			modprobe -q tpm_tis_spi
+		fi
 		modprobe -q  trusted source=${trustedsource}
 	else
 		modprobe -q  trusted
@@ -108,6 +112,19 @@ erase_keystore() {
 	[ $(lsmod | grep trusted | wc -l) -ne 0 ] && rmmod trusted
 	rm /mnt_secrets/secrets/*
 }
+
+# Check directory and mount
+if [ ! -d /mnt_secrets ]; then
+	mkdir /mnt_secrets
+fi
+if [ $(mount | grep /mnt_secrets | wc -l) -eq 0 ]; then
+	echo "Error: No Partition is mounted to /mnt_secrets"
+	echo "Please install sdcard image to your emmc at first"
+	exit 4
+fi
+if [ ! -d /mnt_secrets/secrets ]; then
+	mkdir /mnt_secrets/secrets
+fi
 
 #
 # Command line options
