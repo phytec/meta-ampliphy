@@ -14,12 +14,14 @@ require setrootpassword.inc
 
 IMAGE_INSTALL = " \
     busybox \
+    ${MACHINE_EXTRA_RDEPENDS} \
     packagegroup-sks-kernelkeyring \
     ${@bb.utils.contains("DISTRO_FEATURES", "securestorage", "packagegroup-secure-storage", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis-spi", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis", "", d)} \
     pv \
 "
+PACKAGE_INSTALL:append:mx8 = " ${MACHINE_FIRMWARE}"
 
 # Remove some packages added via recommendations
 BAD_RECOMMENDATIONS += " \
