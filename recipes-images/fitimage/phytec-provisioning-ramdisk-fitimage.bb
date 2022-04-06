@@ -4,7 +4,7 @@ LICENSE = "MIT"
 
 require phytec-fitimage-base.inc
 
-FITIMAGE_SLOTS ?= "kernel fdt ramdisk"
+FITIMAGE_SLOTS ?= "kernel fdt fdto ramdisk"
 
 FITIMAGE_SLOT_ramdisk ?= "phytec-provisioning-ramdisk-image"
 FITIMAGE_SLOT_ramdisk[type] ?= "ramdisk"
