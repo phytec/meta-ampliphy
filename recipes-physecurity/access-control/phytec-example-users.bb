@@ -19,15 +19,15 @@ S = "${WORKDIR}"
 
 PROTECTIONSHIELD_PHYADMINUSER_PASSWORD ??= ''
 #encrypted phyadmin
-PROTECTIONSHIELD_PHYADMINUSER_PASSWORD_shieldlow ??= '-P phyadmin'
+PROTECTIONSHIELD_PHYADMINUSER_PASSWORD:shieldlow ??= '-P phyadmin'
 
 PROTECTIONSHIELD_PHYUSER_PASSWORD ??= ''
 #encrypted phyuser
-PROTECTIONSHIELD_PHYUSER_PASSWORD_shieldlow ??= '-P phyuser'
+PROTECTIONSHIELD_PHYUSER_PASSWORD:shieldlow ??= '-P phyuser'
 
 PROTECTIONSHIELD_PHYREADUSER_PASSWORD ??= ''
 #encrypted phyreaduser
-PROTECTIONSHIELD_PHYREADUSER_PASSWORD_shieldlow ??= '-P phyreaduser'
+PROTECTIONSHIELD_PHYREADUSER_PASSWORD:shieldlow ??= '-P phyreaduser'
 
 GROUPADD_PARAM:${PN} = "\
     --system phyapix; \
@@ -69,7 +69,7 @@ do_install() {
     install -m 0755 ${S}/setpassword.sh ${D}${bindir}/setpassword
 }
 
-do_install:append_shieldhigh(){
+do_install:append:shieldhigh(){
     sed -i -e 's:SetRootPassword=yes:SetRootPassword=no:' ${D}${bindir}/setpassword
 }
 
