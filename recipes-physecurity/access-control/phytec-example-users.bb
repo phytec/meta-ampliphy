@@ -18,16 +18,16 @@ SRC_URI = " \
 S = "${WORKDIR}"
 
 PROTECTIONSHIELD_PHYADMINUSER_PASSWORD ??= ''
-#encrypted phyadmin
-PROTECTIONSHIELD_PHYADMINUSER_PASSWORD:shieldlow ??= '-P phyadmin'
+#encrypted phyadmin with password phyadmin
+PROTECTIONSHIELD_PHYADMINUSER_PASSWORD:shieldlow ??= '-p 11jiH9dJQzEgY'
 
 PROTECTIONSHIELD_PHYUSER_PASSWORD ??= ''
-#encrypted phyuser
-PROTECTIONSHIELD_PHYUSER_PASSWORD:shieldlow ??= '-P phyuser'
+#encrypted phyuser with password phyuser
+PROTECTIONSHIELD_PHYUSER_PASSWORD:shieldlow ??= '-p V7IbT.QGVxEhU'
 
 PROTECTIONSHIELD_PHYREADUSER_PASSWORD ??= ''
-#encrypted phyreaduser
-PROTECTIONSHIELD_PHYREADUSER_PASSWORD:shieldlow ??= '-P phyreaduser'
+#encrypted phyreaduser with password phyreaduser
+PROTECTIONSHIELD_PHYREADUSER_PASSWORD:shieldlow ??= '-p 8I7kGtsDscIGI'
 
 GROUPADD_PARAM:${PN} = "\
     --system phyapix; \
