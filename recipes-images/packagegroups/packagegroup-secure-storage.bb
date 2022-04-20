@@ -4,7 +4,7 @@ LICENSE = "MIT"
 inherit packagegroup
 
 # Runtime packages used in 'securestorage-ramdisk-init'
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
     util-linux \
     cryptsetup \
     lvm2 \
