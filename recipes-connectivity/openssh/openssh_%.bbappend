@@ -22,15 +22,15 @@ set_password_rules(){
     fi
 }
 
-do_install:append_shieldlow() {
+do_install:append:shieldlow() {
     set_password_rules
 }
 
-do_install:append_shieldmedium() {
+do_install:append:shieldmedium() {
     set_password_rules
 }
 
-do_install:append_shieldhigh() {
+do_install:append:shieldhigh() {
     if [ "${@bb.utils.filter('IMAGE_FEATURES', 'allow-root-login',d)}" ]; then
         bbwarn "!! Please deactivate allow-root-login for the Protectionshield Level High"
     fi
