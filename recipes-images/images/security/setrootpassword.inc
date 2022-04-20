@@ -2,10 +2,11 @@
 # Released under the MIT license (see COPYING.MIT for the terms)
 inherit extrausers
 
-PROTECTION_SHIELD_ROOT_PASSWORD ??= 'root'
+# encrypted password for root
+PROTECTION_SHIELD_ROOT_ENCRYPTED_PASSWORD ??= 'PI9ZxRHV.sgB6'
 
 _ROOT_USER = ''
-_ROOT_USER:shieldlow = 'usermod -P ${PROTECTION_SHIELD_ROOT_PASSWORD} root'
+_ROOT_USER:shieldlow = 'usermod -p ${PROTECTION_SHIELD_ROOT_ENCRYPTED_PASSWORD} root'
 #no login available
 _ROOT_USER:shieldhigh = 'usermod -L root'
 EXTRA_USERS_PARAMS += "\
