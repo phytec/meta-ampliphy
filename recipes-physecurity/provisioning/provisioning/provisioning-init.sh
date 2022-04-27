@@ -28,6 +28,15 @@ do_login() {
 	setsid cttyhack /bin/login
 }
 
+# Load kernel module
+# $1 file name
+load_kernel_module() {
+	MODEXIST=$(find /lib/modules/$(uname -r) -type f -name "$1.ko*")
+	if [ -f "$MODEXIST" ]; then
+		modprobe $1
+	fi
+}
+
 mkdir -p /proc /sys /dev /newroot
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
@@ -38,6 +47,8 @@ LOGLEVEL="$(sysctl -n kernel.printk)"
 sysctl -q -w kernel.printk=4
 
 export PATH=/usr/sbin:/sbin:$PATH
+
+load_kernel_module tpm_tis_spi
 
 if test -b ${SKS_PATH}; then
 	printf "\nMount ${SKS_PATH} to ${SKS_MOUNTPATH} \n" 1>&2
