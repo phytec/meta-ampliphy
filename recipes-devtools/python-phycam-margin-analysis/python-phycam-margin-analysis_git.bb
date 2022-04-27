@@ -5,10 +5,10 @@ LIC_FILES_CHKSUM = "file://COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 SRC_URI = "git://github.com/phytec/python-phycam-margin-analysis.git;protocol=https;branch=main"
 
 PV = "1.0+git${SRCPV}"
-SRCREV = "2ce2d0295a8b6df50000873315644b9c56a0a690"
+SRCREV = "c086f3b279cdacca90eaa4a64e7104387c27611d"
 
 S = "${WORKDIR}/git"
 
 inherit setuptools3
 
-RDEPENDS:${PN} += "python3-smbus python3-core"
+RDEPENDS:${PN} += "python3-smbus2 python3-core"
