@@ -4,6 +4,8 @@ LICENSE = "MIT"
 
 require recipes-images/images/phytec-headless-image.bb
 require recipes-images/images/security/setrootpassword.inc
+require recipes-images/images/security/phytec-pkcs11-tools.inc
+
 _XTRA_SETUP = "${@bb.utils.contains("MACHINE_FEATURES", "emmc", "ramdisk-fitimage", "simple-fitimage", d)}"
 require recipes-images/images/security/${_XTRA_SETUP}.inc
 
