@@ -3,6 +3,8 @@ DESCRIPTION = "no graphics support in this image"
 LICENSE = "MIT"
 inherit core-image
 
+require recipes-images/images/security/phytec-tpm2-device.inc
+
 IMAGE_ROOTFS_SIZE ?= "8192"
 
 IMAGE_INSTALL = " \
