@@ -12,7 +12,7 @@ IMAGE_FSTYPES = "cpio.gz"
 
 require setrootpassword.inc
 
-PACKAGE_INSTALL = " \
+IMAGE_INSTALL = " \
     busybox \
     packagegroup-sks-kernelkeyring \
     ${@bb.utils.contains("DISTRO_FEATURES", "securestorage", "packagegroup-secure-storage", "", d)} \
