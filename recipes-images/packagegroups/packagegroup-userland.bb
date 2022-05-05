@@ -15,4 +15,6 @@ RDEPENDS:${PN} = " \
     crda \
     kbd \
     kbd-keymaps \
+    opkg \
+    opkg-utils \
 "
