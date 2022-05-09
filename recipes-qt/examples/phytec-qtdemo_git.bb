@@ -46,7 +46,6 @@ FILES:${PN} = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '/home/weston/.config', '${ROOT_HOME}/.config', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '${nonarch_base_libdir}', '', d)} \
 "
-FILES:${PN} = "${datadir} ${bindir} ${systemd_unitdir} ${ROOT_HOME}/.config"
 FILES:${PN}-dbg = "${datadir}/${BPN}/.debug"
 FILES:${PN}-dev = "/usr/src"
 FILES:${PN}-democontent = "${datadir}/${BPN}/images"
