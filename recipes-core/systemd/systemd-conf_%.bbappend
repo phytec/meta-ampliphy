@@ -12,6 +12,7 @@ SRC_URI += " \
 "
 
 SRC_URI_append_mx6ul = " file://cpuidle-disable-state.rules"
+SRC_URI_append_mx8 = " file://45-disable-multitouch-mouse.rules"
 
 do_install_append() {
     install -d ${D}${systemd_unitdir}/network/
@@ -29,6 +30,11 @@ do_install_append() {
     if [ -e ${WORKDIR}/cpuidle-disable-state.rules ]; then
         install -d ${D}${sysconfdir}/udev/rules.d
         install -m 0644 ${WORKDIR}/cpuidle-disable-state.rules ${D}${sysconfdir}/udev/rules.d/
+    fi
+
+    if [ -e ${WORKDIR}/45-disable-multitouch-mouse.rules ]; then
+        install -d ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${WORKDIR}/45-disable-multitouch-mouse.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 
     rm -rf ${D}${systemd_unitdir}/network/wired.network
