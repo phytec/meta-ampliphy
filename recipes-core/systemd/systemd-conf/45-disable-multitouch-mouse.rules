@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="input", KERNEL=="event[0-9]*", ATTRS{name}=="ILITEK ILITEK-TP Mouse|eGalax Inc. eGalaxTouch EXC3000-6008-49.00.00 UNKNOWN", ENV{LIBINPUT_IGNORE_DEVICE}="1"
