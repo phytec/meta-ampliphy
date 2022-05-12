@@ -1,2 +1,2 @@
-ALLOW_EMPTY:qttools-mkspecs = "1"
-ALLOW_EMPTY:qttools-staticdev = "1"
+ALLOW_EMPTY:${PN}-mkspecs = "1"
+ALLOW_EMPTY:${PN}-staticdev = "1"
