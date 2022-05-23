@@ -50,5 +50,6 @@ RDEPENDS:${PN} = " \
 RDEPENDS:${PN}:append:arm = " arm-memspeed"
 RDEPENDS:${PN}:append:mx6-generic-bsp = " mmdc bbu"
 RDEPENDS:${PN}:append:mx6ul-generic-bsp = " mmdc bbu phycam-setup"
+RDEPENDS:${PN}:append:mx8mp = " phycam-setup"
 RDEPENDS:${PN}:append:rk3288 = " rkeeprom"
 RDEPENDS:${PN}:append:ti33x = " phyedit bbu"
