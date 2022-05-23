@@ -51,5 +51,6 @@ RDEPENDS_${PN} = " \
 RDEPENDS_${PN}_append_arm = " arm-memspeed"
 RDEPENDS_${PN}_append_mx6 = " mmdc bbu"
 RDEPENDS_${PN}_append_mx6ul = " mmdc bbu"
+RDEPENDS_${PN}_append_mx8mp = " phycam-setup"
 RDEPENDS_${PN}_append_rk3288 = " rkeeprom"
 RDEPENDS_${PN}_append_ti33x = " phyedit bbu"
