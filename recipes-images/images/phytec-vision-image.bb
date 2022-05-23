@@ -28,6 +28,10 @@ IMAGE_INSTALL += "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)} \
 "
 
+IMAGE_INSTALL_append_mx8mp = "\
+    isp-imx-phycam \
+"
+
 IMAGE_INSTALL_remove_mx6ul = "\
     qt5-opengles2-test \
 "
