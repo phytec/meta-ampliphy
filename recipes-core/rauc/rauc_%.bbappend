@@ -89,7 +89,7 @@ def map_system_conf_bootloader(d):
 parse_system_conf() {
 	# check for default system.conf from meta-rauc
 	shasum=$(sha256sum "${WORKDIR}/system.conf" | cut -d' ' -f1)
-	if [ "$shasum" = "ed3e288f19d6ac5c4db2debf35d0e01bcda174e033d1c0219a67d7fe3026c1b1" ]; then
+	if [ "$shasum" = "27ec3e7595315fbb283d1a95e870f6a76a2c296b39866fd8ffb01669c1b39942" ]; then
 		bbnote "No project specific system.conf has been provided. We use the Phytec RDK specific config files."
 		cp ${WORKDIR}/${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'system_emmc.conf', 'system_nand.conf', d)} ${WORKDIR}/system.conf
 		sed -i \
