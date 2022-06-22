@@ -1,0 +1,5 @@
+[Match]
+OriginalName=eth1
+
+[Link]
+WakeOnLan=magic
