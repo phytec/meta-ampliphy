@@ -6,6 +6,8 @@ SRC_URI += " \
     file://10-watchdog.conf \
     file://10-eth0.network \
     file://10-eth1.network \
+    file://10-eth0.link \
+    file://10-eth1.link \
     file://90-dhcp-default.network \
     file://can0.network \
     file://can1.network \
@@ -17,6 +19,9 @@ SRC_URI:append:mx8 = " file://45-disable-multitouch-mouse.rules"
 do_install:append() {
     install -d ${D}${systemd_unitdir}/network/
     for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.network); do
+        install -m 0644 "$file" ${D}${systemd_unitdir}/network/
+    done
+    for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.link); do
         install -m 0644 "$file" ${D}${systemd_unitdir}/network/
     done
     install -d ${D}${systemd_system_unitdir}/
