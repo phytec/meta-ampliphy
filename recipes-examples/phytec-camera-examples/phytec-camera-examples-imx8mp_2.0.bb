@@ -15,15 +15,15 @@ PR = "r0"
 #   $ mv opencv-examples/ phytec-camera-examples/phytec-opencv-examples
 #   $ mv phytec-camera-examples/phytec-gstreamer-examples/COPYING.MIT \
 #   $ phytec-camera-examples/
-#   $ mv phytec-camera-examples phytec-camera-examples-imx8mp-1.2
-#   $ find phytec-camera-examples-imx8mp-1.2/ -exec "touch" "{}" ";"
-#   $ find phytec-camera-examples-imx8mp-1.2/ -name "*.sh" -or -iname "*.py" -exec "chmod" "+x" "{}" ";"
-#   $ tar -czf phytec-camera-examples-imx8mp-1.2.tar.gz \
-#     phytec-camera-examples-imx8mp-1.2/
+#   $ mv phytec-camera-examples phytec-camera-examples-imx8mp-2.0
+#   $ find phytec-camera-examples-imx8mp-2.0/ -exec "touch" "{}" ";"
+#   $ find phytec-camera-examples-imx8mp-2.0/ -name "*.sh" -or -iname "*.py" -exec "chmod" "+x" "{}" ";"
+#   $ tar -czf phytec-camera-examples-imx8mp-2.0.tar.gz \
+#     phytec-camera-examples-imx8mp-2.0/
 
 SRC_URI = "https://download.phytec.de/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
-SRC_URI[md5sum] = "da0b6f40c523ff5bded929ec6a3d181c"
-SRC_URI[sha256sum] = "75b61ce088dcda1ce858c10a4ff77fb091b3cf594e66e9ca3f908d38ef93aab2"
+SRC_URI[md5sum] = "03266e8fa83a6b2f5aa0e5ac3c29123a"
+SRC_URI[sha256sum] = "2b04fc29c115c0600c71c990259964d645009098db7902512ee398cb3435b5ec"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
