@@ -26,6 +26,10 @@ do_install() {
     install -m 0500 phyprovisioning-install-emmc.sh ${D}${bindir}/phyprovisioning-install-emmc
 }
 
+RDEPENDS_${PN} = " \
+    parted \
+"
+
 FILES_${PN} = "\
     ${bindir}/phyprovisioning-install-emmc \
 "
