@@ -9,7 +9,7 @@ end() {
 	fi
 }
 
-version="v1.1"
+version="v1.2"
 usage="
 PHYTEC Install Script ${version} for Secure Storage
 
@@ -101,6 +101,8 @@ install_files() {
 	sync
 	umount /newroot
 }
+
+mkdir -p /newroot
 
 #
 # Command line options
