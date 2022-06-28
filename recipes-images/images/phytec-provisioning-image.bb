@@ -7,4 +7,4 @@ FITIMAGE_SIGN ??= "false"
 FITIMAGE_SIGN[type] = "boolean"
 
 do_image_wic[depends] += "\
-    phytec-provisioning-ramdisk-fitimage:do_deploy"
+    phytec-provisioning-initramfs-fitimage:do_deploy"
