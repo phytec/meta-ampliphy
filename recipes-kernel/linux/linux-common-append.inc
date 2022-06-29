@@ -20,6 +20,10 @@ SRC_URI:append:update = " \
     file://rauc.cfg \
 "
 
+SRC_URI:append:hardening = " \
+    file://hardening.cfg \
+"
+
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'kernelmodsign', 'kernel-modsign', '', d)}
 
 LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
