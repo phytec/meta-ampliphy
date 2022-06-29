@@ -28,7 +28,7 @@ IMAGE_INSTALL += "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)} \
 "
 
-IMAGE_INSTALL:append:mx8mp = "\
+IMAGE_INSTALL:append:mx8mp-nxp-bsp = "\
     isp-imx-phycam \
 "
 
