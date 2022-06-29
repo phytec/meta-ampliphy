@@ -20,6 +20,8 @@ IMAGE_INSTALL += "\
     qt5-opengles2-test \
     phytec-qtdemo \
     opencv \
+    opencv-samples \
+    opencv-apps \
     gstreamer1.0-plugins-bad-opencv \
     yavta \
     python-phycam-margin-analysis \
