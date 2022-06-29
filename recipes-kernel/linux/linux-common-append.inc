@@ -8,9 +8,6 @@ KERNEL_MODULES_RDEPENDS_BLACKLIST += "${MTD_TEST_PACKAGES}"
 
 SRC_URI_append_secureboot = " \
     file://fs_encryption.cfg \
-    file://ubifs_encryption.cfg \
-    file://dm_crypt_devicemapper.cfg \
-    file://crypto-api.cfg \
     file://trustedkey-base.cfg \
     ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://trustedkey-tpm.cfg', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://trustedkey-caam.cfg', '', d)} \
