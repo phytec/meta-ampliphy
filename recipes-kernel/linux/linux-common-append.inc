@@ -1,4 +1,5 @@
 inherit kernel-module-split-blacklist
+inherit deselect-fragments
 include recipes-kernel/linux/mtd_test_packages.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/features:"
@@ -22,6 +23,7 @@ SRC_URI_append_update = " \
 
 SRC_URI_append_hardening = " \
     file://hardening.cfg \
+    ${@create_deselection_list(['bluetooth', 'can', 'optee', 'pci', 'wifi'], d.getVar('KERNEL_FEATURES_DESELECT', True), d)} \
 "
 
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'kernelmodsign', 'kernel-modsign', '', d)}
