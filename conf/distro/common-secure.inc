@@ -23,6 +23,8 @@ PROTECTION_SHIELD_ROOT_PASSWORD ?= 'root'
 DISTRO_FEATURES_append_mx6 = " hardening"
 DISTRO_FEATURES_append_mx6ul = " hardening"
 OVERRIDES_append = ":hardening"
+# Deselect some kernel features that aren't always needed in ampliphy- secure
+KERNEL_FEATURES_DESELECT ?= "debug kvm media xen"
 
 # File system encryption
 DISTRO_FEATURES += "securestorage"
