@@ -10,12 +10,12 @@ SRC_URI = "file://lsb_release"
 PACKAGES = "${PN}"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
+inherit metadata_scm
+
 def get_layers(d):
-    layers = (d.getVar("BBLAYERS", d, 1) or "").split()
-    layers_branch_rev = ["%-17s = \"%s:%s\"" % (os.path.basename(i), \
-        base_get_metadata_git_branch(i, None).strip().strip('()'), \
-        base_get_metadata_git_revision(i, None)) \
-        for i in layers]
+    revisions = oe.buildcfg.get_layer_revisions(d)
+    layers_branch_rev = ["%-17s = \"%s:%s\"" % (r[1], r[2], r[3]) \
+        for r in revisions]
     i = len(layers_branch_rev)-1
     p1 = layers_branch_rev[i].find("=")
     s1= layers_branch_rev[i][p1:]
