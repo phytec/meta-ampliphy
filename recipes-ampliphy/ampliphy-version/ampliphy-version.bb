@@ -12,27 +12,23 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit metadata_scm
 
+def _revision_str(revision):
+    return f"{revision[2]}:{revision[3]}"
+
 def get_layers(d):
     revisions = oe.buildcfg.get_layer_revisions(d)
-    layers_branch_rev = ["%-17s = \"%s:%s\"" % (r[1], r[2], r[3]) \
-        for r in revisions]
-    i = len(layers_branch_rev)-1
-    p1 = layers_branch_rev[i].find("=")
-    s1= layers_branch_rev[i][p1:]
-    while i > 0:
-        p2 = layers_branch_rev[i-1].find("=")
-        s2= layers_branch_rev[i-1][p2:]
-        if s1 == s2:
-            layers_branch_rev[i-1] = layers_branch_rev[i-1][0:p2]
-            i -= 1
+    layers_branch_rev = []
+
+    for index , revision in enumerate(revisions):
+        current = _revision_str(revision)
+        if index == 0 or current != _revision_str(revisions[index - 1]):
+            # draw full line
+            layers_branch_rev .insert(0, f"{revision[1]:17} = {current}")  # prepend to list
         else:
-            i -= 1
-            p1 = layers_branch_rev[i].find("=")
-            s1= layers_branch_rev[i][p1:]
+            # same revision only add branch name
+            layers_branch_rev .insert(0, revision[1])  # prepend to list
 
     layertext = "Configured Openembedded layers:\n%s\n" % '\n'.join(layers_branch_rev)
-    layertext = layertext.replace('<','')
-    layertext = layertext.replace('>','')
     return layertext
 
 do_install() {
