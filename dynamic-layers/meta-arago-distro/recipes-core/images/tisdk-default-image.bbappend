@@ -3,6 +3,8 @@ IMAGE_INSTALL_append += "\
     linuxptp \
     iproute2 \
     tensorflow-lite \
+    memtester \
+    stressapptest \
 "
 
 IMAGE_INSTALL_append_am64xx += "\
