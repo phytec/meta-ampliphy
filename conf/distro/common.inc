@@ -1,6 +1,6 @@
 DISTRO_VERSION ??= "UNASSIGNED"
 DISTRO_VERSION:mx6-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6-kirkstone"
-DISTRO_VERSION:mx6ul-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6UL-PD22.1-rc2"
+DISTRO_VERSION:mx6ul-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6UL-PD22.1-rc3"
 DISTRO_VERSION:mx8mp-mainline-bsp = "BSP-Yocto-Ampliphy-i.MX8MP-kirkstone"
 DISTRO_VERSION:ti33x = "BSP-Yocto-Ampliphy-AM335x-kirkstone"
 DISTRO_VERSION:rk3288 = "BSP-Yocto-Ampliphy-RK3288-kirkstone"
