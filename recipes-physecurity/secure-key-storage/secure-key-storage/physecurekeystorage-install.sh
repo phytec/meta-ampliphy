@@ -9,7 +9,7 @@ end() {
 	fi
 }
 
-version="v1.1"
+version="v1.2"
 usage="
 PHYTEC Install Script ${version} for Secure Key Storage
 
@@ -19,6 +19,7 @@ Example:
     $(basename $0) --newkeystorage trustedtpm
     $(basename $0) --deletekeystorage
     $(basename $0) --loadkeystorage
+    $(basename $0) --pkcs11testkey
 
 One of the following action can be selected:
     -n | --newkeystorage <value>  Create new Secure Key Storage
@@ -27,6 +28,7 @@ One of the following action can be selected:
                             trustedtpm
     -d | --deletekeystorage Erase the existing Secure Key Storage
     -l | --loadkeystorage   Load the existing Secure Key Storage
+    -p | --pkcs11testkey    Create an ECC testkey with user pin 1234
     -h | --help             This Help
     -v | --version          The version of $(basename $0)
 "
@@ -51,8 +53,7 @@ init_keystore() {
 			echo "Init TPM"
 			modprobe -q tpm_tis_spi
 			tpm2_clear
-			tpm2_createprimary --hierarchy=o --key-algorithm=rsa --key-context=prim.ctx
-			tpm2_evictcontrol --hierarchy=o --object-context=prim.ctx 0x81000001
+			tss2_provision
 		fi
 		len=$(expr length ${1})
 		trustlen=$(expr match ${1} 'trusted')
@@ -111,6 +112,7 @@ erase_keystore() {
 	[ $(lsmod | grep encrypted_keys | wc -l) -ne 0 ] && rmmod encrypted-keys
 	[ $(lsmod | grep trusted | wc -l) -ne 0 ] && rmmod trusted
 	rm /mnt_secrets/secrets/*
+	rm -rf /mnt/config/tpm2
 }
 
 # Check directory and mount
@@ -125,11 +127,22 @@ fi
 if [ ! -d /mnt_secrets/secrets ]; then
 	mkdir /mnt_secrets/secrets
 fi
+if [ ! -d /mnt/config ]; then
+	mkdir -p /mnt/config
+fi
+if [ $(mount | grep /mnt/config | wc -l) -eq 0 ]; then
+	echo "Error: No Partition is mounted to /mnt/config"
+	echo "Please install sdcard image to your emmc at first"
+	exit 4
+fi
+if [ ! -d /mnt/config/tpm2/pkcs11 ]; then
+	mkdir -p /mnt/config/tpm2/pkcs11 --mode=755
+fi
 
 #
 # Command line options
 #
-ARGS=$(getopt -n $(basename $0) -o n:dlvh -l newkeystorage:,deletekeystorage,loadkeystorage,version,help -- "$@")
+ARGS=$(getopt -n $(basename $0) -o n:dlpvh -l newkeystorage:,deletekeystorage,loadkeystorage,pkcs11testkey,version,help -- "$@")
 VALID_ARGS=$?
 if [ "$VALID_ARGS" != "0" ]; then
 	echo "${usage}"
@@ -159,6 +172,26 @@ do
 	-l | --loadkeystorage)
 		echo "Loading existing Secure Key Storage"
 		load_keystore
+		exit 0
+		;;
+	-p | --pkcs11testkey)
+		retvalue=$(check_keysexist)
+		source /mnt_secrets/secrets/trusted_key.config
+		if [ $retvalue -ne 0 ] && [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
+			echo "Create ECC test key with user pin 1234"
+			tpm2pkcs11tool='pkcs11-tool --module /usr/lib/libtpm2_pkcs11.so.0'
+			if [ ! -f /usr/lib/libtpm2_pkcs11.so.0 ]; then
+				tpm2pkcs11tool='pkcs11-tool --module /usr/lib/pkcs11/libtpm2_pkcs11.so.0'
+			fi
+			# init test token
+			$tpm2pkcs11tool --init-token --label=test --so-pin=1234
+			# set user pin
+			$tpm2pkcs11tool --label="test" --init-pin --so-pin 1234 --pin 1234
+			# create test keypair
+			$tpm2pkcs11tool --label="test-keypair" --login --pin=1234 --keypairgen --usage-sign --key-type EC:prime256v1 -d 1
+		else
+			echo "Please create a trustedtpm Secure Key Storage!"
+		fi
 		exit 0
 		;;
 	-h | --help)
