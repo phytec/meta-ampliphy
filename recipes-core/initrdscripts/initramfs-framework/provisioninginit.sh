@@ -10,6 +10,8 @@
 
 SKS_PATH=@SKS_PATH@
 SKS_MOUNTPATH=@SKS_MOUNTPATH@
+CONFIG_DEV=@CONFIG_DEV@
+CONFIG_MOUNTPATH=@CONFIG_MOUNTPATH@
 
 provisioninginit_enabled() {
 	return 0
@@ -26,6 +28,12 @@ provisioninginit_run() {
 		msg "Mount ${SKS_PATH} to ${SKS_MOUNTPATH}"
 		mkdir -p ${SKS_MOUNTPATH}
 		mount ${SKS_PATH} ${SKS_MOUNTPATH}
+	fi
+
+	if test -b ${CONFIG_DEV}; then
+		msg "Mount ${CONFIG_DEV} to ${CONFIG_MOUNTPATH}"
+		mkdir -p ${CONFIG_MOUNTPATH}
+		mount ${CONFIG_DEV} ${CONFIG_MOUNTPATH}
 	fi
 
 	if [ $(lsmod | grep trusted | wc -l) -gt 0 ]; then
