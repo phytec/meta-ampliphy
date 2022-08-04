@@ -9,7 +9,12 @@ end() {
 	fi
 }
 
-version="v1.2"
+version="v1.3"
+SKS_PATH=@SKS_PATH@
+SKS_MOUNTPATH=@SKS_MOUNTPATH@
+CONFIG_DEV=@CONFIG_DEV@
+CONFIG_MOUNTPATH=@CONFIG_MOUNTPATH@
+
 usage="
 PHYTEC Install Script ${version} for Secure Key Storage
 
@@ -38,7 +43,7 @@ check_keysexist() {
 	retvalue=0
 	if [ $(keyctl list @u | grep rootfs | wc -l) -gt 0 ]; then
 		retvalue=1
-	elif [ ! -z "$(ls -A -- "/mnt_secrets/secrets")" ]; then
+	elif [ ! -z "$(ls -A -- "${SKS_MOUNTPATH}/secrets")" ]; then
 		retvalue=2
 	fi
 	echo "$retvalue"
@@ -63,7 +68,7 @@ init_keystore() {
 		trustedtype=$(expr substr "${1}" ${pos} ${lentype})
 		modprobe trusted source=${trustedtype}
 		modprobe encrypted-keys
-		echo "trustedsource=${trustedtype}" > /mnt_secrets/secrets/trusted_key.config
+		echo "trustedsource=${trustedtype}" > ${SKS_MOUNTPATH}/secrets/trusted_key.config
 		if [ "${trustedtype}" = "tpm" ]; then
 			trustedid=$(keyctl add trusted kmk "new 64 keyhandle=0x81000001" @u)
 		else
@@ -71,13 +76,13 @@ init_keystore() {
 		fi
 		echo "Create encrypted key"
 		encid=$(keyctl add encrypted rootfs "new trusted:kmk 64" @u)
-		keyctl pipe ${trustedid} > /mnt_secrets/secrets/trusted_key.blob
-		keyctl pipe ${encid} > /mnt_secrets/secrets/encrypted_key.blob
+		keyctl pipe ${trustedid} > ${SKS_MOUNTPATH}/secrets/trusted_key.blob
+		keyctl pipe ${encid} > ${SKS_MOUNTPATH}/secrets/encrypted_key.blob
 		;;
 	securecaam)
 		echo "Create NXP secure Key (black blob)"
 		caam-keygen create tksecure_key ccm -s 32
-		cat /mnt_secrets/secrets/tksecure_key | keyctl padd logon rootfs: @u
+		cat ${SKS_MOUNTPATH}/secrets/tksecure_key | keyctl padd logon rootfs: @u
 		;;
 	*)
 		echo "Not supported Key type"
@@ -85,8 +90,8 @@ init_keystore() {
 }
 
 load_keystore() {
-	if test -f /mnt_secrets/secrets/trusted_key.config; then
-		source /mnt_secrets/secrets/trusted_key.config
+	if test -f ${SKS_MOUNTPATH}/secrets/trusted_key.config; then
+		source ${SKS_MOUNTPATH}/secrets/trusted_key.config
 		if [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
 			modprobe -q tpm_tis_spi
 		fi
@@ -95,15 +100,15 @@ load_keystore() {
 		modprobe -q  trusted
 	fi
 	modprobe -q  encrypted-keys
-	if test -f /mnt_secrets/secrets/trusted_key.blob; then
-		keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
+	if test -f ${SKS_MOUNTPATH}/secrets/trusted_key.blob; then
+		keyctl add trusted kmk  "load `cat ${SKS_MOUNTPATH}/secrets/trusted_key.blob`" @u
 	fi
-	if test -f /mnt_secrets/secrets/encrypted_key.blob; then
-		keyctl add encrypted rootfs  "load `cat /mnt_secrets/secrets/encrypted_key.blob`" @u
+	if test -f ${SKS_MOUNTPATH}/secrets/encrypted_key.blob; then
+		keyctl add encrypted rootfs  "load `cat ${SKS_MOUNTPATH}/secrets/encrypted_key.blob`" @u
 	fi
-	if test -f /mnt_secrets/secrets/tksecure_key.bb; then
-		caam-keygen import /mnt_secrets/secrets/tksecure_key.bb importkey
-		cat /mnt_secrets/secrets/importkey | keyctl padd logon rootfs: @u
+	if test -f ${SKS_MOUNTPATH}/secrets/tksecure_key.bb; then
+		caam-keygen import ${SKS_MOUNTPATH}/secrets/tksecure_key.bb importkey
+		cat ${SKS_MOUNTPATH}/secrets/importkey | keyctl padd logon rootfs: @u
 	fi
 }
 
@@ -111,33 +116,37 @@ erase_keystore() {
 	keyctl clear @u
 	[ $(lsmod | grep encrypted_keys | wc -l) -ne 0 ] && rmmod encrypted-keys
 	[ $(lsmod | grep trusted | wc -l) -ne 0 ] && rmmod trusted
-	rm /mnt_secrets/secrets/*
-	rm -rf /mnt/config/tpm2
+	rm ${SKS_MOUNTPATH}/secrets/*
+	rm -rf ${CONFIG_MOUNTPATH}/tpm2
 }
 
-# Check directory and mount
-if [ ! -d /mnt_secrets ]; then
-	mkdir /mnt_secrets
-fi
-if [ $(mount | grep /mnt_secrets | wc -l) -eq 0 ]; then
-	echo "Error: No Partition is mounted to /mnt_secrets"
-	echo "Please install sdcard image to your emmc at first"
-	exit 4
-fi
-if [ ! -d /mnt_secrets/secrets ]; then
-	mkdir /mnt_secrets/secrets
-fi
-if [ ! -d /mnt/config ]; then
-	mkdir -p /mnt/config
-fi
-if [ $(mount | grep /mnt/config | wc -l) -eq 0 ]; then
-	echo "Error: No Partition is mounted to /mnt/config"
-	echo "Please install sdcard image to your emmc at first"
-	exit 4
-fi
-if [ ! -d /mnt/config/tpm2/pkcs11 ]; then
-	mkdir -p /mnt/config/tpm2/pkcs11 --mode=755
-fi
+check_storage() {
+	# Check directory and mount
+	if [ ! -d ${SKS_MOUNTPATH} ]; then
+		mkdir ${SKS_MOUNTPATH}
+		mount ${SKS_PATH} ${SKS_MOUNTPATH}
+	fi
+	if [ $(mount | grep ${SKS_MOUNTPATH} | wc -l) -eq 0 ]; then
+		echo "Error: No Partition is mounted to ${SKS_MOUNTPATH}"
+		echo "Please install sdcard image to your emmc at first"
+		exit 4
+	fi
+	if [ ! -d ${SKS_MOUNTPATH}/secrets ]; then
+		mkdir ${SKS_MOUNTPATH}/secrets
+	fi
+	if [ ! -d ${CONFIG_MOUNTPATH} ]; then
+		mkdir -p ${CONFIG_MOUNTPATH}
+		mount ${CONFIG_DEV} ${CONFIG_MOUNTPATH}
+	fi
+	if [ $(mount | grep ${CONFIG_MOUNTPATH} | wc -l) -eq 0 ]; then
+		echo "Error: No Partition is mounted to ${CONFIG_MOUNTPATH}"
+		echo "Please install sdcard image to your emmc at first"
+		exit 4
+	fi
+	if [ ! -d ${CONFIG_MOUNTPATH}/tpm2/pkcs11 ]; then
+		mkdir -p ${CONFIG_MOUNTPATH}/tpm2/pkcs11 --mode=755
+	fi
+}
 
 #
 # Command line options
@@ -155,6 +164,7 @@ do
 	case ${1} in
 	-n | --newkeystorage)
 		echo "Checking, if a Secure Key storage exist"
+		check_storage
 		retvalue=$(check_keysexist)
 		if [ $retvalue -ne 0 ]; then
 			echo "Delete existing Secure Key Storage first!"
@@ -166,17 +176,20 @@ do
 		;;
 	-d | --deletekeystorage)
 		echo "Deleting existing Secure Key Storage!"
+		check_storage
 		erase_keystore
 		exit 0
 		;;
 	-l | --loadkeystorage)
 		echo "Loading existing Secure Key Storage"
+		check_storage
 		load_keystore
 		exit 0
 		;;
 	-p | --pkcs11testkey)
+		check_storage
 		retvalue=$(check_keysexist)
-		source /mnt_secrets/secrets/trusted_key.config
+		source ${SKS_MOUNTPATH}/secrets/trusted_key.config
 		if [ $retvalue -ne 0 ] && [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
 			echo "Create ECC test key with user pin 1234"
 			tpm2pkcs11tool='pkcs11-tool --module /usr/lib/libtpm2_pkcs11.so.0'
