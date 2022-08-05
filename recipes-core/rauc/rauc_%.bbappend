@@ -5,7 +5,7 @@ DEPENDS += "phytec-dev-ca-native"
 do_fetch[depends] += "phytec-dev-ca-native:do_install"
 
 # set path to the rauc keyring, which is installed in the image
-RAUC_KEYRING_FILE ?= "${CERT_PATH}/main-ca/mainca-rsa.crt.pem"
+RAUC_KEYRING_FILE ?= "mainca-rsa.crt.pem"
 
 SRC_URI += " \
     file://10-update-usb.rules \
