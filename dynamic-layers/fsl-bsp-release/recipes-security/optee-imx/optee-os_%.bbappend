@@ -6,6 +6,9 @@ python do_optee_warning() {
 addtask optee_warning before do_deploy
 do_optee_warning[nostamp] = "1"
 
+
+EXTRA_OEMAKE_append = " CFG_PKCS11_TA=y "
+
 # Configure the in-tree trusted keys TA (from optee-os/ta/trusted_keys) as an
 # early TA so OP-TEE loads it on start. This is required for the trusted keys
 # kernel module.
