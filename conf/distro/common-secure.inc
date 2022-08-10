@@ -24,6 +24,7 @@ PROTECTION_SHIELD_ROOT_ENCRYPTED_PASSWORD ?= 'PI9ZxRHV.sgB6'
 # Hardening Lite for kernel config
 DISTRO_FEATURES:append:mx6 = " hardening"
 DISTRO_FEATURES:append:mx6ul = " hardening"
+DISTRO_FEATURES:append:mx8m = " hardening"
 OVERRIDES:append = ":hardening"
 # Deselect some kernel features that aren't always needed in ampliphy- secure
 KERNEL_FEATURES_DESELECT ?= "debug kvm media xen"
