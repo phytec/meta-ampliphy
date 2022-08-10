@@ -16,12 +16,14 @@ end() {
 	fi
 }
 
-version="v0.2"
+version="v0.3"
 SKS_PATH=@SKS_PATH@
 SKS_MOUNTPATH=@SKS_MOUNTPATH@
 SKS_SECRETFOLDER=@SKS_SECRETFOLDER@
 FLASH_PATH=${SKS_PATH%??}
 FILE_SYSTEM=""
+CONFIG_DEV=@CONFIG_DEV@
+CONFIG_MOUNTPATH=@CONFIG_MOUNTPATH@
 
 usage="
 PHYTEC Install Script ${version} for eMMC
@@ -64,12 +66,17 @@ do
 		if [ -d ${SKS_MOUNTPATH} ]; then
 			umount -q ${SKS_MOUNTPATH}
 		fi
+		if [ -d ${CONFIG_DEV} ]; then
+			umount -q ${CONFIG_DEV}
+		fi
 		dd if=${FILE_SYSTEM} of=${FLASH_PATH} bs=100M
 		sync
 		partprobe ${FLASH_PATH}
 		mkdir -p ${SKS_MOUNTPATH}
 		mount ${SKS_PATH} ${SKS_MOUNTPATH}
 		mkdir -p ${SKS_MOUNTPATH}${SKS_SECRETFOLDER}
+		mkdir -p ${CONFIG_MOUNTPATH}
+		mount ${CONFIG_DEV} ${CONFIG_MOUNTPATH}
 		exit 0
 		;;
 	-h | --help)
