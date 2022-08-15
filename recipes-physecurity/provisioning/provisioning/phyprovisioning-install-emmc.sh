@@ -16,7 +16,7 @@ end() {
 	fi
 }
 
-version="v0.3"
+version="v0.4"
 SKS_PATH=@SKS_PATH@
 SKS_MOUNTPATH=@SKS_MOUNTPATH@
 SKS_SECRETFOLDER=@SKS_SECRETFOLDER@
@@ -63,12 +63,8 @@ do
 			echo "Set flash path and filesystem first!"
 			exit 4
 		fi
-		if [ -d ${SKS_MOUNTPATH} ]; then
-			umount -q ${SKS_MOUNTPATH}
-		fi
-		if [ -d ${CONFIG_DEV} ]; then
-			umount -q ${CONFIG_DEV}
-		fi
+		mountpoint -q "${SKS_MOUNTPATH}" && umount -q "${SKS_MOUNTPATH}"
+		mountpoint -q "${CONFIG_MOUNTPATH}" && umount -q "${CONFIG_MOUNTPATH}"
 		dd if=${FILE_SYSTEM} of=${FLASH_PATH} bs=100M
 		sync
 		partprobe ${FLASH_PATH}
