@@ -9,7 +9,7 @@ end() {
 	fi
 }
 
-version="v1.3"
+version="v1.4"
 SKS_PATH=@SKS_PATH@
 SKS_MOUNTPATH=@SKS_MOUNTPATH@
 CONFIG_DEV=@CONFIG_DEV@
@@ -58,7 +58,8 @@ init_keystore() {
 			echo "Init TPM"
 			modprobe -q tpm_tis_spi
 			tpm2_clear
-			tss2_provision
+			tpm2_createprimary --hierarchy=o --key-algorithm=rsa --key-context=prim.ctx
+			tpm2_evictcontrol --hierarchy=o --object-context=prim.ctx 0x81000001
 		fi
 		len=$(expr length ${1})
 		trustlen=$(expr match ${1} 'trusted')
