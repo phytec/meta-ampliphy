@@ -11,6 +11,7 @@ PACKAGECONFIG ??= "\
     timesyncd \
     sysusers \
     logind \
+    set-time-epoch \
 "
 
 PACKAGECONFIG[acl] = "-Dacl=true,-Dacl=false,acl"
