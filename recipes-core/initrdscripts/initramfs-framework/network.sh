@@ -10,5 +10,5 @@ network_run() {
 
 	ip addr add 192.168.3.11/255.255.255.0 broadcast 192.168.3.255 dev eth0 scope global
 	ip link set dev eth0 up
-	dhcpcd -n eth0
+	dhcpcd -n eth0 -b
 }
