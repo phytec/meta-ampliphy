@@ -13,6 +13,8 @@ PACKAGECONFIG_DEFAULT = "dbus udev libs freetype \
 # accessibility is necessary for qtquickcontrols-qmlplugins
 PACKAGECONFIG_DEFAULT += "accessibility"
 
+PACKAGECONFIG:append:am62xx = " widgets"
+
 SRC_URI += "file://res-touchscreen.rules"
 
 do_install:append () {
