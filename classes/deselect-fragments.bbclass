@@ -12,14 +12,17 @@
 def create_deselection_list(mfeatures_checklist : list, deselectionstr, d):
     result = ""
     deselected_features = []
-    # First, deselect by absent MACHINE_FEATURES
-    for feature in mfeatures_checklist:
-        deselect = bb.utils.contains('MACHINE_FEATURES', feature, '', feature, d)
-        if deselect != '':
-            deselected_features.append(deselect)
+
+    if mfeatures_checklist is not None:
+        # First, deselect by absent MACHINE_FEATURES
+        for feature in mfeatures_checklist:
+            deselect = bb.utils.contains('MACHINE_FEATURES', feature, '', feature, d)
+            if deselect != '':
+                deselected_features.append(deselect)
 
     # Secondly, deselect by deselectionstr
-    deselected_features.extend(deselectionstr.split())
+    if deselectionstr is not None:
+        deselected_features.extend(deselectionstr.split())
 
     for feature in set(deselected_features):
         result += " file://deselect-{0}.cfg ".format(feature)
