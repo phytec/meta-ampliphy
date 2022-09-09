@@ -18,6 +18,11 @@ FITIMAGE_SLOT_fdto ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 FITIMAGE_SLOT_fdto[type] ?= "fdto"
 FITIMAGE_SLOT_fdto[file] ?= "${@' '.join(os.path.basename(dtb) for dtb in d.getVar('KERNEL_DEVICETREE').split() if dtb.endswith('.dtbo'))}"
 
+FITIMAGE_SLOT_fdtapply:mx6-generic-bsp ?= "${PREFERRED_PROVIDER_virtual/kernel}"
+FITIMAGE_SLOT_fdtapply[type] ?= "fdtapply"
+FITIMAGE_SLOT_fdtapply[file] ?= "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])} imx6-phy-adin1300.dtbo"
+FITIMAGE_SLOT_fdtapply[name] ?= "phyboard-imx6-phy-adin1300.dtb"
+
 def readfull_bin(path):
     content = None
     with open(path, 'rb') as fd:
