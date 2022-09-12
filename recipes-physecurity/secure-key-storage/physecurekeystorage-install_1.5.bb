@@ -31,3 +31,7 @@ do_install() {
 FILES_${PN} = "\
     ${bindir}/physecurekeystorage-install \
 "
+
+RDEPENDS_${PN} = " \
+    jq \
+"

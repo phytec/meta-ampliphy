@@ -9,11 +9,12 @@ end() {
 	fi
 }
 
-version="v1.4"
+version="v1.5"
 SKS_PATH=@SKS_PATH@
 SKS_MOUNTPATH=@SKS_MOUNTPATH@
 CONFIG_DEV=@CONFIG_DEV@
 CONFIG_MOUNTPATH=@CONFIG_MOUNTPATH@
+TPM_FAPICONFIG="/etc/tpm2-tss/fapi-config.json"
 
 usage="
 PHYTEC Install Script ${version} for Secure Key Storage
@@ -55,11 +56,17 @@ init_keystore() {
 	case ${1} in
 	trustedtpm|trustedtee|trustedcaam)
 		if [ $(expr match ${1} 'trustedtpm') -gt 0 ]; then
-			echo "Init TPM"
-			modprobe -q tpm_tis_spi
-			tpm2_clear
-			tpm2_createprimary --hierarchy=o --key-algorithm=rsa --key-context=prim.ctx
-			tpm2_evictcontrol --hierarchy=o --object-context=prim.ctx 0x81000001
+			resp="null"
+			[ -f ${TPM_FAPICONFIG} ] && resp=$(jq -c -r '.ek_cert_less' ${TPM_FAPICONFIG})
+			if [ "${resp}" != "yes" ] && ! nslookup phytec.de &> /dev/null]; then
+				echo "An internet connection for checking the endorsement certificate from the TPM is necessary!"
+				exit 5
+			else
+				echo "Init TPM"
+				modprobe -q tpm_tis_spi
+				tpm2_clear
+				tss2_provision
+			fi
 		fi
 		len=$(expr length ${1})
 		trustlen=$(expr match ${1} 'trusted')
