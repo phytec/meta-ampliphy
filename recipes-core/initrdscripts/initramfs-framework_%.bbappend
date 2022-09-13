@@ -4,6 +4,7 @@ SRC_URI_append = " \
     file://network.sh \
     file://timesync.sh \
     file://provisioninginit.sh \
+    file://smartcard.sh \
 "
 
 # be set in the machine configuration.
@@ -29,6 +30,9 @@ do_install_append() {
     # timesync
     install -m 0755 ${WORKDIR}/timesync.sh ${D}/init.d/12-timesync
 
+    # smartcard
+    install -m 0755 ${WORKDIR}/smartcard.sh ${D}/init.d/13-smartcard
+
     # provisioninginit
     install -m 0755 ${WORKDIR}/provisioninginit.sh ${D}/init.d/98-provisioninginit
 
@@ -41,6 +45,7 @@ PACKAGES =+ "\
     initramfs-module-network \
     initramfs-module-timesync \
     initramfs-module-provisioninginit \
+    initramfs-module-smartcard \
 "
 
 SUMMARY_initramfs-module-finish = "initramfs finish switch root"
@@ -54,6 +59,10 @@ FILES_initramfs-module-network = "/init.d/10-network"
 SUMMARY_initramfs-module-timesync = "initramfs support for time synchronisation"
 RDEPENDS_initramfs-module-timesync = "${PN}-base chrony"
 FILES_initramfs-module-timesync = "/init.d/12-timesync"
+
+SUMMARY_initramfs-module-smartcard = "start pcscs-lite for smartcard support"
+RDEPENDS_initramfs-module-smartcard = "${PN}-base pcsc-lite opensc"
+FILES_initramfs-module-smartcard = "/init.d/13-smartcard"
 
 SUMMARY_initramfs-module-provisioninginit = "initramfs support PHYTEC provisioning of devices"
 RDEPENDS_initramfs-module-provisioninginit = "${PN}-base"
