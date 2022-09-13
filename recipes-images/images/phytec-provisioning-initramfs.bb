@@ -21,6 +21,7 @@ IMAGE_INSTALL = " \
     initramfs-module-provisioninginit \
     initramfs-module-network \
     initramfs-module-timesync \
+    initramfs-module-smartcard \
     busybox \
     packagegroup-hwtools \
     util-linux \
