@@ -1,4 +1,4 @@
-IMAGE_INSTALL:append_am64xx += "\
+IMAGE_INSTALL:append += "\
     dropbear \
     linuxptp \
     iproute2 \
