@@ -5,6 +5,9 @@ IMAGE_INSTALL_append += "\
     tensorflow-lite \
     memtester \
     stressapptest \
+    v4l-utils \
+    media-ctl \
+    yavta \
 "
 
 IMAGE_INSTALL_append_am64xx += "\
