@@ -23,7 +23,15 @@ SRC_URI:append:update = " \
 
 SRC_URI:append:hardening = " \
     file://hardening.cfg \
-    ${@create_deselection_list(['bluetooth', 'can', 'optee', 'pci', 'wifi'], d.getVar('KERNEL_FEATURES_DESELECT', True), d)} \
+    ${@contain_deselect('bluetooth', d)} \
+    ${@contain_deselect('can', d)} \
+    ${@contain_deselect('debug', d)} \
+    ${@contain_deselect('kvm', d)} \
+    ${@contain_deselect('media', d)} \
+    ${@contain_deselect('optee', d)} \
+    ${@contain_deselect('pci', d)} \
+    ${@contain_deselect('wifi', d)} \
+    ${@contain_deselect('xen', d)} \
 "
 
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'kernelmodsign', 'kernel-modsign', '', d)}
