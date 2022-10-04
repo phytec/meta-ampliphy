@@ -4,27 +4,22 @@
 # Creates a string containing file:// URIs to deselection fragment.
 # This string is to be appened to SRC_URI
 
-# mfeatures_checklist: A list of MACHINE_FEATURE entries a deselection fragment should
-# be added for if the entry is missing in the MACHINE_FEATURES variable
-# dselectionstr: A deselection string such as "xen bluetooth", probably you want
-# to pass the value of a variable here. For every entry, the corresponding
-# deselect fragment must exist, e. g. deselect-xen.cfg
-def create_deselection_list(mfeatures_checklist : list, deselectionstr, d):
-    result = ""
+# features: Check the feature e. g. xen, if is not in the MACHINE_FEATURES or
+# is in the KERNEL_FEATURES_DESELECT, then deselect the feature.
+# For every feature, a corresponding deselect fragment must exist,
+# e. g. deselect-xen.cfg
+def contain_deselect(feature, d):
     deselected_features = []
-
-    if mfeatures_checklist is not None:
-        # First, deselect by absent MACHINE_FEATURES
-        for feature in mfeatures_checklist:
-            deselect = bb.utils.contains('MACHINE_FEATURES', feature, '', feature, d)
-            if deselect != '':
-                deselected_features.append(deselect)
+    deselect = bb.utils.contains('MACHINE_FEATURES', feature, '', feature, d)
+    if deselect != '':
+        return "file://deselect-{0}.cfg ".format(feature)
 
     # Secondly, deselect by deselectionstr
+    deselectionstr = d.getVar('KERNEL_FEATURES_DESELECT')
     if deselectionstr is not None:
         deselected_features.extend(deselectionstr.split())
 
-    for feature in set(deselected_features):
-        result += " file://deselect-{0}.cfg ".format(feature)
-    return result
-
+    for desfeature in set(deselected_features):
+        if desfeature == feature:
+            return "file://deselect-{0}.cfg ".format(feature)
+    return ''
