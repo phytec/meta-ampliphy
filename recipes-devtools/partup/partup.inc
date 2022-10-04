@@ -10,5 +10,5 @@ DEPENDS = "glib-2.0 libyaml parted"
 
 do_install_append() {
     install -d ${D}${datadir}/partup
-    install -m 644 ${S}/tests/config/*.yaml ${D}${datadir}/partup/
+    install -m 644 ${S}/dist/config/*.yaml ${D}${datadir}/partup/
 }
