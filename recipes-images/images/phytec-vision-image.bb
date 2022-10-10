@@ -1,24 +1,20 @@
 require recipes-images/images/phytec-headless-image.bb
 
 SUMMARY =  "This image is designed to show development of camera and \
-            imaging applications with openCV and QT."
+            imaging applications with openCV."
 
-IMAGE_FEATURES += "splash ssh-server-openssh hwcodecs qtcreator-debug"
+IMAGE_FEATURES += "splash ssh-server-openssh hwcodecs"
 IMAGE_FEATURES += "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston', bb.utils.contains('DISTRO_FEATURES', 'x11', 'x11-base', '', d), d)}\
 "
 
 LICENSE = "MIT"
 
-inherit populate_sdk_qt5
-
 IMAGE_INSTALL += "\
     packagegroup-base \
     \
     packagegroup-gstreamer \
     \
-    qt5-opengles2-test \
-    phytec-qtdemo \
     opencv \
     opencv-samples \
     opencv-apps \
@@ -26,14 +22,10 @@ IMAGE_INSTALL += "\
     yavta \
     python-phycam-margin-analysis \
     \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'qtwayland qtwayland-plugins weston weston-init', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston weston-init', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)} \
 "
 
 IMAGE_INSTALL:append:mx8mp-nxp-bsp = "\
     isp-imx-phycam \
-"
-
-IMAGE_INSTALL:remove:mx6ul-generic-bsp = "\
-    qt5-opengles2-test \
 "
