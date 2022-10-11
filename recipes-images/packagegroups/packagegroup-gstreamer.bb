@@ -46,16 +46,6 @@ RDEPENDS:${PN}:append:mx6ul-generic-bsp = " \
     gstreamer1.0-plugins-imx \
 "
 
-RDEPENDS:${PN}:append:mx8mq-nxp-bsp = " \
-    phytec-camera-examples-imx8mq \
-    bvtest \
-    gstreamer1.0-plugins-bad-geometrictransform \
-    gstreamer1.0-plugins-bad-zbar \
-    imx-gst1.0-plugin-gplay \
-    imx-gst1.0-plugin \
-    gstreamer1.0-plugins-bad \
-"
-
 RDEPENDS:${PN}:append:mx8mm-nxp-bsp = " \
     phytec-camera-examples-imx8mm \
     bvtest \
