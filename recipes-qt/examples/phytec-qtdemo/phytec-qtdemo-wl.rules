@@ -1,2 +1,0 @@
-# allow user-leds brightness control for everyone
-ACTION=="add", SUBSYSTEM=="leds", KERNEL=="user-led[1-3]", RUN+="/bin/chmod a+w /sys%p/brightness"
