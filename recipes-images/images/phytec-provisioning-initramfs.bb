@@ -40,6 +40,7 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-provision-tpm2", "", d)} \
     rng-tools \
     pv \
+    partup \
 "
 
 PACKAGE_INSTALL:append:mx8 = " ${MACHINE_FIRMWARE}"
