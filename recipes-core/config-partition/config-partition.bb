@@ -14,7 +14,7 @@ FILES:${PN} = "rauc/"
 
 do_deploy () {
         tar -czf ${B}/config-partition.tar.gz -C ${D}/ . --owner=0 --group=0
-        install ${B}/config-partition.tar.gz ${DEPLOYDIR}
+        install -m 644 ${B}/config-partition.tar.gz ${DEPLOYDIR}
 }
 
 addtask deploy after do_install
