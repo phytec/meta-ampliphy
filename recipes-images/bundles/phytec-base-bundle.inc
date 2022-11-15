@@ -28,6 +28,7 @@ RAUC_SLOT_kernel[type] ?= "kernel"
 RAUC_SLOT_bootloader ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
 RAUC_SLOT_bootloader[type] ?= "boot"
 RAUC_SLOT_bootloader[file] ?= "emmc-boot.img"
+RAUC_SLOT_bootloader[offset] ?= "${BOOTLOADER_SEEK_EMMC}K"
 
 RAUC_SLOT_dtb ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_dtb[type] ?= "file"
@@ -72,6 +73,17 @@ python do_configure:prepend() {
     if os.path.islink("%s/boot.tar.gz" % deploy_dir):
         os.remove("%s/boot.tar.gz" % deploy_dir)
     os.symlink(tarpath, "%s/boot.tar.gz" % deploy_dir)
+
+    # Create link to eMMC bootloader image with correct image type
+    bootloader_filename = {
+        "barebox": d.getVar("BAREBOX_BINARY"),
+        "u-boot-imx": "u-boot.imx",
+        "imx-boot": "imx-boot"
+    }
+    emmc_boot_path = "%s/%s" % (deploy_dir, "emmc-boot.img")
+    if os.path.islink(emmc_boot_path):
+        os.remove(emmc_boot_path)
+    os.symlink(bootloader_filename[d.getVar("DEP_BOOTLOADER")], emmc_boot_path)
 }
 
 python do_configure:append() {
@@ -90,26 +102,6 @@ do_bundle:prepend() {
             export RAUC_PKCS11_MODULE="${RAUC_PKCS11_MODULE}"
         fi
 }
-
-python do_emmc_boot() {
-    if "emmc" in d.getVar("MACHINE_FEATURES"):
-        import subprocess
-
-        bootloader_filename = {
-            "barebox": d.getVar("BAREBOX_BINARY"),
-            "u-boot-imx": "u-boot.imx",
-            "imx-boot": "imx-boot"
-        }
-        cmd = d.expand("dd if=${DEPLOY_DIR_IMAGE}/%s " \
-                       "of=${DEPLOY_DIR_IMAGE}/emmc-boot.img " \
-                       "bs=1k seek=${BOOTLOADER_SEEK_EMMC}" \
-                       % bootloader_filename[d.getVar("DEP_BOOTLOADER")])
-
-        if subprocess.call(cmd.split()) != 0:
-            bb.error("Failed running command '%s'!" % cmd)
-}
-
-addtask emmc_boot after do_fetch before do_unpack
 
 do_deploy:append() {
     install -d ${DEPLOYDIR}
