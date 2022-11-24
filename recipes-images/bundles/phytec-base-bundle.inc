@@ -20,7 +20,8 @@ RAUC_BUNDLE_SLOTS ?= " \
 "
 
 RAUC_SLOT_rootfs[type] ?= "image"
-RAUC_IMAGE_FSTYPE ?= "${@bb.utils.contains('MACHINE_FEATURES','emmc','tar.gz','ubifs', d)}"
+RAUC_SLOT_rootfs[adaptive] ?= "block-hash-index"
+RAUC_IMAGE_FSTYPE ?= "${@bb.utils.contains('MACHINE_FEATURES','emmc','ext4','ubifs', d)}"
 
 RAUC_SLOT_kernel ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_kernel[type] ?= "kernel"
