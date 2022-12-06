@@ -17,4 +17,5 @@ RDEPENDS_${PN} = " \
     kbd-keymaps \
     opkg \
     opkg-utils \
+    ${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-imx', 'libubootenv-bin', '', d)} \
 "
