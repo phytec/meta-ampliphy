@@ -44,6 +44,7 @@ RDEPENDS:${PN} = " \
     dtc \
     rauc-flash-nand \
     stressapptest \
+    spidev-test \
 "
 
 # Those packages depend on a specific SoC architecture
