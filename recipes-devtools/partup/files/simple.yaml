@@ -1,0 +1,25 @@
+api-version: ${PARTUP_API_VERSION}
+disklabel: msdos
+
+raw:
+  - input-offset: ${BOOTLOADER_INPUT_OFFSET}
+    output-offset: ${BOOTLOADER_OUTPUT_OFFSET}
+    input:
+      uri: file://${BOOTLOADER_URI}
+
+partitions:
+  - label: BOOT
+    type: primary
+    filesystem: fat32
+    size: ${BOOT_SIZE}
+    offset: 4MiB
+    input:
+      - uri: file://${KERNEL_URI}
+      - uri: file://${DTB_URI}
+
+  - label: ROOT
+    type: primary
+    filesystem: null
+    expand: true
+    input:
+      - uri: file://${ROOTFS_URI}
