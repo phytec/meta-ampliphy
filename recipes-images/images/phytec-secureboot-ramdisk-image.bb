@@ -5,4 +5,6 @@ require recipes-images/images/security/phytec-security-base-ramdisk.inc
 
 IMAGE_INSTALL:append:securestorage = " secure-storage"
 
+PACKAGE_EXCLUDE = "kernel-image-*"
+
 export IMAGE_BASENAME = "phytec-secureboot-ramdisk-image"

@@ -45,6 +45,8 @@ IMAGE_INSTALL = " \
 
 PACKAGE_INSTALL:append:mx8 = " ${MACHINE_FIRMWARE}"
 
+PACKAGE_EXCLUDE = "kernel-image-*"
+
 # Remove some packages added via recommendations
 BAD_RECOMMENDATIONS += " \
     initramfs-module-rootfs \
