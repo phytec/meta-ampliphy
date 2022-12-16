@@ -12,4 +12,5 @@ RDEPENDS_${PN} = " \
     iw \
     hostapd \
     laird-sterling-firmware \
+    linux-firmware-wl18xx \
 "
