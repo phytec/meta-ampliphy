@@ -1,0 +1,29 @@
+From 8cca63b9672e3b84544b2098da5e20a8fcc9b02a Mon Sep 17 00:00:00 2001
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Wed, 21 Dec 2022 11:44:40 +0100
+Subject: [PATCH] gst-libs: gstdmabufheaps: Use uncached cma memory
+
+Use uncached cma memory to increase performance of waylandsink, since in
+our use case data is only copied from the capture buffer directly to the
+waylandsink buffers through the bayer2rgbneon plugin with minimal CPU
+access. So no caching is necessary and in fact using cached cma memory
+here reduces the achievable framerate from ~60 FPS to ~30 FPS.
+
+Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
+---
+ gst-libs/gst/allocators/gstdmabufheaps.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gst-libs/gst/allocators/gstdmabufheaps.c b/gst-libs/gst/allocators/gstdmabufheaps.c
+index 69cd45ef0d5d..e74ee139170a 100644
+--- a/gst-libs/gst/allocators/gstdmabufheaps.c
++++ b/gst-libs/gst/allocators/gstdmabufheaps.c
+@@ -93,7 +93,7 @@ gst_dmabufheaps_allocator_mem_init (void)
+   GstDMABUFHEAPSAllocator *self = GST_DMABUFHEAPS_ALLOCATOR (allocator);
+   gint fd;
+ 
+-  fd = open ("/dev/dma_heap/linux,cma", O_RDWR);
++  fd = open ("/dev/dma_heap/linux,cma-uncached", O_RDWR);
+   if (fd < 0) {
+     GST_WARNING ("Could not open dmabufheaps driver");
+     g_object_unref (self);
