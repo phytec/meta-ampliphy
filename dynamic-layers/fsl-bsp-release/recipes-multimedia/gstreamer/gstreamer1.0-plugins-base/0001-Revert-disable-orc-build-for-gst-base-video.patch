@@ -1,0 +1,26 @@
+From 6f897ec7ef46daa75be7377919bbf0749b8aff7c Mon Sep 17 00:00:00 2001
+From: Stefan Riedmueller <s.riedmueller@phytec.de>
+Date: Thu, 22 Dec 2022 15:01:32 +0100
+Subject: [PATCH] Revert "disable orc build for gst-base-video"
+
+This reverts commit ba665082ea7c799ffd3b75ab06bbea5cac07a9ac.
+---
+ gst-libs/gst/video/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gst-libs/gst/video/meson.build b/gst-libs/gst/video/meson.build
+index 5a4be36dfcff..c0abb22e521d 100644
+--- a/gst-libs/gst/video/meson.build
++++ b/gst-libs/gst/video/meson.build
+@@ -134,7 +134,7 @@ endif
+ 
+ gstvideo = library('gstvideo-@0@'.format(api_version),
+   video_sources, gstvideo_h, gstvideo_c, orc_c, orc_h,
+-  c_args : gst_plugins_base_args + ['-DBUILDING_GST_VIDEO', '-DDISABLE_ORC', '-DG_LOG_DOMAIN="GStreamer-Video"'],
++  c_args : gst_plugins_base_args + ['-DBUILDING_GST_VIDEO', '-DG_LOG_DOMAIN="GStreamer-Video"'],
+   include_directories: [configinc, libsinc],
+   version : libversion,
+   soversion : soversion,
+-- 
+2.25.1
+
