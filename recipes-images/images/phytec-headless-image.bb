@@ -12,6 +12,7 @@ IMAGE_INSTALL = " \
     packagegroup-benchmark \
     packagegroup-userland \
     packagegroup-rt \
+    packagegroup-coprocessor \
     ${@bb.utils.contains("COMBINED_FEATURES", "alsa", "packagegroup-audio", "", d)} \
     ${@bb.utils.contains("COMBINED_FEATURES", "wifi", "packagegroup-wifi", "", d)} \
     ${@bb.utils.contains("COMBINED_FEATURES", "bluetooth", "packagegroup-bluetooth", "", d)} \
