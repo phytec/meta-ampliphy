@@ -40,6 +40,7 @@ RDEPENDS_${PN} = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "resistivetouch", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
     kmsxx \
+    kmsgrab \
     lmsensors-fancontrol \
     nfs-utils-client \
     dtc \
