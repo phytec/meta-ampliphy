@@ -49,6 +49,7 @@ RDEPENDS:${PN} = " \
 
 # Those packages depend on a specific SoC architecture
 RDEPENDS:${PN}:append:arm = " arm-memspeed"
+RDEPENDS:${PN}:append:k3 = " k3conf"
 RDEPENDS:${PN}:append:mx6 = " mmdc bbu"
 RDEPENDS:${PN}:append:mx6ul = " mmdc bbu"
 RDEPENDS:${PN}:append:mx8mp = " phycam-setup"
