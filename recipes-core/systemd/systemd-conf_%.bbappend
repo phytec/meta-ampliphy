@@ -6,8 +6,10 @@ SRC_URI += " \
     file://10-watchdog.conf \
     file://10-eth0.network \
     file://10-eth1.network \
+    file://10-eth2.network \
     file://10-eth0.link \
     file://10-eth1.link \
+    file://10-eth2.link \
     file://90-dhcp-default.network \
     file://can0.network \
     file://can1.network \
