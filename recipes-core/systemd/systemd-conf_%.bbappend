@@ -6,6 +6,7 @@ SRC_URI += " \
     file://10-watchdog.conf \
     file://10-eth0.network \
     file://10-eth1.network \
+    file://10-eth2.network \
     file://90-dhcp-default.network \
     ${@bb.utils.contains("MACHINE_FEATURES", "can", "file://can0.service", "", d)} \
 "
