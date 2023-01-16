@@ -14,8 +14,10 @@ SRC_URI += " \
 
 SRC_URI_append_mx6ul = " file://cpuidle-disable-state.rules"
 
-SYSTEMD_SERVICE_${PN} = "${@bb.utils.contains("MACHINE_FEATURES", "can", "can0.service", "", d)}"
-SYSTEMD_SERVICE_${PN} = "${@bb.utils.contains("MACHINE_FEATURES", "can", "can1.service", "", d)}"
+SYSTEMD_SERVICE_${PN} = " \
+    ${@bb.utils.contains("MACHINE_FEATURES", "can", "can0.service", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "can", "can1.service", "", d)} \
+"
 
 do_install_append() {
     install -d ${D}${systemd_unitdir}/network/
