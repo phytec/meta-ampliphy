@@ -14,7 +14,7 @@ DEPENDS = "libdrm libpng"
 
 S = "${WORKDIR}/git"
 
-inherit cmake
+inherit cmake pkgconfig
 
 do_install() {
     install -d ${D}${bindir}
