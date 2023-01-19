@@ -42,6 +42,13 @@ ROOTFS_1_DEV:fileauthorenc ?= "/dev/dm-1"
 ROOTFS_0_DEV:fileauthandenc ?= "/dev/dm-1"
 ROOTFS_1_DEV:fileauthandenc ?= "/dev/dm-3"
 
+USE_BOOTLOADER_SLOT ?= "USE_BOOTLOADER_SLOT_WEAK_DEFAULT"
+# we don't use overrides directly to set a default, as this cannot be
+# overridden by normal assignment later on
+USE_BOOTLOADER_SLOT_WEAK_DEFAULT = "true"
+USE_BOOTLOADER_SLOT_WEAK_DEFAULT:ti33x = "false"
+USE_BOOTLOADER_SLOT_WEAK_DEFAULT:rk3288 = "false"
+
 # We want system.conf to be fetched before any of the following variables are
 # changed. This is needed because ${WORKDIR}/system.conf is overridden by
 # system_{emmc,nand}.conf and parsed using these variables afterwards. The
@@ -55,23 +62,8 @@ do_fetch[vardeps] += " \
     ROOTFS_0_DEV \
     ROOTFS_1_DEV \
     RAUC_KEYRING_FILE \
-    MACHINEOVERRIDES \
+    USE_BOOTLOADER_SLOT \
 "
-
-# Based on bb.utils.contains_any() but with a variable delimiter for splitting
-# the values in "variable".
-def contains_any_delim(variable, checkvalues, delimiter, truevalue, falsevalue, d):
-    val = d.getVar(variable)
-    if not val:
-        return falsevalue
-    val = set(val.split(delimiter))
-    if isinstance(checkvalues, str):
-        checkvalues = set(checkvalues.split())
-    else:
-        checkvalues = set(checkvalues)
-    if checkvalues & val:
-        return truevalue
-    return falsevalue
 
 # Returns the correct string for the key "bootloader" used in RAUC's system.conf
 # depending on the currently set bootloader in Yocto. See
@@ -86,6 +78,7 @@ def map_system_conf_bootloader(d):
     }
     return bootloader_map[d.getVar("PREFERRED_PROVIDER_virtual/bootloader")]
 
+do_patch[postfuncs] += "parse_system_conf"
 parse_system_conf() {
 	# check for default system.conf from meta-rauc
 	shasum=$(sha256sum "${WORKDIR}/system.conf" | cut -d' ' -f1)
@@ -100,16 +93,12 @@ parse_system_conf() {
 			-e 's!@ROOTFS_0_DEV@!${ROOTFS_0_DEV}!g' \
 			-e 's!@ROOTFS_1_DEV@!${ROOTFS_1_DEV}!g' \
 			-e 's/@RAUC_KEYRING_FILE@/${@os.path.basename(d.getVar("RAUC_KEYRING_FILE"))}/g' \
-			${@contains_any_delim("MACHINEOVERRIDES", "ti33x rk3288", ":", "-e '/@IF_BOOTLOADER_SLOT@/,/@ENDIF_BOOTLOADER_SLOT@/d'", "", d)} \
+			${@bb.utils.contains("USE_BOOTLOADER_SLOT", "true", "", "-e '/@IF_BOOTLOADER_SLOT@/,/@ENDIF_BOOTLOADER_SLOT@/d'", d)} \
 			-e '/@\(IF\|ENDIF\)[A-Z_]\+@/d' \
 			${WORKDIR}/system.conf
 	fi
 
 	echo "${DOWNGRADE_BARRIER_VERSION}" > ${WORKDIR}/downgrade_barrier_version
-}
-
-python do_patch:append() {
-    bb.build.exec_func("parse_system_conf", d)
 }
 
 do_install:append() {
