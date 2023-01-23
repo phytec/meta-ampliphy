@@ -14,7 +14,6 @@ RDEPENDS:${PN} = " \
     bc \
     fbtest \
     libdrm-tests \
-    memedit \
     memtester \
     e2fsprogs-mke2fs \
     dosfstools \
