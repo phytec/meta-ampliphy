@@ -76,7 +76,12 @@ def map_system_conf_bootloader(d):
         "barebox": "barebox",
         "u-boot-ti": "uboot"
     }
-    return bootloader_map[d.getVar("PREFERRED_PROVIDER_virtual/bootloader")]
+    bootloader = d.getVar("PREFERRED_PROVIDER_virtual/bootloader")
+    if bootloader not in bootloader_map:
+        bb.warn("Unsupported or no PREFERRED_PROVIDER selected for virtual/bootlaoder, rauc will not work correctly.")
+        return "noop"
+    else:
+        return bootloader_map[bootloader]
 
 do_patch[postfuncs] += "parse_system_conf"
 parse_system_conf() {
