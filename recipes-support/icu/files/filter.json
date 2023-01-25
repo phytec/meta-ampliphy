@@ -1,0 +1,11 @@
+{
+  "localeFilter": {
+    "filterType": "locale",
+    "includeChildren": false,
+    "includelist": [
+      "de_DE",
+      "en_US",
+      "fr_FR"
+    ]
+  }
+}
