@@ -42,7 +42,7 @@ ROOTFS_1_DEV:fileauthorenc ?= "/dev/dm-1"
 ROOTFS_0_DEV:fileauthandenc ?= "/dev/dm-1"
 ROOTFS_1_DEV:fileauthandenc ?= "/dev/dm-3"
 
-USE_BOOTLOADER_SLOT ?= "USE_BOOTLOADER_SLOT_WEAK_DEFAULT"
+USE_BOOTLOADER_SLOT ?= "${USE_BOOTLOADER_SLOT_WEAK_DEFAULT}"
 # we don't use overrides directly to set a default, as this cannot be
 # overridden by normal assignment later on
 USE_BOOTLOADER_SLOT_WEAK_DEFAULT = "true"
