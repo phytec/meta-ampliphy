@@ -8,3 +8,12 @@ include partup-config-vars.inc
 inherit meson pkgconfig
 
 DEPENDS = "glib-2.0 libyaml parted"
+RDEPENDS_${PN} += " \
+    tar \
+    e2fsprogs-resize2fs \
+    e2fsprogs-mke2fs \
+    dosfstools \
+    util-linux-sfdisk \
+    util-linux-lsblk \
+    util-linux-mount \
+"
