@@ -11,6 +11,8 @@ partitions:
   - label: BOOT
     type: primary
     filesystem: fat32
+    flags:
+      - boot
     size: ${BOOT_SIZE}
     offset: 4MiB
     input:
