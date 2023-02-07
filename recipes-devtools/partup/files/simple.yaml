@@ -23,5 +23,6 @@ partitions:
     type: primary
     filesystem: null
     expand: true
+    block-size: 4kiB
     input:
       - uri: file://${ROOTFS_URI}

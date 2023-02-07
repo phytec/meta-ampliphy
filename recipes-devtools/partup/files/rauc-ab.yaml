@@ -45,6 +45,7 @@ partitions:
     type: logical
     filesystem: null
     expand: true
+    block-size: 4kiB
     input:
       - uri: file://${ROOTFS_URI}
 
@@ -52,5 +53,6 @@ partitions:
     type: logical
     filesystem: null
     expand: true
+    block-size: 4kiB
     input:
       - uri: file://${ROOTFS_URI}
