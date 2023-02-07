@@ -5,6 +5,8 @@ SRC_URI:append = " \
 
 PARTUP_API_VERSION = "${@d.getVar('PV').split('.')[0]}"
 
+DISKLABEL ??= "msdos"
+
 BOOTLOADER_URI ??= ""
 BOOTLOADER_URI:mx6-generic-bsp ?= "barebox.bin"
 BOOTLOADER_URI:mx8-generic-bsp ?= "imx-boot"
@@ -16,6 +18,8 @@ DTB_URI ??= "oftree"
 CONFIG_URI ??= "config-partition.tar.gz"
 
 ROOTFS_URI ??= "rootfs.ext4"
+
+ROOTFS_TYPE ??= "${@bb.utils.contains('DISKLABEL', 'msdos', 'logical', 'primary', d)}"
 
 EMMC_BOOT_INPUT_OFFSET ??= "0"
 
@@ -40,6 +44,7 @@ CONFIG_SIZE ??= "64MiB"
 
 do_fetch[vardeps] += " \
     PARTUP_API_VERSION \
+    DISKLABEL \
     BOOTLOADER_URI \
     KERNEL_URI \
     DTB_URI \
