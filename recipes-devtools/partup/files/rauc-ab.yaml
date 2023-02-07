@@ -1,5 +1,5 @@
 api-version: ${PARTUP_API_VERSION}
-disklabel: msdos
+disklabel: ${DISKLABEL}
 
 emmc-boot-partitions:
   enable: true
@@ -42,7 +42,7 @@ partitions:
       - uri: file://${CONFIG_URI}
 
   - label: ROOT0
-    type: logical
+    type: ${ROOTFS_TYPE}
     filesystem: null
     expand: true
     block-size: 4kiB
@@ -50,7 +50,7 @@ partitions:
       - uri: file://${ROOTFS_URI}
 
   - label: ROOT1
-    type: logical
+    type: ${ROOTFS_TYPE}
     filesystem: null
     expand: true
     block-size: 4kiB

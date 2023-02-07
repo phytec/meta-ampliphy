@@ -1,5 +1,5 @@
 api-version: ${PARTUP_API_VERSION}
-disklabel: msdos
+disklabel: ${DISKLABEL}
 
 raw:
   - input-offset: ${BOOTLOADER_INPUT_OFFSET}
