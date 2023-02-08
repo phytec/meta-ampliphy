@@ -16,12 +16,12 @@ IMAGE_INSTALL += "\
     packagegroup-base \
     \
     packagegroup-gstreamer \
+    packagegroup-camera \
     \
     qt5-opengles2-test \
     phytec-qtdemo \
     opencv \
     gstreamer1.0-plugins-bad-opencv \
-    yavta \
     python-phycam-margin-analysis \
     \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'qtwayland qtwayland-plugins weston weston-init', '', d)} \
