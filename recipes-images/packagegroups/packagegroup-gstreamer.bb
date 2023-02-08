@@ -31,7 +31,6 @@ RDEPENDS_${PN} = " \
 # Camera tools by PHYTEC
 RDEPENDS_${PN}_append_mx6 = " \
     phytec-camera-examples-imx6 \
-    bvtest \
     gstreamer1.0-plugin-vita1300-remapper \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
@@ -40,7 +39,6 @@ RDEPENDS_${PN}_append_mx6 = " \
 
 RDEPENDS_${PN}_append_mx6ul = " \
     phytec-camera-examples-imx6ul \
-    bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
     gstreamer1.0-plugins-imx \
@@ -48,7 +46,6 @@ RDEPENDS_${PN}_append_mx6ul = " \
 
 RDEPENDS_${PN}_append_mx8mq = " \
     phytec-camera-examples-imx8mq \
-    bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
     imx-gst1.0-plugin-gplay \
@@ -58,7 +55,6 @@ RDEPENDS_${PN}_append_mx8mq = " \
 
 RDEPENDS_${PN}_append_mx8mm = " \
     phytec-camera-examples-imx8mm \
-    bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
     imx-gst1.0-plugin-gplay \
@@ -68,7 +64,6 @@ RDEPENDS_${PN}_append_mx8mm = " \
 
 RDEPENDS_${PN}_append_mx8mp = " \
     phytec-camera-examples-imx8mp \
-    bvtest \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
     imx-gst1.0-plugin-gplay \
