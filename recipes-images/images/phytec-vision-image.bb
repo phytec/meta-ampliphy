@@ -14,12 +14,12 @@ IMAGE_INSTALL += "\
     packagegroup-base \
     \
     packagegroup-gstreamer \
+    packagegroup-camera \
     \
     opencv \
     opencv-samples \
     opencv-apps \
     gstreamer1.0-plugins-bad-opencv \
-    yavta \
     python-phycam-margin-analysis \
     \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston weston-init', '', d)} \
