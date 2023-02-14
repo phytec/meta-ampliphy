@@ -12,7 +12,6 @@ RDEPENDS:${PN} = " \
     openssh-sftp-server \
     rsync \
     htop \
-    crda \
     kbd \
     kbd-keymaps \
     opkg \
