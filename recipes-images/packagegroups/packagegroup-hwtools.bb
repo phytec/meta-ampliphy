@@ -44,6 +44,8 @@ RDEPENDS_${PN} = " \
     nfs-utils-client \
     stressapptest \
     spidev-test \
+    xz \
+    bmap-tools \
 "
 
 # Those packages depend on a specific SoC architecture
