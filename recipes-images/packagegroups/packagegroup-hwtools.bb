@@ -46,6 +46,8 @@ RDEPENDS:${PN} = " \
     rauc-flash-nand \
     stressapptest \
     spidev-test \
+    xz \
+    bmap-tools \
 "
 
 # Those packages depend on a specific SoC architecture
