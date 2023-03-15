@@ -47,7 +47,6 @@ RDEPENDS_${PN} = " \
     rauc-flash-nand \
     stressapptest \
     spidev-test \
-    xz \
     bmap-tools \
 "
 
