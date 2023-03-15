@@ -44,7 +44,6 @@ RDEPENDS_${PN} = " \
     nfs-utils-client \
     stressapptest \
     spidev-test \
-    xz \
     bmap-tools \
 "
 
