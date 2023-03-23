@@ -23,7 +23,7 @@ IMAGE_INSTALL = " \
     initramfs-module-timesync \
     initramfs-module-smartcard \
     busybox \
-    packagegroup-hwtools \
+    packagegroup-hwtools-init \
     util-linux \
     coreutils \
     ${MACHINE_EXTRA_RDEPENDS} \
