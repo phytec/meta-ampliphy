@@ -5,7 +5,7 @@ the Minimal RAM-based Initial Root Filesystem (initramfs), which finds the \
 first 'init' program more efficiently."
 
 PACKAGE_INSTALL = "initramfs-boot base-files base-passwd ${ROOTFS_BOOTSTRAP_INSTALL} \
-  packagegroup-hwtools \
+  packagegroup-hwtools-diagnostic \
   iperf3 \
 "
 
