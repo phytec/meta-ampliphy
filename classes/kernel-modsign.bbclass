@@ -45,6 +45,7 @@ do_compile:prepend() {
 	set_pkcs11_env_vars
 }
 
+PARALLEL_MAKE:task-install = "-j 1"
 do_install:prepend() {
 	set_pkcs11_env_vars
 }
