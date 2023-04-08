@@ -12,3 +12,5 @@ RDEPENDS:${PN}:append:k3 = " \
     ti-rpmsg-char \
     ti-rpmsg-char-examples \
 "
+
+RDEPENDS:${PN}:remove:am62axx = "pru-icss"
