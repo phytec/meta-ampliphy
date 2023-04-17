@@ -36,6 +36,7 @@ RDEPENDS:${PN} = " \
     dtc \
     stressapptest \
     spidev-test \
+    rng-tools \
 "
 
 RDEPENDS:${PN}:append:arm = " arm-memspeed"
