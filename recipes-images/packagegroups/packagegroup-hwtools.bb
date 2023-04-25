@@ -34,6 +34,7 @@ RDEPENDS_${PN} = " \
     serialcheck \
     rs485test \
     libgpiod \
+    libgpiod-tools \
     phytool \
     ${@bb.utils.contains("MACHINE_FEATURES", "can", "can-utils", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "resistivetouch", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
