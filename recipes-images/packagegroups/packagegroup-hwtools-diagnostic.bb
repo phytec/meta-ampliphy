@@ -15,7 +15,6 @@ RDEPENDS:${PN} = " \
     bc \
     fbtest \
     libdrm-tests \
-    memedit \
     memtester \
     flashbench \
     iproute2 \
