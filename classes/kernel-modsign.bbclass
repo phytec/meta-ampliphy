@@ -5,7 +5,7 @@ MODSIGN_KEY ?= "${CERT_PATH}/kernel_modsign/kernel_modsign.pem"
 MODSIGN_CERT ?= "${CERT_PATH}/kernel_modsign/kernel_modsign.pem"
 
 DEPENDS:append:kernelmodsign = " phytec-dev-ca-native libp11-native"
-do_patch:kernelmodsign[depends] += "phytec-dev-ca-native:do_install"
+do_patch[depends] += "${@bb.utils.contains("DISTRO_FEATURES", "kernelmodsign", "phytec-dev-ca-native:do_install", "", d)}"
 
 
 check_dev_key() {
