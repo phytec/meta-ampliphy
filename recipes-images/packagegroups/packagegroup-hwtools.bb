@@ -8,5 +8,4 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
     packagegroup-hwtools-init \
     packagegroup-hwtools-diagnostic \
-    bmap-tools \
 "
