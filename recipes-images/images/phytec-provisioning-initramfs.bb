@@ -43,7 +43,7 @@ IMAGE_INSTALL = " \
     partup \
 "
 
-PACKAGE_INSTALL:append:mx8 = " ${MACHINE_FIRMWARE}"
+PACKAGE_INSTALL:append:mx8 = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
 
 PACKAGE_EXCLUDE = "kernel-image-*"
 
