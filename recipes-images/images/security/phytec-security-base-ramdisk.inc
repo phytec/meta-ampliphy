@@ -21,7 +21,7 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis", "", d)} \
     pv \
 "
-PACKAGE_INSTALL:append:mx8 = " ${MACHINE_FIRMWARE}"
+PACKAGE_INSTALL:append:mx8 = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
 
 # Remove some packages added via recommendations
 BAD_RECOMMENDATIONS += " \
