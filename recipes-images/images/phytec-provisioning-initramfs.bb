@@ -43,7 +43,7 @@ IMAGE_INSTALL = " \
     partup \
 "
 
-PACKAGE_INSTALL_append_mx8 = " ${MACHINE_FIRMWARE}"
+PACKAGE_INSTALL_append_mx8 = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
 
 # Remove some packages added via recommendations
 BAD_RECOMMENDATIONS += " \
