@@ -33,7 +33,7 @@ def get_layers(d):
 
 do_install() {
 	install -d ${D}${sysconfdir}
-	echo "ampliPHY ${DISTRO_VERSION} (${DISTRO_CODENAME})" > ${D}${sysconfdir}/ampliphy-version
+	echo "ampliPHY ${DISTRO_VERSION} (${VERSION_CODENAME})" > ${D}${sysconfdir}/ampliphy-version
 	echo "Built from branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/ampliphy-version
 	echo "Revision: ${METADATA_REVISION}" >> ${D}${sysconfdir}/ampliphy-version
 	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/ampliphy-version
