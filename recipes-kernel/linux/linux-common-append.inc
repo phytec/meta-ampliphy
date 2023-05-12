@@ -1,11 +1,11 @@
-inherit kernel-module-split-blacklist
+inherit kernel-module-split-disable
 inherit deselect-fragments
 include recipes-kernel/linux/mtd_test_packages.inc
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
 
 SRC_URI:append = " file://mtd-tests.cfg"
-KERNEL_MODULES_RDEPENDS_BLACKLIST += "${MTD_TEST_PACKAGES}"
+KERNEL_MODULES_RDEPENDS_DISABLE += "${MTD_TEST_PACKAGES}"
 
 SRC_URI:append:secureboot = " \
     file://fs_encryption.cfg \
