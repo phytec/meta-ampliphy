@@ -43,6 +43,11 @@ INHERIT += "buildhistory"
 #BUILDHISTORY_COMMIT = "0"
 INHERIT += "buildstats"
 
+# Create /etc/build
+INHERIT += "image-buildinfo"
+IMAGE_BUILDINFO_VARS:append = " DATETIME DISTRO_NAME IMAGE_BASENAME MACHINE TUNE_PKGARCH"
+IMAGE_BUILDINFO_VARS:append = " MACHINE_FEATURES DISTRO_FEATURES IMAGE_FEATURES"
+
 #run QA tests on recipes
 #INHERIT += "recipe_sanity"
 
