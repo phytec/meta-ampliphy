@@ -47,3 +47,6 @@ RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " phycam-setup"
 RDEPENDS:${PN}:append:rk3288 = " rkeeprom"
 RDEPENDS:${PN}:append:ti33x = " phyedit"
 
+RDEPENDS:${PN}:remove:am62xx = "lmsensors-fancontrol"
+RDEPENDS:${PN}:remove:am62axx = "lmsensors-fancontrol"
+RDEPENDS:${PN}:remove:am64xx = "lmsensors-fancontrol"
