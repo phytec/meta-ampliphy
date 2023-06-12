@@ -14,3 +14,4 @@ RDEPENDS:${PN}:append:k3 = " \
 "
 
 RDEPENDS:${PN}:remove:am62axx = "pru-icss"
+RDEPENDS:${PN}:append:am62axx = " cnm-wave-fw"
