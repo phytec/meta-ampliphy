@@ -1,1 +1,1 @@
-PACKAGECONFIG_append_am62xx = " vpx"
+PACKAGECONFIG_append_k3 = " vpx"
