@@ -74,6 +74,11 @@ VIRTUAL-RUNTIME_initscripts = ""
 # some default locales
 IMAGE_LINGUAS ?= "de-de fr-fr en-us"
 
+# Define Country Code for Laird LWB WiFi chips.
+# Possible Codes: US/CA/ETSI/JP/AU/CN/TW/BR/KR
+# ETSI includes all member countries of the European Union.
+#LWB_REGDOMAIN = "US"
+
 PREFERRED_VERSION_mraa = "2.0.%"
 
 # default value in bitbake.conf of poky is '/home/root'
