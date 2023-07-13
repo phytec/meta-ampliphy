@@ -18,10 +18,16 @@ FITIMAGE_SLOT_fdto ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 FITIMAGE_SLOT_fdto[type] ?= "fdto"
 FITIMAGE_SLOT_fdto[file] ?= "${@' '.join(os.path.basename(dtb) for dtb in d.getVar('KERNEL_DEVICETREE').split() if dtb.endswith('.dtbo'))}"
 
-FITIMAGE_SLOT_fdtapply:mx6-generic-bsp ?= "${PREFERRED_PROVIDER_virtual/kernel}"
-FITIMAGE_SLOT_fdtapply[type] ?= "fdtapply"
-FITIMAGE_SLOT_fdtapply[file] ?= "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])} imx6-phy-adin1300.dtbo"
-FITIMAGE_SLOT_fdtapply[name] ?= "phyboard-imx6-phy-adin1300.dtb"
+FITIMAGE_SLOT_fdtadin1300:mx6-generic-bsp ?= "${PREFERRED_PROVIDER_virtual/kernel}"
+FITIMAGE_SLOT_fdtadin1300[type] ?= "fdtapply"
+FITIMAGE_SLOT_fdtadin1300[file] ?= "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])} imx6-phy-adin1300.dtbo"
+FITIMAGE_SLOT_fdtadin1300[name] ?= "phyboard-imx6-phy-adin1300.dtb"
+
+
+FITIMAGE_SLOT_fdtksz9131:mx6-generic-bsp ?= "${PREFERRED_PROVIDER_virtual/kernel}"
+FITIMAGE_SLOT_fdtksz9131[type] ?= "fdtapply"
+FITIMAGE_SLOT_fdtksz9131[file] ?= "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])} imx6-phy-ksz9131.dtbo"
+FITIMAGE_SLOT_fdtksz9131[name] ?= "phyboard-imx6-phy-ksz9131.dtb"
 
 def readfull_bin(path):
     content = None
