@@ -1,4 +1,4 @@
-DESCRIPTION = "Hardware development tools used on Phytec boards"
+DESCRIPTION = "Audio tools used on Phytec boards"
 LICENSE = "MIT"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
