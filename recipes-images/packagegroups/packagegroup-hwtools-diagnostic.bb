@@ -19,7 +19,7 @@ RDEPENDS:${PN} = " \
     flashbench \
     iproute2 \
     bumprts \
-    serial-test \
+    linux-serial-test \
     serialcheck \
     rs485test \
     libgpiod \
