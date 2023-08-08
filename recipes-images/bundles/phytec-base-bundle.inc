@@ -39,7 +39,7 @@ def first_dtb(d):
     return dtbs.split()[0]
 
 RAUC_SLOT_boot ?= "${PREFERRED_PROVIDER_virtual/kernel}"
-RAUC_SLOT_boot[type] ?= "file"
+RAUC_SLOT_boot[type] ?= "boot"
 RAUC_SLOT_boot[file] ?= "boot.tar.gz"
 
 python do_configure:prepend() {
