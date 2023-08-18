@@ -24,6 +24,7 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-provision-tpm2", "", d)} \
     packagegroup-camera \
     ${@bb.utils.contains("DISTRO_FEATURES", "virtualization", "packagegroup-virtualization", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "packagegroup-tee", "", d)} \
 "
 
 IMAGE_INSTALL:append:update = " packagegroup-update"
