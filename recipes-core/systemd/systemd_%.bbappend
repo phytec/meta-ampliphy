@@ -18,7 +18,6 @@ PACKAGECONFIG[acl] = "-Dacl=true,-Dacl=false,acl"
 PACKAGECONFIG[kmod] = "-Dkmod=true,-Dkmod=false,kmod,libkmod"
 PACKAGECONFIG[apparmor] = "-Dapparmor=true,-Dapparmor=false,"
 PACKAGECONFIG[gnutls] = "-Dgnutls=true,-Dgnutls=false,gnutls"
-PACKAGECONFIG[gnuefi] = "-Dgnu-efi=true,-Dgnu-efi=false,"
 PACKAGECONFIG[udev-hwdb] = "-Dhwdb=true,-Dhwdb=false,"
 
 RRECOMMENDS:${PN}:remove = "systemd-compat-units"
