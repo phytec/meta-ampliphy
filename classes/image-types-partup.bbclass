@@ -95,30 +95,14 @@ do_image_partup[deptask] += "do_image_complete"
 
 python() {
     if oe.data.typed_value('USING_PARTUP', d):
-        image_fstypes = d.getVar('IMAGE_FSTYPES')
-        package_files = d.getVar('PARTUP_PACKAGE_FILES')
-        image_basename = d.getVar('IMAGE_BASENAME')
         fstypes = []
 
         # Generate dependencies of required IMAGE_FSTYPES based on files in
         # PARTUP_PACKAGE_FILES
-        for f in package_files.split():
-            if image_basename in f:
-                # Files may contain multiple extensions, like .tar.gz, so get
-                # both of them
-                p, extc = os.path.splitext(f)
-                b, ext = os.path.splitext(p)
-                if ext:
-                    ext += extc
-                else:
-                    ext = extc
-
-                fstype = ext
-                if fstype[0] == '.':
-                    fstype = fstype[1:]
-                if fstype not in d.getVar('IMAGE_TYPES'):
-                    bb.fatal('Invalid image type \'{}\''.format(fstype))
-                fstypes.append(fstype)
+        for t in d.getVar('IMAGE_TYPES').split():
+            for p in d.getVar('PARTUP_PACKAGE_FILES').split():
+                if p.endswith(t):
+                    fstypes.append(t)
 
         d.setVar('IMAGE_TYPEDEP:partup', ' '.join(fstypes))
         task_deps = ['do_image_' + f for f in fstypes]
