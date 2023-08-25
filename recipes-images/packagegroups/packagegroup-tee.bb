@@ -8,5 +8,4 @@ inherit packagegroup
 RDEPENDS:${PN} += " \
     optee-client \
     optee-test \
-    optee-examples \
 "
