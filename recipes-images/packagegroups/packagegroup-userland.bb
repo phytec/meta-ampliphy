@@ -17,5 +17,6 @@ RDEPENDS:${PN} = " \
     opkg \
     opkg-utils \
     linuxptp \
+    wget \
     ${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-imx', 'libubootenv-bin',     '', d)} \
 "
