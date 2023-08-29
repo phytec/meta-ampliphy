@@ -12,6 +12,7 @@ DISTRO_VERSION:am64xx = "BSP-Yocto-Ampliphy-AM64x-kirkstone"
 DISTRO_VERSION:k3r5-am62xx = "${DISTRO_VERSION:am62xx}"
 DISTRO_VERSION:k3r5-am62axx = "${DISTRO_VERSION:am62axx}"
 DISTRO_VERSION:k3r5-am64xx = "${DISTRO_VERSION:am64xx}"
+DISTRO_VERSION:j721s2 = "BSP-Yocto-Ampliphy-AM68x-kirkstone"
 VENDOR = "phytec"
 TARGET_VENDOR = "-${VENDOR}"
 
