@@ -1,5 +1,6 @@
 PARTUP_PACKAGE_SUFFIX ?= ".partup"
 PARTUP_PACKAGE_FILES ??= ""
+PARTUP_PACKAGE_DEPENDS ??= ""
 
 PARTUP_LAYOUT_CONFIG ??= "${IMAGE_LINK_NAME}.yaml"
 PARTUP_SEARCH_PATH ?= "${THISDIR}:${@':'.join('%s/partup' % p for p in '${BBPATH}'.split(':'))}"
@@ -106,6 +107,12 @@ python() {
 
         d.setVar('IMAGE_TYPEDEP:partup', ' '.join(fstypes))
         task_deps = ['do_image_' + f for f in fstypes]
+
+        # Add deploy task dependencies for do_copy_source_files
+        package_deps = []
+        for dep in d.getVar('PARTUP_PACKAGE_DEPENDS').split():
+            package_deps.append(dep + ':do_deploy')
+        d.appendVarFlag('do_copy_source_files', 'depends', ' '.join(package_deps))
 
         bb.build.addtask('do_copy_source_files', 'do_layout_config', ' '.join(task_deps), d)
         bb.build.addtask('do_layout_config', 'do_image_partup', 'do_image', d)
