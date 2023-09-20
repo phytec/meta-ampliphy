@@ -84,3 +84,6 @@ PREFERRED_VERSION_mraa = "2.0.%"
 # default value in bitbake.conf of poky is '/home/root'
 # change to '/root' as this is preferred path
 ROOT_HOME ?= "/root"
+
+# partup package override
+DISTROOVERRIDES:append = ":partup-package"
