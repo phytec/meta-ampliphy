@@ -22,3 +22,5 @@ RDEPENDS_${PN} = " \
     pulseaudio-module-rtp-recv \
     linux-firmware-bcm43430 \
 "
+
+RDEPENDS_${PN}_append_am57xx = " bt-fw"
