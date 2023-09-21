@@ -22,3 +22,5 @@ RDEPENDS:${PN} = " \
     pulseaudio-module-rtp-recv \
     laird-sterling-firmware \
 "
+
+RDEPENDS:${PN}:append:am57xx = " bt-fw"
