@@ -36,4 +36,4 @@ SRC_URI:append:hardening = " \
 
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'kernelmodsign', 'kernel-modsign', '', d)}
 
-LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
+KERNEL_LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
