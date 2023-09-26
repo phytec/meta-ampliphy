@@ -1,1 +1,1 @@
-LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
+PHYTEC_LOCALVERSION = "-${@legitimize_package_name(d.getVar('DISTRO_VERSION'))}"
