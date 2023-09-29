@@ -25,5 +25,6 @@ RDEPENDS:${PN} = " \
 RDEPENDS:${PN}:append:mx6-generic-bsp = " bbu"
 RDEPENDS:${PN}:append:mx6ul-generic-bsp = " bbu phycam-setup"
 RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " phycam-setup"
+RDEPENDS:${PN}:append:mx8mm-nxp-bsp = " phycam-setup"
 RDEPENDS:${PN}:append:rk3288 = " rkeeprom"
 RDEPENDS:${PN}:append:ti33x = " bbu"
