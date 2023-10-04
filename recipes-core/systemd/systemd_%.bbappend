@@ -25,15 +25,6 @@ RRECOMMENDS:${PN}:remove = "systemd-compat-units"
 RDEPENDS:${PN} += "systemd-conf"
 
 # Should be fixed in poky recipe
-do_install:append () {
-    if ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'false', 'true', d)}; then
-        # Distro features don't contain x11. Don't install tmpfiles
-        # configuration for X11.
-        rm -f ${D}${exec_prefix}/lib/tmpfiles.d/x11.conf
-    fi
-}
-
-# Should be fixed in poky recipe
 #
 # Fix runtime error of systemd-tmpfiles service:
 #    Failed to open directory /var/tmp: Too many levels of symbolic links
