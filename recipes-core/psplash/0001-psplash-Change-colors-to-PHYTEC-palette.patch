@@ -3,6 +3,8 @@ From: Primoz Fiser <primoz.fiser@norik.com>
 Date: Mon, 21 Aug 2023 11:07:30 +0200
 Subject: [PATCH] psplash: Change colors to PHYTEC palette
 
+Upstream-Status: Inappropriate [configuration]
+
 Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 ---
  psplash-colors.h  |  8 ++++----
