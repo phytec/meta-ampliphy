@@ -61,7 +61,9 @@ RDEPENDS:initramfs-module-timesync = "${PN}-base chrony"
 FILES:initramfs-module-timesync = "/init.d/12-timesync"
 
 SUMMARY:initramfs-module-smartcard = "start pcscs-lite for smartcard support"
-RDEPENDS:initramfs-module-smartcard = "${PN}-base pcsc-lite opensc"
+RDEPENDS:initramfs-module-smartcard = " \
+    ${PN}-base pcsc-lite opensc \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'kernel-module-unix', '', d)}"
 FILES:initramfs-module-smartcard = "/init.d/13-smartcard"
 
 SUMMARY:initramfs-module-provisioninginit = "initramfs support PHYTEC provisioning of devices"
