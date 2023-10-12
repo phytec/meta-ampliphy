@@ -16,7 +16,7 @@ end() {
 	fi
 }
 
-version="v0.4"
+version="v0.5"
 SKS_PATH=@SKS_PATH@
 SKS_MOUNTPATH=@SKS_MOUNTPATH@
 SKS_SECRETFOLDER=@SKS_SECRETFOLDER@
@@ -31,14 +31,14 @@ PHYTEC Install Script ${version} for eMMC
 Usage:  $(basename $0) [PARAMETER] [ACTION]
 
 Example:
-    $(basename $0) --filesystem /media/phytec-security-image.rootfs.sdcard --newemmc
+    $(basename $0) --filesystem /media/phytec-security-image.rootfs.partup --newemmc
 
 One of the following action can be selected:
     -n | --newemmc    Copy filesystem image to eMMC
 
 The following PARAMETER must be set for eMMC provisioning:
     -p | --flashpath <flash device> = ${FLASH_PATH}
-    -s | --filesystem <path to sdcard image>
+    -s | --filesystem <path to sdcard image or partup file>
 "
 
 
@@ -65,9 +65,16 @@ do
 		fi
 		mountpoint -q "${SKS_MOUNTPATH}" && umount -q "${SKS_MOUNTPATH}"
 		mountpoint -q "${CONFIG_MOUNTPATH}" && umount -q "${CONFIG_MOUNTPATH}"
-		dd if=${FILE_SYSTEM} of=${FLASH_PATH} bs=100M
-		sync
-		partprobe ${FLASH_PATH}
+		filename=$(basename "${FILE_SYSTEM}")
+		if [ "${filename##*.}" = "partup" ]; then
+			partup install ${FILE_SYSTEM} ${FLASH_PATH}
+			mkdir -p /media/data_partup
+			mount -t squashfs ${FILE_SYSTEM} /media/data_partup
+		else
+			dd if=${FILE_SYSTEM} of=${FLASH_PATH} bs=100M
+			sync
+			partprobe ${FLASH_PATH}
+		fi
 		mkdir -p ${SKS_MOUNTPATH}
 		mount ${SKS_PATH} ${SKS_MOUNTPATH}
 		mkdir -p ${SKS_MOUNTPATH}${SKS_SECRETFOLDER}
