@@ -2,7 +2,7 @@
 #
 #  securestorage-init.sh
 #
-#  Copyright (C) 2022 PHYTEC Messtechnik GmbH,
+#  Copyright (C) 2023 PHYTEC Messtechnik GmbH,
 #  Author: Maik Otto <m.otto@phytec.de>
 #
 #  Released under the MIT license (see COPYING.MIT for the terms)
@@ -119,19 +119,21 @@ if echo "$root" | grep -q "mmc"; then
 		done
 
 		devroot=${root%?}${i}
-		if [ ! -n "${LABEL}" ] &&  [ -n "${TYPE}" ] && [ "${TYPE}" = "DM_integrity" ]; then
+		if [ -n "${TYPE}" ] && [ "${TYPE}" = "DM_integrity" ]; then
 			integritysetup open ${devroot} --integrity sha256 --journal-integrity sha256 introot${j}
 			unset LABEL
 			unset PTTYPE
+			unset TYPE
 			devroot=/dev/mapper/introot${j}
 			for arg in $(blkid ${devroot}); do
 				case "${arg}" in
 					LABEL=*) eval ${arg};;
+					TYPE=*) eval ${arg};;
 					PTTYPE=*) eval ${arg};;
 				esac
 			done
 		fi
-		if [ ! -n "${LABEL}" ] && [ ! -n "${PTTYPE}" ]; then
+		if [ ! -n "${TYPE}" ] && [ ! -n "${PTTYPE}" ]; then
 			if test -f /mnt_secrets/secrets/tksecure_key.bb; then
 				dmsetup create root${j} --table "0 $(blockdev --getsz ${devroot}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${devroot} 0"
 			else
