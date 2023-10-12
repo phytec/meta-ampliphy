@@ -9,7 +9,7 @@ end() {
 	fi
 }
 
-version="v1.5"
+version="v1.6"
 SKS_PATH=@SKS_PATH@
 SKS_MOUNTPATH=@SKS_MOUNTPATH@
 CONFIG_DEV=@CONFIG_DEV@
@@ -29,9 +29,10 @@ Example:
 
 One of the following action can be selected:
     -n | --newkeystorage <value>  Create new Secure Key Storage
-                            trustedcaam or securecaam (black blob NXP BSP)
+                            trustedcaam (only NXP controller)
                             trustedtee
                             trustedtpm
+                            securecaam (black blob only NXP Vendor BSP)
     -d | --deletekeystorage Erase the existing Secure Key Storage
     -l | --loadkeystorage   Load the existing Secure Key Storage
     -p | --pkcs11testkey    Create an ECC testkey with user pin 1234
@@ -132,8 +133,8 @@ check_storage() {
 	# Check directory and mount
 	if [ ! -d ${SKS_MOUNTPATH} ]; then
 		mkdir ${SKS_MOUNTPATH}
-		mount ${SKS_PATH} ${SKS_MOUNTPATH}
 	fi
+	mountpoint -q ${SKS_MOUNTPATH} || mount ${SKS_PATH} ${SKS_MOUNTPATH}
 	if [ $(mount | grep ${SKS_MOUNTPATH} | wc -l) -eq 0 ]; then
 		echo "Error: No Partition is mounted to ${SKS_MOUNTPATH}"
 		echo "Please install sdcard image to your emmc at first"
@@ -144,8 +145,8 @@ check_storage() {
 	fi
 	if [ ! -d ${CONFIG_MOUNTPATH} ]; then
 		mkdir -p ${CONFIG_MOUNTPATH}
-		mount ${CONFIG_DEV} ${CONFIG_MOUNTPATH}
 	fi
+	mountpoint -q ${CONFIG_MOUNTPATH} || mount ${CONFIG_DEV} ${CONFIG_MOUNTPATH}
 	if [ $(mount | grep ${CONFIG_MOUNTPATH} | wc -l) -eq 0 ]; then
 		echo "Error: No Partition is mounted to ${CONFIG_MOUNTPATH}"
 		echo "Please install sdcard image to your emmc at first"
