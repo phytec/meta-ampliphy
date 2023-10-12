@@ -9,15 +9,18 @@ end() {
 	fi
 }
 
-version="v1.2"
+version="v1.3"
+SKS_PATH=@SKS_PATH@
+FLASH_PATH=${SKS_PATH%??}
+
 usage="
 PHYTEC Install Script ${version} for Secure Storage
 
 Usage:  $(basename $0) [PARAMETER] [ACTION]
 
 Example:
-    $(basename $0) --flashpath /dev/mmcblk0
-    --filesystem /media/phytec-security-image.tgz --rauc
+    $(basename $0) --flashpath ${FLASH_PATH}
+    --filesystem /media/phytec-security-image.ext4
     --flashlayout 5,6
     --newsecurestorage intenc
 
@@ -30,17 +33,12 @@ One of the following action can be selected:
     -v | --version          The version of the $(basename $0)
 
 The following PARAMETER must be set for new Secure Storage:
-    -p | --flashpath <flash device>
-    -s | --filesystem <path to root as tgz>
+    -p | --flashpath <flash device> = ${FLASH_PATH}
+    -s | --filesystem <path to root as tgz or ext4>
     -l | --flashlayout <value>    partion number for the rootfs partitions
-                       2,4        rootfs partitions are 2 and 4 (old)
-                       5,6        rootfs partitions are 5 and 6 (new)
-
-The following PARAMETER can be set for new Secure Storage:
-    -r | --rauc   (A/B system on the flash)
+                       5,6        rootfs partitions are 5 and 6
 "
 
-FLASH_PATH=""
 FILE_SYSTEM=""
 FLASH_LAYOUT[0]=2
 FLASH_LAYOUT[1]=4
@@ -87,19 +85,28 @@ init_enc() {
 
 # Close encryption device
 init_encclose() {
-	cryptsetup remove encrootfs
+	while [ $(cryptsetup status encrootfs | grep "is in use" | wc -l) -ne 0 ]; do
+		sync -f
+	done
+	cryptsetup close encrootfs
 }
 
 # Format device and install rootfs
 # ${1} root number for label name of partition
 # ${2} path to device
-# ${3} rootfs as tgz
+# ${3} rootfs as tgz or ext4
 install_files() {
-	mkfs.ext4 -L root${1} -t ext4 ${2}
-	mount ${2} /newroot
-	tar xvfz ${3} -C /newroot/
-	sync
-	umount /newroot
+	filename=$(basename "${3}")
+	if [ "${filename##*.}" = "tgz" ]; then
+		mkfs.ext4 -L root${1} -t ext4 ${2}
+		mount ${2} /newroot
+		tar xvfz ${3} -C /newroot/
+		sync
+		umount /newroot
+	else
+		dd if=${3} of=${2} bs=100M conv=fsync
+		sync
+	fi
 }
 
 mkdir -p /newroot
@@ -107,7 +114,7 @@ mkdir -p /newroot
 #
 # Command line options
 #
-ARGS=$(getopt -n $(basename $0) -o p:s:l:rn:vh -l flashpath:,filesystem:,flashlayout:,rauc,newsecurestorage:,version,help -- "$@")
+ARGS=$(getopt -n $(basename $0) -o p:s:l:n:vh -l flashpath:,filesystem:,flashlayout:,newsecurestorage:,version,help -- "$@")
 VALID_ARGS=$?
 if [ "$VALID_ARGS" != "0" ]; then
 	echo "${usage}"
@@ -123,8 +130,10 @@ do
 	-l | --flashlayout)
 		FLASH_LAYOUT[0]=$(echo ${2} | cut -d',' -f1);
 		FLASH_LAYOUT[1]=$(echo ${2} | cut -d',' -f2);
+		if [ ${FLASH_LAYOUT[0]} -ne ${FLASH_LAYOUT[1]} ]; then
+			DORAUC=2
+		fi
 		shift 2;;
-	-r | --rauc) DORAUC=2; shift 1;;
 	-n | --newsecurestorage)
 		if [ -z "${FLASH_PATH}" ] || [ -z "${FILE_SYSTEM}" ]; then
 			echo "Set flash path and filesystem first!"

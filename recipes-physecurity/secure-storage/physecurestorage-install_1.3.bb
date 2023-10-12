@@ -9,6 +9,14 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
+SKS_PATH ??= "/dev/mmcblk${EMMC_DEV}p1"
+
+do_patch() {
+    sed -i \
+    -e 's:@SKS_PATH@:${SKS_PATH}:g' \
+    ${WORKDIR}/physecurestorage-install.sh
+}
+
 do_install() {
     install -d ${D}${bindir}
     install -m 0500 physecurestorage-install.sh ${D}${bindir}/physecurestorage-install
