@@ -20,15 +20,15 @@ PR = "r0"
 #   $ mv opencv_examples phytec-camera-examples/phytec-opencv-examples
 #   $ mv phytec-camera-examples/phytec-gstreamer-examples/COPYING.MIT \
 #   $ phytec-camera-examples/
-#   $ mv phytec-camera-examples phytec-camera-examples-imx8mm-2.0
-#   $ find phytec-camera-examples-imx8mm-2.0/ -exec "touch" "{}" ";"
-#   $ find phytec-camera-examples-imx8mm-2.0/ -name "*.sh" -or -iname "*.py" -exec "chmod" "+x" "{}" ";"
-#   $ tar -czf phytec-camera-examples-imx8mm-2.0.tar.gz \
-#     phytec-camera-examples-imx8mm-2.0/
+#   $ mv phytec-camera-examples phytec-camera-examples-imx8mm-3.0
+#   $ find phytec-camera-examples-imx8mm-3.0/ -exec "touch" "{}" ";"
+#   $ find phytec-camera-examples-imx8mm-3.0/ -name "*.sh" -or -iname "*.py" -exec "chmod" "+x" "{}" ";"
+#   $ tar -czf phytec-camera-examples-imx8mm-3.0.tar.gz \
+#     phytec-camera-examples-imx8mm-3.0/
 
 SRC_URI = "https://download.phytec.de/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
-SRC_URI[md5sum] = "bf94df741cc8961502917dc7b1f5faa3"
-SRC_URI[sha256sum] = "f8c2279aac2520891b49584ab2b0a5cdf61ea8ada6a341984780ab4c54d6703d"
+SRC_URI[md5sum] = "64de694074c65745e710de8a5a56ab50"
+SRC_URI[sha256sum] = "70e6e20031a0647f7893d8fe3fc3f86b0b8b949aa7ba9c7caf36f2cec6263d19"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
@@ -52,14 +52,14 @@ do_install() {
 	# Create link in home folder for old documentation
 	install -d ${D}${ROOT_HOME}
 	ln -s ${datadir}/phytec-gstreamer-examples ${D}${ROOT_HOME}/gstreamer-examples
-	ln -s ${datadir}/phytec-v4l2_c-examples ${D}${ROOT_HOME}/v4l2_c-examples
+	ln -s ${datadir}/phytec-yavta-examples ${D}${ROOT_HOME}/yavta-examples
 	ln -s ${datadir}/phytec-opencv-examples ${D}${ROOT_HOME}/opencv-examples
 }
 
 FILES:${PN} += " \
     ${ROOT_HOME}/ \
     ${datadir}/phytec-gstreamer-examples \
-    ${datadir}/phytec-v4l2_c-examples \
+    ${datadir}/phytec-yavta-examples \
     ${datadir}/phytec-opencv-examples \
 "
 
@@ -68,13 +68,12 @@ RDEPENDS:${PN} += " \
     python3-core \
     media-ctl \
     v4l-utils \
+    phycam-setup \
     gstreamer1.0 \
     gstreamer1.0-plugins-good-multifile \
     gstreamer1.0-plugins-good-video4linux2 \
-    gstreamer1.0-plugins-bad-fbdevsink \
     gstreamer1.0-plugins-bad-waylandsink \
     gstreamer1.0-plugins-bad-bayer \
     gstreamer1.0-plugins-good-jpeg \
     gstreamer1.0-plugin-bayer2rgb-neon \
-    gstreamer1.0-plugin-pseudocolor \
 "
