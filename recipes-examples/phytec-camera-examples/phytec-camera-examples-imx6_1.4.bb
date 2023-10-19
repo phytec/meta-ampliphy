@@ -65,7 +65,7 @@ FILES:${PN} += " \
 
 RDEPENDS:${PN} += " \
     bash \
-    python3 \
+    python3-core \
     media-ctl \
     v4l-utils \
     gstreamer1.0 \
