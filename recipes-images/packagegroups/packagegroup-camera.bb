@@ -10,4 +10,5 @@ RDEPENDS:${PN} = " \
     v4l-utils \
     yavta \
     bvtest \
+    bayer2rgb-neon-bin \
 "
