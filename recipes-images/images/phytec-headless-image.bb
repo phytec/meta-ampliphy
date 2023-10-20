@@ -14,6 +14,7 @@ IMAGE_INSTALL = " \
     packagegroup-userland-flashing \
     packagegroup-rt \
     packagegroup-coprocessor \
+    packagegroup-cryptodev \
     ${@bb.utils.contains("COMBINED_FEATURES", "alsa", "packagegroup-audio", "", d)} \
     ${@bb.utils.contains("COMBINED_FEATURES", "wifi", "packagegroup-wifi", "", d)} \
     ${@bb.utils.contains("COMBINED_FEATURES", "bluetooth", "packagegroup-bluetooth", "", d)} \
