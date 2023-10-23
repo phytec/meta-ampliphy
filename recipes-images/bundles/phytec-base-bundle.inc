@@ -24,6 +24,7 @@ RAUC_SLOT_rootfs[adaptive] ?= "block-hash-index"
 RAUC_IMAGE_FSTYPE ?= "${@bb.utils.contains('MACHINE_FEATURES','emmc','ext4','ubifs', d)}"
 
 RAUC_SLOT_kernel ?= "${PREFERRED_PROVIDER_virtual/kernel}"
+RAUC_SLOT_kernel[file] ?= "${KERNEL_IMAGETYPE}"
 RAUC_SLOT_kernel[type] ?= "kernel"
 
 RAUC_SLOT_bootloader ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
