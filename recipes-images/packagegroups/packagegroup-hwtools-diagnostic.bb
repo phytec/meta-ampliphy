@@ -21,6 +21,7 @@ RDEPENDS:${PN} = " \
     bumprts \
     linux-serial-test \
     serialcheck \
+    rs485conf \
     rs485test \
     libgpiod \
     libgpiod-tools \
