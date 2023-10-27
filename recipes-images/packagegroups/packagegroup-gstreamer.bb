@@ -14,8 +14,7 @@ RDEPENDS:${PN} = " \
     gstreamer1.0-plugins-base-tcp \
     gstreamer1.0-plugins-base-pango \
     gstreamer1.0-plugins-base-videorate \
-    gstreamer1.0-plugins-base-videoscale \
-    gstreamer1.0-plugins-base-videoconvert \
+    gstreamer1.0-plugins-base-videoconvertscale \
     gstreamer1.0-plugins-good \
     gstreamer1.0-plugins-good-jpeg \
     gstreamer1.0-plugins-good-isomp4 \
