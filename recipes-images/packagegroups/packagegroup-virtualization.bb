@@ -8,4 +8,5 @@ inherit packagegroup
 RDEPENDS:${PN} += " \
     podman \
     podman-compose \
+    check-config \
 "
