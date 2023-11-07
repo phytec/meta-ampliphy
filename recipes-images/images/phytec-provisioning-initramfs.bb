@@ -22,6 +22,7 @@ IMAGE_INSTALL = " \
     initramfs-module-network \
     initramfs-module-timesync \
     initramfs-module-smartcard \
+    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "initramfs-module-optee", "", d)} \
     busybox \
     packagegroup-hwtools-init \
     util-linux \
