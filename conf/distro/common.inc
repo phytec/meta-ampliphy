@@ -24,6 +24,9 @@ SDKPATH = "/opt/${VENDOR}-${DISTRO}/${SDK_VERSION}"
 #activate config checker
 INHERIT += "sanity"
 
+# generate SBOM compatible license file
+INHERIT += "create-spdx"
+
 #we provide source mirrors for missing packages
 INHERIT += "phytec-mirrors"
 
