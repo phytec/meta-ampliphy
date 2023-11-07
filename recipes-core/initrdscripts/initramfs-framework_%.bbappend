@@ -5,6 +5,7 @@ SRC_URI:append = " \
     file://timesync.sh \
     file://provisioninginit.sh \
     file://smartcard.sh \
+    file://opteeclient.sh \
 "
 
 # be set in the machine configuration.
@@ -33,6 +34,9 @@ do_install:append() {
     # smartcard
     install -m 0755 ${WORKDIR}/smartcard.sh ${D}/init.d/13-smartcard
 
+    # optee
+    install -m 0755 ${WORKDIR}/opteeclient.sh ${D}/init.d/14-opteeclient
+
     # provisioninginit
     install -m 0755 ${WORKDIR}/provisioninginit.sh ${D}/init.d/98-provisioninginit
 
@@ -46,6 +50,7 @@ PACKAGES =+ "\
     initramfs-module-timesync \
     initramfs-module-provisioninginit \
     initramfs-module-smartcard \
+    initramfs-module-optee \
 "
 
 SUMMARY:initramfs-module-finish = "initramfs finish switch root"
@@ -65,6 +70,10 @@ RDEPENDS:initramfs-module-smartcard = " \
     ${PN}-base pcsc-lite opensc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', 'kernel-module-unix', '', d)}"
 FILES:initramfs-module-smartcard = "/init.d/13-smartcard"
+
+SUMMARY:initramfs-module-optee = "start tee-supplicant for optee"
+RDEPENDS:initramfs-module-optee = "${PN}-base optee-client"
+FILES:initramfs-module-optee = "/init.d/14-opteeclient"
 
 SUMMARY:initramfs-module-provisioninginit = "initramfs support PHYTEC provisioning of devices"
 RDEPENDS:initramfs-module-provisioninginit = "${PN}-base"
