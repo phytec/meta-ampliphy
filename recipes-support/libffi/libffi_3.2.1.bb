@@ -20,6 +20,8 @@ SRC_URI = "ftp://sourceware.org/pub/libffi/${BP}.tar.gz \
 SRC_URI[md5sum] = "83b89587607e3eb65c70d361f13bab43"
 SRC_URI[sha256sum] = "d06ebb8e1d9a22d19e38d63fdb83954253f39bedc5d46232a05645685722ca37"
 
+COMPATIBLE_MACHINE = "phy.*am335x.*"
+
 EXTRA_OECONF += "--disable-builddir"
 EXTRA_OEMAKE_class-target = "LIBTOOLFLAGS='--tag=CC'"
 inherit autotools texinfo
