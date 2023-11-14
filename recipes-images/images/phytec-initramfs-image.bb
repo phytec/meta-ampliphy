@@ -2,11 +2,18 @@ SUMMARY = "Phytec initramfs image"
 DESCRIPTION = "A small image capable of allowing a device to boot and \
 check for hardware problems. The kernel includes \
 the Minimal RAM-based Initial Root Filesystem (initramfs), which finds the \
-first 'init' program more efficiently."
+first 'init' program more efficiently. \
+On AM62x, this can be used for a NOR-Flash recovery mode to flash new \
+software to the eMMC."
 
-PACKAGE_INSTALL = "initramfs-boot base-files base-passwd ${ROOTFS_BOOTSTRAP_INSTALL} \
-  packagegroup-hwtools-diagnostic \
-  iperf3 \
+PACKAGE_INSTALL = " \
+    initramfs-boot \
+    base-files \
+    base-passwd \
+    ${ROOTFS_BOOTSTRAP_INSTALL} \
+    packagegroup-hwtools-diagnostic \
+    iperf3 \
+    ${VIRTUAL-RUNTIME_login_manager} \
 "
 
 # Do not pollute the initrd image with rootfs features
