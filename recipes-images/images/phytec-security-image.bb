@@ -5,8 +5,14 @@ LICENSE = "MIT"
 require recipes-images/images/phytec-headless-image.bb
 require recipes-images/images/security/setrootpassword.inc
 
-_XTRA_SETUP = "${@bb.utils.contains("MACHINE_FEATURES", "emmc", "ramdisk-fitimage", "simple-fitimage", d)}"
-require recipes-images/images/security/${_XTRA_SETUP}.inc
+FITIMAGE_SIGN ??= "false"
+FITIMAGE_SIGN[type] = "boolean"
+
+_FITIMAGE_TO_WIC = ""
+_FITIMAGE_TO_WIC:secureboot = "${@bb.utils.contains("MACHINE_FEATURES", "emmc","phytec-secureboot-initramfs-fitimage:do_deploy", "phytec-simple-fitimage:do_deploy", d)}"
+
+do_image_wic[depends] += "\
+    ${@bb.utils.contains('FITIMAGE_SIGN','true','${_FITIMAGE_TO_WIC}','', d)}"
 
 IMAGE_INSTALL += " \
     ${@bb.utils.contains("DISTRO_FEATURES", "protectionshield", "phytec-example-users", "", d)} \
