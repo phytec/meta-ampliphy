@@ -6,6 +6,7 @@ SRC_URI:append = " \
     file://provisioninginit.sh \
     file://smartcard.sh \
     file://opteeclient.sh \
+    file://securestorageinit.sh \
 "
 
 # be set in the machine configuration.
@@ -21,6 +22,10 @@ do_varchange() {
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
     ${WORKDIR}/provisioninginit.sh
+
+    sed -i \
+    -e 's:@SKS_MOUNTPATH@:${SKS_MOUNTPATH}:g' \
+    ${WORKDIR}/securestorageinit.sh
 }
 addtask varchange after do_patch and before do_install
 
@@ -40,6 +45,9 @@ do_install:append() {
     # provisioninginit
     install -m 0755 ${WORKDIR}/provisioninginit.sh ${D}/init.d/98-provisioninginit
 
+    # securestorageinit
+    install -m 0755 ${WORKDIR}/securestorageinit.sh ${D}/init.d/98-securestorageinit
+
     # remove node
     rm ${D}/dev/console
 }
@@ -51,6 +59,7 @@ PACKAGES =+ "\
     initramfs-module-provisioninginit \
     initramfs-module-smartcard \
     initramfs-module-optee \
+    initramfs-module-securestorage \
 "
 
 SUMMARY:initramfs-module-finish = "initramfs finish switch root"
@@ -76,3 +85,7 @@ FILES:initramfs-module-optee = "/init.d/14-opteeclient"
 SUMMARY:initramfs-module-provisioninginit = "initramfs support PHYTEC provisioning of devices"
 RDEPENDS:initramfs-module-provisioninginit = "${PN}-base"
 FILES:initramfs-module-provisioninginit = "/init.d/98-provisioninginit"
+
+SUMMARY:initramfs-module-securestorage = "initramfs support PHYTEC secure storage of devices"
+RDEPENDS:initramfs-module-securestorage = "${PN}-base"
+FILES:initramfs-module-securestorage = "/init.d/98-securestorageinit"
