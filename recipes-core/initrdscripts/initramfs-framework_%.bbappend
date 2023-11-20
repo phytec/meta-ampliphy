@@ -5,7 +5,7 @@ SRC_URI:append = " \
     file://timesync.sh \
     file://provisioninginit.sh \
     file://smartcard.sh \
-    file://opteeclient.sh \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'file://opteeclient.sh', '', d)} \
     file://securestorageinit.sh \
 "
 
@@ -40,7 +40,9 @@ do_install:append() {
     install -m 0755 ${WORKDIR}/smartcard.sh ${D}/init.d/13-smartcard
 
     # optee
-    install -m 0755 ${WORKDIR}/opteeclient.sh ${D}/init.d/14-opteeclient
+    if [ -f ${WORKDIR}/opteeclient.sh ]; then
+        install -m 0755 ${WORKDIR}/opteeclient.sh ${D}/init.d/14-opteeclient
+    fi
 
     # provisioninginit
     install -m 0755 ${WORKDIR}/provisioninginit.sh ${D}/init.d/98-provisioninginit
@@ -58,7 +60,7 @@ PACKAGES =+ "\
     initramfs-module-timesync \
     initramfs-module-provisioninginit \
     initramfs-module-smartcard \
-    initramfs-module-optee \
+    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "initramfs-module-optee", "", d)}\
     initramfs-module-securestorage \
 "
 
