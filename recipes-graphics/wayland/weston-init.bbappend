@@ -2,12 +2,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI += "file://weston.ini"
 
-INI_UNCOMMENT_ASSIGNMENTS:remove:mx8mq-nxp-bsp = "repaint-window=16"
-
-INI_UNCOMMENT_ASSIGNMENTS:append:mx8mq-nxp-bsp = "drm-device=card0"
-
-SRC_URI:append:mx8-nxp-bsp = " ${@bb.utils.contains('DISTRO_FEATURES', 'wayland x11', 'file://weston.config', '', d)}"
-
 # HACK: NXP's meta-imx (mickledore-6.1.36-2.1.0) weston-init.bbappend fails in
 # case weston.sh file is not present. This happens because weston.sh is not
 # installed by meta-freescale in case DISTROOVERRIDES doesn't contain "fsl" or
