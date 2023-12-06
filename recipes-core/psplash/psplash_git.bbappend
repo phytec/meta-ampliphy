@@ -6,6 +6,10 @@ SRC_URI:append = " \
     file://psplash-bar.png \
 "
 
+SRC_URI:append:j721s2 = " \
+    file://psplash-start.service  \
+"
+
 SPLASH_IMAGES = "file://psplash-poky.png;outsuffix=default"
 
 do_configure:prepend() {
