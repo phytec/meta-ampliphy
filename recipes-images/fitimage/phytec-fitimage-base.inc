@@ -29,6 +29,13 @@ FITIMAGE_SLOT_fdtksz9131[type] ?= "fdtapply"
 FITIMAGE_SLOT_fdtksz9131[file] ?= "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])} imx6-phy-ksz9131.dtbo"
 FITIMAGE_SLOT_fdtksz9131[name] ?= "phyboard-imx6-phy-ksz9131.dtb"
 
+FITIMAGE_SLOT_tee ?= "optee-os"
+FITIMAGE_SLOT_tee[type] ?= "tee"
+FITIMAGE_SLOT_tee[file] ?= "optee/tee.bin"
+
+FITIMAGE_LOADADDRESS:mx6ul-generic-bsp = "${@bb.utils.contains('MACHINE_FEATURES', 'optee', '0x80800000', '', d)}"
+FITIMAGE_ENTRYPOINT:mx6ul-generic-bsp  = "${@bb.utils.contains('MACHINE_FEATURES', 'optee', '0x80800000', '', d)}"
+
 def readfull_bin(path):
     content = None
     with open(path, 'rb') as fd:
