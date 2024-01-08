@@ -106,7 +106,7 @@ python() {
                     fstypes.append(t)
 
         d.setVar('IMAGE_TYPEDEP:partup', ' '.join(fstypes))
-        task_deps = ['do_image_' + f for f in fstypes]
+        task_deps = ['do_image_' + f.split('.')[0] for f in fstypes]
 
         # Add deploy task dependencies for do_copy_source_files
         package_deps = []
