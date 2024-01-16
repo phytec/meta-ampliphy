@@ -7,7 +7,7 @@ DEP_BOOTLOADER:mx93-nxp-bsp = "${IMAGE_BOOTLOADER}"
 do_bundle[depends] += "phytec-dev-ca-native:do_install"
 do_emmc_boot[depends] += "${DEP_BOOTLOADER}:do_deploy"
 
-inherit bundle
+inherit bundle image-artifact-names
 
 DEPENDS += "phytec-dev-ca-native ${DEP_BOOTLOADER} libp11-native"
 RAUC_BUNDLE_DESCRIPTION ?= "PHYTEC rauc bundle based on ${DISTRO_VERSION}"
