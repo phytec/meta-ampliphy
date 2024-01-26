@@ -81,7 +81,8 @@ python do_configure:prepend() {
     bootloader_filename = {
         "barebox": d.getVar("BAREBOX_BINARY"),
         "u-boot-imx": "u-boot.imx",
-        "imx-boot": "imx-boot"
+        "imx-boot": "imx-boot",
+        "u-boot-ti": "u-boot.img"
     }
     emmc_boot_path = "%s/%s" % (deploy_dir, "emmc-boot.img")
     if os.path.islink(emmc_boot_path):
