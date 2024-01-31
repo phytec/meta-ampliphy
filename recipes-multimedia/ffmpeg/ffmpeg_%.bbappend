@@ -14,6 +14,7 @@ EXTRA_OECONF:append = " \
 --enable-decoders \
 --disable-decoder=mp3 \
 --disable-decoder=aac \
+--disable-decoder=av1 \
 --disable-decoder=h264 \
 --disable-decoder=rpza \
 --disable-decoder=mpeg4 \
