@@ -94,19 +94,19 @@ do_image_partup[depends] += "partup-native:do_populate_sysroot"
 do_image_partup[recrdeptask] += "do_deploy"
 do_image_partup[deptask] += "do_image_complete"
 
+def image_typedeps(d):
+    fstypes = []
+    for t in d.getVar('IMAGE_TYPES').split():
+        for p in d.getVar('PARTUP_PACKAGE_FILES').split():
+            if p.endswith(t):
+                fstypes.append(t)
+    return ' '.join(fstypes)
+
+IMAGE_TYPEDEP:partup = "${@image_typedeps(d)}"
+
 python() {
     if oe.data.typed_value('USING_PARTUP', d):
-        fstypes = []
-
-        # Generate dependencies of required IMAGE_FSTYPES based on files in
-        # PARTUP_PACKAGE_FILES
-        for t in d.getVar('IMAGE_TYPES').split():
-            for p in d.getVar('PARTUP_PACKAGE_FILES').split():
-                if p.endswith(t):
-                    fstypes.append(t)
-
-        d.setVar('IMAGE_TYPEDEP:partup', ' '.join(fstypes))
-        task_deps = ['do_image_' + f.split('.')[0] for f in fstypes]
+        task_deps = ['do_image_' + f.split('.')[0] for f in image_typedeps(d).split(' ')]
 
         # Add deploy task dependencies for do_copy_source_files
         package_deps = []
