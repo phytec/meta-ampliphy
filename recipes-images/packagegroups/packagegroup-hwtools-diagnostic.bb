@@ -36,6 +36,7 @@ RDEPENDS:${PN} = " \
     stressapptest \
     spidev-test \
     rng-tools \
+    tcpdump \
 "
 
 RDEPENDS:${PN}:append:arm = " arm-memspeed"
