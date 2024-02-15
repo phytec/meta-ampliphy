@@ -4,6 +4,7 @@ HOMEPAGE = "http://www.phytec.de"
 DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
 DEP_BOOTLOADER:mx8-nxp-bsp = "${IMAGE_BOOTLOADER}"
 DEP_BOOTLOADER:mx93-nxp-bsp = "${IMAGE_BOOTLOADER}"
+DEP_BOOTLOADER:k3 = "${IMAGE_BOOTLOADER}"
 do_bundle[depends] += "phytec-dev-ca-native:do_install"
 
 inherit bundle image-artifact-names
@@ -81,7 +82,7 @@ python do_configure:prepend() {
         "barebox": d.getVar("BAREBOX_BINARY"),
         "u-boot-imx": "u-boot.imx",
         "imx-boot": "imx-boot",
-        "u-boot-ti": "u-boot.img"
+        "ti-boot-rauc": "ti-boot-rauc.img"
     }
     emmc_boot_path = "%s/%s" % (deploy_dir, "emmc-boot.img")
     if os.path.islink(emmc_boot_path):
