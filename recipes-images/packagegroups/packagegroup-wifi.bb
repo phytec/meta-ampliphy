@@ -13,4 +13,5 @@ RDEPENDS:${PN} = " \
     hostapd \
     laird-sterling-firmware \
     linux-firmware-wl18xx \
+    linux-firmware-iwlwifi \
 "
