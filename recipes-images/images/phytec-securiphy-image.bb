@@ -11,7 +11,7 @@ FITIMAGE_SIGN[type] = "boolean"
 _FITIMAGE_TO_WIC = ""
 _FITIMAGE_TO_WIC:secureboot = "${@bb.utils.contains("MACHINE_FEATURES", "emmc","phytec-secureboot-initramfs-fitimage:do_deploy", "phytec-simple-fitimage:do_deploy", d)}"
 
-do_image_wic[depends] += "\
+do_image[depends] += "\
     ${@bb.utils.contains('FITIMAGE_SIGN','true','${_FITIMAGE_TO_WIC}','', d)}"
 
 IMAGE_INSTALL += " \
