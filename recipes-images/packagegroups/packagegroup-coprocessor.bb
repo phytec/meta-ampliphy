@@ -5,14 +5,19 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit packagegroup
 
-# Include AM62/AM64 examples from meta-ti
 RDEPENDS:${PN}:append:k3 = " \
-    ti-rtos-firmware \
     pru-icss \
-    ti-rpmsg-char \
-    ti-rpmsg-char-examples \
+    mcu-plus-sdk-firmware \
 "
 
 RDEPENDS:${PN}:remove:am62axx = "pru-icss"
 RDEPENDS:${PN}:append:am62axx = " cnm-wave-fw"
-RDEPENDS:${PN}:remove:j721s2 = "pru-icss"
+RDEPENDS:${PN}:remove:j721s2 = " \
+    pru-icss \
+    mcu-plus-sdk-firmware \
+"
+RDEPENDS:${PN}:append:j721s2 = " \
+    ti-rtos-firmware \
+    ti-rpmsg-char \
+    ti-rpmsg-char-examples \
+"
