@@ -81,6 +81,7 @@ python do_configure:prepend() {
     bootloader_filename = {
         "barebox": d.getVar("BAREBOX_BINARY"),
         "u-boot-imx": "u-boot.imx",
+        "u-boot-phytec": d.getVar("IMAGE_BOOTLOADER"),
         "imx-boot": "imx-boot",
         "ti-boot-rauc": "ti-boot-rauc.img"
     }
