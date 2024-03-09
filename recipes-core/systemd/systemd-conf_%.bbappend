@@ -18,6 +18,7 @@ SRC_URI += " \
 SRC_URI:append:mx6ul-generic-bsp = " file://cpuidle-disable-state.rules"
 SRC_URI:append:mx8-generic-bsp = " file://45-disable-multitouch-mouse.rules"
 SRC_URI:remove:am62xx = " file://10-watchdog.conf"
+SRC_URI:remove:am62axx = " file://10-watchdog.conf"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/network/
