@@ -9,7 +9,7 @@ end() {
 	fi
 }
 
-version="v1.3"
+version="v1.4"
 SKS_PATH=@SKS_PATH@
 FLASH_PATH=${SKS_PATH%??}
 
@@ -97,15 +97,21 @@ init_encclose() {
 # ${3} rootfs as tgz or ext4
 install_files() {
 	filename=$(basename "${3}")
-	if [ "${filename##*.}" = "tgz" ]; then
+	if [ "${filename##*.}" = "ext4" ]; then
+		dd if=${3} of=${2} bs=100M conv=fsync
+	else
 		mkfs.ext4 -L root${1} -t ext4 ${2}
 		mount ${2} /newroot
-		tar xvfz ${3} -C /newroot/
+		if [ "${filename##*.}" = "tgz" ]; then
+			tar xfz ${3} -C /newroot/
+		elif [ "${filename##*.tar.}" = "xz" ]; then
+			tar xf ${3} -C /newroot/
+		else
+			echo "Not supported file system"
+			return 1
+		fi
 		sync
 		umount /newroot
-	else
-		dd if=${3} of=${2} bs=100M conv=fsync
-		sync
 	fi
 }
 
