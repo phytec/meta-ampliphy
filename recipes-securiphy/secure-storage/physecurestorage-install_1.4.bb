@@ -22,6 +22,10 @@ do_install() {
     install -m 0500 physecurestorage-install.sh ${D}${bindir}/physecurestorage-install
 }
 
+RDEPENDS:${PN} = " \
+    xz \
+"
+
 FILES:${PN} = "\
     ${bindir}/physecurestorage-install \
 "
