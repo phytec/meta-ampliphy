@@ -11,9 +11,9 @@ SRC_URI += " \
     file://10-eth0.link \
     file://10-eth1.link \
     file://10-eth2.link \
+    file://11-can0.network \
+    file://11-can1.network \
     file://90-dhcp-default.network \
-    file://can0.network \
-    file://can1.network \
 "
 
 SRC_URI:append:mx6ul-generic-bsp = " file://cpuidle-disable-state.rules"
