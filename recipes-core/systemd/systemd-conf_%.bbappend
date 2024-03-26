@@ -3,6 +3,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 inherit systemd
 
 SRC_URI += " \
+    file://10-wait-online-any.conf \
     file://10-watchdog.conf \
     file://10-eth0.network \
     file://10-eth1.network \
@@ -32,6 +33,8 @@ do_install:append() {
     for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.service); do
         install -m 0644 "$file" ${D}${systemd_system_unitdir}/
     done
+    install -d ${D}${systemd_system_unitdir}/systemd-networkd-wait-online.service.d/
+    install -m 0644 ${WORKDIR}/10-wait-online-any.conf ${D}${systemd_system_unitdir}/systemd-networkd-wait-online.service.d/
 
     [ -e ${WORKDIR}/10-watchdog.conf ] && \
       install -m 0644 ${WORKDIR}/10-watchdog.conf ${D}${systemd_unitdir}/system.conf.d/10-watchdog.conf
