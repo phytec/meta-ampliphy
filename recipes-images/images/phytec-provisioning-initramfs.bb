@@ -15,6 +15,9 @@ IMAGE_OVERHEAD_FACTOR = "1.0"
 IMAGE_FSTYPES = "cpio.gz"
 export IMAGE_BASENAME = "phytec-provisioning-initramfs"
 
+IMAGE_INSTALL:remove:mx8m-nxp-bsp = "packagegroup-fsl-optee-imx"
+MACHINE_FIRMWARE:remove:mx8mp-nxp-bsp  = "sof-imx sof-zephyr zephyr-demo-imx"
+
 IMAGE_INSTALL = " \
     initramfs-framework-base \
     initramfs-module-udev \
@@ -38,7 +41,6 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-pkcs11-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-openssl-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-provision-tpm2", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "packagegroup-tee", "", d)} \
     packagegroup-cryptodev \
     rng-tools \
     pv \
