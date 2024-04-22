@@ -2,10 +2,10 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 RDEPENDS:${PN}:append = " \
 	${@bb.utils.contains("MACHINE_FEATURES", "lwb5p", \
-		"kernel-module-lwb5p-backports-summit \
+		"kernel-module-lwb-if-backports \
 		 lwb5plus-sdio-div-firmware \
-		 summit-supplicant-lwb \
-		 summit-supplicant-libs-lwb ", \
+		 summit-supplicant-lwb-if \
+		 summit-supplicant-libs-60 ", \
 		"", d) \
 	} \
 "
