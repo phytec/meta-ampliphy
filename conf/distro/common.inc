@@ -57,8 +57,6 @@ IMAGE_BUILDINFO_VARS:append = " MACHINE_FEATURES DISTRO_FEATURES IMAGE_FEATURES"
 #run QA tests on recipes
 #INHERIT += "recipe_sanity"
 
-PACKAGE_CLASSES ?= "package_ipk"
-
 # All images build with the distribution get the version package
 IMAGE_INSTALL:append = " os-release"
 PREFERRED_PROVIDER_os-release = "ampliphy-version"
