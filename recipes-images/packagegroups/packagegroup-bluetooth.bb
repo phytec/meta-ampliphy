@@ -24,3 +24,4 @@ RDEPENDS:${PN} = " \
 "
 
 RDEPENDS:${PN}:append:am57xx = " bt-fw"
+RDEPENDS:${PN}:append:mx8x-generic-bsp = " brcm-patchram-plus"
