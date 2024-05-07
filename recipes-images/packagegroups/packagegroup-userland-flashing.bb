@@ -9,4 +9,5 @@ RDEPENDS:${PN} = " \
     bmap-tools \
     partup \
     xz \
+    phytec-eeprom-flashtool \
 "
