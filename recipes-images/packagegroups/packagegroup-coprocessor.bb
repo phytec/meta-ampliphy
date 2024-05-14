@@ -8,6 +8,7 @@ inherit packagegroup
 RDEPENDS:${PN}:append:k3 = " \
     pru-icss \
     mcu-plus-sdk-firmware \
+    ti-rpmsg-char \
 "
 
 RDEPENDS:${PN}:remove:am62axx = "pru-icss"
@@ -18,6 +19,5 @@ RDEPENDS:${PN}:remove:j721s2 = " \
 "
 RDEPENDS:${PN}:append:j721s2 = " \
     ti-rtos-firmware \
-    ti-rpmsg-char \
     ti-rpmsg-char-examples \
 "
