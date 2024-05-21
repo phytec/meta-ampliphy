@@ -17,6 +17,7 @@ RAUC_BUNDLE_COMPATIBLE ?= "${MACHINE}"
 
 RAUC_BUNDLE_SLOTS ?= " \
     rootfs \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc-appfs', 'appfs', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES','emmc','boot bootloader','kernel dtb', d)} \
 "
 
@@ -41,6 +42,11 @@ def first_dtb(d):
     if not dtbs:
         return ''
     return dtbs.split()[0]
+
+RAUC_SLOT_appfs ?= "rauc-appfs-example"
+RAUC_SLOT_appfs[type] ?= "file"
+RAUC_SLOT_appfs[file] ?= "rauc-appfs-example.tar.gz"
+RAUC_SLOT_appfs[rename] ?= "rauc-appfs-example.tar.gz"
 
 RAUC_SLOT_boot ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_boot[type] ?= "boot"
