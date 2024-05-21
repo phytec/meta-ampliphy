@@ -1,0 +1,1 @@
+KERNEL=="mmcblk@EMMC_DEV@p[78]", PROGRAM="@LIBDIR@/@PN@/is-parent-active %k", RESULT=="1", SYMLINK+="appfs"
