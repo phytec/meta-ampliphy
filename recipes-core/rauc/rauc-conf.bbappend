@@ -78,6 +78,7 @@ do_install:prepend() {
         -e 's!@ROOTFS_1_DEV@!${ROOTFS_1_DEV}!g' \
         -e 's/@RAUC_KEYRING_FILE@/${@os.path.basename(d.getVar("RAUC_KEYRING_FILE"))}/g' \
         ${@bb.utils.contains("USE_BOOTLOADER_SLOT", "true", "", "-e '/@IF_BOOTLOADER_SLOT@/,/@ENDIF_BOOTLOADER_SLOT@/d'", d)} \
+        ${@bb.utils.contains("DISTRO_FEATURES", "rauc-appfs", "", "-e '/@IF_APPFS_SLOT@/,/@ENDIF_APPFS_SLOT@/d'", d)} \
         -e '/@\(IF\|ENDIF\)[A-Z_]\+@/d' \
         ${WORKDIR}/system.conf
 
