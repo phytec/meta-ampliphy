@@ -38,6 +38,8 @@ python do_patch:append() {
 }
 
 do_install:append() {
+    install -d ${D}/mnt/config
+    install -d ${D}/mnt/app
     install -m 0755 ${WORKDIR}/print_issue.sh ${D}${sysconfdir}/profile.d/print_issue.sh
     install -m 0644 ${WORKDIR}/share/dot.profile ${D}${ROOT_HOME}/.profile
     install -m 0644 ${WORKDIR}/share/dot.bashrc ${D}${ROOT_HOME}/.bashrc
@@ -49,3 +51,8 @@ do_install_basefilesissue:append() {
         sed -i 's/%h//g' ${D}${sysconfdir}/issue.net
     fi
 }
+
+FILES:${PN} += " \
+    /mnt/config \
+    /mnt/app \
+"
