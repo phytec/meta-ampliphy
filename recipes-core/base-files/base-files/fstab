@@ -5,3 +5,4 @@ tmpfs           /run           tmpfs   mode=0755,nodev,nosuid,strictatime  0  0
 tmpfs           /var/volatile  tmpfs   defaults              0  0
 
 @CONFIG_DEV@  /mnt/config  @CONFIG_DEV_TYPE@  defaults  0  0
+/dev/appfs  /mnt/app  auto  defaults  0  0
