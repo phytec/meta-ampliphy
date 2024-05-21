@@ -8,6 +8,7 @@ SRC_URI += " \
     file://rauc-pre-install.sh \
     file://rauc-handle-secrets.sh \
     file://rauc-post-install.sh \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc-appfs', 'file://is-parent-active file://10-appfs.rules', '', d)} \
 "
 
 PACKAGES =+ "rauc-update-usb"
@@ -22,6 +23,15 @@ DOWNGRADE_BARRIER_VERSION ?= "${RAUC_BUNDLE_VERSION}"
 
 do_configure:append() {
 	echo "${DOWNGRADE_BARRIER_VERSION}" > ${WORKDIR}/downgrade_barrier_version
+}
+
+do_patch[postfuncs] += "${@bb.utils.contains('DISTRO_FEATURES', 'rauc-appfs', 'parse_appfs_rules', '', d)}"
+parse_appfs_rules() {
+	sed -i \
+		-e 's!@EMMC_DEV@!${EMMC_DEV}!g' \
+		-e 's!@LIBDIR@!${libdir}!g' \
+		-e 's!@PN@!${PN}!g' \
+		${WORKDIR}/10-appfs.rules
 }
 
 do_install:append() {
@@ -45,11 +55,19 @@ do_install:append() {
 	install -m 0774 ${WORKDIR}/rauc-handle-secrets.sh ${D}${libdir}/rauc
 	install -m 0774 ${WORKDIR}/rauc-post-install.sh ${D}${libdir}/rauc
 }
+do_install:append:rauc-appfs() {
+	install -m 754 ${WORKDIR}/is-parent-active ${D}${libdir}/rauc
+	install -m 644 ${WORKDIR}/10-appfs.rules ${D}${nonarch_base_libdir}/udev/rules.d/
+}
 
 FILES:rauc-update-usb += " \
     ${bindir}/update_usb.sh \
     ${systemd_unitdir}/system/update-usb@.service \
     ${nonarch_base_libdir}/udev/rules.d/10-update-usb.rules \
+"
+FILES:${PN}:append:rauc-appfs = " \
+    ${libdir}/rauc/is-parent-active \
+    ${nonarch_base_libdir}/udev/rules.d/10-appfs.rules \
 "
 
 RDEPENDS:${PN} += " \
