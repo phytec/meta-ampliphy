@@ -1,0 +1,17 @@
+#!/bin/sh
+
+RAUC_SYSTEM_CONF="/etc/rauc/system.conf"
+PARSED_CONF=$(awk '/\[/{prefix=$0; next} $1{print prefix $0}' $RAUC_SYSTEM_CONF)
+
+ROOTFS_DEV=$(mount | grep "on / type ext4" | cut -d " " -f 1)
+
+ROOTFS_SLOT=$(echo "$PARSED_CONF" | grep "$ROOTFS_DEV" | grep -Eo "rootfs\.[0-9]")
+APPFS_SLOT=$(echo "$PARSED_CONF" | grep "$1" | grep -E "\[slot.[a-z]+.[01]\]" | grep -Eo "[a-z]+\.[01]")
+
+PARENT_ROOTFS_SLOT=$(echo "$PARSED_CONF" | grep "\[slot\.$APPFS_SLOT\]parent=" | grep -o "rootfs\.[01]")
+
+if [ "$ROOTFS_SLOT" = "$PARENT_ROOTFS_SLOT" ]; then
+    echo 1
+else
+    echo 0
+fi
