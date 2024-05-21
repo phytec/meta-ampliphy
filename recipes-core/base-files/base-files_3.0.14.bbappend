@@ -25,6 +25,11 @@ clean_fstab() {
     sed -i -e '/\/mnt\/config/d' ${WORKDIR}/fstab
 }
 
+do_patch[postfuncs] += "${@bb.utils.contains('DISTRO_FEATURES', 'rauc-appfs', '', 'fstab_delete_appfs', d)}"
+fstab_delete_appfs() {
+    sed -i -e '/\/mnt\/app/d' ${WORKDIR}/fstab
+}
+
 python do_patch:append() {
     if "rauc" in d.getVar("DISTRO_FEATURES").split():
         bb.build.exec_func("parse_fstab", d)
