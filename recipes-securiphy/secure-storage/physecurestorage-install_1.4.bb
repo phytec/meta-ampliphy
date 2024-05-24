@@ -7,7 +7,8 @@ SRC_URI = " \
     file://physecurestorage-install.sh \
 "
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 SKS_PATH ??= "/dev/mmcblk${EMMC_DEV}p1"
 

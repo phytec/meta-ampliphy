@@ -11,7 +11,8 @@ SRC_URI = " \
 
 INSANE_SKIP:${PN} += "already-stripped"
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 DEVCA = "phytec-dev-ca"
 
 do_install() {

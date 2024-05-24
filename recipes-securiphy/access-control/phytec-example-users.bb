@@ -15,7 +15,8 @@ SRC_URI = " \
     file://phytec-example-users.service \
 "
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 PROTECTIONSHIELD_PHYADMINUSER_PASSWORD ??= ''
 #encrypted phyadmin with password phyadmin
