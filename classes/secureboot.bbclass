@@ -15,6 +15,10 @@ BOOTLOADER_SIGN_CSF_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/CSF1_1_sha256_4096
 BOOTLOADER_SIGN_SRKFUSE_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/SRK_1_2_3_4_table.bin"
 BOOTLOADER_HABV4_SRK_INDEX ??= "0"
 
+# for TI K3
+BOOTLOADER_TI_K3_MPK_KEY ??= "${CERT_PATH}/ti_k3/keys/phytecSMPK.pem"
+BOOTLOADER_TI_K3_DEGENERATE_KEY ??= "${CERT_PATH}/ti_k3/keys/ti-degenerate-key.pem"
+
 ##################################################
 #       Signing FIT image                        #
 #Linux Kernel, Devicetree and optional Initramfs)#
