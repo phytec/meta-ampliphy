@@ -23,30 +23,30 @@ SRC_URI:remove:am62axx = " file://10-watchdog.conf"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/network/
-    for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.network); do
+    for file in $(find ${UNPACKDIR} -maxdepth 1 -type f -name *.network); do
         install -m 0644 "$file" ${D}${systemd_unitdir}/network/
     done
-    for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.link); do
+    for file in $(find ${UNPACKDIR} -maxdepth 1 -type f -name *.link); do
         install -m 0644 "$file" ${D}${systemd_unitdir}/network/
     done
     install -d ${D}${systemd_system_unitdir}/
-    for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.service); do
+    for file in $(find ${UNPACKDIR} -maxdepth 1 -type f -name *.service); do
         install -m 0644 "$file" ${D}${systemd_system_unitdir}/
     done
     install -d ${D}${systemd_system_unitdir}/systemd-networkd-wait-online.service.d/
-    install -m 0644 ${WORKDIR}/10-wait-online-any.conf ${D}${systemd_system_unitdir}/systemd-networkd-wait-online.service.d/
+    install -m 0644 ${UNPACKDIR}/10-wait-online-any.conf ${D}${systemd_system_unitdir}/systemd-networkd-wait-online.service.d/
 
-    [ -e ${WORKDIR}/10-watchdog.conf ] && \
-      install -m 0644 ${WORKDIR}/10-watchdog.conf ${D}${systemd_unitdir}/system.conf.d/10-watchdog.conf
+    [ -e ${UNPACKDIR}/10-watchdog.conf ] && \
+      install -m 0644 ${UNPACKDIR}/10-watchdog.conf ${D}${systemd_unitdir}/system.conf.d/10-watchdog.conf
 
-    if [ -e ${WORKDIR}/cpuidle-disable-state.rules ]; then
+    if [ -e ${UNPACKDIR}/cpuidle-disable-state.rules ]; then
         install -d ${D}${sysconfdir}/udev/rules.d
-        install -m 0644 ${WORKDIR}/cpuidle-disable-state.rules ${D}${sysconfdir}/udev/rules.d/
+        install -m 0644 ${UNPACKDIR}/cpuidle-disable-state.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 
-    if [ -e ${WORKDIR}/45-disable-multitouch-mouse.rules ]; then
+    if [ -e ${UNPACKDIR}/45-disable-multitouch-mouse.rules ]; then
         install -d ${D}${sysconfdir}/udev/rules.d
-        install -m 0644 ${WORKDIR}/45-disable-multitouch-mouse.rules ${D}${sysconfdir}/udev/rules.d/
+        install -m 0644 ${UNPACKDIR}/45-disable-multitouch-mouse.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 
     rm -rf ${D}${systemd_unitdir}/network/wired.network
