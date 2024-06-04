@@ -48,7 +48,7 @@ do_install() {
 	echo "HOME_URL=\"http://www.phytec.de\"" >> ${D}${sysconfdir}/os-release
 
 	install -d ${D}${bindir}
-	install -m 0755 ${WORKDIR}/lsb_release ${D}${bindir}/
+	install -m 0755 ${UNPACKDIR}/lsb_release ${D}${bindir}/
 }
 RPROVIDES:${PN} = "os-release"
 RREPLACES:${PN} = "os-release"
