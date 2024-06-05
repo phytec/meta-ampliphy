@@ -5,7 +5,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 SRC_URI += "file://rauc-appfs-example.sh"
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 B = "${WORKDIR}/build"
 
 RDEPENDS:${PN} = "busybox"
@@ -14,7 +15,7 @@ inherit deploy
 
 APPFSDIR = "${WORKDIR}/image-appfs"
 do_appfs() {
-    install -m 0755 ${WORKDIR}/rauc-appfs-example.sh ${APPFSDIR}/${BPN}
+    install -m 0755 ${UNPACKDIR}/rauc-appfs-example.sh ${APPFSDIR}/${BPN}
 }
 do_appfs[dirs] = "${APPFSDIR}"
 do_appfs[cleandirs] = "${B}"
