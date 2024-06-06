@@ -1,0 +1,367 @@
+From 481d4192c3a64d02cc5cb11c20b611dd3f8d4f0a Mon Sep 17 00:00:00 2001
+From: Arunkumar Dasari <arunkumar.d@mistralsolutions.com>
+Date: Thu, 7 Sep 2023 16:41:56 +0530
+Subject: [PATCH 1/2] gstdrmallocator: Add DRM allocator support
+
+Add DRM based allocator support.
+
+The following changes are included :
+1. Use DRM dumb buffers and associated APIs for
+   dmabuf allocation.
+2. Have DRM device fd a member of allocator object
+3. Allocate GstMemory objects with mem_type as 'dmabuf'
+4. Add meson build file
+
+Signed-off-by: Arunkumar Dasari <arunkumar.d@mistralsolutions.com>
+---
+ gst-libs/gst/drm/gstdrmallocator.c | 206 +++++++++++++++++++++++++++++
+ gst-libs/gst/drm/gstdrmallocator.h |  77 +++++++++++
+ gst-libs/gst/drm/meson.build       |  26 ++++
+ gst-libs/gst/meson.build           |   1 +
+ 4 files changed, 310 insertions(+)
+ create mode 100644 gst-libs/gst/drm/gstdrmallocator.c
+ create mode 100644 gst-libs/gst/drm/gstdrmallocator.h
+ create mode 100644 gst-libs/gst/drm/meson.build
+
+diff --git a/gst-libs/gst/drm/gstdrmallocator.c b/gst-libs/gst/drm/gstdrmallocator.c
+new file mode 100644
+index 0000000..b557ad2
+--- /dev/null
++++ b/gst-libs/gst/drm/gstdrmallocator.c
+@@ -0,0 +1,206 @@
++/*
++ * GStreamer
++ *
++ * Copyright (C) 2012 Texas Instruments
++ *
++ * Authors:
++ *  Pooja Prajod <poojaprajod@ti.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation
++ * version 2.1 of the License.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++/**
++ * SECTION:GstDRMAllocator
++ * @short_description: GStreamer DRM allocator support
++ *
++ * Since: 1.6.3
++ */
++
++
++#include "gstdrmallocator.h"
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <errno.h>
++#include <unistd.h>
++#include <sys/mman.h>
++#include <sys/types.h>
++
++#define INVALID_DRM_FD (-1)
++
++GST_DEBUG_CATEGORY (drmallocator_debug);
++#define GST_CAT_DEFAULT drmallocator_debug
++
++#define gst_drm_allocator_parent_class parent_class
++G_DEFINE_TYPE (GstDRMAllocator, gst_drm_allocator, GST_TYPE_FD_ALLOCATOR);
++
++static GstMemory *
++gst_drm_allocator_alloc (GstAllocator * allocator, gsize size,
++    GstAllocationParams * params)
++{
++  GstDRMAllocator *self = GST_DRM_ALLOCATOR (allocator);
++  int fd = -1;
++  int DrmDeviceFD = self->DrmDeviceFD;
++  GstMemory *mem;
++  /* Variable for DRM Dumb Buffers */
++
++  struct drm_mode_create_dumb creq;
++  struct drm_mode_destroy_dumb dreq;
++  int ret ;
++  
++  GST_LOG_OBJECT (self, "DRM Memory alloc");  
++  
++  memset(&creq, 0, sizeof(struct drm_mode_create_dumb));
++  /* 
++   We have only total size as argument to _allocator_alloc.
++   Since the DDR storage is linear, it is as good as saying
++   the buffer is of width = size and height = 1
++  */
++  creq.width = size;
++  creq.height = 1;
++  creq.bpp = 8;
++
++  /* Create a DRM dumb buffer */
++  ret = drmIoctl (DrmDeviceFD, DRM_IOCTL_MODE_CREATE_DUMB, &creq);
++  if (ret < 0) {
++    GST_ERROR_OBJECT (self, "Create DRM dumb buffer failed");
++    return NULL;
++  }
++  /* Get a dmabuf fd from the dumb buffer handle */
++  drmPrimeHandleToFD (DrmDeviceFD, creq.handle, DRM_CLOEXEC | O_RDWR, &fd);
++
++  if (fd < 0) {
++    GST_ERROR_OBJECT (self, "Invalid fd returned: %d", fd);
++    goto fail;
++  }
++
++  /* Get a dmabuf gstmemory with the fd */
++  mem = gst_fd_allocator_alloc (allocator, fd, size, 0);  
++
++  if (G_UNLIKELY (!mem)) {
++    GST_ERROR_OBJECT (self, "GstDmaBufMemory allocation failed");
++    close (fd);
++    goto fail;
++  }
++
++  return mem;
++
++  fail:
++    memset(&dreq, 0, sizeof(struct drm_mode_destroy_dumb));
++    dreq.handle = creq.handle;
++    drmIoctl (DrmDeviceFD, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
++    return NULL;
++}
++
++static void
++gst_drm_allocator_free (GstAllocator * allocator, GstMemory * mem)
++{
++  GstDRMAllocator *self = GST_DRM_ALLOCATOR (allocator);
++  uint32_t handle = 0;
++  int DrmDeviceFD = self->DrmDeviceFD;
++  int fd = -1;
++
++  GST_LOG_OBJECT (self, "DRM Memory free");
++
++  g_return_if_fail (GST_IS_ALLOCATOR (allocator));
++  g_return_if_fail (mem != NULL);
++  g_return_if_fail (gst_is_drm_memory (mem));
++
++  fd = gst_fd_memory_get_fd (mem);
++  drmPrimeFDToHandle(DrmDeviceFD, fd, &handle);    
++
++  /* Incase there are some mapped memory, we unmap and ready it to be cleaned*/
++  GST_ALLOCATOR_CLASS (parent_class)->free (allocator, mem);
++
++  if (handle) {
++    struct drm_mode_destroy_dumb dreq;
++    memset(&dreq, 0, sizeof(struct drm_mode_destroy_dumb));
++    dreq.handle = handle;
++    drmIoctl (DrmDeviceFD, DRM_IOCTL_MODE_DESTROY_DUMB, &dreq);
++  }
++  
++  close (fd);
++}
++
++static void
++gst_drm_allocator_finalize (GObject * obj)
++{
++  GstDRMAllocator *self = GST_DRM_ALLOCATOR (obj);
++  GST_LOG_OBJECT (obj, "DRM Allocator finalize");
++
++  close (self->DrmDeviceFD);
++  self->DrmDeviceFD = INVALID_DRM_FD;
++
++  G_OBJECT_CLASS (parent_class)->finalize (obj);
++}
++
++static void
++gst_drm_allocator_class_init (GstDRMAllocatorClass * klass)
++{
++  GstAllocatorClass *drm_alloc = (GstAllocatorClass *) klass;
++
++  drm_alloc->alloc = GST_DEBUG_FUNCPTR (gst_drm_allocator_alloc);
++  drm_alloc->free = GST_DEBUG_FUNCPTR (gst_drm_allocator_free);
++  GST_DEBUG_CATEGORY_INIT (drmallocator_debug, "drmallocator", 0,
++    "GstDRMAllocator debug");
++
++}
++
++static void
++gst_drm_allocator_init (GstDRMAllocator * self)
++{
++  GstAllocator *alloc = GST_ALLOCATOR_CAST (self);
++  GObjectClass *object_class = G_OBJECT_CLASS (GST_DRM_ALLOCATOR_GET_CLASS(self));
++  
++  if (self->DrmDeviceFD <= 0) {
++    self->DrmDeviceFD = open("/dev/dri/card0", O_RDWR | O_CLOEXEC);
++    if (self->DrmDeviceFD < 0) {
++      GST_ERROR_OBJECT (self, "Failed to open DRM device");
++    } else {
++      drmDropMaster (self->DrmDeviceFD);
++    }
++  }
++
++  alloc->mem_type = GST_ALLOCATOR_DMABUF;
++
++  object_class->finalize = gst_drm_allocator_finalize;
++
++  GST_OBJECT_FLAG_UNSET (self, GST_ALLOCATOR_FLAG_CUSTOM_ALLOC);
++}
++
++void
++gst_drm_allocator_register (void)
++{
++  gst_allocator_register (GST_ALLOCATOR_DRM,
++      g_object_new (GST_TYPE_DRM_ALLOCATOR, NULL));
++}
++
++GstAllocator *
++gst_drm_allocator_get (void)
++{
++  GstAllocator *alloc;
++  alloc = gst_allocator_find (GST_ALLOCATOR_DRM);
++  if (!alloc) {
++    gst_drm_allocator_register();
++    alloc = gst_allocator_find (GST_ALLOCATOR_DRM);
++  }
++  return alloc; 
++}
++
++gboolean
++gst_is_drm_memory (GstMemory * mem)
++{
++  return gst_memory_is_type (mem, GST_ALLOCATOR_DMABUF);
++}
+diff --git a/gst-libs/gst/drm/gstdrmallocator.h b/gst-libs/gst/drm/gstdrmallocator.h
+new file mode 100644
+index 0000000..3199b92
+--- /dev/null
++++ b/gst-libs/gst/drm/gstdrmallocator.h
+@@ -0,0 +1,77 @@
++/*
++ * GStreamer
++ *
++ * Copyright (C) 2012 Texas Instruments
++ *
++ * Authors:
++ *  Pooja Prajod <poojaprajod@ti.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation
++ * version 2.1 of the License.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++/**
++ * SECTION:GstDRMAllocator
++ * @short_description: GStreamer DRM allocator support
++ *
++ * Since: 1.6.3
++ */
++
++#ifndef __GSTDRMALLOCATOR_H__
++#define __GSTDRMALLOCATOR_H__
++
++#include <gst/gst.h>
++#include <gst/video/video.h>
++#include <gst/allocators/allocators.h>
++#include <stdint.h>
++
++#include <xf86drm.h>
++#include <xf86drmMode.h>
++#include <fcntl.h>
++
++G_BEGIN_DECLS
++
++#define GST_TYPE_DRM_ALLOCATOR                  (gst_drm_allocator_get_type ())
++#define GST_DRM_ALLOCATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GST_TYPE_DRM_ALLOCATOR, GstDRMAllocator))
++#define GST_IS_DRM_ALLOCATOR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GST_TYPE_DRM_ALLOCATOR))
++#define GST_DRM_ALLOCATOR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GST_TYPE_DRM_ALLOCATOR, GstDRMAllocatorClass))
++#define GST_IS_DRM_ALLOCATOR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GST_TYPE_DRM_ALLOCATOR))
++#define GST_DRM_ALLOCATOR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GST_TYPE_DRM_ALLOCATOR, GstDRMAllocatorClass))
++
++#define GST_ALLOCATOR_DRM "DRM"
++
++typedef struct _GstDRMAllocator GstDRMAllocator;
++typedef struct _GstDRMAllocatorClass GstDRMAllocatorClass;
++
++struct _GstDRMAllocator
++{
++  GstFdAllocator parent;
++  int DrmDeviceFD;
++};
++
++struct _GstDRMAllocatorClass
++{
++  GstFdAllocatorClass parent_class;
++};
++
++GST_EXPORT void gst_drm_allocator_register (void);
++GST_EXPORT GstAllocator * gst_drm_allocator_get (void);
++
++GST_EXPORT gboolean gst_is_drm_memory (GstMemory * mem);
++
++GST_EXPORT GType gst_drm_allocator_get_type (void);
++
++G_END_DECLS
++
++#endif /* __GSTDRMALLOCATOR_H__ */
+diff --git a/gst-libs/gst/drm/meson.build b/gst-libs/gst/drm/meson.build
+new file mode 100644
+index 0000000..8b51ba6
+--- /dev/null
++++ b/gst-libs/gst/drm/meson.build
+@@ -0,0 +1,26 @@
++gstdrm_sources = [
++  'gstdrmallocator.c',
++]
++gstdrm_headers = [
++  'gstdrmallocator.h',
++]
++install_headers(gstdrm_headers, subdir : 'gstreamer-1.0/gst/drm')
++
++libdrm_dep = dependency('libdrm', version: '>= 2.4.55')
++if libdrm_dep.found()
++  gstdrm = library('gstdrm-' + api_version,
++    gstdrm_sources,
++    c_args : gst_plugins_bad_args + ['-DGST_USE_UNSTABLE_API'],
++    include_directories : [configinc, libsinc],
++    version : libversion,
++    soversion : soversion,
++    darwin_versions : osxversion,
++    install : true,
++    dependencies : [gstbase_dep, gstallocators_dep, libdrm_dep],
++  )
++
++  gstdrm_dep = declare_dependency(link_with : gstdrm,
++    include_directories : [libsinc],
++    dependencies : [gstbase_dep, gstallocators_dep, libdrm_dep])
++endif
++
+diff --git a/gst-libs/gst/meson.build b/gst-libs/gst/meson.build
+index 77dadcf..b47cf2d 100644
+--- a/gst-libs/gst/meson.build
++++ b/gst-libs/gst/meson.build
+@@ -4,6 +4,7 @@ subdir('adaptivedemux')
+ subdir('audio')
+ subdir('basecamerabinsrc')
+ subdir('codecparsers')
++subdir('drm')
+ subdir('codecs')
+ subdir('d3d11')
+ subdir('insertbin')
+-- 
+2.17.1
+

@@ -1,0 +1,160 @@
+From db00b3c06c0dac755f22cb72123a29ccee204990 Mon Sep 17 00:00:00 2001
+From: Arunkumar Dasari <arunkumar.d@mistralsolutions.com>
+Date: Thu, 7 Sep 2023 17:50:57 +0530
+Subject: [PATCH 2/2] kmssink: Add omapdrm and tidss in the list of drivers
+
+In gstreamer-bad kmssink plugin is available but
+omapdrm and tidss drivers are not added in the
+list of driver modules.
+
+Added support for DRM buffer importing. Without
+this addition, there will be frame-copy happens
+and slows down the playback.
+
+Signed-off-by: Arunkumar Dasari <arunkumar.d@mistralsolutions.com>
+---
+ sys/kms/gstkmssink.c | 100 ++++++++++++++++++++++++++++++++++++++++++-
+ sys/kms/meson.build  |   2 +-
+ 2 files changed, 100 insertions(+), 2 deletions(-)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index 788cefc..33a3150 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -178,7 +178,7 @@ kms_open (gchar ** driver)
+   static const char *drivers[] = { "i915", "radeon", "nouveau", "vmwgfx",
+     "exynos", "amdgpu", "imx-drm", "rockchip", "atmel-hlcdc", "msm",
+     "xlnx", "vc4", "meson", "sun4i-drm", "mxsfb-drm", "tegra",
+-    "xilinx_drm",               /* DEPRECATED. Replaced by xlnx */
++    "xilinx_drm", "omapdrm", "tidss",              /* DEPRECATED. Replaced by xlnx */
+   };
+   int i, fd = -1;
+ 
+@@ -1333,6 +1333,101 @@ event_failed:
+   }
+ }
+ 
++static gboolean
++gst_kms_sink_import_drmbuf (GstKMSSink * self, GstBuffer * inbuf,
++    GstBuffer ** outbuf)
++{
++  gint prime_fds[GST_VIDEO_MAX_PLANES] = { 0, };
++  GstVideoMeta *meta;
++  guint i, n_mem, n_planes;
++  GstKMSMemory *kmsmem;
++  guint mems_idx[GST_VIDEO_MAX_PLANES];
++  gsize mems_skip[GST_VIDEO_MAX_PLANES];
++  GstMemory *mems[GST_VIDEO_MAX_PLANES];
++
++  if (!self->has_prime_import)
++    return FALSE;
++
++  /* This will eliminate most non-dmabuf out there */
++  if (!gst_is_drm_memory (gst_buffer_peek_memory (inbuf, 0)))
++    return FALSE;
++
++  n_planes = GST_VIDEO_INFO_N_PLANES (&self->vinfo);
++  n_mem = gst_buffer_n_memory (inbuf);
++  meta = gst_buffer_get_video_meta (inbuf);
++
++  GST_TRACE_OBJECT (self, "Found a drmbuf with %u planes and %u memories",
++      n_planes, n_mem);
++
++  /* We cannot have multiple dmabuf per plane */
++  if (n_mem > n_planes)
++    return FALSE;
++  g_assert (n_planes != 0);
++
++  /* Update video info based on video meta */
++  if (meta) {
++    GST_VIDEO_INFO_WIDTH (&self->vinfo) = meta->width;
++    GST_VIDEO_INFO_HEIGHT (&self->vinfo) = meta->height;
++
++    for (i = 0; i < meta->n_planes; i++) {
++      GST_VIDEO_INFO_PLANE_OFFSET (&self->vinfo, i) = meta->offset[i];
++      GST_VIDEO_INFO_PLANE_STRIDE (&self->vinfo, i) = meta->stride[i];
++    }
++  }
++
++  /* Find and validate all memories */
++  for (i = 0; i < n_planes; i++) {
++    guint length;
++
++    if (!gst_buffer_find_memory (inbuf,
++            GST_VIDEO_INFO_PLANE_OFFSET (&self->vinfo, i), 1,
++            &mems_idx[i], &length, &mems_skip[i]))
++      return FALSE;
++
++    mems[i] = gst_buffer_peek_memory (inbuf, mems_idx[i]);
++
++    /* adjust for memory offset, in case data does not
++     * start from byte 0 in the dmabuf fd */
++    mems_skip[i] += mems[i]->offset;
++
++    /* And all memory found must be dmabuf */
++    if (!gst_is_drm_memory (mems[i]))
++      return FALSE;
++  }
++  kmsmem = (GstKMSMemory *) gst_kms_allocator_get_cached (mems[0]);
++  if (kmsmem) {
++    GST_LOG_OBJECT (self, "found KMS mem %p in DMABuf mem %p with fb id = %d",
++        kmsmem, mems[0], kmsmem->fb_id);
++    goto wrap_mem;
++  }
++
++  for (i = 0; i < n_planes; i++)
++    prime_fds[i] = gst_fd_memory_get_fd (mems[i]);
++
++  GST_LOG_OBJECT (self, "found these prime ids: %d, %d, %d, %d", prime_fds[0],
++      prime_fds[1], prime_fds[2], prime_fds[3]);
++
++  kmsmem = gst_kms_allocator_dmabuf_import (self->allocator, prime_fds,
++      n_planes, mems_skip, &self->vinfo);
++  if (!kmsmem)
++    return FALSE;
++
++  GST_LOG_OBJECT (self, "setting KMS mem %p to DMABuf mem %p with fb id = %d",
++      kmsmem, mems[0], kmsmem->fb_id);
++  gst_kms_allocator_cache (self->allocator, mems[0], GST_MEMORY_CAST (kmsmem));
++
++wrap_mem:
++  *outbuf = gst_buffer_new ();
++  if (!*outbuf)
++    return FALSE;
++  gst_buffer_append_memory (*outbuf, gst_memory_ref (GST_MEMORY_CAST (kmsmem)));
++  gst_buffer_add_parent_buffer_meta (*outbuf, inbuf);
++
++  return TRUE;
++}
++
++
++
+ static gboolean
+ gst_kms_sink_import_dmabuf (GstKMSSink * self, GstBuffer * inbuf,
+     GstBuffer ** outbuf)
+@@ -1546,6 +1641,9 @@ gst_kms_sink_get_input_buffer (GstKMSSink * self, GstBuffer * inbuf)
+   if (gst_is_kms_memory (mem))
+     return gst_buffer_ref (inbuf);
+ 
++    if (gst_kms_sink_import_drmbuf (self, inbuf, &buf))
++    goto done;
++
+   if (gst_kms_sink_import_dmabuf (self, inbuf, &buf))
+     goto done;
+ 
+diff --git a/sys/kms/meson.build b/sys/kms/meson.build
+index 20298b6..d4dcb27 100644
+--- a/sys/kms/meson.build
++++ b/sys/kms/meson.build
+@@ -17,7 +17,7 @@ if libdrm_dep.found()
+     kmssink_sources,
+     c_args : gst_plugins_bad_args,
+     include_directories : [configinc],
+-    dependencies : [gstbase_dep, gstvideo_dep, gstallocators_dep, libdrm_dep],
++    dependencies : [gstbase_dep, gstvideo_dep, gstallocators_dep, gstdrm_dep, libdrm_dep],
+     install : true,
+     install_dir : plugins_install_dir,
+   )
+-- 
+2.17.1
+
