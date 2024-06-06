@@ -1,0 +1,37 @@
+From 450987334af6546b62aa8f5cce8a4c1b07fe5a5e Mon Sep 17 00:00:00 2001
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Tue, 30 Aug 2022 17:10:27 +0200
+Subject: [PATCH 2/3] backend-drm: fix plane sorting
+
+The planes in the plane_list must be sorted from largest zpos_max to smallest.
+
+Currently the plane order is only correct when the planes are already ordered
+and added starting with the smallest zpos_max. This works accidentally in most
+cases because the primary plane is usually first and there is often only one
+overlay plane or the zpos is sufficiantly configurable.
+
+To fix this, insert a new plane before the first plane with a smaller zpos_max.
+And if none is found, insert it at the end of the list.
+
+Upstream-Status: Backport 4cde507be6a116b3828f3a86a0e97639f04d9046
+
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+---
+ libweston/backend-drm/drm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
+index 102fa2d7..4c18f76c 100644
+--- a/libweston/backend-drm/drm.c
++++ b/libweston/backend-drm/drm.c
+@@ -819,7 +819,7 @@ drm_plane_create(struct drm_backend *b, const drmModePlane *kplane)
+	weston_plane_init(&plane->base, b->compositor, 0, 0);
+
+	wl_list_for_each(tmp, &b->plane_list, link) {
+-		if (tmp->zpos_max > plane->zpos_max) {
++		if (tmp->zpos_max < plane->zpos_max) {
+			wl_list_insert(tmp->link.prev, &plane->link);
+			break;
+		}
+--
+2.43.0

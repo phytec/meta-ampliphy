@@ -1,0 +1,57 @@
+From af42fc1e336748b4e401e4441729dd79914425e6 Mon Sep 17 00:00:00 2001
+From: Daniel Stone <daniels@collabora.com>
+Date: Tue, 7 Dec 2021 15:58:49 +0000
+Subject: [PATCH] backend-drm: Assign plane_idx by plane list order
+
+Upstream-Status: Backport af42fc1e336748b4e401e4441729dd79914425e6
+
+Signed-off-by: Daniel Stone <daniels@collabora.com>
+---
+ libweston/backend-drm/drm-internal.h | 1 -
+ libweston/backend-drm/drm.c          | 5 ++++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/libweston/backend-drm/drm-internal.h b/libweston/backend-drm/drm-internal.h
+index 55e9414b..86d7368e 100644
+--- a/libweston/backend-drm/drm-internal.h
++++ b/libweston/backend-drm/drm-internal.h
+@@ -276,7 +276,6 @@ struct drm_backend {
+	int min_height, max_height;
+
+	struct wl_list plane_list;
+-	uint32_t next_plane_idx;
+
+	void *repaint_data;
+
+diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
+index 102fa2d7..203b8a4e 100644
+--- a/libweston/backend-drm/drm.c
++++ b/libweston/backend-drm/drm.c
+@@ -771,7 +771,6 @@ drm_plane_create(struct drm_backend *b, const drmModePlane *kplane)
+	}
+
+	plane->backend = b;
+-	plane->plane_idx = b->next_plane_idx++;
+	plane->state_cur = drm_plane_state_alloc(NULL, plane);
+	plane->state_cur->complete = true;
+	plane->possible_crtcs = kplane->possible_crtcs;
+@@ -919,6 +918,7 @@ create_sprites(struct drm_backend *b)
+	drmModePlane *kplane;
+	struct drm_plane *drm_plane;
+	uint32_t i;
++	uint32_t next_plane_idx = 0;
+	kplane_res = drmModeGetPlaneResources(b->drm.fd);
+	if (!kplane_res) {
+		weston_log("failed to get plane resources: %s\n",
+@@ -942,6 +942,9 @@ create_sprites(struct drm_backend *b)
+						      &b->compositor->primary_plane);
+	}
+
++	wl_list_for_each (drm_plane, &b->plane_list, link)
++		drm_plane->plane_idx = next_plane_idx++;
++
+	drmModeFreePlaneResources(kplane_res);
+ }
+
+--
+2.43.0

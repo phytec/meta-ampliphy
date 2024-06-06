@@ -1,0 +1,32 @@
+From 84a7c7a7317b0cfd3a34557351041b560645a002 Mon Sep 17 00:00:00 2001
+From: Derek Foreman <derek.foreman@collabora.com>
+Date: Tue, 31 Jan 2023 10:11:42 -0600
+Subject: [PATCH 3/3] drm-backend: Remember to set the zpos for the scanout
+ plane
+
+We can clear this via drm_plane_state_put_back() at the end of
+drm_output_propose_state(). We need to set it back to the minimum zpos
+when rendering.
+
+Upstream-Status: Backport 58dde0e0c0000f1430624ee2fbf12886774ccd40
+
+Signed-off-by: Derek Foreman <derek.foreman@collabora.com>
+---
+ libweston/backend-drm/drm.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/libweston/backend-drm/drm.c b/libweston/backend-drm/drm.c
+index 4c18f76c..67d471aa 100644
+--- a/libweston/backend-drm/drm.c
++++ b/libweston/backend-drm/drm.c
+@@ -404,6 +404,8 @@ drm_output_render(struct drm_output_state *state, pixman_region32_t *damage)
+	scanout_state->dest_w = output->base.current_mode->width;
+	scanout_state->dest_h = output->base.current_mode->height;
+
++	scanout_state->zpos = scanout_plane->zpos_min;
++
+	pixman_region32_subtract(&c->primary_plane.damage,
+				 &c->primary_plane.damage, damage);
+
+--
+2.43.0
