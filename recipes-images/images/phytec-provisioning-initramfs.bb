@@ -14,6 +14,7 @@ IMAGE_OVERHEAD_FACTOR = "1.0"
 
 IMAGE_FSTYPES = "cpio.gz"
 export IMAGE_BASENAME = "phytec-provisioning-initramfs"
+IMAGE_NAME_SUFFIX = ""
 
 IMAGE_INSTALL:remove:mx8m-nxp-bsp = "packagegroup-fsl-optee-imx"
 MACHINE_FIRMWARE:remove:mx8mp-nxp-bsp  = "sof-imx sof-zephyr zephyr-demo-imx"
