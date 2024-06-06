@@ -72,6 +72,5 @@ RDEPENDS:${PN}:append:am57xx = " \
     gstreamer1.0-plugins-bad \
     gstreamer1.0-plugin-bayer2rgb-neon \
     gstreamer1.0-plugins-hevc \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'mmip', "gstreamer1.0-plugins-ducati ipumm-fw", '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'mmip', "gstreamer1.0-plugins-vpe", '', d)} \
 "
