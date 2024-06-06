@@ -21,3 +21,10 @@ RDEPENDS:${PN}:append:j721s2 = " \
     ti-rtos-firmware \
     ti-rpmsg-char-examples \
 "
+
+RDEPENDS:${PN}:append:am57xx = " \
+    ti-ipc-rtos-fw \
+    ti-ipc-examples-linux \
+    ti-ipc-test \
+    pru-icss \
+"
