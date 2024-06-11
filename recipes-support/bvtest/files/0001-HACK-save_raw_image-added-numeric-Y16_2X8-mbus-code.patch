@@ -9,6 +9,8 @@ upstream and phytec-kernel only.
 
 Add this numeric code as-is for now.
 
+Upstream-Status: Pending
+
 Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
@@ -26,7 +28,7 @@ index 496103dfdf25..8efa1bae8da1 100644
 +	{"Y16_2X8", V4L2_PIX_FMT_Y16, 0x2041},
  	{"\0", 0, 0},
  };
- 
--- 
+
+--
 2.7.4
 
