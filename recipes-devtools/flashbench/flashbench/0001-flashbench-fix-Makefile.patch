@@ -9,6 +9,8 @@ Content-Transfer-Encoding: 8bit
 Assign compiler defaults as conditional. This removes the requirement
 to explicitly override those variables, e.g. for a cross-compile setup.
 
+Upstream-Status: Pending
+
 Signed-off-by: Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
 ---
  Makefile | 6 +++---
@@ -25,9 +27,9 @@ index f83b220..45c59a3 100644
 +CC      ?= gcc
 +CFLAGS  ?= -O2 -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -g2
 +LDFLAGS ?= -lrt
- 
+
  all: flashbench erase
- 
--- 
+
+--
 1.9.1
 
