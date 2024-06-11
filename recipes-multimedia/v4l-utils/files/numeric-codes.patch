@@ -1,5 +1,7 @@
 Index: v4l-utils-1.12.3/utils/media-ctl/libv4l2subdev.c
 ===================================================================
+Upstream-Status: Pending
+
 --- v4l-utils-1.12.3.orig/utils/media-ctl/libv4l2subdev.c
 +++ v4l-utils-1.12.3/utils/media-ctl/libv4l2subdev.c
 @@ -782,12 +782,18 @@ const char *v4l2_subdev_pixelcode_to_str
