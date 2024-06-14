@@ -15,3 +15,5 @@ RDEPENDS:${PN} = " \
     linux-firmware-wl18xx \
     linux-firmware-iwlwifi \
 "
+
+RDEPENDS:${PN}:remove:mx6ul-generic-bsp = "linux-firmware-iwlwifi"
