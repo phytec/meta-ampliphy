@@ -31,7 +31,17 @@ def get_layers(d):
     layertext = "Configured Openembedded layers:\n%s\n" % '\n'.join(layers_branch_rev)
     return layertext
 
+def validate_BB_PHY_BUILDTYPE(d):
+   if not d.getVar("BB_PHY_BUILDTYPE") in [None, "", "RELEASE"] :
+      bb.fatal("Unexpected value '{}' for variable BB_PHY_BUILDTYPE. Valid values are: '', 'RELEASE'".format(d.getVar('BB_PHY_BUILDTYPE')))
+
 do_install() {
+	# As the value of variable BB_PHY_BUILDTYPE usually comes from the
+	# outside shell environment, a validation for a proper value is useful.
+	# Do this here, as it is the main recipe for the DISTRO_VERSION and so
+	# BB_PHY_BUILDTYPE.
+	echo "${@validate_BB_PHY_BUILDTYPE(d)}"  > /dev/null
+
 	install -d ${D}${sysconfdir}
 	echo "ampliPHY ${DISTRO_VERSION} (${VERSION_CODENAME})" > ${D}${sysconfdir}/ampliphy-version
 	echo "Built from branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/ampliphy-version

@@ -14,6 +14,55 @@ Notable supported features are:
  * partup board factory flashing
  * docker/podman/container runtime
 
+Variable Glossary
+-----------------
+
+ampliPHY provides bitbake variables below:
+
+* `BB_PHY_BUILDTYPE` - Shell environment variable to specify when a
+  build-execution shall be treated as an official release build.
+
+  The `DISTRO_VERSION` can have the appendix '-devel'. That '-devel' marker
+  indicates to the user that the respective build and its output (e.g. a
+  target-image) were not part of any official release procedure.
+  In contrast to a release-build, such a development-build can usually have
+  significant restrictions, as e.g.:
+  - might contain intermediate development-changes
+  - functionality might not be (fully) tested
+  - parts of the code-base might be located in restricted repositories without
+    any public access
+    Attention: That could lead to OSS license violations when sharing those binaries
+    with external parties!
+
+  You can read a '-devel' marked version (e.g. 'PD24.1.0-devel') as:
+    "based on PD24.1.0, but contains developer-changes on top"
+
+  Use the environment variable `BB_PHY_BUILDTYPE` to influence the behavior of
+  development-build marker '-devel'. When `BB_PHY_BUILDTYPE` was set to
+  'RELEASE' before calling bitbake, the build-execution is treated as
+  release-build and '-devel' will not be appended. Instead, if
+  `BB_PHY_BUILDTYPE` is unset or empty '-devel' will be appended to the
+  `DISTRO_VERSION`.
+
+     Example to start a "release build":
+     ```bash
+        host $ export BB_PHY_BUILDTYPE=RELEASE
+        host $ export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS BB_PHY_BUILDTYPE"
+        host $ bitbake phytec-headless-image
+     ```
+
+  ATTENTION: One who executes a release build with `BB_PHY_BUILDTYPE=RELEASE`
+  must carefully assure that all requirements for an official release-build are
+  met (e.g. tagged code-base in public repositories, maybe disabled
+  sstate-cache, ...).
+
+  NOTE: Packages that make use of the variable `DISTRO_VERSION` (e.g.
+        ampliphy-version, base-files, kernel, u-boot) differ in sstate for a
+        release-build and a development-build. However, as long as a build-
+        pipeline that feeds an sstate-mirror executes development-builds, this
+        does not negatively affect the sstate-mirror use or the developers
+        build time.
+
 Support
 =======
 
