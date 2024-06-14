@@ -6,6 +6,10 @@ DISTRO_VERSION:mx8mp-mainline-bsp = "BSP-Yocto-Ampliphy-i.MX8MP-master"
 DISTRO_VERSION:mx93-generic-bsp = "BSP-Yocto-NXP-i.MX93-PD24.1.1"
 DISTRO_VERSION:ti33x = "BSP-Yocto-Ampliphy-AM335x-master"
 DISTRO_VERSION:rk3288 = "BSP-Yocto-Ampliphy-RK3288-master"
+
+# DISTRO_VERSION's development-build marker '-devel'
+DISTRO_VERSION:append = "${@ '' if d.getVar('BB_PHY_BUILDTYPE') == "RELEASE" else '-devel' }"
+
 VENDOR = "phytec"
 TARGET_VENDOR = "-${VENDOR}"
 
