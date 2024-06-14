@@ -41,7 +41,7 @@ def first_dtb(d):
     dtbs = d.getVar('KERNEL_DEVICETREE')
     if not dtbs:
         return ''
-    return dtbs.split()[0]
+    return os.path.basename(dtbs.split()[0])
 
 RAUC_SLOT_appfs ?= "rauc-appfs-example"
 RAUC_SLOT_appfs[type] ?= "file"
