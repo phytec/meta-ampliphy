@@ -1,6 +1,3 @@
-# Copyright (C) 2020 Stefan Riedmüller <s.riedmueller@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "PHYTEC camera examples"
 HOMEPAGE = "http://www.phytec.de"
 LICENSE = "MIT"

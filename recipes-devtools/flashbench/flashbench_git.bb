@@ -1,6 +1,3 @@
-# Copyright (C) 2016 Stefan Christ <s.christ@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Tool for benchmarking and classifying flash memory drives"
 HOMEPAGE = "https://git.linaro.org/people/arnd.bergmann/flashbench.git"
 SECTION = "misc"
