@@ -1,6 +1,3 @@
-# Copyright (C) 2023 Leonard Anderweit <l.anderweit@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
-
 SUMMARY = "Script to check kernel config for virtualization"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=435b266b3899aa8a959f17d41c56def8"
