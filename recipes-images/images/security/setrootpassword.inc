@@ -1,5 +1,3 @@
-# Copyright (C) 2020 Maik Otto <m.otto@phytec.de>
-# Released under the MIT license (see COPYING.MIT for the terms)
 inherit extrausers
 
 # encrypted password for root
