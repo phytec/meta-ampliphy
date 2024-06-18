@@ -67,3 +67,8 @@ RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " \
     imx-gst1.0-plugin \
     gstreamer1.0-plugins-bad \
 "
+
+RDEPENDS:${PN}:append:am57xx = " \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugin-bayer2rgb-neon \
+"
