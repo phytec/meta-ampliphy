@@ -13,6 +13,7 @@ IMAGE_ROOTFS_SIZE = "8192"
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
 
 IMAGE_FSTYPES = "cpio.gz"
+IMAGE_FSTYPES:update = "cpio.gz"
 export IMAGE_BASENAME = "phytec-secureboot-initramfs"
 IMAGE_NAME_SUFFIX = ""
 
