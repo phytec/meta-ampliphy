@@ -83,3 +83,5 @@ FILES:${PN} += " \
 # Prevents do_package failures with:
 # debugsources.list: No such file or directory:
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+
+PACKAGE_ARCH = "${MACHINE_ARCH}"
