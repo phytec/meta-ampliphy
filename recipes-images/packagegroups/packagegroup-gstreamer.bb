@@ -75,3 +75,9 @@ RDEPENDS:${PN}:append:mx93-nxp-bsp = " \
 RDEPENDS:${PN}:append:am57xx = " \
     gstreamer1.0-plugin-bayer2rgb-neon \
 "
+
+RDEPENDS:${PN}:append:j721s2 = " \
+    gstreamer1.0-plugins-bad-geometrictransform \
+    gstreamer1.0-plugins-bad-zbar \
+    gstreamer1.0-plugin-bayer2rgb-neon \
+"
