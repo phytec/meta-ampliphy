@@ -3,7 +3,7 @@ DESCRIPTION = "Install a PHYTEC mcu example program"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=080d34b4bf1f10085a386ddf23f784fa"
 
-SRCREV = "bf2baf5a6e87de6a28601dda60a0b5e71e2a1690"
+SRCREV = "e4678e4efb267ca1b0f07ebc8cb5da161e0877a9"
 SRC_URI = "git://github.com/phytec/mcu-plus-sdk-firmware;protocol=https;branch=main"
 
 INSANE_SKIP:${PN} += "arch"
