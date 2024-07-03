@@ -22,6 +22,7 @@ RDEPENDS:${PN} = " \
     rauc-flash-nand \
 "
 
+RDEPENDS:${PN}:append:j721s2 = " phycam-setup"
 RDEPENDS:${PN}:append:mx6-generic-bsp = " bbu"
 RDEPENDS:${PN}:append:mx6ul-generic-bsp = " bbu phycam-setup"
 RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " phycam-setup"
