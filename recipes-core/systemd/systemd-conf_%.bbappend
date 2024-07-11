@@ -47,7 +47,7 @@ do_install:append() {
 
     if [ -e ${UNPACKDIR}/37-can-ti-soc.rules ]; then
         install -d ${D}${sysconfdir}/udev/rules.d
-        install -m 0644 ${WORKDIR}/37-can-ti-soc.rules ${D}${sysconfdir}/udev/rules.d/
+        install -m 0644 ${UNPACKDIR}/37-can-ti-soc.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 
     if [ -e ${UNPACKDIR}/45-disable-multitouch-mouse.rules ]; then
