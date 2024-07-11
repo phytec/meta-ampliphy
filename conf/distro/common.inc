@@ -98,6 +98,7 @@ IMAGE_LINGUAS ?= "de-de fr-fr en-us"
 #LWB_REGDOMAIN = "US"
 
 PREFERRED_VERSION_mraa = "2.0.%"
+PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 
 # default value in bitbake.conf of poky is '/home/root'
 # change to '/root' as this is preferred path
