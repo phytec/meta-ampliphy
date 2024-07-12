@@ -82,7 +82,6 @@ IMAGE_LINGUAS ?= "de-de fr-fr en-us zh-cn"
 # ETSI includes all member countries of the European Union.
 #LWB_REGDOMAIN = "US"
 
-PREFERRED_VERSION_mraa = "2.0.%"
 PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 
 # default value in bitbake.conf of poky is '/home/root'
