@@ -13,7 +13,5 @@ RDEPENDS:${PN} = " \
     hostapd \
     laird-sterling-firmware \
     linux-firmware-wl18xx \
-    linux-firmware-iwlwifi \
+    ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-iwlwifi", "", d)} \
 "
-
-RDEPENDS:${PN}:remove:mx6ul-generic-bsp = "linux-firmware-iwlwifi"
