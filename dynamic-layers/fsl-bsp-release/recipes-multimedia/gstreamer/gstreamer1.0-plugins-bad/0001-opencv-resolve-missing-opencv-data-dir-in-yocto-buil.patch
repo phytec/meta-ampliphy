@@ -1,0 +1,32 @@
+From 9e4717a26f3bcd922ef501f910a7f8dbf8cb5e08 Mon Sep 17 00:00:00 2001
+From: Yashwanth Varakala <y.varakala@phytec.de>
+Date: Thu, 18 Jul 2024 11:22:32 +0200
+Subject: [PATCH] opencv: resolve missing opencv data dir in yocto build
+
+When Yocto build is performed, opencv searches for data dir using simple
+'test' command, this fails because pkg-config provides an absolute
+path on the target which needs to be prepended by PKG_CONFIG_SYSROOT_DIR
+in order for the 'test' utility to pick up the absolute path.
+
+Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
+---
+ gst-libs/gst/opencv/meson.build | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/gst-libs/gst/opencv/meson.build b/gst-libs/gst/opencv/meson.build
+index 1d337f1da..f47939ad7 100644
+--- a/gst-libs/gst/opencv/meson.build
++++ b/gst-libs/gst/opencv/meson.build
+@@ -52,6 +52,9 @@ if opencv_found
+   # /usr/include/opencv4/opencv2/flann/logger.h:83:36: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
+   gstopencv_cargs += cxx.get_supported_arguments(['-Wno-missing-include-dirs', '-Wno-format-nonliteral'])
+ 
++  pkgconf_sysroot = run_command(python3, '-c', 'import os; print(os.environ.get("PKG_CONFIG_SYSROOT_DIR"))').stdout().strip()
++  opencv_prefix = pkgconf_sysroot + opencv_prefix
++
+   # Check the data dir used by opencv for its xml data files
+   # Use prefix from pkg-config to be compatible with cross-compilation
+   r = run_command('test', '-d', opencv_prefix + '/share/opencv', check: false)
+-- 
+2.25.1
+
