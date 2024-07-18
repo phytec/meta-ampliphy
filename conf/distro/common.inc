@@ -1,6 +1,6 @@
 DISTRO_VERSION ??= "UNASSIGNED"
 DISTRO_VERSION:mx6-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6-scarthgap"
-DISTRO_VERSION:mx6ul-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6UL-PD24.1-rc2"
+DISTRO_VERSION:mx6ul-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6UL-PD24.1-rc3"
 DISTRO_VERSION:mx7-nxp-bsp = "BSP-Yocto-NXP-i.MX7-scarthgap"
 DISTRO_VERSION:mx8mm-mainline-bsp = "BSP-Yocto-Ampliphy-i.MX8MM-scarthgap"
 DISTRO_VERSION:mx8mn-mainline-bsp = "${DISTRO_VERSION:mx8mm-mainline-bsp}"
