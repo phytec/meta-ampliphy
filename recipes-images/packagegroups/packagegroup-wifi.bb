@@ -14,4 +14,5 @@ RDEPENDS:${PN} = " \
     laird-sterling-firmware \
     linux-firmware-wl18xx \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-iwlwifi", "", d)} \
+    wireless-regdb-static \
 "
