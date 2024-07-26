@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 PACKAGECONFIG ??= "\
-    ${@bb.utils.filter('DISTRO_FEATURES', 'efi ldconfig pam selinux usrmerge seccomp', d)} \
+    ${@bb.utils.filter('DISTRO_FEATURES', 'acl efi ldconfig pam selinux usrmerge seccomp', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'rfkill', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'xkbcommon', '', d)} \
     kmod \
@@ -14,10 +14,7 @@ PACKAGECONFIG ??= "\
     set-time-epoch \
 "
 
-PACKAGECONFIG[acl] = "-Dacl=true,-Dacl=false,acl"
-PACKAGECONFIG[kmod] = "-Dkmod=true,-Dkmod=false,kmod,libkmod"
 PACKAGECONFIG[apparmor] = "-Dapparmor=true,-Dapparmor=false,"
-PACKAGECONFIG[gnutls] = "-Dgnutls=true,-Dgnutls=false,gnutls"
 PACKAGECONFIG[udev-hwdb] = "-Dhwdb=true,-Dhwdb=false,"
 
 RRECOMMENDS:${PN}:remove = "systemd-compat-units"
