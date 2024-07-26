@@ -18,8 +18,10 @@ SRC_URI:append:kernelmodsign = " \
     file://kernel-modsign.cfg \
 "
 SRC_URI:append:update = " \
-    file://rauc.cfg \
+    file://rauc.scc \
 "
+
+KERNEL_FEATURES:append:update = " rauc.scc"
 
 SRC_URI:append:hardening = " \
     file://hardening.cfg \
