@@ -21,6 +21,14 @@ SRC_URI:append:mx8-generic-bsp = " file://45-disable-multitouch-mouse.rules"
 SRC_URI:remove:am62xx = " file://10-watchdog.conf"
 SRC_URI:remove:am62axx = " file://10-watchdog.conf"
 SRC_URI:append:ti-soc =  " file://37-can-ti-soc.rules"
+SRC_URI:append:ti33x = " \
+    file://11-dcan0.conf \
+    file://11-dcan1.conf \
+"
+SRC_URI:append:am57xx = " \
+    file://11-dcan1.conf \
+    file://11-dcan2.conf \
+"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/network/
