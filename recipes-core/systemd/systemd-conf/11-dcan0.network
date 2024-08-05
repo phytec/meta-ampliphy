@@ -1,0 +1,5 @@
+[Match]
+Name=dcan0
+
+[CAN]
+BitRate=500000
