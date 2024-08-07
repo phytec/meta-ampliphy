@@ -22,12 +22,12 @@ SRC_URI:remove:am62xx = " file://10-watchdog.conf"
 SRC_URI:remove:am62axx = " file://10-watchdog.conf"
 SRC_URI:append:ti-soc =  " file://37-can-ti-soc.rules"
 SRC_URI:append:ti33x = " \
-    file://11-dcan0.conf \
-    file://11-dcan1.conf \
+    file://11-dcan0.network \
+    file://11-dcan1.network \
 "
 SRC_URI:append:am57xx = " \
-    file://11-dcan1.conf \
-    file://11-dcan2.conf \
+    file://11-dcan1.network \
+    file://11-dcan2.network \
 "
 
 do_install:append() {
