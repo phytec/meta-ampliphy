@@ -33,7 +33,6 @@ FITIMAGE_SIGNER ?= "customer"
 FITIMAGE_PUBKEY_SIGNATURE_PATH ?= "${WORKDIR}/signature_node.dtsi"
 
 FITIMAGE_SIGN_ENGINE ?= "software"
-FITIMAGE_SIGN_ENGINE:mx8m-nxp-bsp ?= "nxphab"
 
 FITIMAGE_SIGN_KEY_PATH ?= "${CERT_PATH}/fit/FIT-4096.key"
 FITIMAGE_HASH ?= "sha256"
