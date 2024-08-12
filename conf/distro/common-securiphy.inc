@@ -37,3 +37,9 @@ OVERRIDES:append = ":securestorage:${SECURE_STORAGE_TYPE}"
 
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
+
+# Sign kernel fitImage
+UBOOT_SIGN_ENABLE:mx8m-nxp-bsp = "1"
+UBOOT_SIGN_KEYDIR:mx8m-nxp-bsp = "${CERT_PATH}/fit"
+UBOOT_SIGN_KEYNAME:mx8m-nxp-bsp = "FIT-4096"
+FIT_SIGN_ALG:mx8m-nxp-bsp = "rsa4096"
