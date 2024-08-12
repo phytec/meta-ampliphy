@@ -9,7 +9,10 @@ FITIMAGE_SIGN ??= "false"
 FITIMAGE_SIGN[type] = "boolean"
 
 _FITIMAGE_TO_WIC = ""
-_FITIMAGE_TO_WIC:secureboot = "${@bb.utils.contains("MACHINE_FEATURES", "emmc","phytec-secureboot-initramfs-fitimage:do_deploy", "phytec-simple-fitimage:do_deploy", d)}"
+_FITIMAGE_TO_WIC:secureboot = "\
+    ${@bb.utils.contains('KERNEL_IMAGETYPES', 'fitImage', '', \
+    '${@bb.utils.contains("MACHINE_FEATURES", "emmc", "phytec-secureboot-initramfs-fitimage:do_deploy", "phytec-simple-fitimage:do_deploy", d)}' \
+    , d)}"
 
 do_image[depends] += "\
     ${@bb.utils.contains('FITIMAGE_SIGN','true','${_FITIMAGE_TO_WIC}','', d)}"
