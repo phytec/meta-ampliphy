@@ -1,3 +1,5 @@
+inherit kconfig-set
+
 # Partially based on the class in meta-security
 
 # Private key and cert for modules signing. MODSIGN_KEY can be a PKCS11 URI too
