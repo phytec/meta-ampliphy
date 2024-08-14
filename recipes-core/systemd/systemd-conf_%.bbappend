@@ -18,8 +18,6 @@ SRC_URI += " \
 
 SRC_URI:append:mx6ul-generic-bsp = " file://cpuidle-disable-state.rules"
 SRC_URI:append:mx8-generic-bsp = " file://45-disable-multitouch-mouse.rules"
-SRC_URI:remove:am62xx = " file://10-watchdog.conf"
-SRC_URI:remove:am62axx = " file://10-watchdog.conf"
 SRC_URI:append:ti-soc =  " file://37-can-ti-soc.rules"
 SRC_URI:append:ti33x = " \
     file://11-dcan0.network \
