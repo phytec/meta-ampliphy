@@ -14,8 +14,7 @@ RDEPENDS:${PN} = " \
     htop \
     kbd \
     kbd-keymaps \
-    opkg \
-    opkg-utils \
+    rpm \
     linuxptp \
     wget \
     ${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-imx u-boot-ti', 'libubootenv-bin',     '', d)} \
