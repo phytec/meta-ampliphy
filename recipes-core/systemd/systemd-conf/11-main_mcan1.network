@@ -1,0 +1,5 @@
+[Match]
+Name=main_mcan1
+
+[CAN]
+BitRate=500000
