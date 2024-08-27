@@ -27,6 +27,27 @@ SRC_URI:append:am57xx = " \
     file://11-dcan1.network \
     file://11-dcan2.network \
 "
+SRC_URI:append:am62xx = " \
+    file://11-main_mcan0.network \
+    file://11-mcu_mcan0.network \
+    file://11-mcu_mcan1.network \
+"
+SRC_URI:append:am62axx = " \
+    file://11-main_mcan0.network \
+    file://11-mcu_mcan0.network \
+    file://11-mcu_mcan1.network \
+"
+SRC_URI:append:am64xx = " \
+    file://11-main_mcan0.network \
+    file://11-main_mcan1.network \
+"
+SRC_URI:append:am68xx = " \
+    file://11-main_mcan0.network \
+    file://11-main_mcan1.network \
+    file://11-main_mcan2.network \
+    file://11-mcu_mcan0.network \
+    file://11-mcu_mcan1.network \
+"
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/network/
