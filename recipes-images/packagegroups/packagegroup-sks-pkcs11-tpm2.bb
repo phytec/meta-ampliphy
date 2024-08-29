@@ -11,4 +11,5 @@ RDEPENDS:${PN} = " \
     opensc \
     libp11 \
     tpm2-pkcs11 \
+    pkcs11-provider \
 "
