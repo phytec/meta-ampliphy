@@ -11,8 +11,14 @@ RDEPENDS:${PN}:append:k3 = " \
     ti-rpmsg-char \
 "
 
-RDEPENDS:${PN}:remove:am62axx = "pru-icss"
-RDEPENDS:${PN}:append:am62axx = " cnm-wave-fw"
+RDEPENDS:${PN}:remove:am62axx = " \
+    pru-icss \
+    mcu-plus-sdk-firmware \
+"
+RDEPENDS:${PN}:append:am62axx = " \
+   ti-rtos-firmware \
+   cnm-wave-fw \
+"
 RDEPENDS:${PN}:remove:j721s2 = " \
     pru-icss \
     mcu-plus-sdk-firmware \
