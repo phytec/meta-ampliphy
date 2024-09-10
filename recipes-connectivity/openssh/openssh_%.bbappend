@@ -14,12 +14,6 @@ set_password_rules(){
     sed -i -e 's:PasswordAuthentication no:PasswordAuthentication yes:' ${D}${sysconfdir}/ssh/sshd_config
     sed -i -e 's:#PasswordAuthentication yes:PasswordAuthentication yes:' ${D}${sysconfdir}/ssh/sshd_config
     sed -i -e 's:PermitEmptyPasswords yes:PermitEmptyPasswords no:' ${D}${sysconfdir}/ssh/sshd_config
-    if [ "${@bb.utils.filter('DISTRO_FEATURES', 'pam', d)}" ]; then
-        sed -i -e 's:#UsePAM no:UsePAM yes:' ${D}${sysconfdir}/ssh/sshd_config
-        echo "AuthenticationMethods keyboard-interactive" >> ${D}${sysconfdir}/ssh/sshd_config
-    else
-        sed -i -e 's:UsePAM yes:UsePAM no:' ${D}${sysconfdir}/ssh/sshd_config
-    fi
 }
 
 do_install:append:shieldlow() {
