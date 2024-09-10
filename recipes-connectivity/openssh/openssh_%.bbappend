@@ -32,5 +32,3 @@ do_install:append:shieldhigh() {
     set_password_rules
     sed -i -e 's:PermitRootLogin yes:PermitRootLogin no:' ${D}${sysconfdir}/ssh/sshd_config
 }
-
-PACKAGE_ARCH = "${MACHINE_ARCH}"
