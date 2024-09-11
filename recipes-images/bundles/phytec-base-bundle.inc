@@ -38,6 +38,8 @@ RAUC_SLOT_dtb[type] ?= "file"
 RAUC_SLOT_dtb[file] ?= "${@first_dtb(d)}"
 def first_dtb(d):
     dtbs = d.getVar('KERNEL_DEVICETREE')
+    if not dtbs:
+        return ''
     return dtbs.split()[0]
 
 RAUC_SLOT_appfs ?= "rauc-appfs-example"
