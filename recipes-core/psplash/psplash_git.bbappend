@@ -13,6 +13,6 @@ SRC_URI:append:j721s2 = " \
 SPLASH_IMAGES = "file://psplash-poky.png;outsuffix=default"
 
 do_configure:prepend() {
-    cp ${WORKDIR}/*.png ${S}/base-images
+    cp ${UNPACKDIR}/*.png ${S}/base-images
 }
 
