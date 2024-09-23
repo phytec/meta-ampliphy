@@ -1,7 +1,7 @@
 DISTRO_VERSION ??= "UNASSIGNED"
 DISTRO_VERSION:mx6-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6-PD22.1.1"
 DISTRO_VERSION:mx6ul-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6UL-PD22.1.1"
-DISTRO_VERSION:mx7-nxp-bsp = "BSP-Yocto-NXP-i.MX7-PD23.1.2-rc1"
+DISTRO_VERSION:mx7-nxp-bsp = "BSP-Yocto-NXP-i.MX7-PD23.1.2"
 DISTRO_VERSION:mx8mp-mainline-bsp = "BSP-Yocto-Ampliphy-i.MX8MP-kirkstone"
 DISTRO_VERSION:mx8mm-nxp-bsp = "BSP-Yocto-NXP-i.MX8MM-PD23.1.0"
 DISTRO_VERSION:mx8mn-nxp-bsp = "BSP-Yocto-NXP-i.MX8MM-PD23.1.0"
