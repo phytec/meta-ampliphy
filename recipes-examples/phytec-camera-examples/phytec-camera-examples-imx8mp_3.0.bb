@@ -15,15 +15,15 @@ PR = "r0"
 #   $ mv opencv-examples/ phytec-camera-examples/phytec-opencv-examples
 #   $ mv phytec-camera-examples/phytec-gstreamer-examples/COPYING.MIT \
 #   $ phytec-camera-examples/
-#   $ mv phytec-camera-examples phytec-camera-examples-imx8mp-2.4
-#   $ find phytec-camera-examples-imx8mp-2.4/ -exec "touch" "{}" ";"
-#   $ find phytec-camera-examples-imx8mp-2.4/ \( -name "*.sh" -or -iname "*.py" \) -exec "chmod" "+x" "{}" ";"
-#   $ tar -czf phytec-camera-examples-imx8mp-2.4.tar.gz \
-#     phytec-camera-examples-imx8mp-2.4/
+#   $ mv phytec-camera-examples phytec-camera-examples-imx8mp-3.0
+#   $ find phytec-camera-examples-imx8mp-3.0/ -exec "touch" "{}" ";"
+#   $ find phytec-camera-examples-imx8mp-3.0/ \( -name "*.sh" -or -iname "*.py" \) -exec "chmod" "+x" "{}" ";"
+#   $ tar -czf phytec-camera-examples-imx8mp-3.0.tar.gz \
+#     phytec-camera-examples-imx8mp-3.0/
 
 SRC_URI = "https://download.phytec.de/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
-SRC_URI[md5sum] = "4652bcda09afff8dc1593e76db83e0a0"
-SRC_URI[sha256sum] = "660de302b5ed524981383d54be8efd46a5f8e8d2d5073ff8288e1748708ac1ff"
+SRC_URI[md5sum] = "c14fe8f707904c928e71d1523be4a4ee"
+SRC_URI[sha256sum] = "1ef5915078b0f327992df6163dc9606ffb95796b7d1a3e43a087b1d5abe65302"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
@@ -31,14 +31,16 @@ do_compile[noexec] = "1"
 do_install() {
 	DESTDIR="${D}${datadir}"
 
-	for dir in `find -type d`; do
-		if [ ${dir} != "./patches" ]; then
-			install -d ${DESTDIR}/${dir}
-		fi
+	for file in `find ./phytec-gstreamer-examples/ -type f`; do
+		install -m 0644 -D ${file} ${DESTDIR}/${file}
 	done
 
-	for file in `find ./*/ -type f`; do
-		install -m 0644 ${file} ${DESTDIR}/${file}
+	for file in `find ./phytec-yavta-examples/ -type f`; do
+		install -m 0644 -D ${file} ${DESTDIR}/${file}
+	done
+
+	for file in `find ./phytec-opencv-examples/ -type f`; do
+		install -m 0644 -D ${file} ${DESTDIR}/${file}
 	done
 
 	find ${DESTDIR} -type f -iname "*.sh" -exec chmod 0755 {} \;
@@ -47,14 +49,14 @@ do_install() {
 	# Create link in home folder for old documentation
 	install -d ${D}${ROOT_HOME}
 	ln -s ${datadir}/phytec-gstreamer-examples ${D}${ROOT_HOME}/gstreamer-examples
-	ln -s ${datadir}/phytec-v4l2_c-examples ${D}${ROOT_HOME}/v4l2_c-examples
+	ln -s ${datadir}/phytec-yavta-examples ${D}${ROOT_HOME}/yavta-examples
 	ln -s ${datadir}/phytec-opencv-examples ${D}${ROOT_HOME}/opencv-examples
 }
 
 FILES:${PN} += " \
     ${ROOT_HOME}/ \
     ${datadir}/phytec-gstreamer-examples \
-    ${datadir}/phytec-v4l2_c-examples \
+    ${datadir}/phytec-yavta-examples \
     ${datadir}/phytec-opencv-examples \
 "
 
