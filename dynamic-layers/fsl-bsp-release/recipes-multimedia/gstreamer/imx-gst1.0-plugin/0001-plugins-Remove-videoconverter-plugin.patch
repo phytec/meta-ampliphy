@@ -1,0 +1,29 @@
+From e7bcede586336bdf59b999e064d165a7578e76df Mon Sep 17 00:00:00 2001
+From: Andrej Picej <andrej.picej@norik.com>
+Date: Wed, 25 Sep 2024 07:24:34 +0200
+Subject: [PATCH] plugins: Remove videoconverter plugin
+
+Remove videoconverter plugins from the build.
+
+Upstream-Status: Inappropriate [workaround]
+
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+---
+ plugins/meson.build | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/plugins/meson.build b/plugins/meson.build
+index 05c8f020cb86..6b40b7087c46 100644
+--- a/plugins/meson.build
++++ b/plugins/meson.build
+@@ -9,7 +9,6 @@ gstriff_dep = cc.find_library('gstriff-' + api_version)
+ vpuwrap_dep = dependency('libfslvpuwrap', required: false)
+ 
+ subdir('compositor')
+-subdir('videoconvert')
+ 
+ imx_parser_dep = dependency('imx-parser', required: false)
+ if cc.has_header('fsl_parser.h', dependencies: imx_parser_dep)
+-- 
+2.34.1
+
