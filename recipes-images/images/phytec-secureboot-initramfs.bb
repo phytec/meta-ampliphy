@@ -32,6 +32,11 @@ IMAGE_INSTALL = " \
 
 IMAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
 
+IMAGE_INSTALL:remove:mx8m-nxp-bsp = " \
+    kernel-module-tpm-tis-spi \
+    kernel-module-tpm-tis \
+"
+
 PACKAGE_EXCLUDE = "kernel-image-*"
 
 # Remove some packages added via recommendations
