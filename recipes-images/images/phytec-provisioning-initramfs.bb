@@ -45,6 +45,7 @@ IMAGE_INSTALL = " \
     packagegroup-cryptodev \
     rng-tools \
     pv \
+    systemd-conf \
 "
 
 IMAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
