@@ -21,7 +21,7 @@ do_install() {
     fi
 }
 
-do_cleanall:append() {
+python do_cleanall:append() {
     import shutil
     import os
     src_uri = (d.getVar('CERT_PATH') or "")
