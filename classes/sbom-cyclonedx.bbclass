@@ -19,6 +19,8 @@ CVE_PRODUCT ??= "${BPN}"
 CVE_VERSION ??= "${PV}"
 # Add variable values to the property array of CycloneDX SBOM
 CYCLONEDX_EXPORT_PROPERTIES ??= "SRC_URI SRCREV"
+# Add build artefacts for better analysis of the component
+CYCLONEDX_EXPORT_BUILDFILES ??= "linux_kernel barebox u-boot"
 
 python do_cyclonedx_init() {
     import os.path
@@ -142,10 +144,83 @@ def generate_packages_list(d):
                     "value" : "{}".format(value)
                 }
                 pkg["properties"].append(prop)
+
+        if product in d.getVar("CYCLONEDX_EXPORT_BUILDFILES"):
+            build_files = do_generate_package_activefiles(product,d)
+            if len(build_files) >0:
+                prop_tfl = {
+                    "name" : "build_file_list",
+                    "value" : "{}".format(build_files)
+                }
+                pkg["properties"].append(prop_tfl)
+
+            build_config = get_config(product,d)
+            if len(build_config) >0:
+                prop_bc = {
+                    "name" : "build_config_list",
+                    "value" : "{}".format(build_config)
+                }
+                pkg["properties"].append(prop_bc)
+
         if vendor != "":
             pkg["group"] = vendor
         packages.append(pkg)
     return packages
+
+# only for makefiles
+# product is CVE_PRODUCT name
+def do_generate_package_activefiles(product,d):
+    import os
+
+    sourcetree = list()
+    sourcetree.append(d.getVar("B"))
+    makefile_targets = list (())
+    if product == "linux_kernel":
+        makefile_targets = list (("vmlinux", "modules"))
+        sourcetree.append(d.getVar("STAGING_KERNEL_DIR"))
+    else:
+        sourcetree.append(d.getVar("S"))
+    sourcetree.append(d.getVar("RECIPE_SYSROOT_NATIVE"))
+
+    makefile = os.path.join(sourcetree[0], "Makefile")
+    if os.path.isfile(makefile):
+        return  make_dry_run(sourcetree, d, makefile_targets)
+
+    return set()
+
+def make_dry_run(sourcerepo, d, targets : list):
+    import re
+    import subprocess
+    #Witih prefix,  otherwise it takes ages
+    path_regex = re.compile('Prerequisite|target \'([^\s]*\w+\.[cSh])')
+
+    if d.getVar("ARCH") is None:
+        return None
+    makeargs = [ "make", "ARCH="+d.getVar("ARCH"), "-C", sourcerepo[0], "-ndi"]
+    makeargs.extend(targets)
+    try:
+        proc = subprocess.run(makeargs, capture_output=True, encoding='UTF-8')
+        if proc.returncode == 0:
+            temp = set(path_regex.findall(proc.stdout))
+            for repo in sourcerepo:
+                real_path = os.path.realpath(repo)
+                temp = [y.replace(real_path + "/", "") for y in temp]
+            return temp
+        else:
+            return set()
+    except subprocess.CalledProcessError:
+        return set()
+
+def get_config(product,d):
+    confignodes = list()
+    configfile = os.path.join(d.getVar("B"), ".config")
+    if os.path.isfile(configfile):
+        f = open(configfile,"r")
+        for x in f:
+            if "CONFIG_" in x:
+                confignodes.append(x.strip())
+        f.close()
+    return confignodes
 
 def read_json(path):
     import json
