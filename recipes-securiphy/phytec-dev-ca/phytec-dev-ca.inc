@@ -30,7 +30,7 @@ python do_cleanall:append() {
         return
     if devca not in src_uri:
         return
-    if os.path.exists(src_uri):
+    if os.path.isdir(src_uri):
         shutil.rmtree(src_uri)
 }
 
