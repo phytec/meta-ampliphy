@@ -17,6 +17,8 @@ CYCLONEDX_EXPORT_TMP ??= "${LOG_DIR}/sbom-cyclonedx"
 CYCLONEDX_EXPORT_COMPONENT_FILE ??= "${CYCLONEDX_EXPORT_TMP}/${PN}-${PV}.json"
 CVE_PRODUCT ??= "${BPN}"
 CVE_VERSION ??= "${PV}"
+# Add variable values to the property array of CycloneDX SBOM
+CYCLONEDX_EXPORT_PROPERTIES ??= "SRC_URI SRCREV"
 
 python do_cyclonedx_init() {
     import os.path
@@ -128,9 +130,18 @@ def generate_packages_list(d):
             "type": "library",
             "cpe": 'cpe:2.3:*:{}:{}:{}:*:*:*:*:*:*:*'.format(vendor or "*", product, cve_version),
             "purl": 'pkg:generic/{}{}@{}'.format(f"{vendor}/" if vendor else '', product, cve_version),
-            "bom-ref": str(uuid.uuid4())
+            "bom-ref": str(uuid.uuid4()),
+            "properties": []
         }
 
+        for property in d.getVar("CYCLONEDX_EXPORT_PROPERTIES").split(" "):
+            value = d.getVar(property)
+            if value is not None and len(value) > 0:
+                prop = {
+                    "name" : property,
+                    "value" : "{}".format(value)
+                }
+                pkg["properties"].append(prop)
         if vendor != "":
             pkg["group"] = vendor
         packages.append(pkg)
