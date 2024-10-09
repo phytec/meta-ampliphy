@@ -5,9 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 inherit pkgconfig
 
-SRC_URI = " \
-    https://download.phytec.de/Software/Linux/Applications/phytec-dev-ca-${PV}.tar.gz;name=tarball \
-"
+SRC_URI = "https://github.com/phytec/phytec-dev-ca/releases/download/v${PV}/phytec-dev-ca-${PV}.tar.gz"
 
 INSANE_SKIP:${PN} += "already-stripped"
 
@@ -16,23 +14,21 @@ UNPACKDIR = "${S}"
 DEVCA = "phytec-dev-ca"
 
 do_install() {
-    if echo "${CERT_PATH}" | grep -q "${DEVCA}"; then
-        install -d ${CERT_PATH}
-        cp -r ${B}/${DEVCA}/* ${CERT_PATH}
+    if [ -z "${CERT_PATH}" ]; then
+        bbfatal "${BPN} requires CERT_PATH to be set!"
     fi
+
+    install -d ${CERT_PATH}
+    cp -r ${S}/* ${CERT_PATH}/
 }
+do_install[vardeps] += "CERT_PATH"
 
 python do_cleanall:append() {
     import shutil
     import os
-    src_uri = (d.getVar('CERT_PATH') or "")
-    devca = (d.getVar('DEVCA') or "")
-    if len(src_uri) == 0:
-        return
-    if devca not in src_uri:
-        return
-    if os.path.isdir(src_uri):
-        shutil.rmtree(src_uri)
+    cert_path = d.getVar('CERT_PATH')
+    if os.path.isdir(cert_path):
+        shutil.rmtree(cert_path)
 }
 
 BBCLASSEXTEND = "native"
