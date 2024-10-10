@@ -43,7 +43,7 @@ if echo "$root" | grep -q "mmc"; then
     elif [ $MODE -eq 2 ]; then
         # Restore Mode
         if [ -d /tmp/backup_secrets/secrets ]; then
-            mv -n /tmp/backup_secrets/secrets /tmp/mnt_secrets
+            cp -r /tmp/backup_secrets/secrets /tmp/mnt_secrets
         fi
     fi
     umount /tmp/mnt_secrets
