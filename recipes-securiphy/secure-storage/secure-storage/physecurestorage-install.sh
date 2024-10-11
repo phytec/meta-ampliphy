@@ -99,6 +99,7 @@ install_files() {
 	filename=$(basename "${3}")
 	if [ "${filename##*.}" = "ext4" ]; then
 		dd if=${3} of=${2} bs=100M conv=fsync
+		resize2fs ${2}
 	else
 		mkfs.ext4 -L root${1} -t ext4 ${2}
 		mount ${2} /newroot
