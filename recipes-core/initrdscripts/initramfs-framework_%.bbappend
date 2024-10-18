@@ -17,8 +17,6 @@ CONFIG_MOUNTPATH ??= "/mnt/config"
 
 do_varchange() {
     sed -i \
-    -e 's:@SKS_PATH@:${SKS_PATH}:g' \
-    -e 's:@SKS_MOUNTPATH@:${SKS_MOUNTPATH}:g' \
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
     ${WORKDIR}/provisioninginit.sh
