@@ -9,18 +9,12 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
-SKS_PATH ??= "/dev/mmcblk${EMMC_DEV}p1"
-SKS_MOUNTPATH ??= "/mnt_secrets"
-SKS_SECRETFOLDER ??= "/secrets"
 CONFIG_DEV ??= "/dev/mmcblk${EMMC_DEV}p3"
 CONFIG_MOUNTPATH ??= "/mnt/config"
 CONFIG_BOOTDEV ??= "mmcblk${EMMC_DEV}boot0"
 
 do_patch() {
     sed -i \
-    -e 's:@SKS_PATH@:${SKS_PATH}:g' \
-    -e 's:@SKS_MOUNTPATH@:${SKS_MOUNTPATH}:g' \
-    -e 's:@SKS_SECRETFOLDER@:${SKS_SECRETFOLDER}:g' \
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
     -e 's:@CONFIG_BOOTDEV@:${CONFIG_BOOTDEV}:g' \
