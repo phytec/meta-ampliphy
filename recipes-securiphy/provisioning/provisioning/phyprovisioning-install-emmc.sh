@@ -16,15 +16,12 @@ end() {
 	fi
 }
 
-version="v0.6"
-SKS_PATH=@SKS_PATH@
-SKS_MOUNTPATH=@SKS_MOUNTPATH@
-SKS_SECRETFOLDER=@SKS_SECRETFOLDER@
-FLASH_PATH=${SKS_PATH%??}
+version="v0.7"
 FILE_SYSTEM=""
 CONFIG_DEV=@CONFIG_DEV@
 CONFIG_MOUNTPATH=@CONFIG_MOUNTPATH@
 CONFIG_BOOTDEV=@CONFIG_BOOTDEV@
+FLASH_PATH=${CONFIG_DEV%??}
 
 usage="
 PHYTEC Install Script ${version} for eMMC
@@ -59,7 +56,6 @@ do
 	case ${1} in
 	-p | --flashpath)
 		FLASH_PATH="${2}";
-		SKS_PATH="${2}p1";
 		CONFIG_DEV="${2}p3";
 		CONFIG_BOOTDEV="$(basename ${2})boot0";
 		shift 2;;
@@ -69,7 +65,6 @@ do
 			echo "Set flash path and filesystem first!"
 			exit 4
 		fi
-		mountpoint -q "${SKS_MOUNTPATH}" && umount -q "${SKS_MOUNTPATH}"
 		mountpoint -q "${CONFIG_MOUNTPATH}" && umount -q "${CONFIG_MOUNTPATH}"
 		filename=$(basename "${FILE_SYSTEM}")
 		if [ "${filename##*.}" = "partup" ]; then
@@ -80,9 +75,6 @@ do
 			echo "Only partup is supported"
 			exit 5
 		fi
-		mkdir -p ${SKS_MOUNTPATH}
-		mount ${SKS_PATH} ${SKS_MOUNTPATH}
-		mkdir -p ${SKS_MOUNTPATH}${SKS_SECRETFOLDER}
 		mkdir -p ${CONFIG_MOUNTPATH}
 		mount ${CONFIG_DEV} ${CONFIG_MOUNTPATH}
 		exit 0
