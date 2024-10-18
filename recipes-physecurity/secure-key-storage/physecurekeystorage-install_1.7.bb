@@ -9,15 +9,11 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
-SKS_PATH ??= "/dev/mmcblk${EMMC_DEV}p1"
-SKS_MOUNTPATH ??= "/mnt_secrets"
 CONFIG_DEV ??= "/dev/mmcblk${EMMC_DEV}p3"
 CONFIG_MOUNTPATH ??= "/mnt/config"
 
 do_patch() {
     sed -i \
-    -e 's:@SKS_PATH@:${SKS_PATH}:g' \
-    -e 's:@SKS_MOUNTPATH@:${SKS_MOUNTPATH}:g' \
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
     ${WORKDIR}/physecurekeystorage-install.sh
