@@ -9,9 +9,9 @@ end() {
 	fi
 }
 
-version="v1.4"
-SKS_PATH=@SKS_PATH@
-FLASH_PATH=${SKS_PATH%??}
+version="v1.5"
+FLASH_PATH=@FLASH_PATH@
+LABEL_NAME="root"
 
 usage="
 PHYTEC Install Script ${version} for Secure Storage
@@ -37,6 +37,7 @@ The following PARAMETER must be set for new Secure Storage:
     -s | --filesystem <path to root as tgz or ext4>
     -l | --flashlayout <value>    partion number for the rootfs partitions
                        5,6        rootfs partitions are 5 and 6
+    -L | --labelname <value>      label name for the partition
 "
 
 FILE_SYSTEM=""
@@ -50,8 +51,6 @@ check_keysexist() {
 	retvalue=0
 	if [ $(keyctl list @u | grep rootfs | wc -l) -gt 0 ]; then
 		retvalue=1
-	elif [ ! -z "$(ls -A -- "/mnt_secrets/secrets")" ]; then
-		retvalue=2
 	fi
 	echo "$retvalue"
 }
@@ -92,7 +91,7 @@ init_encclose() {
 }
 
 # Format device and install rootfs
-# ${1} root number for label name of partition
+# ${1} label name of partition
 # ${2} path to device
 # ${3} rootfs as tgz or ext4
 install_files() {
@@ -101,7 +100,7 @@ install_files() {
 		dd if=${3} of=${2} bs=100M conv=fsync
 		resize2fs ${2}
 	else
-		mkfs.ext4 -L root${1} -t ext4 ${2}
+		mkfs.ext4 -L ${1} -t ext4 ${2}
 		mount ${2} /newroot
 		if [ "${filename##*.}" = "tgz" ]; then
 			tar xfz ${3} -C /newroot/
@@ -121,7 +120,7 @@ mkdir -p /newroot
 #
 # Command line options
 #
-ARGS=$(getopt -n $(basename $0) -o p:s:l:n:vh -l flashpath:,filesystem:,flashlayout:,newsecurestorage:,version,help -- "$@")
+ARGS=$(getopt -n $(basename $0) -o p:s:l:n:L:vh -l flashpath:,filesystem:,flashlayout:,newsecurestorage:,labelname:,version,help -- "$@")
 VALID_ARGS=$?
 if [ "$VALID_ARGS" != "0" ]; then
 	echo "${usage}"
@@ -141,6 +140,7 @@ do
 			DORAUC=2
 		fi
 		shift 2;;
+	-L | --labelname) LABEL_NAME=${2} shift 2;;
 	-n | --newsecurestorage)
 		if [ -z "${FLASH_PATH}" ] || [ -z "${FILE_SYSTEM}" ]; then
 			echo "Set flash path and filesystem first!"
@@ -159,13 +159,13 @@ do
 			int)
 				echo "file system with integrity: ${FLASH_PATH}p${FLASH_LAYOUT[j]}"
 				init_integrity "${FLASH_PATH}p${FLASH_LAYOUT[j]}"
-				install_files $j "/dev/mapper/introotfs" ${FILE_SYSTEM}
+				install_files "${LABEL_NAME}${j}" "/dev/mapper/introotfs" ${FILE_SYSTEM}
 				init_integrityclose
 				;;
 			enc)
 				echo "encrypted file system: ${FLASH_PATH}p${FLASH_LAYOUT[j]}"
 				init_enc "${FLASH_PATH}p${FLASH_LAYOUT[j]}"
-				install_files $j "/dev/dm-0" ${FILE_SYSTEM}
+				install_files "${LABEL_NAME}${j}" "/dev/dm-0" ${FILE_SYSTEM}
 				init_encclose
 				;;
 			intenc)
@@ -173,7 +173,7 @@ do
 				init_integrity "${FLASH_PATH}p${FLASH_LAYOUT[j]}"
 				echo "encrypted file system with integrity: /dev/dm-1"
 				init_enc "/dev/mapper/introotfs"
-				install_files $j "/dev/dm-1" ${FILE_SYSTEM}
+				install_files "${LABEL_NAME}${j}" "/dev/dm-1" ${FILE_SYSTEM}
 				init_encclose
 				init_integrityclose
 				;;
