@@ -8,7 +8,9 @@
 #  Released under the MIT license (see COPYING.MIT for the terms)
 #
 
-SKS_MOUNTPATH=@SKS_MOUNTPATH@
+SKS_PATH=@SKS_PATH@
+CONFIG_DEV=@CONFIG_DEV@
+CONFIG_MOUNTPATH=@CONFIG_MOUNTPATH@
 
 securestorageinit_enabled() {
 	return 0
@@ -61,9 +63,9 @@ securestorageinit_run() {
 	fi
 
 	if echo "$root" | grep -q "mmc"; then
-		#mmc or emmc => key example is in partition 1
-		mkdir -p ${SKS_MOUNTPATH}
-		mount ${root%?}1 ${SKS_MOUNTPATH}
+		#mmc or emmc => key example is in partition 3 and before in partition 1
+		mkdir -p ${CONFIG_MOUNTPATH}
+		mount ${CONFIG_DEV} ${CONFIG_MOUNTPATH}
 
 		# go to login, when requested
 		[ -n "${rescue}" ] && do_login
@@ -71,8 +73,13 @@ securestorageinit_run() {
 		if [ $(lsmod | grep trusted | wc -l) -gt 0 ]; then
 			rmmod trusted
 		fi
-		if test -f /mnt_secrets/secrets/trusted_key.config; then
-			source /mnt_secrets/secrets/trusted_key.config
+		#backward compatible to old first boot partition
+		if ! test -d ${CONFIG_MOUNTPATH}/secrets; then
+			umount ${CONFIG_MOUNTPATH}
+			mount ${SKS_PATH} ${CONFIG_MOUNTPATH}
+		fi
+		if test -f ${CONFIG_MOUNTPATH}/secrets/trusted_key.config; then
+			source ${CONFIG_MOUNTPATH}/secrets/trusted_key.config
 			modprobe -q  trusted source=${trustedsource}
 		else
 			modprobe -q  trusted
@@ -80,15 +87,15 @@ securestorageinit_run() {
 		load_kernel_module encrypted-keys
 		load_kernel_module dm-crypt
 		load_kernel_module dm-integrity
-		if test -f /mnt_secrets/secrets/trusted_key.blob; then
-			keyctl add trusted kmk  "load `cat /mnt_secrets/secrets/trusted_key.blob`" @u
+		if test -f ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob; then
+			keyctl add trusted kmk  "load `cat ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob`" @u
 		fi
-		if test -f /mnt_secrets/secrets/encrypted_key.blob; then
-			keyctl add encrypted rootfs  "load `cat /mnt_secrets/secrets/encrypted_key.blob`" @u
+		if test -f ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob; then
+			keyctl add encrypted rootfs  "load `cat ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob`" @u
 		fi
-		if test -f /mnt_secrets/secrets/tksecure_key.bb; then
-			caam-keygen import /mnt_secrets/secrets/tksecure_key.bb importkey
-			cat /mnt_secrets/secrets/importkey | keyctl padd logon rootfs: @u
+		if test -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb; then
+			caam-keygen import ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb importkey
+			cat ${CONFIG_MOUNTPATH}/secrets/importkey | keyctl padd logon rootfs: @u
 		fi
 		# mount all partitions without label (sign for encrypted       partition)
 		count=$(ls ${root%?}* | wc -l)
@@ -120,7 +127,7 @@ securestorageinit_run() {
 				done
 			fi
 			if [ ! -n "${TYPE}" ] && [ ! -n "${PTTYPE}" ]; then
-				if test -f /mnt_secrets/secrets/tksecure_key.bb; then
+				if test -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb; then
 					dmsetup create root${j} --table "0 $(blockdev --getsz ${devroot}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${devroot} 0"
 				else
 					dmsetup create root${j} --table "0 $(blockdev --getsz ${devroot}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${devroot} 0"
@@ -151,7 +158,7 @@ securestorageinit_run() {
 		else
 			mount /dev/dm-${dmvalue} ${ROOTFS_DIR}
 		fi
-		umount /mnt_secrets
+		umount ${CONFIG_MOUNTPATH}
 	else
 		# Net is not encrypted
 		mount ${root} ${ROOTFS_DIR}
