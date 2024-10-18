@@ -9,11 +9,11 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
-SKS_PATH ??= "/dev/mmcblk${EMMC_DEV}p1"
+FLASH_PATH ??= "/dev/mmcblk${EMMC_DEV}"
 
 do_patch() {
     sed -i \
-    -e 's:@SKS_PATH@:${SKS_PATH}:g' \
+    -e 's:@FLASH_PATH@:${FLASH_PATH}:g' \
     ${WORKDIR}/physecurestorage-install.sh
 }
 
