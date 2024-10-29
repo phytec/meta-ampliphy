@@ -48,6 +48,8 @@ IMAGE_INSTALL = " \
 
 IMAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
 
+IMAGE_INSTALL:append:imx-generic-bsp = " crucible"
+
 PACKAGE_EXCLUDE = "kernel-image-*"
 
 # Remove some packages added via recommendations
