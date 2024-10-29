@@ -55,6 +55,8 @@ IMAGE_INSTALL:remove:mx8m-nxp-bsp = " \
     kernel-module-tpm-tis \
 "
 
+IMAGE_INSTALL:append:imx-generic-bsp = " crucible"
+
 PACKAGE_EXCLUDE = "kernel-image-*"
 
 # Remove some packages added via recommendations
