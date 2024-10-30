@@ -6,6 +6,7 @@ do_fetch[depends] += "phytec-dev-ca-native:do_install"
 
 # set path to the rauc keyring, which is installed in the image
 RAUC_KEYRING_FILE ?= "mainca-rsa.crt.pem"
+RAUC_KEYRING_FILE_DEVICE_PATH ?= "${@os.path.basename(d.getVar("RAUC_KEYRING_FILE"))}"
 
 SRC_URI += " \
     ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'file://system_emmc.conf', 'file://system_nand.conf', d)} \
@@ -76,7 +77,7 @@ do_install:prepend() {
         -e 's/@NAND_DEV@/${NAND_DEV}/g' \
         -e 's!@ROOTFS_0_DEV@!${ROOTFS_0_DEV}!g' \
         -e 's!@ROOTFS_1_DEV@!${ROOTFS_1_DEV}!g' \
-        -e 's/@RAUC_KEYRING_FILE@/${@os.path.basename(d.getVar("RAUC_KEYRING_FILE"))}/g' \
+        -e 's!@RAUC_KEYRING_FILE@!${RAUC_KEYRING_FILE_DEVICE_PATH}!g' \
         ${@bb.utils.contains("USE_BOOTLOADER_SLOT", "true", "", "-e '/@IF_BOOTLOADER_SLOT@/,/@ENDIF_BOOTLOADER_SLOT@/d'", d)} \
         ${@bb.utils.contains("DISTRO_FEATURES", "rauc-appfs", "", "-e '/@IF_APPFS_SLOT@/,/@ENDIF_APPFS_SLOT@/d'", d)} \
         -e '/@\(IF\|ENDIF\)[A-Z_]\+@/d' \
