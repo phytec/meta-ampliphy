@@ -127,8 +127,8 @@ def generate_packages_list(d):
             vendor = ""
 
         pkg = {
-            "name": d.getVar("BPN"),
-            "version": d.getVar("PV"),
+            "name": product,
+            "version": cve_version,
             "type": "library",
             "cpe": 'cpe:2.3:*:{}:{}:{}:*:*:*:*:*:*:*'.format(vendor or "*", product, cve_version),
             "purl": 'pkg:generic/{}{}@{}'.format(f"{vendor}/" if vendor else '', product, cve_version),
