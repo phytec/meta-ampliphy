@@ -1,19 +1,21 @@
 From 36a356d12a243673420468c917cc1695091fd396 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
 Date: Fri, 23 Aug 2024 11:08:27 +0200
-Subject: [PATCH] v4l2src: Fix 8 bit bayer formats
+Subject: [PATCH] v4l2object: Remove little endian marker on 8 bit bayer format names
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Commit: 071a47103fd3 ("v4l2src: adding support for bayer 10,12,14,16")
-added support for 10, 12, 14 and 16 bit bayer formats but also added a
-'le' postfix to three of the four existing 8 bit formats. This breaks
-compatibility with our plugins like bayer2rgb.
+There is no point in having an endian marker on 8 bit bayer format names since
+it is just one byte. Thus remove it.
 
-Fixes: 071a47103fd3 ("v4l2src: adding support for bayer 10,12,14,16")
+This also fixes an incompatibility with plugins bad where there is no endian
+marker on 8 bit bayer format names as well.
 
-Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+Fixes: #3729
+Part-of: <https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/7826>
+
+Upstream-Status: Backport [1.24.10]
 ---
  docs/gst_plugins_cache.json | 6 +++---
  sys/v4l2/gstv4l2object.c    | 6 +++---
