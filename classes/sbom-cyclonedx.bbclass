@@ -19,7 +19,7 @@ CVE_VERSION ??= "${PV}"
 # Add variable values to the property array of CycloneDX SBOM
 CYCLONEDX_EXPORT_PROPERTIES ??= "SRC_URI SRCREV"
 # Add build artefacts for better analysis of the component
-CYCLONEDX_EXPORT_BUILDFILES ??= "linux_kernel barebox u-boot"
+CYCLONEDX_EXPORT_BUILDFILES ??= "linux_kernel barebox u-boot busybox"
 
 python do_cyclonedx_init() {
     import os.path
@@ -190,6 +190,7 @@ def do_generate_package_activefiles(product,d):
     else:
         sourcetree.append(d.getVar("S"))
     sourcetree.append(d.getVar("RECIPE_SYSROOT_NATIVE"))
+    sourcetree.append(d.getVar("RECIPE_SYSROOT"))
 
     makefile = os.path.join(sourcetree[0], "Makefile")
     if os.path.isfile(makefile):
@@ -203,9 +204,10 @@ def make_dry_run(sourcerepo, d, targets : list):
     #Witih prefix,  otherwise it takes ages
     path_regex = re.compile('Prerequisite|target \'([^\s]*\w+\.[cSh])')
 
-    if d.getVar("ARCH") is None:
-        return None
-    makeargs = [ "make", "ARCH="+d.getVar("ARCH"), "-C", sourcerepo[0], "-ndi"]
+    arch = d.getVar("ARCH")
+    if arch is None:
+        arch = d.getVar("TARGET_ARCH")
+    makeargs = [ "make", "ARCH="+arch, "-C", sourcerepo[0], "-ndi"]
     makeargs.extend(targets)
     try:
         proc = subprocess.run(makeargs, capture_output=True, encoding='UTF-8')
