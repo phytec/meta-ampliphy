@@ -30,6 +30,13 @@ SRC_URI:append:am57xx = " \
     file://11-dcan2.network \
 "
 
+SRC_URI:append:j721s2 = " \
+    file://11-main_mcan1.network \
+    file://11-main_mcan13.network \
+    file://11-main_mcan16.network \
+    file://11-mcu_mcan0.network \
+"
+
 do_install:append() {
     install -d ${D}${systemd_unitdir}/network/
     for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.network); do
