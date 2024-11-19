@@ -10,23 +10,21 @@ SRC_URI = "https://github.com/phytec/phytec-dev-ca/releases/download/v${PV}/phyt
 INSANE_SKIP:${PN} += "already-stripped"
 
 S = "${WORKDIR}/${BPN}-${PV}"
+DEVCA_DIR = "${TOPDIR}/../${BPN}"
 
 do_install() {
-    if [ -z "${CERT_PATH}" ]; then
-        bbfatal "${BPN} requires CERT_PATH to be set!"
-    fi
-
-    install -d ${CERT_PATH}
-    cp -r ${S}/* ${CERT_PATH}/
+    install -d ${DEVCA_DIR}
+    cp -r ${S}/* ${DEVCA_DIR}
 }
-do_install[vardeps] += "CERT_PATH"
+do_install[vardeps] += "DEVCA_DIR"
+do_install[cleandirs] += "${DEVCA_DIR}"
 
 python do_cleanall:append() {
     import shutil
     import os
-    cert_path = d.getVar('CERT_PATH')
-    if os.path.isdir(cert_path):
-        shutil.rmtree(cert_path)
+    devca_dir = d.getVar('DEVCA_DIR')
+    if os.path.isdir(devca_dir):
+        shutil.rmtree(devca_dir)
 }
 
 BBCLASSEXTEND = "native"
