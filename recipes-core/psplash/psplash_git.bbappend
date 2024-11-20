@@ -12,6 +12,14 @@ SRC_URI:append:j721s2 = " \
     file://psplash-start.service  \
 "
 
+# psplash PHYTEC logo and progress bar are optimized for 720p & 1080p screen
+# resolutions. However, lots of boards use screens with lower resolutions and
+# in such case, logo does not fit the screen anymore and one must use smaller
+# variants. To use smaller variants one can override SPLASH_IMAGES variable
+# like so:
+#
+#  SPLASH_IMAGES:override = "file://psplash-poky-small.png;outsuffix=default"
+#
 SPLASH_IMAGES = "file://psplash-poky.png;outsuffix=default"
 SPLASH_IMAGES:am57xx = "file://psplash-poky-small.png;outsuffix=default"
 SPLASH_IMAGES:mx6-generic-bsp = "file://psplash-poky-small.png;outsuffix=default"
