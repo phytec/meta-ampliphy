@@ -2,19 +2,19 @@
 DISTRO_FEATURES:append = " secureboot"
 DISTRO_FEATURES_NATIVE:append = " secureboot"
 DISTRO_FEATURES_NATIVESDK:append = " secureboot"
-OVERRIDES:append = ":secureboot"
+DISTROOVERRIDES:append = ":secureboot"
 
 #kernel-modsign
 DISTRO_FEATURES:append = " kernelmodsign"
 DISTRO_FEATURES_NATIVE:append = " kernelmodsign"
 DISTRO_FEATURES_NATIVESDK:append = " kernelmodsign"
-OVERRIDES:append = ":kernelmodsign"
+DISTROOVERRIDES:append = ":kernelmodsign"
 
 #add protection shield level
 #shieldlow - shieldmedium - shieldhigh
 DISTRO_FEATURES:append = " protectionshield"
 PROTECTION_SHIELD_LEVEL = "shieldlow"
-OVERRIDES:append = ":protectionshield:${PROTECTION_SHIELD_LEVEL}"
+DISTROOVERRIDES:append = ":protectionshield:${PROTECTION_SHIELD_LEVEL}"
 #user root password for shield low and midle
 #password quality decide about the protection level
 PROTECTION_SHIELD_ROOT_PASSWORD ?= 'root'
@@ -35,7 +35,7 @@ KERNEL_FEATURES_DESELECT ?= "debug kvm media xen"
 DISTRO_FEATURES += "securestorage"
 # possible values: fileauthorenc , fileauthandenc
 SECURE_STORAGE_TYPE ??= "fileauthandenc"
-OVERRIDES:append = ":securestorage:${SECURE_STORAGE_TYPE}"
+DISTROOVERRIDES:append = ":securestorage:${SECURE_STORAGE_TYPE}"
 
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
