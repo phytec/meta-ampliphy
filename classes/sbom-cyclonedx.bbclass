@@ -21,6 +21,9 @@ CYCLONEDX_EXPORT_PROPERTIES ??= "SRC_URI SRCREV"
 # Add build artefacts for better analysis of the component
 CYCLONEDX_EXPORT_BUILDFILES ??= "linux_kernel barebox u-boot busybox"
 
+SPDX_ORG ??= "OpenEmbedded ()"
+SPDX_SUPPLIER ??= "Organization: ${SPDX_ORG}"
+
 python do_cyclonedx_init() {
     import os.path
     import uuid
@@ -139,11 +142,23 @@ def generate_packages_list(d):
             "name": product,
             "version": cve_version,
             "type": "library",
+            "description" : '{}'.format(d.getVar("SUMMARY",True)),
+            "licenses" : [],
+            "supplier" : {
+                "name" : '{}'.format(d.getVar('SPDX_SUPPLIER')),
+                "url" : '{}'.format(d.getVar('HOMEPAGE', True ))
+            },
             "cpe": 'cpe:2.3:*:{}:{}:{}:*:*:*:*:*:*:*'.format(vendor or "*", product, cve_version),
             "purl": 'pkg:generic/{}{}@{}'.format(f"{vendor}/" if vendor else '', product, cve_version),
             "bom-ref": str(uuid.uuid4()),
             "properties": []
         }
+        lic = {
+            "license" : {
+                "name" : '{}'.format(d.getVar("LICENSE",True))
+            }
+        }
+        pkg["licenses"].append(lic)
 
         for property in d.getVar("CYCLONEDX_EXPORT_PROPERTIES").split(" "):
             value = d.getVar(property)
