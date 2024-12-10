@@ -12,8 +12,7 @@
 #
 
 CYCLONEDX_EXPORT_TMP ??= "${LOG_DIR}/sbom-cyclonedx"
-CYCLONEDX_EXPORT_COMPONENT_BASE ??= "${CYCLONEDX_EXPORT_TMP}/base-bom.json"
-CYCLONEDX_EXPORT_COMPONENT_FILE ??= "${CYCLONEDX_EXPORT_TMP}/${PN}-${PV}.json"
+CYCLONEDX_EXPORT_COMPONENT_FILE ??= "${PN}-${PV}.json"
 CVE_PRODUCT ??= "${BPN}"
 CVE_VERSION ??= "${PV}"
 # Add variable values to the property array of CycloneDX SBOM
@@ -26,15 +25,33 @@ CYCLONEDX_WITH_NATIVE ??="0"
 SPDX_ORG ??= "OpenEmbedded ()"
 SPDX_SUPPLIER ??= "Organization: ${SPDX_ORG}"
 
-python do_cyclonedx_init() {
+python do_cyclonedx_component() {
+    sbom = {
+        "components": []
+    }
+    for comp in generate_packages_list(d):
+        sbom["components"].append(comp)
+
+    path = d.getVar("CYCLONEDX_EXPORT_TMP")
+    if not os.path.exists(path):
+        bb.utils.mkdirhier(path)
+    sbom_file = os.path.join(path, d.getVar("CYCLONEDX_EXPORT_COMPONENT_FILE"))
+
+    write_json(sbom_file, sbom)
+}
+addtask do_cyclonedx_component after do_compile before do_install
+do_cyclonedx_component[nostamp] = "1"
+do_cyclonedx_component[depends] += "python3-native:do_populate_sysroot"
+do_cyclonedx_component[depends] += "python3-packaging-native:do_populate_sysroot"
+
+python do_cyclonedx_image() {
     import os.path
     import uuid
     from datetime import datetime, timezone
+    import os
+    from pathlib import Path
 
     timestamp = datetime.now(timezone.utc).isoformat()
-    if not os.path.exists(d.getVar("CYCLONEDX_EXPORT_TMP")):
-        bb.utils.mkdirhier(d.getVar("CYCLONEDX_EXPORT_TMP"))
-
     # Generate unique serial numbers for sbom
     sbom_serial_number = str(uuid.uuid4())
 
@@ -42,7 +59,7 @@ python do_cyclonedx_init() {
     product_version = d.getVar("DISTRO_VERSION")
     product_vendor = d.getVar("VENDOR")
 
-    sbom_initial = {
+    sbom = {
         "bomFormat": "CycloneDX",
         "specVersion": "1.6",
         "serialNumber": f"urn:uuid:{sbom_serial_number}",
@@ -62,32 +79,6 @@ python do_cyclonedx_init() {
         "components": [],
         "vulnerabilities": []
     }
-    write_json(d.getVar("CYCLONEDX_EXPORT_COMPONENT_BASE"), sbom_initial)
-}
-addhandler do_cyclonedx_init
-do_cyclonedx_init[eventmask] = "bb.event.BuildStarted"
-
-python do_cyclonedx_component () {
-    import os
-
-    # load the bom
-    sbom_file = d.getVar("CYCLONEDX_EXPORT_COMPONENT_FILE")
-    sbom = read_json(d.getVar("CYCLONEDX_EXPORT_COMPONENT_BASE"))
-    for pkg in generate_packages_list(d):
-        if not next((c for c in sbom["components"] if c["cpe"] == pkg["cpe"]), None):
-            sbom["components"].append(pkg)
-
-    write_json(sbom_file, sbom)
-}
-addtask do_cyclonedx_component after do_compile before do_install
-do_cyclonedx_component[nostamp] = "1"
-do_cyclonedx_component[depends] += "python3-native:do_populate_sysroot"
-do_cyclonedx_component[depends] += "python3-packaging-native:do_populate_sysroot"
-
-python create_sbom_cyclonedx_summary() {
-    import json
-    import os
-    from pathlib import Path
 
     filesdir = d.getVar("CYCLONEDX_EXPORT_TMP", True)
     files = os.listdir(filesdir)
@@ -96,8 +87,6 @@ python create_sbom_cyclonedx_summary() {
     imgdeploydir = Path(d.getVar("IMGDEPLOYDIR"))
     suffix = ".sbom-cyclonedx.json"
 
-    sbom_file = d.getVar("CYCLONEDX_EXPORT_COMPONENT_BASE")
-    sbom = read_json(sbom_file)
     for filename in files:
         if filename.endswith(".json"):
             filepath = os.path.join(filesdir, filename)
@@ -115,7 +104,7 @@ python create_sbom_cyclonedx_summary() {
 
 }
 
-ROOTFS_POSTUNINSTALL_COMMAND =+ "create_sbom_cyclonedx_summary"
+ROOTFS_POSTUNINSTALL_COMMAND =+ "do_cyclonedx_image"
 
 def generate_packages_list(d):
     """
