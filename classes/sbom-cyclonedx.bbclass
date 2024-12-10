@@ -21,6 +21,8 @@ CYCLONEDX_EXPORT_PROPERTIES ??= "SRC_URI SRCREV"
 # Add build artefacts for better analysis of the component
 CYCLONEDX_EXPORT_BUILDFILES ??= "linux_kernel barebox u-boot busybox"
 
+CYCLONEDX_WITH_NATIVE ??="0"
+
 SPDX_ORG ??= "OpenEmbedded ()"
 SPDX_SUPPLIER ??= "Organization: ${SPDX_ORG}"
 
@@ -67,9 +69,6 @@ do_cyclonedx_init[eventmask] = "bb.event.BuildStarted"
 
 python do_create_sbom_cyclonedx () {
     import os
-    for ignored_suffix in (d.getVar("SPECIAL_PKGSUFFIX") or "").split():
-        if d.getVar("PN").endswith(ignored_suffix):
-            return
 
     # load the bom
     sbom_file = d.getVar("CYCLONEDX_EXPORT_COMPONENT_FILE")
@@ -104,7 +103,9 @@ python create_sbom_cyclonedx_summary() {
             filepath = os.path.join(filesdir, filename)
             component = read_json(filepath)
             for comp in component["components"]:
-                sbom["components"].append(comp)
+                if not bb.utils.to_boolean(d.getVar('CYCLONEDX_WITH_NATIVE')) and not "isNative" in comp["tags"]:
+                    sbom["components"].append(comp)
+
     sbom_export_file=os.path.join(imgdeploydir,image_name+suffix)
     write_json(sbom_export_file, sbom)
     if image_link_name:
@@ -151,7 +152,8 @@ def generate_packages_list(d):
             "cpe": 'cpe:2.3:*:{}:{}:{}:*:*:*:*:*:*:*'.format(vendor or "*", product, cve_version),
             "purl": 'pkg:generic/{}{}@{}'.format(f"{vendor}/" if vendor else '', product, cve_version),
             "bom-ref": str(uuid.uuid4()),
-            "properties": []
+            "properties": [],
+            "tags" : []
         }
         lic = {
             "license" : {
@@ -159,6 +161,9 @@ def generate_packages_list(d):
             }
         }
         pkg["licenses"].append(lic)
+
+        if bb.data.inherits_class("native", d) or bb.data.inherits_class("cross", d):
+            pkg["tags"].append("isNative")
 
         for property in d.getVar("CYCLONEDX_EXPORT_PROPERTIES").split(" "):
             value = d.getVar(property)
@@ -260,9 +265,3 @@ def write_json(path, content):
         json.dumps(content, indent=2)
     )
 
-python () {
-    is_native_class = d.getVar('CLASSOVERRIDE') in ("class-native", "class-nativesdk")
-    is_native = d.getVar('OVERRIDE') in ("native", "nativesdk")
-    if is_native_class or is_native:
-        bb.build.deltask('create_sbom_cyclonedx', d)
-}
