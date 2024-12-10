@@ -65,7 +65,9 @@ python do_cyclonedx_image() {
         "version": 1,
         "metadata": {
             "timestamp": timestamp,
-            "tools": [{"name": "yocto"}],
+            "tools": {
+                 "components" : [ {"name": "Yocto CycloneDX SBOM Creator", "version" : "1.1","type": "application"}]
+            },
             "component": {
                 "name": product_name,
                 "version": product_version,
