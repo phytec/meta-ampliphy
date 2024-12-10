@@ -67,7 +67,7 @@ python do_cyclonedx_init() {
 addhandler do_cyclonedx_init
 do_cyclonedx_init[eventmask] = "bb.event.BuildStarted"
 
-python do_create_sbom_cyclonedx () {
+python do_cyclonedx_component () {
     import os
 
     # load the bom
@@ -79,10 +79,10 @@ python do_create_sbom_cyclonedx () {
 
     write_json(sbom_file, sbom)
 }
-addtask create_sbom_cyclonedx after do_compile before do_install
-create_sbom_cyclonedx[nostamp] = "1"
-create_sbom_cyclonedx[depends] += "python3-native:do_populate_sysroot"
-create_sbom_cyclonedx[depends] += "python3-packaging-native:do_populate_sysroot"
+addtask do_cyclonedx_component after do_compile before do_install
+do_cyclonedx_component[nostamp] = "1"
+do_cyclonedx_component[depends] += "python3-native:do_populate_sysroot"
+do_cyclonedx_component[depends] += "python3-packaging-native:do_populate_sysroot"
 
 python create_sbom_cyclonedx_summary() {
     import json
