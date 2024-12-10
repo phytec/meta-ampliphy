@@ -7,6 +7,8 @@ inherit pkgconfig
 
 SRC_URI = "https://github.com/phytec/phytec-dev-ca/releases/download/v${PV}/phytec-dev-ca-${PV}.tar.gz"
 
+do_install[nostamp] = "1"
+
 do_patch[noexec] = "1"
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
