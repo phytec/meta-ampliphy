@@ -222,7 +222,10 @@ def generate_packages_list(d):
             pkg["tags"].append("isNative")
 
         for property in d.getVar("CYCLONEDX_EXPORT_PROPERTIES").split(" "):
-            value = d.getVar(property)
+            if property == "SRC_URI":
+                value = list((d.getVar(property) or "").split())
+            else:
+                value = d.getVar(property)
             if value is not None and len(value) > 0:
                 prop = {
                     "name" : property,
