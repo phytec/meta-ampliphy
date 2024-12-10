@@ -54,7 +54,7 @@ python do_cyclonedx_image() {
     # Generate unique serial numbers for sbom
     sbom_serial_number = str(uuid.uuid4())
 
-    product_name = d.getVar("DISTRO")
+    product_name = "{}-{}".format(d.getVar("IMAGE_BASENAME"),d.getVar("MACHINE"))
     product_version = d.getVar("DISTRO_VERSION")
     product_vendor = d.getVar("VENDOR")
 
