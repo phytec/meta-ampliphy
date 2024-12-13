@@ -1,10 +1,8 @@
-From 36a356d12a243673420468c917cc1695091fd396 Mon Sep 17 00:00:00 2001
+From e7b43a93992fd94bf8ff9c33730c855e371f2f83 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
 Date: Fri, 23 Aug 2024 11:08:27 +0200
-Subject: [PATCH] v4l2object: Remove little endian marker on 8 bit bayer format names
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH] v4l2object: Remove little endian marker on 8 bit bayer format
+ names
 
 There is no point in having an endian marker on 8 bit bayer format names since
 it is just one byte. Thus remove it.
@@ -22,28 +20,28 @@ Upstream-Status: Backport [1.24.10]
  2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/docs/gst_plugins_cache.json b/docs/gst_plugins_cache.json
-index 2adc3e9504f0..c388decd4faa 100644
+index 03a0476af..aae3e4328 100644
 --- a/docs/gst_plugins_cache.json
 +++ b/docs/gst_plugins_cache.json
-@@ -25490,7 +25490,7 @@
+@@ -25502,7 +25502,7 @@
                  "long-name": "Video (video4linux2) Sink",
                  "pad-templates": {
                      "sink": {
--                        "caps": "image/jpeg:\n         parsed: true\nvideo/mpeg:\n    mpegversion: 4\n   systemstream: false\nvideo/mpeg:\n    mpegversion: { (int)1, (int)2 }\nvideo/mpegts:\n   systemstream: true\nvideo/x-bayer:\n         format: { bggr, gbrgle, grbgle, rggble, bggr10le, gbrg10le, grbg10le, rggb10le, bggr12le, gbrg12le, grbg12le, rggb12le, bggr14le, gbrg14le, grbg14le, rggb14le, bggr16le, gbrg16le, grbg16le, rggb16le }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-dv:\n   systemstream: true\nvideo/x-fwht:\nvideo/x-h263:\n        variant: itu\nvideo/x-h264:\n  stream-format: { (string)byte-stream, (string)avc }\n      alignment: au\nvideo/x-h265:\n  stream-format: byte-stream\n      alignment: au\nvideo/x-pwc1:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-pwc2:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-raw:\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y42B, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-sonix:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-vp8:\nvideo/x-vp9:\nvideo/x-wmv:\n     wmvversion: 3\n         format: WVC1\n\nvideo/x-raw(format:Interlaced):\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y42B, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\n interlace-mode: alternate\n",
+-                        "caps": "image/jpeg:\n         parsed: true\nvideo/mpeg:\n    mpegversion: 4\n   systemstream: false\nvideo/mpeg:\n    mpegversion: { (int)1, (int)2 }\nvideo/mpegts:\n   systemstream: true\nvideo/x-bayer:\n         format: { bggr, gbrgle, grbgle, rggble, bggr10le, gbrg10le, grbg10le, rggb10le, bggr12le, gbrg12le, grbg12le, rggb12le, bggr14le, gbrg14le, grbg14le, rggb14le, bggr16le, gbrg16le, grbg16le, rggb16le }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-dv:\n   systemstream: true\nvideo/x-fwht:\nvideo/x-h263:\n        variant: itu\nvideo/x-h264:\n  stream-format: { (string)byte-stream, (string)avc }\n      alignment: au\nvideo/x-h265:\n  stream-format: byte-stream\n      alignment: au\nvideo/x-pwc1:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-pwc2:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-raw:\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, Y42B, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-sonix:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-vp8:\nvideo/x-vp9:\nvideo/x-wmv:\n     wmvversion: 3\n         format: WVC1\n\nvideo/x-raw(format:Interlaced):\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, Y42B, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\n interlace-mode: alternate\n",
 +                        "caps": "image/jpeg:\n         parsed: true\nvideo/mpeg:\n    mpegversion: 4\n   systemstream: false\nvideo/mpeg:\n    mpegversion: { (int)1, (int)2 }\nvideo/mpegts:\n   systemstream: true\nvideo/x-bayer:\n         format: { bggr, gbrg, grbg, rggb, bggr10le, gbrg10le, grbg10le, rggb10le, bggr12le, gbrg12le, grbg12le, rggb12le, bggr14le, gbrg14le, grbg14le, rggb14le, bggr16le, gbrg16le, grbg16le, rggb16le }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-dv:\n   systemstream: true\nvideo/x-fwht:\nvideo/x-h263:\n        variant: itu\nvideo/x-h264:\n  stream-format: { (string)byte-stream, (string)avc }\n      alignment: au\nvideo/x-h265:\n  stream-format: byte-stream\n      alignment: au\nvideo/x-pwc1:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-pwc2:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-raw:\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y42B, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-sonix:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-vp8:\nvideo/x-vp9:\nvideo/x-wmv:\n     wmvversion: 3\n         format: WVC1\n\nvideo/x-raw(format:Interlaced):\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y42B, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\n interlace-mode: alternate\n",
                          "direction": "sink",
                          "presence": "always"
                      }
-@@ -25798,7 +25798,7 @@
+@@ -25810,7 +25810,7 @@
                  "long-name": "Video (video4linux2) Source",
                  "pad-templates": {
                      "src": {
--                        "caps": "image/jpeg:\n         parsed: true\nvideo/mpeg:\n    mpegversion: 4\n   systemstream: false\nvideo/mpeg:\n    mpegversion: { (int)1, (int)2 }\nvideo/mpegts:\n   systemstream: true\nvideo/x-bayer:\n         format: { bggr, gbrgle, grbgle, rggble, bggr10le, gbrg10le, grbg10le, rggb10le, bggr12le, gbrg12le, grbg12le, rggb12le, bggr14le, gbrg14le, grbg14le, rggb14le, bggr16le, gbrg16le, grbg16le, rggb16le }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-dv:\n   systemstream: true\nvideo/x-fwht:\nvideo/x-h263:\n        variant: itu\nvideo/x-h264:\n  stream-format: { (string)byte-stream, (string)avc }\n      alignment: au\nvideo/x-h265:\n  stream-format: byte-stream\n      alignment: au\nvideo/x-pwc1:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-pwc2:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-raw:\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y42B, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-sonix:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-vp8:\nvideo/x-vp9:\nvideo/x-wmv:\n     wmvversion: 3\n         format: WVC1\n\nvideo/x-raw(format:Interlaced):\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y42B, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\n interlace-mode: alternate\n",
+-                        "caps": "image/jpeg:\n         parsed: true\nvideo/mpeg:\n    mpegversion: 4\n   systemstream: false\nvideo/mpeg:\n    mpegversion: { (int)1, (int)2 }\nvideo/mpegts:\n   systemstream: true\nvideo/x-bayer:\n         format: { bggr, gbrgle, grbgle, rggble, bggr10le, gbrg10le, grbg10le, rggb10le, bggr12le, gbrg12le, grbg12le, rggb12le, bggr14le, gbrg14le, grbg14le, rggb14le, bggr16le, gbrg16le, grbg16le, rggb16le }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-dv:\n   systemstream: true\nvideo/x-fwht:\nvideo/x-h263:\n        variant: itu\nvideo/x-h264:\n  stream-format: { (string)byte-stream, (string)avc }\n      alignment: au\nvideo/x-h265:\n  stream-format: byte-stream\n      alignment: au\nvideo/x-pwc1:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-pwc2:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-raw:\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, Y42B, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-sonix:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-vp8:\nvideo/x-vp9:\nvideo/x-wmv:\n     wmvversion: 3\n         format: WVC1\n\nvideo/x-raw(format:Interlaced):\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, Y42B, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\n interlace-mode: alternate\n",
 +                        "caps": "image/jpeg:\n         parsed: true\nvideo/mpeg:\n    mpegversion: 4\n   systemstream: false\nvideo/mpeg:\n    mpegversion: { (int)1, (int)2 }\nvideo/mpegts:\n   systemstream: true\nvideo/x-bayer:\n         format: { bggr, gbrg, grbg, rggb, bggr10le, gbrg10le, grbg10le, rggb10le, bggr12le, gbrg12le, grbg12le, rggb12le, bggr14le, gbrg14le, grbg14le, rggb14le, bggr16le, gbrg16le, grbg16le, rggb16le }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-dv:\n   systemstream: true\nvideo/x-fwht:\nvideo/x-h263:\n        variant: itu\nvideo/x-h264:\n  stream-format: { (string)byte-stream, (string)avc }\n      alignment: au\nvideo/x-h265:\n  stream-format: byte-stream\n      alignment: au\nvideo/x-pwc1:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-pwc2:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-raw:\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y42B, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-sonix:\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\nvideo/x-vp8:\nvideo/x-vp9:\nvideo/x-wmv:\n     wmvversion: 3\n         format: WVC1\n\nvideo/x-raw(format:Interlaced):\n         format: { RGB16, BGR, RGB, ABGR, xBGR, RGBA, RGBx, GRAY8, GRAY16_LE, GRAY16_BE, YVU9, YUY2, YVYU, UYVY, Y42B, Y41B, YUV9, NV12_64Z32, NV12_8L128, NV12_10BE_8L128, NV24, NV12_16L32S, NV61, NV16, NV21, NV12, I420, YV12, ARGB, xRGB, BGRA, BGRx, BGR15, RGB15 }\n          width: [ 1, 32768 ]\n         height: [ 1, 32768 ]\n      framerate: [ 0/1, 2147483647/1 ]\n interlace-mode: alternate\n",
                          "direction": "src",
                          "presence": "always"
                      }
-@@ -28828,4 +28828,4 @@
+@@ -28840,4 +28840,4 @@
          "tracers": {},
          "url": "Unknown package origin"
      }
@@ -51,10 +49,10 @@ index 2adc3e9504f0..c388decd4faa 100644
 \ No newline at end of file
 +}
 diff --git a/sys/v4l2/gstv4l2object.c b/sys/v4l2/gstv4l2object.c
-index fcadf355de13..2c2792a2e011 100644
+index 492fb3fa0..56e2ec624 100644
 --- a/sys/v4l2/gstv4l2object.c
 +++ b/sys/v4l2/gstv4l2object.c
-@@ -1806,7 +1806,7 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
+@@ -1813,7 +1813,7 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
        bayer_format = "bggr16le";
        break;
      case V4L2_PIX_FMT_SGBRG8:
@@ -63,7 +61,7 @@ index fcadf355de13..2c2792a2e011 100644
        break;
      case V4L2_PIX_FMT_SGBRG10:
        bayer_format = "gbrg10le";
-@@ -1821,7 +1821,7 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
+@@ -1828,7 +1828,7 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
        bayer_format = "gbrg16le";
        break;
      case V4L2_PIX_FMT_SGRBG8:
@@ -72,7 +70,7 @@ index fcadf355de13..2c2792a2e011 100644
        break;
      case V4L2_PIX_FMT_SGRBG10:
        bayer_format = "grbg10le";
-@@ -1836,7 +1836,7 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
+@@ -1843,7 +1843,7 @@ gst_v4l2_object_v4l2fourcc_to_bare_struct (guint32 fourcc)
        bayer_format = "grbg16le";
        break;
      case V4L2_PIX_FMT_SRGGB8:
@@ -81,3 +79,6 @@ index fcadf355de13..2c2792a2e011 100644
        break;
      case V4L2_PIX_FMT_SRGGB10:
        bayer_format = "rggb10le";
+-- 
+2.25.1
+
