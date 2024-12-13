@@ -41,9 +41,11 @@ SRC_URI:append:am64xx = " \
     file://11-main_mcan0.network \
     file://11-main_mcan1.network \
 "
-SRC_URI:append:am68xx = " \
+SRC_URI:append:j721s2 = " \
     file://11-main_mcan0.network \
     file://11-main_mcan1.network \
+    file://11-main_mcan13.network \
+    file://11-main_mcan16.network \
     file://11-main_mcan2.network \
     file://11-mcu_mcan0.network \
     file://11-mcu_mcan1.network \
