@@ -38,6 +38,11 @@ IMAGE_INSTALL:remove:mx8m-nxp-bsp = " \
     kernel-module-tpm-tis \
 "
 
+IMAGE_INSTALL:remove:mx9-nxp-bsp = " \
+    kernel-module-tpm-tis-spi \
+    kernel-module-tpm-tis \
+"
+
 PACKAGE_EXCLUDE = "kernel-image-*"
 
 # Remove some packages added via recommendations
