@@ -1,1 +1,1 @@
-EXTRA_OEMAKE = "KEYBLOB_LOCATION=/mnt_secrets/secrets/"
+EXTRA_OEMAKE = "KEYBLOB_LOCATION=/mnt/config/secrets/"
