@@ -34,3 +34,8 @@ RDEPENDS:${PN}:append:am57xx = " \
     ti-ipc-test \
     pru-icss \
 "
+
+RDEPENDS:${PN}:remove:j722s = " \
+    pru-icss \
+    mcu-plus-sdk-firmware \
+"
