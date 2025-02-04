@@ -39,3 +39,8 @@ RDEPENDS:${PN}:remove:j722s = " \
     pru-icss \
     mcu-plus-sdk-firmware \
 "
+
+RDEPENDS:${PN}:remove:am62pxx = " \
+    pru-icss \
+    mcu-plus-sdk-firmware \
+"
