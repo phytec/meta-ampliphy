@@ -1,5 +1,0 @@
-[Match]
-Name=can1
-
-[CAN]
-BitRate=500000

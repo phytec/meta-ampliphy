@@ -1,5 +1,0 @@
-[Match]
-Name=mcu_mcan1
-
-[CAN]
-BitRate=500000
