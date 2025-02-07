@@ -1,0 +1,7 @@
+[Match]
+Name=mcu_mcan*
+
+[CAN]
+BitRate=800000
+DataBitRate=800000
+FDMode=yes
