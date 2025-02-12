@@ -1,36 +1,47 @@
 SUMMARY = "Phytec initramfs image"
 DESCRIPTION = "A small image capable of allowing a device to boot and \
-check for hardware problems. The kernel includes \
-the Minimal RAM-based Initial Root Filesystem (initramfs), which finds the \
-first 'init' program more efficiently. \
-On AM62x, this can be used for a NOR-Flash recovery mode to flash new \
-software to the eMMC."
+check for hardware problems or flash new software to the eMMC. \
+The kernel includes the Minimal RAM-based Initial Root Filesystem \
+(initramfs), which finds the first 'init' program more efficiently."
+
+INITRAMFS_SCRIPTS ?= " \
+    initramfs-framework-base \
+    initramfs-module-udev \
+    initramfs-module-network \
+    initramfs-module-exec \
+"
 
 PACKAGE_INSTALL = " \
-    initramfs-boot \
-    base-files \
+    ${INITRAMFS_SCRIPTS} \
+    ${VIRTUAL-RUNTIME_base-utils} \
+    ${VIRTUAL-RUNTIME_login_manager} \
+    udev \
+    bash \
     base-passwd \
     ${ROOTFS_BOOTSTRAP_INSTALL} \
     packagegroup-hwtools-diagnostic \
-    iperf3 \
-    ${VIRTUAL-RUNTIME_login_manager} \
+    partup \
 "
 
 # Do not pollute the initrd image with rootfs features
 IMAGE_FEATURES = "empty-root-password"
 
-export IMAGE_BASENAME = "phytec-initramfs-image"
+# Don't allow the initramfs to contain a kernel
+PACKAGE_EXCLUDE = "kernel-image-*"
+
+IMAGE_NAME_SUFFIX ?= ""
 IMAGE_LINGUAS = ""
 
 LICENSE = "MIT"
 
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
 inherit core-image
-IMAGE_NAME_SUFFIX = ""
 
 IMAGE_ROOTFS_SIZE = "8192"
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
 
-PACKAGE_EXCLUDE = "kernel-image-*"
-
-BAD_RECOMMENDATIONS += "busybox-syslog"
+export IMAGE_BASENAME = "phytec-initramfs-image"
+BAD_RECOMMENDATIONS += " \
+    initramfs-module-rootfs \
+    busybox-syslog \
+"
