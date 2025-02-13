@@ -40,7 +40,6 @@ RDEPENDS:${PN} = " \
 "
 
 RDEPENDS:${PN}:append:arm = " arm-memspeed"
-RDEPENDS:${PN}:append:k3 = " k3conf"
 RDEPENDS:${PN}:append:mx6-generic-bsp = " mmdc phycam-setup"
 RDEPENDS:${PN}:append:mx6ul-generic-bsp = " mmdc"
 RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " phycam-setup"
