@@ -24,6 +24,7 @@ SPLASH_IMAGES = "file://psplash-poky.png;outsuffix=default"
 SPLASH_IMAGES:am57xx = "file://psplash-poky-small.png;outsuffix=default"
 SPLASH_IMAGES:mx6-generic-bsp = "file://psplash-poky-small.png;outsuffix=default"
 SPLASH_IMAGES:phyboard-segin-imx93 = "file://psplash-poky-small.png;outsuffix=default"
+SPLASH_IMAGES:phyboard-segin-imx91 = "file://psplash-poky-small.png;outsuffix=default"
 
 do_configure:prepend() {
     if echo "${SPLASH_IMAGES}" | grep -q "psplash-poky-small.png"; then
