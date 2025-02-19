@@ -9,4 +9,5 @@ RDEPENDS:${PN} += " \
     podman \
     podman-compose \
     check-config \
+    fuse-overlayfs \
 "
