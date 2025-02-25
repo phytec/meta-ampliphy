@@ -91,7 +91,7 @@ python do_configure:prepend() {
         "u-boot-imx": "u-boot.imx",
         "u-boot-phytec": d.getVar("IMAGE_BOOTLOADER"),
         "imx-boot": "imx-boot",
-        "ti-boot": "ti-boot-container.img"
+        "ti-boot-container": "ti-boot-container.img"
     }
     emmc_boot_path = "%s/%s" % (deploy_dir, "emmc-boot.img")
     if os.path.islink(emmc_boot_path):
