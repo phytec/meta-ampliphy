@@ -3,6 +3,7 @@ HOMEPAGE = "http://www.phytec.de"
 
 DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
 DEP_BOOTLOADER:mx8-nxp-bsp = "${IMAGE_BOOTLOADER}"
+DEP_BOOTLOADER:mx91-nxp-bsp = "${IMAGE_BOOTLOADER}"
 DEP_BOOTLOADER:mx93-nxp-bsp = "${IMAGE_BOOTLOADER}"
 DEP_BOOTLOADER:k3 = "${IMAGE_BOOTLOADER}"
 do_bundle[depends] += "phytec-dev-ca-native:do_install"
