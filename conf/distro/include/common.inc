@@ -73,10 +73,6 @@ ERROR_TO_WARN_QA = "version-going-backwards"
 ERROR_QA:remove = "${ERROR_TO_WARN_QA}"
 WARN_QA:append = " ${ERROR_TO_WARN_QA}"
 
-# suppress meta-virtualization useless warning when building
-# without virtualization distro feature
-SKIP_META_VIRT_SANITY_CHECK = "1"
-
 # Suppress meta-rauc warning when building without rauc distro feature. We only
 # activate this distro feature when needed in distros tailored for this
 # use-case.
