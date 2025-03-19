@@ -43,6 +43,11 @@ RDEPENDS:${PN}:remove:j722s = " \
     mcu-plus-sdk-firmware \
 "
 
+RDEPENDS:${PN}:append:am62pxx = " \
+    ti-rtos-firmware \
+    ti-rpmsg-char-examples \
+"
+
 RDEPENDS:${PN}:remove:am62pxx = " \
     pru-icss \
     mcu-plus-sdk-firmware \
