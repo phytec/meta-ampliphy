@@ -24,6 +24,7 @@ DISTRO_VERSION:am67xx = "BSP-Yocto-Ampliphy-AM67x-scarthgap"
 DISTRO_VERSION:k3r5-am67xx = "${DISTRO_VERSION:am67xx}"
 DISTRO_VERSION:j721s2 = "BSP-Yocto-Ampliphy-AM68x-scarthgap"
 DISTRO_VERSION:rk3288 = "BSP-Yocto-Ampliphy-RK3288-scarthgap"
+DISTRO_VERSION:am62lxx = "BSP-Yocto-Ampliphy-AM62Lx-scarthgap"
 
 # DISTRO_VERSION's development-build marker '-devel'
 DISTRO_VERSION:append = "${@ '' if d.getVar('BB_PHY_BUILDTYPE') == "RELEASE" else '-devel' }"
