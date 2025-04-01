@@ -9,6 +9,8 @@ waylandsink buffers through the bayer2rgbneon plugin with minimal CPU
 access. So no caching is necessary and in fact using cached cma memory
 here reduces the achievable framerate from ~60 FPS to ~30 FPS.
 
+Upstream-Status: Inappropriate [PHYTEC specific]
+
 Signed-off-by: Stefan Riedmueller <s.riedmueller@phytec.de>
 ---
  gst-libs/gst/allocators/gstdmabufheaps.c | 2 +-

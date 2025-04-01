@@ -8,6 +8,8 @@ When Yocto build is performed, opencv searches for data dir using simple
 path on the target which needs to be prepended by PKG_CONFIG_SYSROOT_DIR
 in order for the 'test' utility to pick up the absolute path.
 
+Upstream-Status: Inappropriate [PHYTEC specific]
+
 Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
 ---
  gst-libs/gst/opencv/meson.build | 3 +++
