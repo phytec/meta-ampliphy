@@ -33,6 +33,7 @@ DEPENDS = "u-boot-mkimage-native dtc-native"
 
 SRC_URI = " \
     file://mmc_boot.cmd \
+    file://spi_boot_fit.cmd.in \
     file://mmc_boot_fit.cmd \
     file://boot.its.in \
 "
@@ -42,9 +43,15 @@ inherit deploy
 MMC_BOOT_SCRIPT ?= "mmc_boot.cmd"
 MMC_BOOT_SCRIPT:secureboot ?= "mmc_boot_fit.cmd"
 
+# Used by the spi boot script to locate the fitImage
+SPI_MTD_PARTS ?= ""
+SPI_MTD_PARTS:k3 ?= "fc40000.spi.0:-@0x740000(fitimage)"
+
 S = "${WORKDIR}"
 
 do_compile() {
+    sed -e 's/@@SPI_MTD_PARTS@@/${SPI_MTD_PARTS}/' "${WORKDIR}/spi_boot_fit.cmd.in" > spi_boot_fit.cmd
+
     for script in *.cmd ; do
         sed -e "s/@@BOOTCOMMAND_FILE@@/${script}/" "${WORKDIR}/boot.its.in" > boot.its
         mkimage -C none -A ${UBOOT_ARCH} -f boot.its ${script}.scr.uimg

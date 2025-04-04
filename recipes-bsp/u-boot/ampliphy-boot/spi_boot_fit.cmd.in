@@ -1,0 +1,6 @@
+test -n ${fit_addr_r} && env set loadaddr ${fit_addr_r}
+env set bootargs "console=${console} earlycon=${earlycon} ${optargs}"
+env set mtdparts @@SPI_MTD_PARTS@@
+mtd list
+mtd read fitimage ${loadaddr}
+bootm ${loadaddr}
