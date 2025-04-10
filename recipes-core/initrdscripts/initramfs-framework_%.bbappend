@@ -18,36 +18,36 @@ do_varchange() {
     sed -i \
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
-    ${WORKDIR}/provisioninginit.sh
+    ${UNPACKDIR}/provisioninginit.sh
 
     sed -i \
     -e 's:@SKS_PATH@:${SKS_PATH}:g' \
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
-    ${WORKDIR}/securestorageinit.sh
+    ${UNPACKDIR}/securestorageinit.sh
 }
 addtask varchange after do_patch and before do_install
 
 do_install:append() {
     # network
-    install -m 0755 ${WORKDIR}/network.sh ${D}/init.d/10-network
+    install -m 0755 ${UNPACKDIR}/network.sh ${D}/init.d/10-network
 
     # timesync
-    install -m 0755 ${WORKDIR}/timesync.sh ${D}/init.d/12-timesync
+    install -m 0755 ${UNPACKDIR}/timesync.sh ${D}/init.d/12-timesync
 
     # smartcard
-    install -m 0755 ${WORKDIR}/smartcard.sh ${D}/init.d/13-smartcard
+    install -m 0755 ${UNPACKDIR}/smartcard.sh ${D}/init.d/13-smartcard
 
     # optee
-    if [ -f ${WORKDIR}/opteeclient.sh ]; then
-        install -m 0755 ${WORKDIR}/opteeclient.sh ${D}/init.d/14-opteeclient
+    if [ -f ${UNPACKDIR}/opteeclient.sh ]; then
+        install -m 0755 ${UNPACKDIR}/opteeclient.sh ${D}/init.d/14-opteeclient
     fi
 
     # provisioninginit
-    install -m 0755 ${WORKDIR}/provisioninginit.sh ${D}/init.d/98-provisioninginit
+    install -m 0755 ${UNPACKDIR}/provisioninginit.sh ${D}/init.d/98-provisioninginit
 
     # securestorageinit
-    install -m 0755 ${WORKDIR}/securestorageinit.sh ${D}/init.d/98-securestorageinit
+    install -m 0755 ${UNPACKDIR}/securestorageinit.sh ${D}/init.d/98-securestorageinit
 
     # remove node
     rm ${D}/dev/console
