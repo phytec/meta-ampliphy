@@ -90,7 +90,7 @@ VIRTUAL-RUNTIME_syslog = ""
 VIRTUAL-RUNTIME_initscripts = ""
 
 # some default locales
-IMAGE_LINGUAS ?= "de-de fr-fr en-us"
+IMAGE_LINGUAS ?= "de-de fr-fr en-us zh-cn"
 
 # Define Country Code for Laird LWB WiFi chips.
 # Possible Codes: US/CA/ETSI/JP/AU/CN/TW/BR/KR
