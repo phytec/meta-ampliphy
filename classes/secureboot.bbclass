@@ -5,9 +5,6 @@
 ######################################
 #        Signing Bootloader          #
 #####################################
-BOOTLOADER_SIGN ??= "true"
-BOOTLOADER_SIGN[type] = "boolean"
-
 CERT_PATH ??= "${OEROOT}/../../phytec-dev-ca"
 # for NXP HABv4 based systems
 BOOTLOADER_SIGN_IMG_PATH ??= "${CERT_PATH}/nxp_habv4_pki/crts/IMG1_1_sha256_4096_65537_v3_usr_crt.pem"
