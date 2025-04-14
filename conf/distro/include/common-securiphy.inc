@@ -44,4 +44,4 @@ INHERIT += "secureboot"
 FITIMAGE_SIGN ?= "true"
 
 # Sign kernel fitImage
-UBOOT_SIGN_ENABLE:mx8m-nxp-bsp = "1"
+UBOOT_SIGN_ENABLE ?= "1"
