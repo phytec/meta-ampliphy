@@ -25,7 +25,7 @@ BOOTLOADER_TI_K3_DEGENERATE_KEY ??= "${CERT_PATH}/ti_k3/keys/ti-degenerate-key.p
 #       Signing FIT image                        #
 #Linux Kernel, Devicetree and optional Initramfs)#
 ##################################################
-FITIMAGE_SIGN ?= "true"
+FITIMAGE_SIGN ??= "false"
 FITIMAGE_SIGN[type] = "boolean"
 
 FITIMAGE_NO_DTB_OVERLAYS ?= "false"
