@@ -40,6 +40,9 @@ DISTROOVERRIDES:append = ":securestorage:${SECURE_STORAGE_TYPE}"
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
 
+# Sign phytec fitImage
+FITIMAGE_SIGN ?= "true"
+
 # Sign kernel fitImage
 UBOOT_SIGN_ENABLE:mx8m-nxp-bsp = "1"
 UBOOT_SIGN_KEYDIR:mx8m-nxp-bsp = "${CERT_PATH}/fit"
