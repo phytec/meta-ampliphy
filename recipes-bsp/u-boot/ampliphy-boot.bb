@@ -56,15 +56,16 @@ IP_PARAM:k3 ?= "dhcp"
 NET_FETCH_CMD ?= ""
 NET_FETCH_CMD:k3 ?= "dhcp"
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 do_compile() {
-    sed -e 's/@@SPI_MTD_PARTS@@/${SPI_MTD_PARTS}/' "${WORKDIR}/spi_boot_fit.cmd.in" > spi_boot_fit.cmd
+    sed -e 's/@@SPI_MTD_PARTS@@/${SPI_MTD_PARTS}/' "${S}/spi_boot_fit.cmd.in" > spi_boot_fit.cmd
     sed -e 's/@@IP_PARAM@@/${IP_PARAM}/' \
-        -e 's/@@NET_FETCH_CMD@@/${NET_FETCH_CMD}/' "${WORKDIR}/net_boot_fit.cmd.in" > net_boot_fit.cmd
+        -e 's/@@NET_FETCH_CMD@@/${NET_FETCH_CMD}/' "${S}/net_boot_fit.cmd.in" > net_boot_fit.cmd
 
     for script in *.cmd ; do
-        sed -e "s/@@BOOTCOMMAND_FILE@@/${script}/" "${WORKDIR}/boot.its.in" > boot.its
+        sed -e "s/@@BOOTCOMMAND_FILE@@/${script}/" "${S}/boot.its.in" > boot.its
         mkimage -C none -A ${UBOOT_ARCH} -f boot.its ${script}.scr.uimg
     done
 }
