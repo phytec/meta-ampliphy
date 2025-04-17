@@ -89,7 +89,7 @@ python do_configure:prepend() {
     # Create link to eMMC bootloader image with correct image type
     bootloader_filename = {
         "barebox": d.getVar("BAREBOX_BINARY"),
-        "u-boot-imx": "u-boot.imx",
+        "u-boot-phytec-imx": "u-boot.imx",
         "u-boot-phytec": d.getVar("IMAGE_BOOTLOADER"),
         "imx-boot": "imx-boot",
         "ti-boot-container": "ti-boot-container.img"
