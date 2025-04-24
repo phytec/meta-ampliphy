@@ -72,6 +72,13 @@ RDEPENDS:${PN}:append:mx93-nxp-bsp = " \
     imx-gst1.0-plugin \
 "
 
+RDEPENDS:${PN}:append:mx95-nxp-bsp = " \
+    gstreamer1.0-plugins-bad-geometrictransform \
+    gstreamer1.0-plugin-bayer2rgb-neon \
+    imx-gst1.0-plugin-gplay \
+    imx-gst1.0-plugin \
+"
+
 RDEPENDS:${PN}:append:am57xx = " \
     gstreamer1.0-plugin-bayer2rgb-neon \
 "
