@@ -46,7 +46,7 @@ MMC_BOOT_SCRIPT:secureboot ?= "mmc_boot_fit.cmd"
 
 # Used by the spi boot script to locate the fitImage
 SPI_MTD_PARTS ?= ""
-SPI_MTD_PARTS:k3 ?= "fc40000.spi.0:-@0x740000(fitimage)"
+SPI_MTD_PARTS:k3 ?= "nor0:-@0x740000(fitimage)"
 
 # Used by the net boot script to pass the kernel ip parameter
 IP_PARAM ?= ""
