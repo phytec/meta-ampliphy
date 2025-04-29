@@ -1,5 +1,5 @@
 test -n ${fit_addr_r} && env set loadaddr ${fit_addr_r}
-env set bootargs "console=${console} root=/dev/nfs ip=@@IP_PARAM@@ rw nfsroot=${serverip}:${nfsroot},vers=4,tcp ${optargs}"
+env set bootargs "console=${console} earlycon=${earlycon} root=/dev/nfs ip=@@IP_PARAM@@ rw nfsroot=${serverip}:${nfsroot},vers=4,tcp ${optargs}"
 env set net_fetch_cmd @@NET_FETCH_CMD@@
 ${net_fetch_cmd} ${loadaddr} ${serverip}:/fitImage
 bootm ${loadaddr}
