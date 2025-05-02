@@ -14,7 +14,7 @@ RDEPENDS:${PN}:remove:am62axx = " \
     mcu-plus-sdk-firmware \
 "
 RDEPENDS:${PN}:append:am62axx = " \
-   ti-rtos-firmware \
+   ti-rtos-echo-test-fw \
    cnm-wave-fw \
 "
 RDEPENDS:${PN}:remove:j721s2 = " \
@@ -22,7 +22,7 @@ RDEPENDS:${PN}:remove:j721s2 = " \
     mcu-plus-sdk-firmware \
 "
 RDEPENDS:${PN}:append:j721s2 = " \
-    ti-rtos-firmware \
+    ti-rtos-echo-test-fw \
     ti-rpmsg-char-examples \
 "
 
@@ -34,7 +34,7 @@ RDEPENDS:${PN}:append:am57xx = " \
 "
 
 RDEPENDS:${PN}:append:j722s = " \
-    ti-rtos-firmware \
+    ti-rtos-echo-test-fw \
     ti-rpmsg-char-examples \
 "
 
@@ -44,7 +44,7 @@ RDEPENDS:${PN}:remove:j722s = " \
 "
 
 RDEPENDS:${PN}:append:am62pxx = " \
-    ti-rtos-firmware \
+    ti-rtos-echo-test-fw \
     ti-rpmsg-char-examples \
 "
 
