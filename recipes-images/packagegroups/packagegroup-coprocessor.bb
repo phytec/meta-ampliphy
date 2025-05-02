@@ -34,7 +34,7 @@ RDEPENDS:${PN}:append:am57xx = " \
 "
 
 RDEPENDS:${PN}:append:j722s = " \
-    ti-rtos-firmware \
+    ti-rtos-echo-test-fw \
     ti-rpmsg-char-examples \
 "
 
@@ -44,7 +44,7 @@ RDEPENDS:${PN}:remove:j722s = " \
 "
 
 RDEPENDS:${PN}:append:am62pxx = " \
-    ti-rtos-firmware \
+    ti-rtos-echo-test-fw \
     ti-rpmsg-char-examples \
 "
 
