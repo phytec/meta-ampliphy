@@ -66,6 +66,7 @@ RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " \
 "
 
 RDEPENDS:${PN}:append:mx93-nxp-bsp = " \
+    gstreamer1.0-plugin-bayer2rgb-neon \
     gstreamer1.0-plugins-bad-geometrictransform \
     gstreamer1.0-plugins-bad-zbar \
     imx-gst1.0-plugin-gplay \
