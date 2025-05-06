@@ -1,13 +1,3 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
-
-SRC_URI:append:k3:secureboot = " \
-    file://fit.cfg \
-"
-
-SRC_URI:append:update = "\
-    file://rauc.cfg \
-"
-
 STANDARD_BOOT_ENV = ""
 STANDARD_BOOT_ENV:k3 = "\\"'\
 script_offset_f=0x700000\0\
