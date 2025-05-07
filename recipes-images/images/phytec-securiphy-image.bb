@@ -21,4 +21,5 @@ IMAGE_INSTALL += " \
     ${@bb.utils.contains("DISTRO_FEATURES", "protectionshield", "phytec-example-users", "", d)} \
     rng-tools \
     packagegroup-sks-kernelkeyring \
+    ${@bb.utils.contains("DISTRO_FEATURES", "virtualization", "packagegroup-virtualization", "", d)} \
 "
