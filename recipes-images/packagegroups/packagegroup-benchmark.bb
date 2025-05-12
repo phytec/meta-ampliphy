@@ -13,7 +13,7 @@ RDEPENDS:${PN} = " \
     pmbw \
     rt-tests \
     evtest \
-    perf \
+    ${@bb.utils.contains("DISTRO", "ampliphy-linux-mainline", "", "perf", d)} \
     stress-ng \
     ${@bb.utils.contains("DISTRO_FEATURES", "systemd", "systemd-analyze", "",d)} \
 "
