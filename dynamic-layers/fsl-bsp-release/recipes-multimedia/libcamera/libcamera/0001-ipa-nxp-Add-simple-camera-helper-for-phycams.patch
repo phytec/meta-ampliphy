@@ -1,0 +1,93 @@
+From f5b984a06a3f3f1d623f7185fe2ad31123f9002f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 5 Mar 2025 17:56:00 +0100
+Subject: [PATCH 1/4] ipa: nxp: Add simple camera helper for phycams
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ .../nxp/cam_helper/camera_helper_phycam.cpp   | 57 +++++++++++++++++++
+ src/ipa/nxp/cam_helper/meson.build            |  1 +
+ 2 files changed, 58 insertions(+)
+ create mode 100644 src/ipa/nxp/cam_helper/camera_helper_phycam.cpp
+
+diff --git a/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp b/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp
+new file mode 100644
+index 000000000000..f4aa12fddb1b
+--- /dev/null
++++ b/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp
+@@ -0,0 +1,57 @@
++/* SPDX-License-Identifier: LGPL-2.1-or-later */
++/*
++ * camera_helper_ar0144.c
++ * Helper class that performs sensor-specific parameter computations
++ * for ON Semiconductor AR0144/AR0234 sensor
++ * Copyright 2024 NXP
++ */
++
++#include <cmath>
++
++#include <linux/v4l2-controls.h>
++
++#include <libcamera/base/log.h>
++
++#include "camera_helper.h"
++
++namespace libcamera {
++
++LOG_DECLARE_CATEGORY(NxpCameraHelper)
++
++namespace nxp {
++
++class CameraHelperPhycam : public CameraHelper
++{
++public:
++	uint32_t gainCode(double gain) const override;
++	double gain(uint32_t gainCode) const override;
++};
++
++uint32_t CameraHelperPhycam::gainCode(double gain) const
++{
++	return (static_cast<int>(std::ceil(gain * 1000.0)));
++}
++
++double CameraHelperPhycam::gain(uint32_t gainCode) const
++{
++	return gainCode / 1000.0;
++}
++
++class CameraHelperAr0144 : public CameraHelperPhycam
++{
++};
++REGISTER_CAMERA_HELPER("ar0144", CameraHelperAr0144)
++
++class CameraHelperAr0234 : public CameraHelperPhycam
++{
++};
++REGISTER_CAMERA_HELPER("ar0234", CameraHelperAr0234)
++
++class CameraHelperAr0521 : public CameraHelperPhycam
++{
++};
++REGISTER_CAMERA_HELPER("ar0521", CameraHelperAr0521)
++
++} /* namespace nxp */
++
++} /* namespace libcamera */
+diff --git a/src/ipa/nxp/cam_helper/meson.build b/src/ipa/nxp/cam_helper/meson.build
+index 9a1bcd343f1a..74f32451d833 100644
+--- a/src/ipa/nxp/cam_helper/meson.build
++++ b/src/ipa/nxp/cam_helper/meson.build
+@@ -6,6 +6,7 @@ nxp_ipa_cam_helper_headers = files([
+ 
+ nxp_ipa_cam_helper_sources = files([
+     'camera_helper.cpp',
++    'camera_helper_phycam.cpp',
+     'camera_helper_mx95mbcam.cpp',
+     'camera_helper_os08a20.cpp',
+     'camera_helper_ov5640.cpp',
+-- 
+2.25.1
+
