@@ -52,3 +52,10 @@ RDEPENDS:${PN}:remove:am62pxx = " \
     pru-icss \
     mcu-plus-sdk-firmware \
 "
+
+RDEPENDS:${PN}:append:mx93-nxp-bsp = " \
+    ethos-u-firmware \
+    ethos-u-driver-stack \
+    ethos-u-vela \
+    tensorflow-lite-ethosu-delegate \
+"
