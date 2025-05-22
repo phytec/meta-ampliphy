@@ -78,6 +78,7 @@ RDEPENDS:${PN}:append:mx95-nxp-bsp = " \
     gstreamer1.0-plugin-bayer2rgb-neon \
     imx-gst1.0-plugin-gplay \
     imx-gst1.0-plugin \
+    libcamera-gst \
 "
 
 RDEPENDS:${PN}:append:am57xx = " \
