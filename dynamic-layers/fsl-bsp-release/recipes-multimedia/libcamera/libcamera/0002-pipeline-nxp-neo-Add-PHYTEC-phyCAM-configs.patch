@@ -1,0 +1,569 @@
+From 825d741b5aaf4a4decdcfeee87bb014f059269f0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 5 Mar 2025 17:56:51 +0100
+Subject: [PATCH 2/4] pipeline: nxp: neo: Add PHYTEC phyCAM configs
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ .../pipeline/nxp/neo/data/config.yaml         | 517 ++++++++++++++++--
+ 1 file changed, 458 insertions(+), 59 deletions(-)
+
+diff --git a/src/libcamera/pipeline/nxp/neo/data/config.yaml b/src/libcamera/pipeline/nxp/neo/data/config.yaml
+index 062aecd33cd1..b4144d59484d 100644
+--- a/src/libcamera/pipeline/nxp/neo/data/config.yaml
++++ b/src/libcamera/pipeline/nxp/neo/data/config.yaml
+@@ -80,90 +80,489 @@
+ ---
+ version: 1.0
+ platforms:
+-  - name: i.MX95 EVK + 4x MX95MBCAM modules + MX95MBDESER01
++  - name: VM-016 phyCAM-M CSI1 + VM-017 phyCAM-M CSI2
+     match:
+       entities:
+-        - mx95mbcam 8-0040
+-        - mx95mbcam 9-0040
+-        - mx95mbcam 10-0040
+-        - mx95mbcam 11-0040
+-        - max96724 2-0027
++        - ar0144 2-0010
++        - ar0521 3-0036
+         - csidev-4ad30000.csi
++        - csidev-4ad40000.csi
+         - 4ac10000.syscon:formatter@20
++        - 4ac10000.syscon:formatter@120
+         - crossbar
+         - mxc_isi.0
+-        - mxc_isi.1
+-        - mxc_isi.2
+-        - mxc_isi.3
+         - mxc_isi.0.capture
+-        - mxc_isi.1.capture
+-        - mxc_isi.2.capture
+-        - mxc_isi.3.capture
++        - mxc_isi.4
++        - mxc_isi.4.capture
+     routings:
+-      - entity: max96724 2-0027
++      - entity: csidev-4ad30000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: csidev-4ad40000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@20
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@120
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [2, 0, 5, 0, 1]
++          - [3, 0, 9, 0, 1]
++    cameras:
++      - entity: ar0144 2-0010
++        stream-input0:
++          links:
++            - [ar0144 2-0010, 0, 0, csidev-4ad30000.csi, 0, 0]
++            - [csidev-4ad30000.csi, 1, 0, 4ac10000.syscon:formatter@20, 0, 0]
++            - [4ac10000.syscon:formatter@20, 1, 0, crossbar, 2, 0]
++            - [crossbar, 5, 0, mxc_isi.0, 0, 0]
++            - [mxc_isi.0, 1, 0, mxc_isi.0.capture, 0, 0]
++          isi-pipe: 0
++      - entity: ar0521 3-0036
++        stream-input0:
++          links:
++            - [ar0521 3-0036, 0, 0, csidev-4ad40000.csi, 0, 0]
++            - [csidev-4ad40000.csi, 1, 0, 4ac10000.syscon:formatter@120, 0, 0]
++            - [4ac10000.syscon:formatter@120, 1, 0, crossbar, 3, 0]
++            - [crossbar, 9, 0, mxc_isi.4, 0, 0]
++            - [mxc_isi.4, 1, 0, mxc_isi.4.capture, 0, 0]
++          isi-pipe: 4
++
++  - name: VM-016 phyCAM-M CSI1 + VM-020 phyCAM-M CSI2
++    match:
++      entities:
++        - ar0144 2-0010
++        - ar0234 3-0010
++        - csidev-4ad30000.csi
++        - csidev-4ad40000.csi
++        - 4ac10000.syscon:formatter@20
++        - 4ac10000.syscon:formatter@120
++        - crossbar
++        - mxc_isi.0
++        - mxc_isi.0.capture
++        - mxc_isi.4
++        - mxc_isi.4.capture
++    routings:
++      - entity: csidev-4ad30000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: csidev-4ad40000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@20
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@120
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [2, 0, 5, 0, 1]
++          - [3, 0, 9, 0, 1]
++    cameras:
++      - entity: ar0144 2-0010
++        stream-input0:
++          links:
++            - [ar0144 2-0010, 0, 0, csidev-4ad30000.csi, 0, 0]
++            - [csidev-4ad30000.csi, 1, 0, 4ac10000.syscon:formatter@20, 0, 0]
++            - [4ac10000.syscon:formatter@20, 1, 0, crossbar, 2, 0]
++            - [crossbar, 5, 0, mxc_isi.0, 0, 0]
++            - [mxc_isi.0, 1, 0, mxc_isi.0.capture, 0, 0]
++          isi-pipe: 0
++      - entity: ar0234 3-0010
++        stream-input0:
++          links:
++            - [ar0234 3-0010, 0, 0, csidev-4ad40000.csi, 0, 0]
++            - [csidev-4ad40000.csi, 1, 0, 4ac10000.syscon:formatter@120, 0, 0]
++            - [4ac10000.syscon:formatter@120, 1, 0, crossbar, 3, 0]
++            - [crossbar, 9, 0, mxc_isi.4, 0, 0]
++            - [mxc_isi.4, 1, 0, mxc_isi.4.capture, 0, 0]
++          isi-pipe: 4
++
++  - name: VM-017 phyCAM-M CSI1 + VM-016 phyCAM-M CSI2
++    match:
++      entities:
++        - ar0521 2-0036
++        - ar0144 3-0010
++        - csidev-4ad30000.csi
++        - csidev-4ad40000.csi
++        - 4ac10000.syscon:formatter@20
++        - 4ac10000.syscon:formatter@120
++        - crossbar
++        - mxc_isi.0
++        - mxc_isi.0.capture
++        - mxc_isi.4
++        - mxc_isi.4.capture
++    routings:
++      - entity: csidev-4ad30000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: csidev-4ad40000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@20
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@120
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [2, 0, 5, 0, 1]
++          - [3, 0, 9, 0, 1]
++    cameras:
++      - entity: ar0521 2-0036
++        stream-input0:
++          links:
++            - [ar0521 2-0036, 0, 0, csidev-4ad30000.csi, 0, 0]
++            - [csidev-4ad30000.csi, 1, 0, 4ac10000.syscon:formatter@20, 0, 0]
++            - [4ac10000.syscon:formatter@20, 1, 0, crossbar, 2, 0]
++            - [crossbar, 5, 0, mxc_isi.0, 0, 0]
++            - [mxc_isi.0, 1, 0, mxc_isi.0.capture, 0, 0]
++          isi-pipe: 0
++      - entity: ar0144 3-0010
++        stream-input0:
++          links:
++            - [ar0144 3-0010, 0, 0, csidev-4ad40000.csi, 0, 0]
++            - [csidev-4ad40000.csi, 1, 0, 4ac10000.syscon:formatter@120, 0, 0]
++            - [4ac10000.syscon:formatter@120, 1, 0, crossbar, 3, 0]
++            - [crossbar, 9, 0, mxc_isi.4, 0, 0]
++            - [mxc_isi.4, 1, 0, mxc_isi.4.capture, 0, 0]
++          isi-pipe: 4
++
++  - name: VM-017 phyCAM-M CSI1 + VM-020 phyCAM-M CSI2
++    match:
++      entities:
++        - ar0521 2-0036
++        - ar0234 3-0010
++        - csidev-4ad30000.csi
++        - csidev-4ad40000.csi
++        - 4ac10000.syscon:formatter@20
++        - 4ac10000.syscon:formatter@120
++        - crossbar
++        - mxc_isi.0
++        - mxc_isi.0.capture
++        - mxc_isi.4
++        - mxc_isi.4.capture
++    routings:
++      - entity: csidev-4ad30000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: csidev-4ad40000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@20
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@120
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [2, 0, 5, 0, 1]
++          - [3, 0, 9, 0, 1]
++    cameras:
++      - entity: ar0521 2-0036
++        stream-input0:
++          links:
++            - [ar0521 2-0036, 0, 0, csidev-4ad30000.csi, 0, 0]
++            - [csidev-4ad30000.csi, 1, 0, 4ac10000.syscon:formatter@20, 0, 0]
++            - [4ac10000.syscon:formatter@20, 1, 0, crossbar, 2, 0]
++            - [crossbar, 5, 0, mxc_isi.0, 0, 0]
++            - [mxc_isi.0, 1, 0, mxc_isi.0.capture, 0, 0]
++          isi-pipe: 0
++      - entity: ar0234 3-0010
++        stream-input0:
++          links:
++            - [ar0234 3-0010, 0, 0, csidev-4ad40000.csi, 0, 0]
++            - [csidev-4ad40000.csi, 1, 0, 4ac10000.syscon:formatter@120, 0, 0]
++            - [4ac10000.syscon:formatter@120, 1, 0, crossbar, 3, 0]
++            - [crossbar, 9, 0, mxc_isi.4, 0, 0]
++            - [mxc_isi.4, 1, 0, mxc_isi.4.capture, 0, 0]
++          isi-pipe: 4
++
++  - name: VM-020 phyCAM-M CSI1 + VM-016 phyCAM-M CSI2
++    match:
++      entities:
++        - ar0234 2-0010
++        - ar0144 3-0010
++        - csidev-4ad30000.csi
++        - csidev-4ad40000.csi
++        - 4ac10000.syscon:formatter@20
++        - 4ac10000.syscon:formatter@120
++        - crossbar
++        - mxc_isi.0
++        - mxc_isi.0.capture
++        - mxc_isi.4
++        - mxc_isi.4.capture
++    routings:
++      - entity: csidev-4ad30000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: csidev-4ad40000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@20
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@120
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [2, 0, 5, 0, 1]
++          - [3, 0, 9, 0, 1]
++    cameras:
++      - entity: ar0234 2-0010
++        stream-input0:
++          links:
++            - [ar0234 2-0010, 0, 0, csidev-4ad30000.csi, 0, 0]
++            - [csidev-4ad30000.csi, 1, 0, 4ac10000.syscon:formatter@20, 0, 0]
++            - [4ac10000.syscon:formatter@20, 1, 0, crossbar, 2, 0]
++            - [crossbar, 5, 0, mxc_isi.0, 0, 0]
++            - [mxc_isi.0, 1, 0, mxc_isi.0.capture, 0, 0]
++          isi-pipe: 0
++      - entity: ar0144 3-0010
++        stream-input0:
++          links:
++            - [ar0144 3-0010, 0, 0, csidev-4ad40000.csi, 0, 0]
++            - [csidev-4ad40000.csi, 1, 0, 4ac10000.syscon:formatter@120, 0, 0]
++            - [4ac10000.syscon:formatter@120, 1, 0, crossbar, 3, 0]
++            - [crossbar, 9, 0, mxc_isi.4, 0, 0]
++            - [mxc_isi.4, 1, 0, mxc_isi.4.capture, 0, 0]
++          isi-pipe: 4
++
++  - name: VM-020 phyCAM-M CSI1 + VM-017 phyCAM-M CSI2
++    match:
++      entities:
++        - ar0234 2-0010
++        - ar0521 3-0036
++        - csidev-4ad30000.csi
++        - csidev-4ad40000.csi
++        - 4ac10000.syscon:formatter@20
++        - 4ac10000.syscon:formatter@120
++        - crossbar
++        - mxc_isi.0
++        - mxc_isi.0.capture
++        - mxc_isi.4
++        - mxc_isi.4.capture
++    routings:
++      - entity: csidev-4ad30000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: csidev-4ad40000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@20
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@120
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [2, 0, 5, 0, 1]
++          - [3, 0, 9, 0, 1]
++    cameras:
++      - entity: ar0234 2-0010
++        stream-input0:
++          links:
++            - [ar0234 2-0010, 0, 0, csidev-4ad30000.csi, 0, 0]
++            - [csidev-4ad30000.csi, 1, 0, 4ac10000.syscon:formatter@20, 0, 0]
++            - [4ac10000.syscon:formatter@20, 1, 0, crossbar, 2, 0]
++            - [crossbar, 5, 0, mxc_isi.0, 0, 0]
++            - [mxc_isi.0, 1, 0, mxc_isi.0.capture, 0, 0]
++          isi-pipe: 0
++      - entity: ar0521 3-0036
++        stream-input0:
++          links:
++            - [ar0521 3-0036, 0, 0, csidev-4ad40000.csi, 0, 0]
++            - [csidev-4ad40000.csi, 1, 0, 4ac10000.syscon:formatter@120, 0, 0]
++            - [4ac10000.syscon:formatter@120, 1, 0, crossbar, 3, 0]
++            - [crossbar, 9, 0, mxc_isi.4, 0, 0]
++            - [mxc_isi.4, 1, 0, mxc_isi.4.capture, 0, 0]
++          isi-pipe: 4
++
++  - name: phyBOARD-Libra i.MX 95 VM-016 phyCAM-M CSI1
++    match:
++      entities:
++        - ar0144 2-0010
++        - csidev-4ad30000.csi
++        - 4ac10000.syscon:formatter@20
++        - crossbar
++        - mxc_isi.0
++        - mxc_isi.0.capture
++    routings:
++      - entity: csidev-4ad30000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@20
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [2, 0, 5, 0, 1]
++    cameras:
++      - entity: ar0144 2-0010
++        stream-input0:
++          links:
++            - [ar0144 2-0010, 0, 0, csidev-4ad30000.csi, 0, 0]
++            - [csidev-4ad30000.csi, 1, 0, 4ac10000.syscon:formatter@20, 0, 0]
++            - [4ac10000.syscon:formatter@20, 1, 0, crossbar, 2, 0]
++            - [crossbar, 5, 0, mxc_isi.0, 0, 0]
++            - [mxc_isi.0, 1, 0, mxc_isi.0.capture, 0, 0]
++          isi-pipe: 0
++
++  - name: phyBOARD-Libra i.MX 95 VM-017 phyCAM-M CSI1
++    match:
++      entities:
++        - ar0521 2-0036
++        - csidev-4ad30000.csi
++        - 4ac10000.syscon:formatter@20
++        - crossbar
++        - mxc_isi.0
++        - mxc_isi.0.capture
++    routings:
++      - entity: csidev-4ad30000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@20
+         routes:
+-          - [0, 0, 4, 0, 1]
+-          - [1, 0, 4, 1, 1]
+-          - [2, 0, 4, 2, 1]
+-          - [3, 0, 4, 3, 1]
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [2, 0, 5, 0, 1]
++    cameras:
++      - entity: ar0521 2-0036
++        stream-input0:
++          links:
++            - [ar0521 2-0036, 0, 0, csidev-4ad30000.csi, 0, 0]
++            - [csidev-4ad30000.csi, 1, 0, 4ac10000.syscon:formatter@20, 0, 0]
++            - [4ac10000.syscon:formatter@20, 1, 0, crossbar, 2, 0]
++            - [crossbar, 5, 0, mxc_isi.0, 0, 0]
++            - [mxc_isi.0, 1, 0, mxc_isi.0.capture, 0, 0]
++          isi-pipe: 0
++
++  - name: phyBOARD-Libra i.MX 95 VM-020 phyCAM-M CSI1
++    match:
++      entities:
++        - ar0234 2-0010
++        - csidev-4ad30000.csi
++        - 4ac10000.syscon:formatter@20
++        - crossbar
++        - mxc_isi.0
++        - mxc_isi.0.capture
++    routings:
+       - entity: csidev-4ad30000.csi
+         routes:
+           - [0, 0, 1, 0, 1]
+-          - [0, 1, 1, 1, 1]
+-          - [0, 2, 1, 2, 1]
+-          - [0, 3, 1, 3, 1]
+       - entity: 4ac10000.syscon:formatter@20
+         routes:
+           - [0, 0, 1, 0, 1]
+-          - [0, 1, 1, 1, 1]
+-          - [0, 2, 1, 2, 1]
+-          - [0, 3, 1, 3, 1]
+       - entity: crossbar
+         routes:
+           - [2, 0, 5, 0, 1]
+-          - [2, 1, 6, 0, 1]
+-          - [2, 2, 7, 0, 1]
+-          - [2, 3, 8, 0, 1]
+     cameras:
+-      - entity: mx95mbcam 8-0040
++      - entity: ar0234 2-0010
+         stream-input0:
+           links:
+-            - [mx95mbcam 8-0040, 0, 0, max96724 2-0027, 0, 0]
+-            - [max96724 2-0027, 4, 0, csidev-4ad30000.csi, 0, 0]
++            - [ar0234 2-0010, 0, 0, csidev-4ad30000.csi, 0, 0]
+             - [csidev-4ad30000.csi, 1, 0, 4ac10000.syscon:formatter@20, 0, 0]
+             - [4ac10000.syscon:formatter@20, 1, 0, crossbar, 2, 0]
+             - [crossbar, 5, 0, mxc_isi.0, 0, 0]
+             - [mxc_isi.0, 1, 0, mxc_isi.0.capture, 0, 0]
+           isi-pipe: 0
+-      - entity: mx95mbcam 9-0040
+-        stream-input0:
+-          links:
+-            - [mx95mbcam 9-0040, 0, 0, max96724 2-0027, 1, 0]
+-            - [max96724 2-0027, 4, 1, csidev-4ad30000.csi, 0, 1]
+-            - [csidev-4ad30000.csi, 1, 1, 4ac10000.syscon:formatter@20, 0, 1]
+-            - [4ac10000.syscon:formatter@20, 1, 1, crossbar, 2, 1]
+-            - [crossbar, 6, 0, mxc_isi.1, 0, 0]
+-            - [mxc_isi.1, 1, 0, mxc_isi.1.capture, 0, 0]
+-          isi-pipe: 1
+-      - entity: mx95mbcam 10-0040
+-        stream-input0:
+-          links:
+-            - [mx95mbcam 10-0040, 0, 0, max96724 2-0027, 2, 0]
+-            - [max96724 2-0027, 4, 2, csidev-4ad30000.csi, 0, 2]
+-            - [csidev-4ad30000.csi, 1, 2, 4ac10000.syscon:formatter@20, 0, 2]
+-            - [4ac10000.syscon:formatter@20, 1, 2, crossbar, 2, 2]
+-            - [crossbar, 7, 0, mxc_isi.2, 0, 0]
+-            - [mxc_isi.2, 1, 0, mxc_isi.2.capture, 0, 0]
+-          isi-pipe: 2
+-      - entity: mx95mbcam 11-0040
+-        stream-input0:
+-          links:
+-            - [mx95mbcam 11-0040, 0, 0, max96724 2-0027, 3, 0]
+-            - [max96724 2-0027, 4, 3, csidev-4ad30000.csi, 0, 3]
+-            - [csidev-4ad30000.csi, 1, 3, 4ac10000.syscon:formatter@20, 0, 3]
+-            - [4ac10000.syscon:formatter@20, 1, 3, crossbar, 2, 3]
+-            - [crossbar, 8, 0, mxc_isi.3, 0, 0]
+-            - [mxc_isi.3, 1, 0, mxc_isi.3.capture, 0, 0]
+-          isi-pipe: 3
+ 
++  - name: phyBOARD-Libra i.MX 95 VM-016 phyCAM-M CSI2
++    match:
++      entities:
++        - ar0144 3-0010
++        - csidev-4ad40000.csi
++        - 4ac10000.syscon:formatter@120
++        - crossbar
++        - mxc_isi.4
++        - mxc_isi.4.capture
++    routings:
++      - entity: csidev-4ad40000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@120
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [3, 0, 9, 0, 1]
++    cameras:
++      - entity: ar0144 3-0010
++        stream-input0:
++          links:
++            - [ar0144 3-0010, 0, 0, csidev-4ad40000.csi, 0, 0]
++            - [csidev-4ad40000.csi, 1, 0, 4ac10000.syscon:formatter@120, 0, 0]
++            - [4ac10000.syscon:formatter@120, 1, 0, crossbar, 3, 0]
++            - [crossbar, 9, 0, mxc_isi.4, 0, 0]
++            - [mxc_isi.4, 1, 0, mxc_isi.4.capture, 0, 0]
++          isi-pipe: 4
++
++  - name: phyBOARD-Libra i.MX 95 VM-017 phyCAM-M CSI2
++    match:
++      entities:
++        - ar0521 3-0036
++        - csidev-4ad40000.csi
++        - 4ac10000.syscon:formatter@120
++        - crossbar
++        - mxc_isi.4
++        - mxc_isi.4.capture
++    routings:
++      - entity: csidev-4ad40000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@120
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [3, 0, 9, 0, 1]
++    cameras:
++      - entity: ar0521 3-0036
++        stream-input0:
++          links:
++            - [ar0521 3-0036, 0, 0, csidev-4ad40000.csi, 0, 0]
++            - [csidev-4ad40000.csi, 1, 0, 4ac10000.syscon:formatter@120, 0, 0]
++            - [4ac10000.syscon:formatter@120, 1, 0, crossbar, 3, 0]
++            - [crossbar, 9, 0, mxc_isi.4, 0, 0]
++            - [mxc_isi.4, 1, 0, mxc_isi.4.capture, 0, 0]
++          isi-pipe: 4
++
++  - name: phyBOARD-Libra i.MX 95 VM-020 phyCAM-M CSI2
++    match:
++      entities:
++        - ar0234 3-0010
++        - csidev-4ad40000.csi
++        - 4ac10000.syscon:formatter@120
++        - crossbar
++        - mxc_isi.4
++        - mxc_isi.4.capture
++    routings:
++      - entity: csidev-4ad40000.csi
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: 4ac10000.syscon:formatter@120
++        routes:
++          - [0, 0, 1, 0, 1]
++      - entity: crossbar
++        routes:
++          - [3, 0, 9, 0, 1]
++    cameras:
++      - entity: ar0234 3-0010
++        stream-input0:
++          links:
++            - [ar0234 3-0010, 0, 0, csidev-4ad40000.csi, 0, 0]
++            - [csidev-4ad40000.csi, 1, 0, 4ac10000.syscon:formatter@120, 0, 0]
++            - [4ac10000.syscon:formatter@120, 1, 0, crossbar, 3, 0]
++            - [crossbar, 9, 0, mxc_isi.4, 0, 0]
++            - [mxc_isi.4, 1, 0, mxc_isi.4.capture, 0, 0]
++          isi-pipe: 4
+ ...
+-- 
+2.25.1
+

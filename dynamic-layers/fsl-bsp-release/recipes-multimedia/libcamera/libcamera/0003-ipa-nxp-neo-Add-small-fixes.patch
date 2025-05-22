@@ -1,0 +1,55 @@
+From f98b4ded808bc4ab370dd238d0dff68b1a5497f8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 5 Mar 2025 17:57:38 +0100
+Subject: [PATCH 3/4] ipa: nxp: neo: Add small fixes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ src/ipa/nxp/neo/neo_ipa.cpp                  | 3 ++-
+ src/libcamera/pipeline/nxp/neo/neo_utils.cpp | 9 ++++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/ipa/nxp/neo/neo_ipa.cpp b/src/ipa/nxp/neo/neo_ipa.cpp
+index ce5a66e38b49..eaab0f742aaa 100644
+--- a/src/ipa/nxp/neo/neo_ipa.cpp
++++ b/src/ipa/nxp/neo/neo_ipa.cpp
+@@ -269,7 +269,8 @@ int IPANxpNeo::configure(const IPAConfigInfo &ipaConfig,
+ 	 * \todo take VBLANK into account for maximum shutter speed
+ 	 */
+ 	context_.configuration.sensor.minShutterSpeed = vMinExposure[0] * 1.0s;
+-	context_.configuration.sensor.maxShutterSpeed = vMaxExposure[0] * 1.0s;
++	context_.configuration.sensor.maxShutterSpeed = info.minLineLength * info.minFrameLength *
++							1.0s / info.pixelRate;
+ 
+ 	context_.configuration.sensor.minAnalogueGain = vMinGain[0];
+ 	context_.configuration.sensor.maxAnalogueGain = vMaxGain[0];
+diff --git a/src/libcamera/pipeline/nxp/neo/neo_utils.cpp b/src/libcamera/pipeline/nxp/neo/neo_utils.cpp
+index 99e143c2f962..d29e5a60818c 100644
+--- a/src/libcamera/pipeline/nxp/neo/neo_utils.cpp
++++ b/src/libcamera/pipeline/nxp/neo/neo_utils.cpp
+@@ -685,11 +685,18 @@ PipelineConfig::parseMediaStream(const YamlObject &camera,
+ 	};
+ 
+ 	const YamlObject &links = stream["links"];
+-	if (!links.isList() || links.size() != LINK_SINK_MAX) {
++	if (!links.isList()) {
+ 		LOG(NxpNeoPipe, Error) << "Invalid camera links list";
+ 		return std::nullopt;
+ 	}
+ 
++	for (const auto &link : links.asList()) {
++		if (!link.isList() || link.size() != LINK_SINK_MAX) {
++			LOG(NxpNeoPipe, Error) << "Invalid number of link list items";
++			return std::nullopt;
++		}
++	}
++
+ 	std::vector<CameraMediaStream::StreamLink> streamLinks;
+ 	unsigned int maxUint = std::numeric_limits<unsigned int>::max();
+ 	for (const auto &link : links.asList()) {
+-- 
+2.25.1
+

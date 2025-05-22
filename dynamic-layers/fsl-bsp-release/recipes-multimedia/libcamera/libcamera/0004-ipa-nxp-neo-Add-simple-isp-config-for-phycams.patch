@@ -1,0 +1,78 @@
+From dc13e6f29c82d3cb7055b188d9c533f7eb70176a Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 5 Mar 2025 17:58:29 +0100
+Subject: [PATCH 4/4] ipa: nxp: neo: Add simple isp config for phycams
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ src/ipa/nxp/neo/data/ar0144.yaml | 8 ++++++++
+ src/ipa/nxp/neo/data/ar0234.yaml | 8 ++++++++
+ src/ipa/nxp/neo/data/ar0521.yaml | 8 ++++++++
+ src/ipa/nxp/neo/data/meson.build | 3 +++
+ 4 files changed, 27 insertions(+)
+ create mode 100644 src/ipa/nxp/neo/data/ar0144.yaml
+ create mode 100644 src/ipa/nxp/neo/data/ar0234.yaml
+ create mode 100644 src/ipa/nxp/neo/data/ar0521.yaml
+
+diff --git a/src/ipa/nxp/neo/data/ar0144.yaml b/src/ipa/nxp/neo/data/ar0144.yaml
+new file mode 100644
+index 000000000000..a7bbd8d84263
+--- /dev/null
++++ b/src/ipa/nxp/neo/data/ar0144.yaml
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: CC0-1.0
++%YAML 1.1
++---
++version: 1
++algorithms:
++  - Agc:
++  - Awb:
++...
+diff --git a/src/ipa/nxp/neo/data/ar0234.yaml b/src/ipa/nxp/neo/data/ar0234.yaml
+new file mode 100644
+index 000000000000..a7bbd8d84263
+--- /dev/null
++++ b/src/ipa/nxp/neo/data/ar0234.yaml
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: CC0-1.0
++%YAML 1.1
++---
++version: 1
++algorithms:
++  - Agc:
++  - Awb:
++...
+diff --git a/src/ipa/nxp/neo/data/ar0521.yaml b/src/ipa/nxp/neo/data/ar0521.yaml
+new file mode 100644
+index 000000000000..a7bbd8d84263
+--- /dev/null
++++ b/src/ipa/nxp/neo/data/ar0521.yaml
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: CC0-1.0
++%YAML 1.1
++---
++version: 1
++algorithms:
++  - Agc:
++  - Awb:
++...
+diff --git a/src/ipa/nxp/neo/data/meson.build b/src/ipa/nxp/neo/data/meson.build
+index eaea4bea78eb..103cf7fd5d7c 100644
+--- a/src/ipa/nxp/neo/data/meson.build
++++ b/src/ipa/nxp/neo/data/meson.build
+@@ -1,6 +1,9 @@
+ # SPDX-License-Identifier: CC0-1.0
+ 
+ conf_files = files([
++    'ar0144.yaml',
++    'ar0234.yaml',
++    'ar0521.yaml',
+     'mx95mbcam.yaml',
+     'os08a20.yaml',
+     'ov5640.yaml',
+-- 
+2.25.1
+
