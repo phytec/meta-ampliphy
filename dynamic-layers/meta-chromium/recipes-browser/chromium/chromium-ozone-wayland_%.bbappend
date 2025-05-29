@@ -6,3 +6,5 @@ PACKAGECONFIG:append = " icu"
 SRC_URI:append:ti-soc = " \
                   file://0001-chromium-gpu-sandbox-allow-access-to-PowerVR-GPU-fro.patch \
                   "
+
+DEPENDS:append = " libcxx-native"
