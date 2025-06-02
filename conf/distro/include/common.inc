@@ -103,3 +103,23 @@ PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 # default value in bitbake.conf of poky is '/home/root'
 # change to '/root' as this is preferred path
 ROOT_HOME ?= "/root"
+
+DISTRO_FEATURES_DEFAULT:remove = "argp irda pcmcia zeroconf"
+DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
+    opengl \
+    systemd \
+    usrmerge \
+    wayland \
+    pam \
+    virtualization \
+    security \
+    ${@bb.utils.filter('MACHINE_FEATURES', 'tpm tpm2', d)}"
+DISTRO_FEATURES:append:mx95-generic-bsp = " vulkan"
+VIRTUAL-RUNTIME_container_runtime ?= "crun"
+DISTRO_FEATURES:remove:mx6ul-generic-bsp = "opengl"
+DISTRO_FEATURES:remove:am57x6 = "opengl"
+DISTRO_FEATURES:remove:ti33x = "virtualization"
+
+IMAGE_BOOT_FILES:append:k3 = " boot.scr.uimg"
+WKS_FILE_DEPENDS:append:k3 = " ampliphy-boot"
+PARTUP_PACKAGE_DEPENDS:append:k3 = " ampliphy-boot"
