@@ -1,0 +1,19 @@
+# Identify K3 PRUs
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="30074000.pru", NAME="pruss-core0"
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="30078000.pru", NAME="pruss-core1"
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="300B4000.pru", NAME="pruss-core2"
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="300B8000.pru", NAME="pruss-core3"
+
+# Identify K3 R5F Cores
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="78000000.r5f", NAME="r5f-core0"
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="78200000.r5f", NAME="r5f-core1"
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="78400000.r5f", NAME="r5f-core2"
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="78600000.r5f", NAME="r5f-core3"
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="79000000.r5f", NAME="r5f-core1"
+
+# Identify K3 M4F Cores
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="5000000.m4fss", NAME="m4f-core0"
+
+# Identify K3 DSP Cores
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="7e000000.dsp", NAME="dsp-core0"
+SUBSYSTEM=="remoteproc", ACTION=="add", KERNELS=="7e200000.dsp", NAME="dsp-core1"

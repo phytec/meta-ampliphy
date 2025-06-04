@@ -27,6 +27,7 @@ SRC_URI:append:am57xx = " \
 SRC_URI:append:k3 = " \
     file://11-main_mcan.network \
     file://11-mcu_mcan.network \
+    file://86-k3-remoteproc.rules \
 "
 
 do_install:append() {
@@ -55,6 +56,11 @@ do_install:append() {
     if [ -e ${UNPACKDIR}/37-can-ti-soc.rules ]; then
         install -d ${D}${sysconfdir}/udev/rules.d
         install -m 0644 ${UNPACKDIR}/37-can-ti-soc.rules ${D}${sysconfdir}/udev/rules.d/
+    fi
+
+    if [ -e ${UNPACKDIR}/86-k3-remoteproc.rules ]; then
+        install -d ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${UNPACKDIR}/86-k3-remoteproc.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 
     if [ -e ${UNPACKDIR}/45-disable-multitouch-mouse.rules ]; then
