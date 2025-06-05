@@ -1,6 +1,10 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
+
 K3_INHERIT = ""
 K3_INHERIT:k3 = "uboot-extra-env"
 inherit ${K3_INHERIT}
+
+SRC_URI:append:update = " file://rauc.cfg"
 
 python do_env:append:k3() {
     env_add(d, "script_offset_f", "0x700000")
