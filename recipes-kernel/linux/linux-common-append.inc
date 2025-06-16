@@ -21,7 +21,12 @@ SRC_URI:append:update = " \
     file://rauc.scc \
 "
 
+SRC_URI:append:preempt-rt = " \
+    file://rtla.scc \
+"
+
 KERNEL_FEATURES:append:update = " rauc.scc"
+KERNEL_FEATURES:append:preempt-rt = " rtla.scc"
 
 SRC_URI:append:hardening = " \
     file://hardening.cfg \

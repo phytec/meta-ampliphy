@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Enable tracers needed to support RTLA"
+define KFEATURE_COMPATIBILITY all
+
+kconf non-hardware rtla.cfg
