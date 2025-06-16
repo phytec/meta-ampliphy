@@ -7,5 +7,5 @@ SRC_URI += " \
 "
 
 do_install:append () {
-       	install -D -m 0644 ${WORKDIR}/phytec.config ${D}/${localstatedir}/lib/connman/phytec.config
+    install -D -m 0644 ${UNPACKDIR}/phytec.config ${D}/${localstatedir}/lib/connman/phytec.config
 }
