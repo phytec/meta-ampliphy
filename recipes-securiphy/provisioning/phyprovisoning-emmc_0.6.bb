@@ -7,8 +7,7 @@ SRC_URI = " \
     file://phyprovisioning-install-emmc.sh \
 "
 
-S = "${WORKDIR}/sources"
-UNPACKDIR = "${S}"
+S = "${UNPACKDIR}"
 
 SKS_PATH ??= "/dev/mmcblk${EMMC_DEV}p1"
 SKS_MOUNTPATH ??= "/mnt_secrets"

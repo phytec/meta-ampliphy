@@ -6,7 +6,7 @@ LICENSE = "GPL-2.0-only"
 inherit linux-kernel-base kernel-arch manpages
 inherit python3-dir
 
-S = "${WORKDIR}/${BP}"
+S = "${UNPACKDIR}/${BP}"
 
 DEPENDS = "\
     ${MLPREFIX}binutils \

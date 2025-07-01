@@ -3,7 +3,6 @@ HOMEPAGE = "https://github.com/niccokunzmann/crc8"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c65c48f212e715ad312d60ee70a869c2"
 
-S = "${WORKDIR}/git"
 
 SRC_URI = "git://github.com/niccokunzmann/crc8.git;branch=master;protocol=https"
 SRCREV = "b6d63e65ca333b67c50f780d1025772e1f3574cc"

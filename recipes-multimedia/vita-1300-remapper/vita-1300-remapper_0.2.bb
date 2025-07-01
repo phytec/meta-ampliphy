@@ -9,7 +9,6 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=e6a600fd5e1d9cbde2d983680233ad02"
 BRANCH = "master"
 SRC_URI = "git://git.phytec.de/${BPN};branch=${BRANCH}"
 
-S = "${WORKDIR}/git"
 
 # NOTE: Keep sha1sum in sync with recipe version and git tag
 SRCREV = "e379b40458d221e7c735b68b1fea79c91f3cb958"

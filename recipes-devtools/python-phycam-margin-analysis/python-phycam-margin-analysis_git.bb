@@ -7,7 +7,6 @@ SRC_URI = "git://github.com/phytec/python-phycam-margin-analysis.git;protocol=ht
 PV = "1.0+git${SRCPV}"
 SRCREV = "c086f3b279cdacca90eaa4a64e7104387c27611d"
 
-S = "${WORKDIR}/git"
 
 inherit setuptools3
 

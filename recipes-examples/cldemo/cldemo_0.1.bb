@@ -18,8 +18,7 @@ SRC_URI = "file://cldemo.c"
 
 PR = "r4"
 
-S = "${WORKDIR}/sources"
-UNPACKDIR = "${S}"
+S = "${UNPACKDIR}"
 
 do_compile () {
     ${CC} ${CFLAGS} -std=gnu99 -Wall ${LDFLAGS} \

@@ -12,7 +12,6 @@ SRCREV = "22916bdc63b133e52079a699ae6b2d25d990e798"
 
 DEPENDS = "libdrm libpng"
 
-S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig
 
