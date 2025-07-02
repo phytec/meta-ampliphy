@@ -45,8 +45,9 @@ def readfull_bin(path):
 
 python do_unpack:append() {
     import hashlib
-    keypath = d.getVar('FITIMAGE_SIGN_KEY_PATH')
-    if not keypath.startswith("pkcs11:"):
+    key_dir = d.getVar('UBOOT_SIGN_KEYDIR')
+    if not key_dir.startswith("pkcs11:"):
+        keypath = f"{key_dir}/{d.getVar('UBOOT_SIGN_KEYNAME')}.key"
         hash_sha256 = hashlib.sha256(readfull_bin(keypath)).hexdigest()
         if hash_sha256 == '1e3eb95fe6a7d1e45db761bff6eedafb9291661480e1a1ad10eb6f5b8b9961c1' or hash_sha256 ==  '6f92252aab834bbe8090e92c44f051b2c40db8e3953c8c26c04c14e7ae2db7d8':
             bb.warn("!! CRITICAL SECURITY WARNING: You're using Phytec's Development Keyring for Secure Boot in the fit-image. Please create your own keys!!")

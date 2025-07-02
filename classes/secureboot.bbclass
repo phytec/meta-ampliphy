@@ -25,23 +25,12 @@ BOOTLOADER_TI_K3_DEGENERATE_KEY ??= "${CERT_PATH}/ti_k3/keys/ti-degenerate-key.p
 #       Signing FIT image                        #
 #Linux Kernel, Devicetree and optional Initramfs)#
 ##################################################
-FITIMAGE_SIGN ??= "false"
-FITIMAGE_SIGN[type] = "boolean"
 
 FITIMAGE_NO_DTB_OVERLAYS ?= "false"
 FITIMAGE_NO_DTB_OVERLAYS[type] = "boolean"
 
-FITIMAGE_SIGNER ?= "customer"
-FITIMAGE_PUBKEY_SIGNATURE_PATH ?= "${WORKDIR}/signature_node.dtsi"
-
 FITIMAGE_SIGN_ENGINE ?= "software"
 
-FITIMAGE_SIGN_KEY_PATH ?= "${CERT_PATH}/fit/FIT-4096.key"
-FITIMAGE_HASH ?= "sha256"
-FITIMAGE_SIGNATURE_ENCRYPTION ?= "rsa4096"
-FITIMAGE_SIGNER_VERSION ?= "vPD20.0.0"
-
-# kernel-fitimage signing
 UBOOT_SIGN_KEYDIR = "${CERT_PATH}/fit"
 UBOOT_SIGN_KEYNAME = "FIT-4096"
 FIT_SIGN_ALG = "rsa4096"
