@@ -1,5 +1,8 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
+SRC_URI:append:k3 = " file://0001-udev-builtin-net_id-add-NAMING_DEVICETREE_PORT_ALIAS.patch"
+EXTRA_OEMESON:append:k3 = " -Dextra-net-naming-schemes=latest=v255+devicetree-port-aliases"
+
 PACKAGECONFIG ??= "\
     ${@bb.utils.filter('DISTRO_FEATURES', 'acl efi ldconfig pam selinux usrmerge seccomp', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'rfkill', '', d)} \
