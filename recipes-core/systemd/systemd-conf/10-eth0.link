@@ -1,5 +1,0 @@
-[Match]
-OriginalName=eth0
-
-[Link]
-WakeOnLan=magic

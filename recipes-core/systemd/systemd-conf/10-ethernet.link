@@ -1,0 +1,6 @@
+[Match]
+Type=ether
+
+[Link]
+NamePolicy=onboard keep kernel database slot path
+WakeOnLan=magic

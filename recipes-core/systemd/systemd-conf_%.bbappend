@@ -5,12 +5,10 @@ inherit systemd
 SRC_URI += " \
     file://10-wait-online-any.conf \
     file://10-watchdog.conf \
-    file://10-eth0.network \
-    file://10-eth1.network \
-    file://10-eth2.network \
-    file://10-eth0.link \
-    file://10-eth1.link \
-    file://10-eth2.link \
+    file://10-end0.network \
+    file://10-end1.network \
+    file://10-end2.network \
+    file://10-ethernet.link \
     file://11-can.network \
     file://90-dhcp-default.network \
 "
