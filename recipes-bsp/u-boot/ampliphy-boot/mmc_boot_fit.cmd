@@ -1,7 +1,6 @@
-test -n ${mmcroot} || env set mmcroot 2
-test -n ${distro_rootpart} && env set mmcroot ${distro_rootpart}
+test -n ${distro_rootpart} || env set distro_rootpart 2
 test -n ${fit_addr_r} && env set loadaddr ${fit_addr_r}
-env set bootargs "console=${console} earlycon=${earlycon} root=/dev/mmcblk${devnum}p${mmcroot} ${raucargs} rootwait rw ${optargs}"
+env set bootargs "console=${console} earlycon=${earlycon} root=/dev/mmcblk${devnum}p${distro_rootpart} ${raucargs} rootwait rw ${optargs}"
 load ${devtype} ${devnum}:${distro_bootpart} ${loadaddr} fitImage
 
 # Load overlays
