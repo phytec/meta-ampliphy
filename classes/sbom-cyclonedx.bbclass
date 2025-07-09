@@ -72,6 +72,7 @@ python do_cyclonedx_image() {
     from datetime import datetime, timezone
     import os
     from pathlib import Path
+    from oe.rootfs import image_list_installed_packages
 
     timestamp = datetime.now(timezone.utc).isoformat()
     # Generate unique serial numbers for sbom
@@ -131,6 +132,11 @@ python do_cyclonedx_image() {
                                         break;
                             if add_comp:
                                 sbom["components"].append(comp)
+
+    packages = sorted(image_list_installed_packages(d).keys())
+    for sbom_comp in sbom["components"]:
+        if sbom_comp["name"] in packages and not "isNative" in sbom_comp["tags"]:
+            sbom_comp["tags"].append("isInRootFS")
 
     sbom_export_file=os.path.join(imgdeploydir,image_name+suffix)
     write_json(sbom_export_file, sbom)
