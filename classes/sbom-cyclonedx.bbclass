@@ -124,11 +124,9 @@ python do_cyclonedx_image() {
             link.symlink_to(os.path.relpath(sbom_export_file, link.parent))
 
 }
-addtask do_cyclonedx_image after do_rootfs before do_image
-do_cyclonedx_image[nostamp] = "1"
-do_rootfs[nostamp] = "1"
 do_rootfs[recrdeptask] += "do_cyclonedx_component"
-do_rootfs[recideptask] += "do_cyclonedx_component"
+
+ROOTFS_POSTUNINSTALL_COMMAND =+ "do_cyclonedx_image"
 
 def cyclonedx_image_depends(d):
     deps = list()
