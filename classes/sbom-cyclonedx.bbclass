@@ -30,6 +30,16 @@ python do_cyclonedx_component() {
         "components": []
     }
     for comp in generate_packages_list(d):
+        if bb.utils.to_boolean(d.getVar('CYCLONEDX_WITH_BUILDINFOS')):
+            pn = d.getVar('PN')
+
+            kernel_pn = d.getVar('PREFERRED_PROVIDER_virtual/kernel') or ''
+            boot_pn = d.getVar('PREFERRED_PROVIDER_virtual/bootloader') or ''
+            if pn == boot_pn or pn == kernel_pn:
+                prop_buildinfo = do_cyclonedx_buildinfos(d)
+                if prop_buildinfo is not None:
+                    for prop in prop_buildinfo["properties"]:
+                        comp["properties"].append(prop)
         sbom["components"].append(comp)
 
     path = d.getVar("CYCLONEDX_EXPORT_TMP")
@@ -103,16 +113,8 @@ python do_cyclonedx_image() {
         if filename.endswith(".json"):
             filepath = os.path.join(filesdir, filename)
             component = read_json(filepath)
-            prop_path = os.path.join(filesdir, "buildinfos", filename)
-            prop_buildinfo = None
-            if os.path.exists(prop_path):
-                prop_buildinfo = read_json(prop_path)
 
             for comp in component["components"]:
-                if prop_buildinfo is not None:
-                    for prop in prop_buildinfo["properties"]:
-                        comp["properties"].append(prop)
-
                 if not bb.utils.to_boolean(d.getVar('CYCLONEDX_WITH_NATIVE')) and not "isNative" in comp["tags"]:
                     sbom["components"].append(comp)
 
@@ -122,30 +124,12 @@ python do_cyclonedx_image() {
         link = imgdeploydir / (image_link_name + suffix)
         if link != sbom_export_file:
             link.symlink_to(os.path.relpath(sbom_export_file, link.parent))
-
 }
 do_rootfs[recrdeptask] += "do_cyclonedx_component"
 
 ROOTFS_POSTUNINSTALL_COMMAND =+ "do_cyclonedx_image"
 
-def cyclonedx_image_depends(d):
-    deps = list()
-
-    if bb.utils.to_boolean(d.getVar('CYCLONEDX_WITH_BUILDINFOS')):
-        if bb.data.inherits_class('image', d):
-            boot_pn = d.getVar('PREFERRED_PROVIDER_virtual/bootloader') or ''
-            if boot_pn:
-                deps.append('%s:do_cyclonedx_buildinfos' % boot_pn)
-
-            kernel_pn = d.getVar('PREFERRED_PROVIDER_virtual/kernel') or ''
-            if kernel_pn:
-                deps.append('%s:do_cyclonedx_buildinfos' % kernel_pn)
-
-    return ' '.join(deps)
-
-do_cyclonedx_image[depends] += " ${@cyclonedx_image_depends(d)} "
-
-python do_cyclonedx_buildinfos () {
+def do_cyclonedx_buildinfos (d):
     cve_products_names = d.getVar("CVE_PRODUCT")
     for product in cve_products_names.split():
         # CVE_PRODUCT in recipes may include vendor information for CPE identifiers. If not,
@@ -155,34 +139,23 @@ python do_cyclonedx_buildinfos () {
         else:
             vendor = ""
 
-        pkg = {
-            "properties": []
-        }
         build_files = do_generate_package_activefiles(product,d)
-        if len(build_files) >0:
-            prop_tfl = {
-                "name" : "build_file_list",
-                "value" : "{}".format(build_files)
-            }
-            pkg["properties"].append(prop_tfl)
-
         build_config = get_config(product,d)
-        if len(build_config) >0:
-            prop_bc = {
-                "name" : "build_config_list",
-                "value" : "{}".format(build_config)
+        if len(build_files) >0 and len(build_config) >0:
+            pkg = {
+                "properties": [
+                    {
+                        "name" : "build_file_list",
+                        "value" : "{}".format(build_files)
+                    },
+                    {
+                        "name" : "build_config_list",
+                        "value" : "{}".format(build_config)
+                    }
+                ]
             }
-            pkg["properties"].append(prop_bc)
-
-        path = os.path.join(d.getVar("CYCLONEDX_EXPORT_TMP"), "buildinfos")
-        if not os.path.exists(path):
-            bb.utils.mkdirhier(path)
-
-        sbom_file = os.path.join(path, d.getVar("CYCLONEDX_EXPORT_COMPONENT_FILE"))
-
-        write_json(sbom_file, pkg)
-}
-do_cyclonedx_buildinfos[nostamp] = "1"
+            return pkg
+    return None
 
 def generate_packages_list(d):
     """
@@ -325,11 +298,9 @@ python() {
         kernel_pn = d.getVar('PREFERRED_PROVIDER_virtual/kernel') or ''
 
         if pn == kernel_pn:
-            bb.build.addtask('do_cyclonedx_buildinfos', 'do_rm_work', 'do_compile', d)
-            d.appendVarFlag('do_cyclonedx_buildinfos', 'depends', ' %s:do_compile' % pn)
+            d.appendVarFlag('do_cyclonedx_component', 'depends', ' %s:do_compile' % pn)
 
         boot_pn = d.getVar('PREFERRED_PROVIDER_virtual/bootloader') or ''
         if pn == boot_pn:
-            bb.build.addtask('do_cyclonedx_buildinfos', 'do_rm_work', 'do_compile', d)
-            d.appendVarFlag('do_cyclonedx_buildinfos', 'depends', ' %s:do_compile' % pn)
+            d.appendVarFlag('do_cyclonedx_component', 'depends', ' %s:do_compile' % pn)
 }
