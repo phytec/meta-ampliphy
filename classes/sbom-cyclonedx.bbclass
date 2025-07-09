@@ -11,7 +11,8 @@
 # INHERIT += sbom-cyclonedx
 #
 
-CYCLONEDX_EXPORT_TMP ??= "${LOG_DIR}/sbom-cyclonedx"
+CYCLONEDX_EXPORT_TMP ??= "${WORKDIR}/sbom-cyclonedx"
+DEPLOY_DIR_CYCLONEDX ??= "${DEPLOY_DIR}/sbom-cyclonedx"
 CYCLONEDX_EXPORT_COMPONENT_FILE ??= "${PN}-${PV}.json"
 CVE_PRODUCT ??= "${BPN}"
 CVE_VERSION ??= "${PV}"
@@ -38,10 +39,20 @@ python do_cyclonedx_component() {
 
     write_json(sbom_file, sbom)
 }
-addtask do_cyclonedx_component after do_packagedata before do_rm_work
-do_cyclonedx_component[nostamp] = "1"
-do_cyclonedx_component[rdeptask] += "do_unpack"
-do_cyclonedx_component[rdeptask] += "do_packagedata"
+addtask do_cyclonedx_component after do_package do_packagedata do_unpack before do_populate_sdk do_build do_rm_work
+do_cyclonedx_component[rdeptask] += "do_unpack do_packagedata"
+
+SSTATETASKS += "do_cyclonedx_component"
+do_cyclonedx_component[sstate-inputdirs] = "${CYCLONEDX_EXPORT_TMP}"
+do_cyclonedx_component[sstate-outputdirs] = "${DEPLOY_DIR_CYCLONEDX}"
+do_cyclonedx_component[depends] += "${PATCHDEPENDENCY}"
+
+python do_cyclonedx_component_setscene () {
+    sstate_setscene(d)
+}
+addtask do_cyclonedx_component_setscene
+
+do_cyclonedx_component[cleandirs] = "${CYCLONEDX_EXPORT_TMP}"
 
 python do_cyclonedx_image() {
     import os.path
@@ -81,7 +92,7 @@ python do_cyclonedx_image() {
         "vulnerabilities": []
     }
 
-    filesdir = d.getVar("CYCLONEDX_EXPORT_TMP", True)
+    filesdir = d.getVar("DEPLOY_DIR_CYCLONEDX", True)
     files = os.listdir(filesdir)
     image_name = d.getVar("IMAGE_NAME")
     image_link_name = d.getVar("IMAGE_LINK_NAME")
