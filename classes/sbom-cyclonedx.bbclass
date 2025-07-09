@@ -124,6 +124,7 @@ python do_cyclonedx_image() {
         link = imgdeploydir / (image_link_name + suffix)
         if link != sbom_export_file:
             link.symlink_to(os.path.relpath(sbom_export_file, link.parent))
+
 }
 do_rootfs[recrdeptask] += "do_cyclonedx_component"
 
@@ -139,8 +140,15 @@ def do_cyclonedx_buildinfos (d):
         else:
             vendor = ""
 
-        build_files = do_generate_package_activefiles(product,d)
-        build_config = get_config(product,d)
+        builddir = list()
+        builddir.append(d.getVar("B"))
+        if product == "u-boot":
+            ubootmachine = d.getVar("UBOOT_MACHINE").lstrip().split(" ")
+            for machine in ubootmachine:
+                builddir.append(os.path.join(d.getVar("B"), machine))
+
+        build_files = do_generate_package_activefiles(product,builddir,d)
+        build_config = get_config(product,builddir,d)
         if len(build_files) >0 and len(build_config) >0:
             pkg = {
                 "properties": [
@@ -224,11 +232,14 @@ def generate_packages_list(d):
 
 # only for makefiles
 # product is CVE_PRODUCT name
-def do_generate_package_activefiles(product,d):
+def do_generate_package_activefiles(product,builddir,d):
     import os
+    import re
+    import subprocess
 
-    sourcetree = list()
-    sourcetree.append(d.getVar("B"))
+    path_regex = re.compile('Prerequisite|target \'([^\s]*\w+\.[cSh])')
+
+    sourcetree = builddir
     makefile_targets = list (())
     if product == "linux_kernel":
         makefile_targets = list (("vmlinux", "modules"))
@@ -238,46 +249,47 @@ def do_generate_package_activefiles(product,d):
     sourcetree.append(d.getVar("RECIPE_SYSROOT_NATIVE"))
     sourcetree.append(d.getVar("RECIPE_SYSROOT"))
 
-    makefile = os.path.join(sourcetree[0], "Makefile")
-    if os.path.isfile(makefile):
-        return  make_dry_run(sourcetree, d, makefile_targets)
+    make_parameter=""
+    if product == "u-boot":
+        make_parameter="CROSS_COMPILE="+d.getVar("TARGET_PREFIX")
+    else:
+        arch = d.getVar("ARCH")
+        if arch is None:
+            arch = d.getVar("TARGET_ARCH")
+        make_parameter="ARCH="+arch
 
+    for dir in builddir:
+        makefile = os.path.join(dir, "Makefile")
+
+        if os.path.isfile(makefile):
+            makeargs = [ "make", make_parameter, "-C", dir, "-ndi"]
+            makeargs.extend(makefile_targets)
+            try:
+                proc = subprocess.run(makeargs, capture_output=True, encoding='UTF-8')
+                if proc.returncode == 0:
+                    temp = set(path_regex.findall(proc.stdout))
+                    for repo in sourcetree:
+                        real_path = os.path.realpath(repo)
+                        temp = [y.replace(real_path + "/", "") for y in temp]
+                    if len(temp) >0:
+                        return temp
+            except subprocess.CalledProcessError:
+                bb.warn("cyclondx dry_run: ProcessError")
     return set()
 
-def make_dry_run(sourcerepo, d, targets : list):
-    import re
-    import subprocess
-    #Witih prefix,  otherwise it takes ages
-    path_regex = re.compile('Prerequisite|target \'([^\s]*\w+\.[cSh])')
-
-    arch = d.getVar("ARCH")
-    if arch is None:
-        arch = d.getVar("TARGET_ARCH")
-    makeargs = [ "make", "ARCH="+arch, "-C", sourcerepo[0], "-ndi"]
-    makeargs.extend(targets)
-    try:
-        proc = subprocess.run(makeargs, capture_output=True, encoding='UTF-8')
-        if proc.returncode == 0:
-            temp = set(path_regex.findall(proc.stdout))
-            for repo in sourcerepo:
-                real_path = os.path.realpath(repo)
-                temp = [y.replace(real_path + "/", "") for y in temp]
-            return temp
-        else:
-            return set()
-    except subprocess.CalledProcessError:
-        return set()
-
-def get_config(product,d):
-    confignodes = list()
-    configfile = os.path.join(d.getVar("B"), ".config")
-    if os.path.isfile(configfile):
-        f = open(configfile,"r")
-        for x in f:
-            if "CONFIG_" in x:
-                confignodes.append(x.strip())
-        f.close()
-    return confignodes
+def get_config(product,builddir,d):
+    for dir in builddir:
+        configfile = os.path.join(dir, ".config")
+        if os.path.isfile(configfile):
+            confignodes = list()
+            f = open(configfile,"r")
+            for x in f:
+                if "CONFIG_" in x:
+                    confignodes.append(x.strip())
+            f.close()
+            if len(confignodes) > 0:
+                return confignodes
+    return list()
 
 def read_json(path):
     import json
