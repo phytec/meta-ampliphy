@@ -12,12 +12,14 @@
 #
 
 CYCLONEDX_EXPORT_TMP ??= "${WORKDIR}/sbom-cyclonedx"
-DEPLOY_DIR_CYCLONEDX ??= "${DEPLOY_DIR}/sbom-cyclonedx"
+
+DEPLOY_DIR_CYCLONEDX_BASE ??= "${DEPLOY_DIR}/sbom-cyclonedx"
+DEPLOY_DIR_CYCLONEDX ??= "${DEPLOY_DIR_CYCLONEDX_BASE}/${BB_CURRENT_MC}"
 CYCLONEDX_EXPORT_COMPONENT_FILE ??= "${PN}-${PV}.json"
 CVE_PRODUCT ??= "${BPN}"
 CVE_VERSION ??= "${PV}"
 # Add variable values to the property array of CycloneDX SBOM
-CYCLONEDX_EXPORT_PROPERTIES ??= "SRC_URI SRCREV"
+CYCLONEDX_EXPORT_PROPERTIES ??= "SRC_URI SRCREV BB_CURRENT_MC"
 
 CYCLONEDX_WITH_BUILDINFOS ??="0"
 CYCLONEDX_WITH_NATIVE ??="0"
@@ -102,21 +104,33 @@ python do_cyclonedx_image() {
         "vulnerabilities": []
     }
 
-    filesdir = d.getVar("DEPLOY_DIR_CYCLONEDX", True)
-    files = os.listdir(filesdir)
     image_name = d.getVar("IMAGE_NAME")
     image_link_name = d.getVar("IMAGE_LINK_NAME")
     imgdeploydir = Path(d.getVar("IMGDEPLOYDIR"))
     suffix = ".sbom-cyclonedx.json"
 
-    for filename in files:
-        if filename.endswith(".json"):
-            filepath = os.path.join(filesdir, filename)
-            component = read_json(filepath)
-
-            for comp in component["components"]:
-                if not bb.utils.to_boolean(d.getVar('CYCLONEDX_WITH_NATIVE')) and not "isNative" in comp["tags"]:
-                    sbom["components"].append(comp)
+    deploy_base_dir = d.getVar("DEPLOY_DIR_CYCLONEDX_BASE", True)
+    for entry in os.listdir(deploy_base_dir):
+        filesdir = os.path.join(deploy_base_dir, entry)
+        if os.path.isdir(filesdir):
+            files = os.listdir(filesdir)
+            for filename in files:
+                if filename.endswith(".json"):
+                    filepath = os.path.join(filesdir, filename)
+                    component = read_json(filepath)
+                    for comp in component["components"]:
+                        if not bb.utils.to_boolean(d.getVar('CYCLONEDX_WITH_NATIVE')) and not "isNative" in comp["tags"]:
+                            add_comp = True
+                            for sbom_comp in sbom["components"]:
+                                if comp["cpe"] == sbom_comp["cpe"]:
+                                    values_changed = diff_json(comp, sbom_comp, [])
+                                    # if identical or only bom-ref is different, then it is the same component
+                                    if len(values_changed) == 0 \
+                                        or (len(values_changed) == 1 and ".bom-ref" in values_changed):
+                                        add_comp = False
+                                        break;
+                            if add_comp:
+                                sbom["components"].append(comp)
 
     sbom_export_file=os.path.join(imgdeploydir,image_name+suffix)
     write_json(sbom_export_file, sbom)
@@ -303,6 +317,28 @@ def write_json(path, content):
     Path(path).write_text(
         json.dumps(content, indent=2)
     )
+
+def diff_json(obj1, obj2, values_changed, path=""):
+    if type(obj1) != type(obj2):
+        values_changed.append(path)
+    else:
+        if isinstance(obj1, dict):
+            for key in obj1:
+                if key not in obj2:
+                    values_changed.append(path)
+                values_changed = diff_json(obj1[key], obj2[key], values_changed, f"{path}.{key}")
+            for key in obj2:
+                if key not in obj1:
+                    values_changed.append(path)
+        elif isinstance(obj1, list):
+            if len(obj1) != len(obj2):
+                values_changed.append(path)
+            for idx, (item1, item2) in enumerate(zip(obj1, obj2)):
+                values_changed = diff_json(item1, item2, values_changed, f"{path}[{idx}]")
+        else:
+            if obj1 != obj2:
+                values_changed.append(path)
+    return values_changed
 
 python() {
     if bb.utils.to_boolean(d.getVar('CYCLONEDX_WITH_BUILDINFOS')):
