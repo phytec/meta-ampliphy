@@ -43,6 +43,7 @@ inherit deploy
 
 MMC_BOOT_SCRIPT ?= "mmc_boot.cmd"
 MMC_BOOT_SCRIPT:secureboot ?= "mmc_boot_fit.cmd"
+MMC_BOOT_SCRIPT:mx8-generic-bsp ?= "mmc_boot_fit.cmd"
 
 # Used by the spi boot script to locate the fitImage
 SPI_MTD_PARTS ?= ""
