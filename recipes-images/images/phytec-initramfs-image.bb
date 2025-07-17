@@ -31,7 +31,4 @@ IMAGE_ROOTFS_SIZE = "8192"
 IMAGE_ROOTFS_EXTRA_SPACE = "0"
 
 export IMAGE_BASENAME = "phytec-initramfs-image"
-BAD_RECOMMENDATIONS += " \
-    initramfs-module-rootfs \
-    busybox-syslog \
-"
+NO_RECOMMENDATIONS = "1"
