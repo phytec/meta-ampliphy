@@ -124,6 +124,13 @@ IMAGE_BOOT_FILES:append:k3 = " boot.scr.uimg"
 WKS_FILE_DEPENDS:append:k3 = " ampliphy-boot"
 PARTUP_PACKAGE_DEPENDS:append:k3 = " ampliphy-boot"
 
+# Dependency used by RAUC bundles and sbom-cyclonedx class
+DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
+DEP_BOOTLOADER:mx8-nxp-bsp = "${IMAGE_BOOTLOADER}"
+DEP_BOOTLOADER:mx91-nxp-bsp = "${IMAGE_BOOTLOADER}"
+DEP_BOOTLOADER:mx93-nxp-bsp = "${IMAGE_BOOTLOADER}"
+DEP_BOOTLOADER:k3 = "${IMAGE_BOOTLOADER}"
+
 # Set a more generic tune for better package reuse across different machines
 DEFAULTTUNE:mx8-generic-bsp ?= "aarch64"
 DEFAULTTUNE:mx8m-generic-bsp ?= "aarch64"
