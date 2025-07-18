@@ -149,7 +149,7 @@ python do_cyclonedx_image() {
 do_rootfs[recrdeptask] += "do_cyclonedx_component"
 
 ROOTFS_POSTUNINSTALL_COMMAND =+ "do_cyclonedx_image"
-do_rootfs[depends] += "${IMAGE_BOOTLOADER}:do_deploy"
+do_rootfs[depends] += "${DEP_BOOTLOADER}:do_deploy"
 
 def do_cyclonedx_buildinfos (d):
     cve_products_names = d.getVar("CVE_PRODUCT")
