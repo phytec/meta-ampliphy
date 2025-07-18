@@ -8,7 +8,7 @@ PR = "r0"
 
 BRANCH = "main"
 SRC_URI = "git://github.com/pcercuei/kmsgrab.git;protocol=https;branch=${BRANCH}"
-SRCREV = "22916bdc63b133e52079a699ae6b2d25d990e798"
+SRCREV = "d4c6061a59f4b7ecb6b39f96c7d39a5d5f48b702"
 
 DEPENDS = "libdrm libpng"
 
