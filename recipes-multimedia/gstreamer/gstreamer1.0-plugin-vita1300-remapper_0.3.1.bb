@@ -9,6 +9,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 BRANCH = "master"
 SRC_URI = "git://git.phytec.de/gst-vita-1300-remapper;branch=${BRANCH}"
 
+S = "${WORKDIR}/git"
 
 # NOTE: Keep sha1sum in sync with recipe version and git tag
 SRCREV = "80871a43c811de45e4296e828bd4816c9932c18f"

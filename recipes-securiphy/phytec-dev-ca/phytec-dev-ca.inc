@@ -14,7 +14,8 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 INSANE_SKIP:${PN} += "already-stripped"
 
-S = "${UNPACKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 DEVCA_DIR = "${TOPDIR}/../${BPN}"
 
 do_install() {

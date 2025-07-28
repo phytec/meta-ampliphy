@@ -56,7 +56,8 @@ IP_PARAM:k3 ?= "dhcp"
 NET_FETCH_CMD ?= ""
 NET_FETCH_CMD:k3 ?= "dhcp"
 
-S = "${UNPACKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 do_compile() {
     sed -e 's/@@SPI_MTD_PARTS@@/${SPI_MTD_PARTS}/' "${S}/spi_boot_fit.cmd.in" > spi_boot_fit.cmd

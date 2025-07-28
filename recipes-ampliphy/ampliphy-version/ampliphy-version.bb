@@ -7,7 +7,8 @@ PE = "2"
 
 SRC_URI = "file://lsb_release"
 
-S = "${UNPACKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 PACKAGES = "${PN}"
 PACKAGE_ARCH = "${MACHINE_ARCH}"

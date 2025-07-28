@@ -25,7 +25,7 @@ SRC_URI = "\
                   d.getVar('SOURCES', False).split()))} \
 "
 
-S = "${UNPACKDIR}/src"
+S = "${WORKDIR}/src"
 
 inherit pkgconfig autotools
 

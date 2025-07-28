@@ -8,6 +8,7 @@ SRC_URI = "git://github.com/phytec/mcu-plus-sdk-firmware;protocol=https;branch=m
 
 INSANE_SKIP:${PN} += "arch"
 PV = "0.3git${SRCPV}"
+S = "${WORKDIR}/git"
 FILES:${PN} += "${nonarch_base_libdir}/firmware/"
 
 do_install:am62xx() {

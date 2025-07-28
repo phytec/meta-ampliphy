@@ -7,7 +7,8 @@ SRC_URI = " \
     file://physecurestorage-install.sh \
 "
 
-S = "${UNPACKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 FLASH_PATH ??= "/dev/mmcblk${EMMC_DEV}"
 

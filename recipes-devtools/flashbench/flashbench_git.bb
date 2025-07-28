@@ -6,6 +6,7 @@ DEPENDS = ""
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
+S = "${WORKDIR}/git"
 
 SRC_URI = "git://git.linaro.org/people/arnd.bergmann/flashbench.git;protocol=https;branch=master"
 SRC_URI += "\

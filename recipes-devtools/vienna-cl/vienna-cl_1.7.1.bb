@@ -14,7 +14,7 @@ inherit cmake
 
 PR = "r0"
 
-S = "${UNPACKDIR}/ViennaCL-1.7.1"
+S = "${WORKDIR}/ViennaCL-1.7.1"
 
 SRC_URI = "http://downloads.sourceforge.net/project/viennacl/1.7.x/ViennaCL-1.7.1.tar.gz"
 

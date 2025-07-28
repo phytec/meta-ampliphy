@@ -13,6 +13,7 @@ SRC_URI = "git://git.phytec.de/${BPN};branch=${BRANCH};protocol=git \
            file://0001-HACK-save_raw_image-added-numeric-Y16_2X8-mbus-code.patch \
 "
 
+S = "${WORKDIR}/git"
 
 # NOTE: Keep sha1sum in sync with recipe version and git tag
 SRCREV = "02eceed7d837042cbf301193b77ebeb8a9d257f7"

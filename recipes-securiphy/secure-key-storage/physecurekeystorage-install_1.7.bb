@@ -7,7 +7,8 @@ SRC_URI = " \
     file://physecurekeystorage-install.sh \
 "
 
-S = "${UNPACKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 CONFIG_DEV ??= "/dev/mmcblk${EMMC_DEV}p3"
 CONFIG_MOUNTPATH ??= "/mnt/config"
