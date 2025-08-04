@@ -34,11 +34,11 @@ USE_BOOTLOADER_SLOT_WEAK_DEFAULT:ti33x = "false"
 USE_BOOTLOADER_SLOT_WEAK_DEFAULT:rk3288 = "false"
 
 # We want system.conf to be fetched before any of the following variables are
-# changed. This is needed because ${WORKDIR}/system.conf is overridden by
+# changed. This is needed because ${UNPACKDIR}/system.conf is overridden by
 # system_{emmc,nand}.conf and parsed using these variables afterwards. The
 # parsing, however, does not do anything unless the template
 # system_{emmc,nand}.conf is copied over before it, which only happens if the
-# default system.conf exists in WORKDIR.
+# default system.conf exists in UNPACKDIR.
 do_fetch[vardeps] += " \
     PREFERRED_PROVIDER_virtual/bootloader \
     EMMC_DEV \
@@ -69,7 +69,7 @@ def map_system_conf_bootloader(d):
         return bootloader_map[bootloader]
 
 do_install:prepend() {
-    cp ${WORKDIR}/${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'system_emmc.conf', 'system_nand.conf', d)} ${WORKDIR}/system.conf
+    cp ${UNPACKDIR}/${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'system_emmc.conf', 'system_nand.conf', d)} ${UNPACKDIR}/system.conf
     sed -i \
         -e 's/@MACHINE@/${MACHINE}/g' \
         -e 's/@BOOTLOADER@/${@map_system_conf_bootloader(d)}/g' \
@@ -81,10 +81,10 @@ do_install:prepend() {
         ${@bb.utils.contains("USE_BOOTLOADER_SLOT", "true", "", "-e '/@IF_BOOTLOADER_SLOT@/,/@ENDIF_BOOTLOADER_SLOT@/d'", d)} \
         ${@bb.utils.contains("DISTRO_FEATURES", "rauc-appfs", "", "-e '/@IF_APPFS_SLOT@/,/@ENDIF_APPFS_SLOT@/d'", d)} \
         -e '/@\(IF\|ENDIF\)[A-Z_]\+@/d' \
-        ${WORKDIR}/system.conf
+        ${UNPACKDIR}/system.conf
 
 	# check for problematic certificate setups
-	shasum=$(sha256sum "${WORKDIR}/${RAUC_KEYRING_FILE}" | cut -d' ' -f1)
+	shasum=$(sha256sum "${UNPACKDIR}/${RAUC_KEYRING_FILE}" | cut -d' ' -f1)
 	if [ "$shasum" = "91efd86dfbffa360c909b06b54902348075c5ba7902ad1ec30d25527a1f8ca09" ]; then
 		bbwarn "You're including Phytec's Development Keyring in the rauc bundle. Please create your own!"
 	fi
