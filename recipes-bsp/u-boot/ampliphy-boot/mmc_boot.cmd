@@ -9,7 +9,7 @@ fdt address ${fdt_addr_r}
 for overlay in ${overlays}; do
   echo Applying overlay: ${overlay};
   if run mmc_load_overlay; then
-    fdt resize
+    fdt resize ${filesize}
     fdt apply ${fdtoverlay_addr_r}
   fi
 done
