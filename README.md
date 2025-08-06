@@ -63,6 +63,21 @@ ampliPHY provides bitbake variables below:
         does not negatively affect the sstate-mirror use or the developers
         build time.
 
+
+Machine Features
+----------------
+In general, the following `MACHINE_FEATURES` are used in this layer to enable extra features in the
+BSP: `can`, `caam`, `camera`, `emmc`, `fan`, `gc320`, `gpu`, `mmip`, `optee`, `pci`,
+`resistivetouch`, `tpm2`
+
+Hardware Features
+-----------------
+Some hardware diagnostic features are not enabled by default even though the hardware can
+theoretically support them. E.g. som Kits are delivered without fans even though the SBCs do have a
+fan header. These machines do not have the `fan` machine feature.
+To enable them, add the respective feature to the `MACHINE_FEATURES` variable.
+Currently, `can`, `fan`, `pcie`, and `resistivetouch` enable additional software tools.
+
 Support
 =======
 
