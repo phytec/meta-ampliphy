@@ -30,7 +30,7 @@ RDEPENDS:${PN} = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "resistivetouch", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
     kmsgrab \
-    lmsensors-fancontrol \
+    ${@bb.utils.contains("MACHINE_FEATURES", "fan", "lmsensors-fancontrol", "", d)} \
     nfs-utils-client \
     dtc \
     stressapptest \
@@ -44,12 +44,3 @@ RDEPENDS:${PN}:append:mx6-generic-bsp = " mmdc phycam-setup"
 RDEPENDS:${PN}:append:mx6ul-generic-bsp = " mmdc"
 RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " phycam-setup"
 RDEPENDS:${PN}:append:rk3288 = " rkeeprom"
-
-RDEPENDS:${PN}:remove:am57xx = "lmsensors-fancontrol"
-RDEPENDS:${PN}:remove:am62xx = "lmsensors-fancontrol"
-RDEPENDS:${PN}:remove:am62axx = "lmsensors-fancontrol"
-RDEPENDS:${PN}:remove:am62lxx = "lmsensors-fancontrol"
-RDEPENDS:${PN}:remove:am62pxx = "lmsensors-fancontrol"
-RDEPENDS:${PN}:remove:am64xx = "lmsensors-fancontrol"
-RDEPENDS:${PN}:remove:am67xx = "lmsensors-fancontrol"
-RDEPENDS:${PN}:remove:phyboard-segin = "lmsensors-fancontrol"
