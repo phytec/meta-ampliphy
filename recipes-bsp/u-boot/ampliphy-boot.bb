@@ -20,6 +20,9 @@
 #
 # fit_addr_r (optional)
 #   In case if the default $loadaddr is not suitabale for loading a fitImage
+# overlaysenvfile (optional)
+#   Name of the env file on the boot partition containing default overlays if
+#   default "overlays.txt" is not suitabale.
 
 DESCRIPTION = "This recipe compiles U-Boot scripts into FIT images, which are \
 loaded by U-Boot using the standard boot script method. These scripts provide \
