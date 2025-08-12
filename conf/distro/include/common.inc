@@ -54,7 +54,6 @@ INHERIT += "phytec-mirrors"
 
 #run QA tests on builds and packages and log them
 INHERIT += "insane"
-QA_LOG = "1"
 
 # Log information on images and packages
 INHERIT += "buildhistory"
