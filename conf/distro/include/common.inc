@@ -46,14 +46,8 @@ SDK_VERSION := "${DISTRO_VERSION}"
 SDK_NAME = "${VENDOR}-${DISTRO}-${TCLIBC}-${SDK_ARCH}-${IMAGE_BASENAME}-${TUNE_PKGARCH}"
 SDKPATH = "/opt/${VENDOR}-${DISTRO}/${SDK_VERSION}"
 
-#activate config checker
-INHERIT += "sanity"
-
 #we provide source mirrors for missing packages
 INHERIT += "phytec-mirrors"
-
-#run QA tests on builds and packages and log them
-INHERIT += "insane"
 
 # Create /etc/build
 INHERIT += "image-buildinfo"
@@ -64,7 +58,10 @@ IMAGE_BUILDINFO_VARS:append = " MACHINE_FEATURES DISTRO_FEATURES IMAGE_FEATURES"
 IMAGE_INSTALL:append = " os-release"
 PREFERRED_PROVIDER_os-release = "ampliphy-version"
 
-# Move listet checks from ERROR_QA to WARN_QA (defined in insane.bbclass)
+# QA settings
+INHERIT += "sanity"
+INHERIT += "insane"
+# configure insane.bbclass
 ERROR_TO_WARN_QA = "version-going-backwards"
 ERROR_QA:remove = "${ERROR_TO_WARN_QA}"
 WARN_QA:append = " ${ERROR_TO_WARN_QA}"
