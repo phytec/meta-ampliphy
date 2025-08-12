@@ -104,7 +104,7 @@ PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 # change to '/root' as this is preferred path
 ROOT_HOME ?= "/root"
 
-DISTRO_FEATURES_DEFAULT:remove = "argp irda pcmcia zeroconf"
+DISTRO_FEATURES_DEFAULT:remove = "pcmcia zeroconf"
 DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
     opengl \
     systemd \
