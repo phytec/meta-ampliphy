@@ -29,6 +29,7 @@ RDEPENDS:${PN} = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "can", "can-utils can-utils-cantest libsocketcan", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "resistivetouch", "tslib-conf tslib-calibrate tslib-tests", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-rtl-nic", "", d)} \
     kmsgrab \
     lmsensors-fancontrol \
     nfs-utils-client \
