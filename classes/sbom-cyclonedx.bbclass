@@ -13,7 +13,7 @@
 
 CYCLONEDX_EXPORT_TMP ??= "${WORKDIR}/sbom-cyclonedx"
 
-DEPLOY_DIR_CYCLONEDX_BASE ??= "${DEPLOY_DIR}/sbom-cyclonedx"
+DEPLOY_DIR_CYCLONEDX_BASE ??= "${DEPLOY_DIR}/sbom-cyclonedx/${MACHINE}"
 DEPLOY_DIR_CYCLONEDX ??= "${DEPLOY_DIR_CYCLONEDX_BASE}/${BB_CURRENT_MC}"
 CYCLONEDX_EXPORT_COMPONENT_FILE ??= "${PN}-${PV}.json"
 CVE_PRODUCT ??= "${BPN}"
@@ -65,6 +65,7 @@ python do_cyclonedx_component_setscene () {
 addtask do_cyclonedx_component_setscene
 
 do_cyclonedx_component[cleandirs] = "${CYCLONEDX_EXPORT_TMP}"
+do_cyclonedx_component[stamp-extra-info] = "${MACHINE_ARCH}"
 
 python do_cyclonedx_image() {
     import os.path
