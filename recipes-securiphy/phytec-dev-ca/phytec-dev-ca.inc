@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 inherit pkgconfig
 
-SRC_URI = "https://github.com/phytec/phytec-dev-ca/releases/download/v${PV}/phytec-dev-ca-${PV}.tar.gz"
+SRC_URI = "https://github.com/phytec/${BPN}/releases/download/v${PV}/${BPN}-${PV}.tar.gz"
 
 do_install[nostamp] = "1"
 
