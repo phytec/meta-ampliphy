@@ -18,7 +18,6 @@ S = "${UNPACKDIR}"
 DEVCA_DIR = "${TOPDIR}/../${BPN}"
 
 do_install() {
-    install -d ${DEVCA_DIR}
     cp -r ${S}/${BPN}-${PV}/* ${DEVCA_DIR}
 }
 do_install[vardeps] += "DEVCA_DIR"
