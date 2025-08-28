@@ -1,0 +1,7 @@
+[Match]
+Property=OF_ALIAS_0=ethernet3
+
+[Link]
+NamePolicy=onboard keep kernel database slot path
+AlternativeName=eth3
+WakeOnLan=magic

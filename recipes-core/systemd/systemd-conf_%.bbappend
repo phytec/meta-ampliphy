@@ -8,9 +8,13 @@ SRC_URI += " \
     file://10-eth0.network \
     file://10-eth1.network \
     file://10-eth2.network \
+    file://10-eth3.network \
+    file://10-eth4.network \
     file://10-eth0.link \
     file://10-eth1.link \
     file://10-eth2.link \
+    file://10-eth3.link \
+    file://10-eth4.link \
     file://11-can.network \
     file://90-dhcp-default.network \
 "
