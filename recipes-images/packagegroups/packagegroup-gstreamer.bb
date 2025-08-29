@@ -62,11 +62,6 @@ RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " \
     gstreamer1.0-plugins-bad-zbar \
     imx-gst1.0-plugin-gplay \
     imx-gst1.0-plugin \
-    gstreamer1.0-plugins-bad \
-"
-
-RDEPENDS:${PN}:append:mx8mp-mainline-bsp = " \
-    gstreamer1.0-plugins-bad \
 "
 
 RDEPENDS:${PN}:append:mx93-nxp-bsp = " \
