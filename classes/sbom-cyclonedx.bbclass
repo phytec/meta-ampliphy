@@ -259,7 +259,7 @@ def do_generate_package_activefiles(product,builddir,d):
     import re
     import subprocess
 
-    path_regex = re.compile('Prerequisite|target \'([^\s]*\w+\.[cSh])')
+    path_regex = re.compile('Prerequisite|target \'([^\s]*\w+\.[cSh](?!\w))')
 
     sourcetree = builddir
     makefile_targets = list (())
