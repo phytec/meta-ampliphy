@@ -32,8 +32,8 @@ ampliPHY provides bitbake variables below:
 * `MACHINE_FEATURES`
   Following `MACHINE_FEATURES` are used in this layer to enable extra features
   in the BSP if enabled:
-  - `can`, `fan`, `pcie`, and `resistivetouch` install additional software tools
-    to make use of the hardware features.
+  - `nand`, `can`, `fan`, `pcie`, and `resistivetouch` install additional
+    software tools to make use of the hardware features.
 
 * `BB_PHY_BUILDTYPE` - Shell environment variable to specify when a
   build-execution shall be treated as an official release build.

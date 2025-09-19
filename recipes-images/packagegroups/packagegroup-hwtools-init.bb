@@ -16,10 +16,9 @@ RDEPENDS:${PN} = " \
     mtd-utils \
     mtd-utils-ubifs \
     mtd-utils-misc \
-    nandflipbits-wrapper \
     iproute2 \
     nfs-utils-client \
-    rauc-flash-nand \
+    ${@bb.utils.contains("MACHINE_FEATURES", "nand", "rauc-flash-nand nandflipbits-wrapper", "",d)} \
 "
 
 RDEPENDS:${PN}:append:j721s2 = " phycam-setup"
