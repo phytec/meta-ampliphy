@@ -103,6 +103,7 @@ DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
     security \
     ${@bb.utils.filter('MACHINE_FEATURES', 'tpm tpm2', d)}"
 DISTRO_FEATURES:append:mx95-generic-bsp = " vulkan"
+DISTRO_FEATURES:append:k3 = " vulkan"
 VIRTUAL-RUNTIME_container_runtime ?= "crun"
 DISTRO_FEATURES:remove:mx6ul-generic-bsp = "opengl wayland"
 DISTRO_FEATURES:remove:am57x6 = "opengl"
