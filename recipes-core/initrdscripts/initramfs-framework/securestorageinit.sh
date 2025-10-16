@@ -154,7 +154,8 @@ securestorageinit_run() {
 			fi
 		fi
 		if [ $(ls /dev/dm-* | wc -l) -eq 0 ]; then
-			mount ${root} ${ROOTFS_DIR}
+			printf "Unencrypted rootfs is not supported!\n"
+			do_login
 		else
 			mount /dev/dm-${dmvalue} ${ROOTFS_DIR}
 		fi
