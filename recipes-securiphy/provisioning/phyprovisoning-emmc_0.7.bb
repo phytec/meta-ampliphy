@@ -19,12 +19,12 @@ do_patch() {
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
     -e 's:@CONFIG_BOOTDEV@:${CONFIG_BOOTDEV}:g' \
-    ${WORKDIR}/phyprovisioning-install-emmc.sh
+    ${S}/phyprovisioning-install-emmc.sh
 }
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 0500 phyprovisioning-install-emmc.sh ${D}${bindir}/phyprovisioning-install-emmc
+    install -m 0500 ${S}/phyprovisioning-install-emmc.sh ${D}${bindir}/phyprovisioning-install-emmc
 }
 
 RDEPENDS:${PN} = " \

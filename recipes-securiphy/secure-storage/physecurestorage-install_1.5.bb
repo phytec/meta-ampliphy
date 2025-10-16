@@ -15,12 +15,12 @@ FLASH_PATH ??= "/dev/mmcblk${EMMC_DEV}"
 do_patch() {
     sed -i \
     -e 's:@FLASH_PATH@:${FLASH_PATH}:g' \
-    ${WORKDIR}/physecurestorage-install.sh
+    ${S}/physecurestorage-install.sh
 }
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 0500 physecurestorage-install.sh ${D}${bindir}/physecurestorage-install
+    install -m 0500 ${S}/physecurestorage-install.sh ${D}${bindir}/physecurestorage-install
 }
 
 RDEPENDS:${PN} = " \

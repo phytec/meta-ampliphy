@@ -61,10 +61,10 @@ USERADD_PARAM:${PN} = " \
 do_install() {
     install -d ${D}${sysconfdir}/udev/rules.d
     install -d ${D}${sysconfdir}/udev/scripts
-    install -m 0644 ${WORKDIR}/99-phyapix.rules ${D}${sysconfdir}/udev/rules.d/
+    install -m 0644 ${S}/99-phyapix.rules ${D}${sysconfdir}/udev/rules.d/
 
     install -d ${D}${systemd_unitdir}/system/
-    install -m 0644 ${WORKDIR}/phytec-example-users.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${S}/phytec-example-users.service ${D}${systemd_unitdir}/system/
 
     install -d ${D}${bindir}
     install -m 0755 ${S}/setpassword.sh ${D}${bindir}/setpassword
