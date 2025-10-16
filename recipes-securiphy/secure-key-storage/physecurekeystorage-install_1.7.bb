@@ -16,12 +16,12 @@ do_patch() {
     sed -i \
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
-    ${WORKDIR}/physecurekeystorage-install.sh
+    ${S}/physecurekeystorage-install.sh
 }
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 0500 physecurekeystorage-install.sh ${D}${bindir}/physecurekeystorage-install
+    install -m 0500 ${S}/physecurekeystorage-install.sh ${D}${bindir}/physecurekeystorage-install
 }
 
 FILES:${PN} = "\
