@@ -11,7 +11,7 @@ RDEPENDS:${PN} = " \
     wpa-supplicant \
     iw \
     hostapd \
-    laird-sterling-firmware \
+    ezurio-sterling-firmware \
     linux-firmware-wl18xx \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-iwlwifi", "", d)} \
     wireless-regdb-static \

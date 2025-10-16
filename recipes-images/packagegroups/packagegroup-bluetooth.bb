@@ -20,7 +20,7 @@ RDEPENDS:${PN} = " \
     pulseaudio-module-sine-source \
     pulseaudio-module-rtp-send \
     pulseaudio-module-rtp-recv \
-    laird-sterling-firmware \
+    ezurio-sterling-firmware \
 "
 
 RDEPENDS:${PN}:append:am57xx = " bt-fw"
