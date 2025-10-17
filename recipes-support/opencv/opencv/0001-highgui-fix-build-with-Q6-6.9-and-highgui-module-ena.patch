@@ -1,0 +1,35 @@
+From dae50ec7c1cab6cd817c30987da98e1ded389cb5 Mon Sep 17 00:00:00 2001
+From: Atri Bhattacharya <badshah400@gmail.com>
+Date: Wed, 15 Oct 2025 09:31:21 +0200
+Subject: [PATCH] highgui: fix build with Q6 6.9 and highgui module enabled
+
+OpenCV version 4.11.0 fails to build with Qt6 version 6.9. When using
+ninja as the builder, cmake fails at the configure stage with:
+
+ninja: error: build.ninja:13215: bad $-escape (literal $ must be written as $$)
+
+This seems to make it work, but no idea if this is the fix.
+
+Upstream-Status: Inappropriate [OE-specific]
+
+Signed-off-by: Yannic Moog <y.moog@phytec.de>
+---
+ modules/highgui/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules/highgui/CMakeLists.txt b/modules/highgui/CMakeLists.txt
+index f0a668e4b5..ae9c49c1cf 100644
+--- a/modules/highgui/CMakeLists.txt
++++ b/modules/highgui/CMakeLists.txt
+@@ -125,7 +125,7 @@ elseif(HAVE_QT)
+     endif()
+ 
+     foreach(dt_dep ${qt_deps})
+-      add_definitions(${Qt${QT_VERSION_MAJOR}${dt_dep}_DEFINITIONS})
++      link_libraries(${Qt${QT_VERSION_MAJOR}${dt_dep}})
+       include_directories(${Qt${QT_VERSION_MAJOR}${dt_dep}_INCLUDE_DIRS})
+       list(APPEND HIGHGUI_LIBRARIES ${Qt${QT_VERSION_MAJOR}${dt_dep}_LIBRARIES})
+     endforeach()
+-- 
+2.25.1
+
