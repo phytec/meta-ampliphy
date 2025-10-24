@@ -1,7 +1,9 @@
 DESCRIPTION = "Packagegroup Secure Key Storage for Kernel keyring access"
 LICENSE = "MIT"
 
-inherit packagegroup
+inherit features_check packagegroup
+
+REQUIRED_DISTRO_FEATURES = "secureboot"
 
 RDEPENDS:${PN} = " \
     keyutils \
