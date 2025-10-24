@@ -2,11 +2,13 @@ SUMMARY = "Phytec's security example image"
 DESCRIPTION = "Support for filesystem encryption and user roles"
 LICENSE = "MIT"
 
+inherit features_check
 require recipes-images/images/phytec-headless-image.bb
 require recipes-images/images/security/setrootpassword.inc
 
-_FITIMAGE_TO_WIC = ""
-_FITIMAGE_TO_WIC:secureboot = "\
+REQUIRED_DISTRO_FEATURES = "secureboot"
+
+_FITIMAGE_TO_WIC = "\
     ${@bb.utils.contains('KERNEL_IMAGETYPES', 'fitImage', '', \
     '${@bb.utils.contains("MACHINE_FEATURES", "emmc", "phytec-secureboot-initramfs-fitimage:do_deploy", "phytec-simple-fitimage:do_deploy", d)}' \
     , d)}"
