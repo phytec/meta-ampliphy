@@ -13,8 +13,8 @@ env set mmc_load_overlaysenv 'load ${devtype} ${devnum}:${distro_bootpart} ${loa
 env set filesize 0
 size ${devtype} ${devnum}:${distro_bootpart} ${overlaysenvfile}
 if test ${filesize} != 0; then
-  run mmc_load_overlaysenv
-  env import -t ${loadaddr} ${filesize} overlays
+	run mmc_load_overlaysenv
+	env import -t ${loadaddr} ${filesize} overlays
 fi
 
 load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} Image
@@ -23,11 +23,11 @@ load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${fdtfile}
 # Load overlays
 fdt address ${fdt_addr_r}
 for overlay in ${overlays}; do
-  echo Applying overlay: ${overlay};
-  if run mmc_load_overlay; then
-    fdt resize ${filesize}
-    fdt apply ${fdtoverlay_addr_r}
-  fi
+	echo Applying overlay: ${overlay};
+	if run mmc_load_overlay; then
+		fdt resize ${filesize}
+		fdt apply ${fdtoverlay_addr_r}
+	fi
 done
 
 booti ${kernel_addr_r} - ${fdt_addr_r}

@@ -14,7 +14,7 @@ fdt address ${loadaddr};
 fdt get value fit_default_conf /configurations/ default;
 env set fit_overlay_conf "#${fit_default_conf}";
 for overlay in ${overlays}; do
-  env set fit_overlay_conf "${fit_overlay_conf}#conf-${overlay}";
+	env set fit_overlay_conf "${fit_overlay_conf}#conf-${overlay}";
 done;
 
 bootm ${loadaddr}${fit_overlay_conf}
