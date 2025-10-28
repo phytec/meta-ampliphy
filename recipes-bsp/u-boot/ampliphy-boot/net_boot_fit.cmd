@@ -1,3 +1,8 @@
+if itest.s ${devtype} != ethernet; then
+	echo "ERROR: Invalid boot script for devtype ${devtype}, expected ethernet! Exiting..."
+	exit
+fi
+
 test -n ${fit_addr_r} && env set loadaddr ${fit_addr_r}
 if itest.s ${ip_dyn} == 0 || itest.s ${ip_dyn} == no || itest.s ${ip_dyn} == false; then
 	env set nfsip ${ipaddr}:${serverip}::${netmask}::eth0:on;

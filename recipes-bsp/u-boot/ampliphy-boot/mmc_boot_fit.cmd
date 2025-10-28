@@ -1,3 +1,8 @@
+if itest.s ${devtype} != mmc; then
+	echo "ERROR: Invalid boot script for devtype ${devtype}, expected mmc! Exiting..."
+	exit
+fi
+
 test -n ${distro_rootpart} || env set distro_rootpart 2
 test -n ${fit_addr_r} && env set loadaddr ${fit_addr_r}
 test -n ${overlaysenvfile} || env set overlaysenvfile overlays.txt
