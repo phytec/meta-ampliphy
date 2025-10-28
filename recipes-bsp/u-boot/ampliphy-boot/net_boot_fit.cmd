@@ -7,7 +7,7 @@ else
 	env set net_fetch_cmd dhcp;
 fi;
 env set bootargs "console=${console} earlycon=${earlycon} root=/dev/nfs ip=${nfsip} rw nfsroot=${serverip}:${nfsroot},vers=4,tcp ${optargs}"
-${net_fetch_cmd} ${loadaddr} ${serverip}:/fitImage
+${net_fetch_cmd} ${loadaddr} fitImage
 
 # Load overlays
 fdt address ${loadaddr};
