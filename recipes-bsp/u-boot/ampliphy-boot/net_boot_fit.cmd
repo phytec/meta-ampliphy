@@ -16,9 +16,11 @@ env set bootargs "console=${console} earlycon=${earlycon} root=/dev/nfs ip=${nfs
 env set net_load_overlaysenv "'${net_fetch_cmd}' ${loadaddr} ${overlaysenvfile}"
 
 # Load additional file containing default overlays
-if run net_load_overlaysenv; then
-	env import -t ${loadaddr} ${filesize} fit_overlay_conf;
-fi;
+if test -z "${fit_overlay_conf}"; then
+        if run net_load_overlaysenv; then
+                env import -t ${loadaddr} ${filesize} fit_overlay_conf;
+        fi
+fi
 
 ${net_fetch_cmd} ${loadaddr} fitImage
 

@@ -10,9 +10,11 @@ env set mmc_load_overlay 'load ${devtype} ${devnum}:${distro_bootpart} ${fdtover
 env set mmc_load_overlaysenv 'load ${devtype} ${devnum}:${distro_bootpart} ${loadaddr} ${overlaysenvfile}'
 
 # Load additional file containing default overlays
-if test -e ${devtype} ${devnum}:${distro_bootpart} ${overlaysenvfile}; then
-	run mmc_load_overlaysenv
-	env import -t ${loadaddr} ${filesize} overlays
+if test -z "${overlays}"; then
+	if test -e ${devtype} ${devnum}:${distro_bootpart} ${overlaysenvfile}; then
+		run mmc_load_overlaysenv
+		env import -t ${loadaddr} ${filesize} overlays
+	fi
 fi
 
 load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} Image

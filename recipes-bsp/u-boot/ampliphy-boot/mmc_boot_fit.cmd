@@ -10,9 +10,11 @@ env set bootargs "console=${console} earlycon=${earlycon} root=/dev/mmcblk${devn
 env set mmc_load_overlaysenv 'load ${devtype} ${devnum}:${distro_bootpart} ${loadaddr} ${overlaysenvfile}'
 
 # Load additional file containing default overlays
-if test -e ${devtype} ${devnum}:${distro_bootpart} ${overlaysenvfile}; then
-	run mmc_load_overlaysenv
-	env import -t ${loadaddr} ${filesize} fit_overlay_conf
+if test -z "${fit_overlay_conf}"; then
+	if test -e ${devtype} ${devnum}:${distro_bootpart} ${overlaysenvfile}; then
+		run mmc_load_overlaysenv;
+		env import -t ${loadaddr} ${filesize} fit_overlay_conf;
+	fi
 fi
 
 load ${devtype} ${devnum}:${distro_bootpart} ${loadaddr} fitImage
