@@ -9,12 +9,12 @@ env set mtdparts @@SPI_MTD_PARTS@@
 mtd list
 mtd read fitimage ${loadaddr}
 
-# Load overlays
+# Load default configuration
 fdt address ${loadaddr};
 fdt get value fit_default_conf /configurations/ default;
-env set fit_overlay_conf "#${fit_default_conf}";
-for overlay in ${overlays}; do
-	env set fit_overlay_conf "${fit_overlay_conf}#conf-${overlay}";
-done;
 
-bootm ${loadaddr}${fit_overlay_conf}
+if test -n ${fit_overlay_conf}; then
+	bootm ${loadaddr}#${fit_default_conf}#${fit_overlay_conf}
+else
+	bootm ${loadaddr}#${fit_default_conf}
+fi

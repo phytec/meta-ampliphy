@@ -12,17 +12,17 @@ env set mmc_load_overlaysenv 'load ${devtype} ${devnum}:${distro_bootpart} ${loa
 # Load additional file containing default overlays
 if test -e ${devtype} ${devnum}:${distro_bootpart} ${overlaysenvfile}; then
 	run mmc_load_overlaysenv
-	env import -t ${loadaddr} ${filesize} overlays
+	env import -t ${loadaddr} ${filesize} fit_overlay_conf
 fi
 
 load ${devtype} ${devnum}:${distro_bootpart} ${loadaddr} fitImage
 
-# Load overlays
+# Load default configuration
 fdt address ${loadaddr};
 fdt get value fit_default_conf /configurations/ default;
-env set fit_overlay_conf "#${fit_default_conf}";
-for overlay in ${overlays}; do
-	env set fit_overlay_conf "${fit_overlay_conf}#conf-${overlay}";
-done;
 
-bootm ${loadaddr}${fit_overlay_conf}
+if test -n ${fit_overlay_conf}; then
+	bootm ${loadaddr}#${fit_default_conf}#${fit_overlay_conf}
+else
+	bootm ${loadaddr}#${fit_default_conf}
+fi
