@@ -44,9 +44,10 @@ SRC_URI = " \
 
 inherit deploy
 
-MMC_BOOT_SCRIPT ?= "mmc_boot.cmd"
-MMC_BOOT_SCRIPT:secureboot ?= "mmc_boot_fit.cmd"
-MMC_BOOT_SCRIPT:mx8-generic-bsp ?= "mmc_boot_fit.cmd"
+# default bootscript (boot.scr.uimg) to be built into the .wic image
+DEFAULT_BOOTSCRIPT ??= "mmc_boot.cmd"
+DEFAULT_BOOTSCRIPT:secureboot ?= "mmc_boot_fit.cmd"
+DEFAULT_BOOTSCRIPT:mx8-generic-bsp ?= "mmc_boot_fit.cmd"
 
 BOOTSCRIPTS ??= "*.cmd"
 BOOTSCRIPTS:mx8-generic-bsp ?= "mmc_boot_fit.cmd net_boot_fit.cmd"
@@ -75,7 +76,7 @@ do_deploy() {
         install -m 0644 ${cmdimg} "${DEPLOYDIR}/${img}"
     done
 
-    install -m 0644 ${S}/${MMC_BOOT_SCRIPT}.scr.uimg ${DEPLOYDIR}/boot.scr.uimg
+    install -m 0644 ${S}/${DEFAULT_BOOTSCRIPT}.scr.uimg ${DEPLOYDIR}/boot.scr.uimg
 }
 
 addtask deploy after do_install before do_build
