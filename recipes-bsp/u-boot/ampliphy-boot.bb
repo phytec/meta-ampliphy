@@ -48,6 +48,9 @@ MMC_BOOT_SCRIPT ?= "mmc_boot.cmd"
 MMC_BOOT_SCRIPT:secureboot ?= "mmc_boot_fit.cmd"
 MMC_BOOT_SCRIPT:mx8-generic-bsp ?= "mmc_boot_fit.cmd"
 
+BOOTSCRIPTS ??= "*.cmd"
+BOOTSCRIPTS:mx8-generic-bsp ?= "mmc_boot_fit.cmd net_boot_fit.cmd"
+
 # Used by the spi boot script to locate the fitImage
 SPI_MTD_PARTS ?= ""
 SPI_MTD_PARTS:k3 ?= "nor0:-@0x740000(fitimage)"
@@ -58,7 +61,7 @@ UNPACKDIR = "${S}"
 do_compile() {
     sed -e 's/@@SPI_MTD_PARTS@@/${SPI_MTD_PARTS}/' "${S}/spi_boot_fit.cmd.in" > spi_boot_fit.cmd
 
-    for script in *.cmd ; do
+    for script in ${BOOTSCRIPTS} ; do
         sed -e "s/@@BOOTCOMMAND_FILE@@/${script}/" "${S}/boot.its.in" > boot.its
         mkimage -C none -A ${UBOOT_ARCH} -f boot.its ${script}.scr.uimg
     done
