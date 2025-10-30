@@ -2,8 +2,13 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 SRC_URI:append = "file://print_issue.sh \
                   file://base-files.conf \
+                  file://bootdev.rules \
+                  file://check_boot_root.sh \
 "
+
 dirs755:append = " ${sysconfdir}/profile.d"
+
+ENABLE_BOOT_DEVICE_HANDLING = "${@bb.utils.contains('DISTRO_FEATURES', 'rauc', '0', '1', d)}"
 
 do_fetch[vardeps] += "EMMC_DEV"
 
@@ -24,10 +29,19 @@ clean_fstab() {
     # /mnt/config does not exist when using a regular (non-RAUC) image
     sed -i -e '/\/mnt\/config/d' ${WORKDIR}/fstab
 }
+clean_fstab_boot() {
+    # remove if /dev/bootdev is not created
+    sed -i -e '/\/dev\/bootdev/d' ${WORKDIR}/fstab
+}
 
-do_patch[postfuncs] += "${@bb.utils.contains('DISTRO_FEATURES', 'rauc-appfs', '', 'fstab_delete_appfs', d)}"
+do_patch[postfuncs] += "${@bb.utils.contains('DISTRO_FEATURES', 'rauc-appfs', '', 'fstab_delete_appfs', d)} \
+                       fstab_bindir"
 fstab_delete_appfs() {
     sed -i -e '/\/mnt\/app/d' ${WORKDIR}/fstab
+}
+
+fstab_bindir() {
+    sed -i -e 's#BINDIR#${bindir}#g' ${WORKDIR}/bootdev.rules
 }
 
 python do_patch:append() {
@@ -35,6 +49,8 @@ python do_patch:append() {
         bb.build.exec_func("parse_fstab", d)
     else:
         bb.build.exec_func("clean_fstab", d)
+    if d.getVar("ENABLE_BOOT_DEVICE_HANDLING") != '1':
+       bb.build.exec_func("clean_fstab_boot", d)
 }
 
 do_install:append() {
@@ -44,6 +60,13 @@ do_install:append() {
     install -m 0644 ${WORKDIR}/share/dot.profile ${D}${ROOT_HOME}/.profile
     install -m 0644 ${WORKDIR}/share/dot.bashrc ${D}${ROOT_HOME}/.bashrc
     install -Dm 0644 ${WORKDIR}/base-files.conf ${D}${sysconfdir}/tmpfiles.d/base-files.conf
+
+    if ${@bb.utils.contains('ENABLE_BOOT_DEVICE_HANDLING', '1', 'true', 'false', d)}; then
+        install -d ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${WORKDIR}/bootdev.rules ${D}${sysconfdir}/udev/rules.d
+        install -d ${D}${bindir}
+        install -m 0755 ${WORKDIR}/check_boot_root.sh ${D}${bindir}
+    fi
 }
 
 do_install_basefilesissue:append() {
@@ -55,4 +78,6 @@ do_install_basefilesissue:append() {
 FILES:${PN} += " \
     /mnt/config \
     /mnt/app \
+    ${bindir} \
+    ${sysconfdir}/udev/rules.d \
 "
