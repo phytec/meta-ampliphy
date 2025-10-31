@@ -1,0 +1,13 @@
+[Unit]
+Description=Chromium
+Requires=weston.service dbus.service
+After=weston.service
+
+[Service]
+Environment=WAYLAND_DISPLAY=/run/wayland-0
+User=weston
+WorkingDirectory=~
+ExecStart=/usr/bin/chromium --enable-wayland-ime --kiosk --no-first-run https://www.phytec.eu
+
+[Install]
+WantedBy=graphical.target
