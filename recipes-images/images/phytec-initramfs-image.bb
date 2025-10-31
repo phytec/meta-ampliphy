@@ -13,7 +13,11 @@ PACKAGE_INSTALL = " \
 "
 
 # Do not pollute the initrd image with rootfs features
-IMAGE_FEATURES = "empty-root-password"
+IMAGE_FEATURES = " \
+    allow-empty-password \
+    allow-root-login \
+    empty-root-password \
+"
 
 # Don't allow the initramfs to contain a kernel
 PACKAGE_EXCLUDE = "kernel-image-*"
