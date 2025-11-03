@@ -57,8 +57,8 @@ def map_system_conf_bootloader(d):
     bootloader_map = {
         "barebox": "barebox",
         "u-boot": "uboot",
-        "u-boot-imx": "uboot",
         "u-boot-phytec": "uboot",
+        "u-boot-phytec-imx": "uboot",
         "u-boot-phytec-ti": "uboot"
     }
     bootloader = d.getVar("PREFERRED_PROVIDER_virtual/bootloader")
