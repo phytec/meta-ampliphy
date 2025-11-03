@@ -71,6 +71,6 @@ FILES:${PN}:append:rauc-appfs = " \
 "
 
 RDEPENDS:${PN} += " \
-    ${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-imx', 'libubootenv-bin', '', d)} \
+    ${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-phytec-imx', 'libubootenv-bin', '', d)} \
     ${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'dosfstools e2fsprogs', '', d)} \
 "
