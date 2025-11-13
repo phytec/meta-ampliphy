@@ -16,4 +16,5 @@ IMAGE_INSTALL += "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)} \
     chromium-ozone-wayland \
     chromium-service \
+    demo-welcome-webpage \
 "
