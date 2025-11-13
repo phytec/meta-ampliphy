@@ -4,10 +4,10 @@ Requires=weston.service dbus.service
 After=weston.service
 
 [Service]
-Environment=WAYLAND_DISPLAY=/run/wayland-0
+Environment=WAYLAND_DISPLAY=/run/wayland-0 DEFAULT_WEBPAGE=https://www.phytec.eu
 User=weston
 WorkingDirectory=~
-ExecStart=/usr/bin/chromium --enable-wayland-ime --kiosk --no-first-run https://www.phytec.eu
+ExecStart=/usr/bin/chromium --enable-wayland-ime --kiosk --no-first-run $DEFAULT_WEBPAGE
 
 [Install]
 WantedBy=graphical.target
