@@ -17,17 +17,17 @@ env set net_load_overlaysenv "'${net_fetch_cmd}' ${loadaddr} ${overlaysenvfile}"
 
 # Load additional file containing default overlays
 if run net_load_overlaysenv; then
-	env import -t ${loadaddr} ${filesize} overlays;
+	env import -t ${loadaddr} ${filesize} fit_overlay_conf;
 fi;
 
 ${net_fetch_cmd} ${loadaddr} fitImage
 
-# Load overlays
+# Load default configuration
 fdt address ${loadaddr};
 fdt get value fit_default_conf /configurations/ default;
-env set fit_overlay_conf "#${fit_default_conf}";
-for overlay in ${overlays}; do
-	env set fit_overlay_conf "${fit_overlay_conf}#conf-${overlay}";
-done;
 
-bootm ${loadaddr}${fit_overlay_conf}
+if test -n ${fit_overlay_conf}; then
+	bootm ${loadaddr}#${fit_default_conf}#${fit_overlay_conf}
+else
+	bootm ${loadaddr}#${fit_default_conf}
+fi
