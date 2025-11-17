@@ -1,3 +1,8 @@
+if itest.s ${devtype} != spi_flash; then
+	echo "ERROR: Invalid boot script for devtype ${devtype}, expected spi_flash! Exiting..."
+	exit
+fi
+
 test -n ${fit_addr_r} && env set loadaddr ${fit_addr_r}
 env set bootargs "console=${console} earlycon=${earlycon} ${optargs}"
 env set mtdparts @@SPI_MTD_PARTS@@
