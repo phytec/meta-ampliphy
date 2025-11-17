@@ -38,7 +38,7 @@ SRC_URI = " \
     file://mmc_boot.cmd \
     file://spi_boot_fit.cmd.in \
     file://mmc_boot_fit.cmd \
-    file://net_boot_fit.cmd.in \
+    file://net_boot_fit.cmd \
     file://boot.its.in \
 "
 
@@ -52,20 +52,10 @@ MMC_BOOT_SCRIPT:mx8-generic-bsp ?= "mmc_boot_fit.cmd"
 SPI_MTD_PARTS ?= ""
 SPI_MTD_PARTS:k3 ?= "nor0:-@0x740000(fitimage)"
 
-# Used by the net boot script to pass the kernel ip parameter
-IP_PARAM ?= ""
-IP_PARAM:k3 ?= "dhcp"
-
-# Used by the net boot script to load the image from network
-NET_FETCH_CMD ?= ""
-NET_FETCH_CMD:k3 ?= "dhcp"
-
 S = "${UNPACKDIR}"
 
 do_compile() {
     sed -e 's/@@SPI_MTD_PARTS@@/${SPI_MTD_PARTS}/' "${S}/spi_boot_fit.cmd.in" > spi_boot_fit.cmd
-    sed -e 's/@@IP_PARAM@@/${IP_PARAM}/' \
-        -e 's/@@NET_FETCH_CMD@@/${NET_FETCH_CMD}/' "${S}/net_boot_fit.cmd.in" > net_boot_fit.cmd
 
     for script in *.cmd ; do
         sed -e "s/@@BOOTCOMMAND_FILE@@/${script}/" "${S}/boot.its.in" > boot.its
