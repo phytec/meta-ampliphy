@@ -48,6 +48,7 @@ inherit deploy
 DEFAULT_BOOTSCRIPT ??= "mmc_boot.cmd"
 DEFAULT_BOOTSCRIPT:secureboot ?= "mmc_boot_fit.cmd"
 DEFAULT_BOOTSCRIPT:mx8-generic-bsp ?= "mmc_boot_fit.cmd"
+DEFAULT_BOOTSCRIPT:mx95-generic-bsp ?= "mmc_boot_fit.cmd"
 
 BOOTSCRIPTS ??= "*.cmd"
 BOOTSCRIPTS:mx8-generic-bsp ?= "mmc_boot_fit.cmd net_boot_fit.cmd"
