@@ -109,6 +109,8 @@ DISTRO_FEATURES:remove:mx6ul-generic-bsp = "opengl wayland"
 DISTRO_FEATURES:remove:am57x6 = "opengl"
 DISTRO_FEATURES:remove:ti33x = "virtualization"
 
+WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
+
 IMAGE_BOOT_FILES:append:k3 = " boot.scr.uimg"
 WKS_FILE_DEPENDS:append:k3 = " ampliphy-boot"
 PARTUP_PACKAGE_DEPENDS:append:k3 = " ampliphy-boot"
