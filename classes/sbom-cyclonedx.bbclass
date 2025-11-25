@@ -21,7 +21,7 @@ CVE_VERSION ??= "${PV}"
 # Add variable values to the property array of CycloneDX SBOM
 CYCLONEDX_EXPORT_PROPERTIES ??= "SRC_URI SRCREV BB_CURRENT_MC"
 
-CYCLONEDX_WITH_BUILDINFOS ??="0"
+CYCLONEDX_WITH_BUILDINFOS ??="1"
 CYCLONEDX_WITH_NATIVE ??="0"
 
 SPDX_ORG ??= "OpenEmbedded ()"
