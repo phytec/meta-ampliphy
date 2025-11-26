@@ -19,7 +19,7 @@ IMAGE_NAME_SUFFIX = ""
 IMAGE_INSTALL:remove:mx8m-nxp-bsp = "packagegroup-fsl-optee-imx"
 MACHINE_FIRMWARE:remove:mx8mp-nxp-bsp  = "sof-imx sof-zephyr zephyr-demo-imx"
 
-IMAGE_INSTALL = " \
+PACKAGE_INSTALL = " \
     packagegroup-core-boot \
     systemd-initramfs \
     systemd-networkd \
@@ -44,19 +44,19 @@ IMAGE_INSTALL = " \
     systemd-conf \
 "
 
-IMAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
+PACKAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
 
-IMAGE_INSTALL:remove:mx8m-nxp-bsp = " \
+PACKAGE_INSTALL:remove:mx8m-nxp-bsp = " \
     kernel-module-tpm-tis-spi \
     kernel-module-tpm-tis \
 "
 
-IMAGE_INSTALL:remove:mx9-nxp-bsp = " \
+PACKAGE_INSTALL:remove:mx9-nxp-bsp = " \
     kernel-module-tpm-tis-spi \
     kernel-module-tpm-tis \
 "
 
-IMAGE_INSTALL:append:imx-generic-bsp = " crucible"
+PACKAGE_INSTALL:append:imx-generic-bsp = " crucible"
 
 PACKAGE_EXCLUDE = "kernel-image-*"
 
@@ -66,3 +66,4 @@ BAD_RECOMMENDATIONS += " \
     initramfs-module-finish \
     busybox-syslog \
 "
+NO_RECOMMENDATIONS = "1"
