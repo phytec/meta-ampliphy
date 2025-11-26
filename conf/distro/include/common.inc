@@ -67,10 +67,8 @@ WARN_QA:append = " ${ERROR_TO_WARN_QA}"
 # use-case.
 SKIP_META_RAUC_FEATURE_CHECK = "1"
 
-VIRTUAL-RUNTIME_dev_manager = "udev"
-VIRTUAL-RUNTIME_init_manager = "systemd"
-DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"
-VIRTUAL-RUNTIME_login_manager = "busybox"
+INIT_MANAGER = "systemd"
+
 VIRTUAL-RUNTIME_syslog = ""
 VIRTUAL-RUNTIME_initscripts = ""
 
@@ -91,8 +89,6 @@ ROOT_HOME ?= "/root"
 DISTRO_FEATURES_DEFAULT:remove = "pcmcia zeroconf"
 DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
     opengl \
-    systemd \
-    usrmerge \
     wayland \
     pam \
     virtualization \
