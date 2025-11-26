@@ -20,13 +20,9 @@ IMAGE_INSTALL:remove:mx8m-nxp-bsp = "packagegroup-fsl-optee-imx"
 MACHINE_FIRMWARE:remove:mx8mp-nxp-bsp  = "sof-imx sof-zephyr zephyr-demo-imx"
 
 IMAGE_INSTALL = " \
-    initramfs-framework-base \
-    initramfs-module-udev \
-    initramfs-module-provisioninginit \
-    initramfs-module-network \
-    initramfs-module-timesync \
-    initramfs-module-smartcard \
-    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "initramfs-module-optee", "", d)} \
+    packagegroup-core-boot \
+    systemd-initramfs \
+    systemd-networkd \
     busybox \
     packagegroup-hwtools-init \
     util-linux \
