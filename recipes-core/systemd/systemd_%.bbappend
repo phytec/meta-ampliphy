@@ -45,3 +45,10 @@ do_install:append() {
     sed -i 's/^d \/var\/log.*$/L \/var\/log - - - - \/var\/volatile\/log/' \
         ${D}${exec_prefix}/lib/tmpfiles.d/var.conf
 }
+
+# HACK: meta-imx adds 'sysvinit' to PACKAGECONFIG for systemd since commit
+# d13f816f3abf ("systemd: Restore sysvinit compatibility"). However there is
+# no good reason to enable it for ampliphy distro since we switched to systemd
+# long ago and it causes troubles for us (conflicts between sysvinit scripts
+# and systemd services). Thus remove 'sysvinit' packageconfig for i.MX NXP BSP.
+PACKAGECONFIG:remove:imx-nxp-bsp = "sysvinit"
