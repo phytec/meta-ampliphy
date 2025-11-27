@@ -106,10 +106,10 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 IMAGE_BOOT_FILES:append:k3 = " boot.scr.uimg"
 WKS_FILE_DEPENDS:append:k3 = " ampliphy-boot"
 WKS_FILE_DEPENDS:append:mx8-generic-bsp = " ampliphy-boot"
-WKS_FILE_DEPENDS:append:mx95-generic-bsp = " ampliphy-boot"
+WKS_FILE_DEPENDS:append:mx9-generic-bsp = " ampliphy-boot"
 PARTUP_PACKAGE_DEPENDS:append:k3 = " ampliphy-boot"
 PARTUP_PACKAGE_DEPENDS:append:mx8-generic-bsp = " ampliphy-boot"
-PARTUP_PACKAGE_DEPENDS:append:mx95-generic-bsp = " ampliphy-boot"
+PARTUP_PACKAGE_DEPENDS:append:mx9-generic-bsp = " ampliphy-boot"
 
 # Dependency used by RAUC bundles and sbom-cyclonedx class
 DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
