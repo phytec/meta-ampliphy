@@ -1,10 +1,12 @@
-From dc13e6f29c82d3cb7055b188d9c533f7eb70176a Mon Sep 17 00:00:00 2001
+From 18bc2a47e553845d065f2b27876045c6111e2f2c Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
 Date: Wed, 5 Mar 2025 17:58:29 +0100
-Subject: [PATCH 4/4] ipa: nxp: neo: Add simple isp config for phycams
+Subject: [PATCH 2/4] ipa: nxp: neo: Add simple isp config for phycams
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+
+Upstream-Status: Inappropriate [PHYTEC/NXP specific]
 
 Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
 ---
@@ -74,5 +76,5 @@ index eaea4bea78eb..103cf7fd5d7c 100644
      'os08a20.yaml',
      'ov5640.yaml',
 -- 
-2.25.1
+2.43.0
 

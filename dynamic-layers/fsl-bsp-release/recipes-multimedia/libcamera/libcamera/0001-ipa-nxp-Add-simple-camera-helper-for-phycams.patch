@@ -1,10 +1,12 @@
-From f5b984a06a3f3f1d623f7185fe2ad31123f9002f Mon Sep 17 00:00:00 2001
+From fc5cc226c9bc6ade7356ca8f181d3a960c68bc3f Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
 Date: Wed, 5 Mar 2025 17:56:00 +0100
 Subject: [PATCH 1/4] ipa: nxp: Add simple camera helper for phycams
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+
+Upstream-Status: Inappropriate [PHYTEC/NXP specific]
 
 Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
 ---
@@ -89,5 +91,5 @@ index 9a1bcd343f1a..74f32451d833 100644
      'camera_helper_os08a20.cpp',
      'camera_helper_ov5640.cpp',
 -- 
-2.25.1
+2.43.0
 
