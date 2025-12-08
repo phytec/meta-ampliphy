@@ -51,7 +51,8 @@ DEFAULT_BOOTSCRIPT:mx8-generic-bsp ?= "mmc_boot_fit.cmd"
 DEFAULT_BOOTSCRIPT:mx9-generic-bsp ?= "mmc_boot_fit.cmd"
 
 BOOTSCRIPTS ??= "*.cmd"
-BOOTSCRIPTS:mx8-generic-bsp ?= "mmc_boot_fit.cmd net_boot_fit.cmd"
+BOOTSCRIPTS:mx8-generic-bsp ?= "mmc_boot.cmd mmc_boot_fit.cmd net_boot_fit.cmd"
+BOOTSCRIPTS:mx9-generic-bsp ?= "mmc_boot.cmd mmc_boot_fit.cmd net_boot_fit.cmd"
 
 # Used by the spi boot script to locate the fitImage
 # Only set fitImage location here. The rest should be set in U-Boot
