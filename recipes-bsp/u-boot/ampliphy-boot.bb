@@ -33,6 +33,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 DEPENDS = "u-boot-mkimage-native dtc-native"
+DEPENDS:append:secureboot = " libp11-native"
 
 SRC_URI = " \
     file://mmc_boot.cmd \
@@ -40,9 +41,10 @@ SRC_URI = " \
     file://mmc_boot_fit.cmd \
     file://net_boot_fit.cmd \
     file://boot.its.in \
+    file://boot-sign.its.in \
 "
 
-inherit deploy
+inherit deploy secureboot
 
 # default bootscript (boot.scr.uimg) to be built into the .wic image
 DEFAULT_BOOTSCRIPT ??= "mmc_boot.cmd"
@@ -53,6 +55,9 @@ DEFAULT_BOOTSCRIPT:mx9-generic-bsp ?= "mmc_boot_fit.cmd"
 BOOTSCRIPTS ??= "*.cmd"
 BOOTSCRIPTS:mx8-generic-bsp ?= "mmc_boot.cmd mmc_boot_fit.cmd net_boot_fit.cmd"
 BOOTSCRIPTS:mx9-generic-bsp ?= "mmc_boot.cmd mmc_boot_fit.cmd net_boot_fit.cmd"
+
+DEFAULT_ITS ??= "boot.its.in"
+DEFAULT_ITS:secureboot ?= "boot-sign.its.in"
 
 # Used by the spi boot script to locate the fitImage
 # Only set fitImage location here. The rest should be set in U-Boot
@@ -66,8 +71,20 @@ do_compile() {
     sed -e 's/@@SPI_MTD_PARTS@@/${SPI_MTD_PARTS}/' "${S}/spi_boot_fit.cmd.in" > spi_boot_fit.cmd
 
     for script in ${BOOTSCRIPTS} ; do
-        sed -e "s/@@BOOTCOMMAND_FILE@@/${script}/" "${S}/boot.its.in" > boot.its
+        sed -e "s/@@BOOTCOMMAND_FILE@@/${script}/" \
+            -e "s/@@UBOOT_SIGN_KEYNAME@@/${UBOOT_SIGN_KEYNAME}/" \
+            -e "s/@@UBOOT_SIGN_IMG_KEYNAME@@/${UBOOT_SIGN_IMG_KEYNAME}/" \
+            -e "s/@@FIT_SIGN_ALG@@/${FIT_SIGN_ALG}/" \
+            -e "s/@@FIT_HASH_ALG@@/${FIT_HASH_ALG}/" \
+            "${S}/${DEFAULT_ITS}" > boot.its
         mkimage -C none -A ${UBOOT_ARCH} -f boot.its ${script}.scr.uimg
+        if [ "${UBOOT_SIGN_ENABLE}" = "1" ] && [ "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
+            if echo "${UBOOT_SIGN_KEYDIR}" | grep -q "pkcs11:"; then
+                setup_pkcs11_env
+            fi
+            mkimage ${UBOOT_MKIMAGE_SIGN_ARGS} \
+                -k ${UBOOT_SIGN_KEYDIR} -F ${script}.scr.uimg
+        fi
     done
 }
 
