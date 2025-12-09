@@ -59,8 +59,8 @@ check_keysexist() {
 # ${1} path to device
 init_integrity() {
 	modprobe dm-integrity
-	integritysetup format ${1} --batch-mode --tag-size 32 --integrity sha256 --journal-integrity sha256
-	integritysetup open ${1} --batch-mode --integrity sha256 --journal-integrity sha256 introotfs
+	integritysetup format ${1} --batch-mode --tag-size 32 --integrity sha256 --journal-integrity sha256 --no-wipe
+	integritysetup open ${1} --batch-mode --integrity sha256 --journal-integrity sha256 --integrity-recalculate --journal-commit-time=5000  introotfs
 }
 
 # Close integrity device
@@ -73,7 +73,7 @@ init_integrityclose() {
 init_enc() {
 	modprobe dm-crypt
 	if [ $(keyctl list @u | grep "encrypted: rootfs" | wc -l) -eq 1 ]; then
-		dmsetup create encrootfs --table "0 $(blockdev --getsz ${1}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${1} 0"
+		dmsetup create encrootfs --table "0 $(blockdev --getsz ${1}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${1} 0 2 no_read_workqueue no_write_workqueue"
 	elif [ $(keyctl list @u | grep "logon: rootfs" | wc -l) -eq 1 ]; then
 		dmsetup create encrootfs --table "0 $(blockdev --getsz ${1}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${1} 0"
 	else
@@ -102,8 +102,8 @@ install_files() {
 	else
 		mkfs.ext4 -L ${1} -t ext4 ${2}
 		mount ${2} /newroot
-		if [ "${filename##*.}" = "tgz" ]; then
-			tar xfz ${3} -C /newroot/
+		if [ "${filename##*.}" = "tgz" ] || [ "${filename##*.tar.}" = "gz" ]; then
+			tar xfz ${3} -C /newroot/ --warning=no-timestamp
 		elif [ "${filename##*.tar.}" = "xz" ]; then
 			tar xf ${3} -C /newroot/
 		else
