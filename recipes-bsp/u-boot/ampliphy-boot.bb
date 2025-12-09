@@ -39,6 +39,7 @@ SRC_URI = " \
     file://mmc_boot.cmd \
     file://spi_boot_fit.cmd.in \
     file://mmc_boot_fit.cmd \
+    file://mmc_boot_fit_secure.cmd \
     file://net_boot_fit.cmd \
     file://boot.its.in \
     file://boot-sign.its.in \
@@ -48,7 +49,7 @@ inherit deploy secureboot
 
 # default bootscript (boot.scr.uimg) to be built into the .wic image
 DEFAULT_BOOTSCRIPT ??= "mmc_boot.cmd"
-DEFAULT_BOOTSCRIPT:secureboot ?= "mmc_boot_fit.cmd"
+DEFAULT_BOOTSCRIPT:secureboot ?= "mmc_boot_fit_secure.cmd"
 DEFAULT_BOOTSCRIPT:mx8-generic-bsp ?= "mmc_boot_fit.cmd"
 DEFAULT_BOOTSCRIPT:mx9-generic-bsp ?= "mmc_boot_fit.cmd"
 
