@@ -60,10 +60,4 @@ PACKAGE_INSTALL:append:imx-generic-bsp = " crucible"
 
 PACKAGE_EXCLUDE = "kernel-image-*"
 
-# Remove some packages added via recommendations
-BAD_RECOMMENDATIONS += " \
-    initramfs-module-rootfs \
-    initramfs-module-finish \
-    busybox-syslog \
-"
 NO_RECOMMENDATIONS = "1"
