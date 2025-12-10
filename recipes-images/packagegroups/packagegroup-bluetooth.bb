@@ -21,6 +21,7 @@ RDEPENDS:${PN} = " \
     pulseaudio-module-rtp-send \
     pulseaudio-module-rtp-recv \
     ezurio-sterling-firmware \
+    ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-ibt-misc", "", d)} \
 "
 
 RDEPENDS:${PN}:append:am57xx = " bt-fw"
