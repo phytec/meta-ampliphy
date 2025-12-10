@@ -31,6 +31,7 @@ RDEPENDS:${PN} = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "pciutils", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-rtl-nic", "", d)} \
     kmsgrab \
+    ${@bb.utils.contains("MACHINE_FEATURES", "fan", "lmsensors-fancontrol", "", d)} \
     nfs-utils-client \
     dtc \
     stressapptest \
@@ -44,6 +45,3 @@ RDEPENDS:${PN}:append:mx6-generic-bsp = " mmdc phycam-setup"
 RDEPENDS:${PN}:append:mx6ul-generic-bsp = " mmdc"
 RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " phycam-setup"
 RDEPENDS:${PN}:append:rk3288 = " rkeeprom"
-
-RDEPENDS:${PN}:append:j721s2 = " lmsensors-fancontrol"
-RDEPENDS:${PN}:append:mx8m-generic-bsp = " lmsensors-fancontrol"
