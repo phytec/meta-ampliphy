@@ -1,0 +1,7 @@
+[Match]
+Name=fcan*
+
+[CAN]
+BitRate=500000
+DataBitRate=2000000
+FDMode=yes
