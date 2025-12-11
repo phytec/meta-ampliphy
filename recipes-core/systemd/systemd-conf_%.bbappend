@@ -2,10 +2,14 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
 
 inherit systemd
 
+# ethernet interface numbering of fpsc-g starts with 1
+FIRST_END_DEVICE = "0"
+FIRST_END_DEVICE:phyflex-fpsc-g = "1"
+
 SRC_URI += " \
     file://10-wait-online-any.conf \
     file://10-watchdog.conf \
-    file://10-end0.network \
+    ${@bb.utils.contains('FIRST_END_DEVICE', '0', ' file://10-end0.network', '', d)} \
     file://10-end1.network \
     file://10-end2.network \
     file://10-end3.network \
@@ -74,6 +78,16 @@ do_install:append() {
 
 do_install:append:phyboard-segin() {
     sed -i 's/^\s*FDMode\s*=\s*yes/FDMode=no/' ${D}${systemd_unitdir}/network/11-can.network
+}
+
+# first interface should always have the ip 192.168.3.11
+do_install:append:phyflex-fpsc-g() {
+    path='${D}${systemd_unitdir}/network/'
+
+    sed -i 's#^\(Address=192.168.\)4\(.11\/24\)#\13\2#' ${path}/10-end1.network
+    sed -i 's#^\(Address=192.168.\)5\(.11\/24\)#\14\2#' ${path}/10-end2.network
+    sed -i 's#^\(Address=192.168.\)6\(.11\/24\)#\15\2#' ${path}/10-end3.network
+    sed -i 's#^\(Address=192.168.\)7\(.11\/24\)#\16\2#' ${path}/10-end4.network
 }
 
 FILES:${PN} += "\
