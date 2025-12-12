@@ -5,8 +5,9 @@ fi
 
 test -n ${fit_addr_r} && env set loadaddr ${fit_addr_r}
 test -n ${overlaysenvfile} || env set overlaysenvfile overlays.txt
+test -n ${nfs_eth_dev} || env set nfs_eth_dev eth0
 if itest.s ${ip_dyn} == 0 || itest.s ${ip_dyn} == no || itest.s ${ip_dyn} == false; then
-	env set nfsip ${ipaddr}:${serverip}::${netmask}::eth0:on;
+	env set nfsip ${ipaddr}:${serverip}::${netmask}::${nfs_eth_dev}:on;
 	env set net_fetch_cmd tftp;
 else
 	env set nfsip dhcp;
