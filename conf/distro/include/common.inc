@@ -82,10 +82,6 @@ IMAGE_LINGUAS ?= "de-de fr-fr en-us zh-cn"
 
 PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 
-# default value in bitbake.conf of poky is '/home/root'
-# change to '/root' as this is preferred path
-ROOT_HOME ?= "/root"
-
 DISTRO_FEATURES_DEFAULT:remove = "pcmcia zeroconf"
 DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
     opengl \
