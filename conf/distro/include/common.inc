@@ -89,7 +89,7 @@ DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
     pam \
     virtualization \
     security \
-    ${@bb.utils.filter('MACHINE_FEATURES', 'tpm tpm2', d)}"
+    tpm2"
 DISTRO_FEATURES:append:mx95-generic-bsp = " vulkan"
 DISTRO_FEATURES:append:k3 = " vulkan"
 VIRTUAL-RUNTIME_container_runtime ?= "crun"
