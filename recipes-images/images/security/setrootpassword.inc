@@ -11,5 +11,5 @@ EXTRA_USERS_PARAMS += "\
    ${@bb.utils.contains('DISTRO_FEATURES','protectionshield', '${_ROOT_USER}', '',d)} \
 "
 
-IMAGE_FEATURES:shieldlow += "allow-root-login"
-IMAGE_FEATURES:shieldmedium += "allow-root-login"
+IMAGE_FEATURES:append:shieldlow = " allow-root-login"
+IMAGE_FEATURES:append:shieldmedium = " allow-root-login"
