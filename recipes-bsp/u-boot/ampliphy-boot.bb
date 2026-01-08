@@ -54,8 +54,8 @@ DEFAULT_BOOTSCRIPT:mx8-generic-bsp ?= "mmc_boot_fit.cmd"
 DEFAULT_BOOTSCRIPT:mx9-generic-bsp ?= "mmc_boot_fit.cmd"
 
 BOOTSCRIPTS ??= "*.cmd"
-BOOTSCRIPTS:mx8-generic-bsp ?= "mmc_boot.cmd mmc_boot_fit.cmd net_boot_fit.cmd"
-BOOTSCRIPTS:mx9-generic-bsp ?= "mmc_boot.cmd mmc_boot_fit.cmd net_boot_fit.cmd"
+BOOTSCRIPTS:mx8-generic-bsp ?= "mmc_boot.cmd mmc_boot_fit.cmd mmc_boot_fit_secure.cmd net_boot_fit.cmd"
+BOOTSCRIPTS:mx9-generic-bsp ?= "mmc_boot.cmd mmc_boot_fit.cmd mmc_boot_fit_secure.cmd net_boot_fit.cmd"
 
 DEFAULT_ITS ??= "boot.its.in"
 DEFAULT_ITS:secureboot ?= "boot-sign.its.in"
