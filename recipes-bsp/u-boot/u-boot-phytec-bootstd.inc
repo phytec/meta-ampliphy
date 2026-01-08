@@ -6,6 +6,10 @@ inherit ${K3_INHERIT}
 
 SRC_URI:append:update = " file://rauc.cfg"
 
+SRC_URI:append:secureboot = " \
+    file://disable-insecure-bootmeths.cfg \
+"
+
 python do_env:append:k3() {
     env_add(d, "script_offset_f", "0x700000")
     env_add(d, "script_size_f", "0x2000")
