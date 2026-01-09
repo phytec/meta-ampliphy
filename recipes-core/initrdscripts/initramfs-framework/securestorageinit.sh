@@ -80,30 +80,32 @@ securestorageinit_run() {
 		fi
 		if test -f ${CONFIG_MOUNTPATH}/secrets/trusted_key.config; then
 			source ${CONFIG_MOUNTPATH}/secrets/trusted_key.config
-			modprobe -q  trusted source=${trustedsource}
+			modprobe -q trusted source=${trustedsource}
 		else
-			modprobe -q  trusted
+			modprobe -q trusted
 		fi
 		load_kernel_module encrypted-keys
 		load_kernel_module dm-crypt
 		load_kernel_module dm-integrity
 		if test -f ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob; then
-			keyctl add trusted kmk  "load `cat ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob`" @u
+			keyctl add trusted kmk "load `cat ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob`" @u
 		fi
 		if test -f ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob; then
-			keyctl add encrypted rootfs  "load `cat ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob`" @u
+			keyctl add encrypted rootfs "load `cat ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob`" @u
 		fi
 		if test -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb; then
 			caam-keygen import ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb importkey
 			cat ${CONFIG_MOUNTPATH}/secrets/importkey | keyctl padd logon rootfs: @u
 		fi
-		# mount all partitions without label (sign for encrypted       partition)
+
+		# mount all partitions without label (sign for encrypted partition)
 		count=$(ls ${root%?}* | wc -l)
 		i=1
 		j=0
 		while [ $i -le $count ]
 		do
-			for arg in $(blkid ${root%?}${i}); do
+			devroot=${root%?}${i}
+			for arg in $(blkid ${devroot}); do
 				case "${arg}" in
 					LABEL=*) eval ${arg};;
 					TYPE=*) eval ${arg};;
@@ -111,13 +113,13 @@ securestorageinit_run() {
 				esac
 			done
 
-			devroot=${root%?}${i}
 			if [ -n "${TYPE}" ] && [ "${TYPE}" = "DM_integrity" ]; then
-				integritysetup open ${devroot} --integrity sha256 --journal-integrity sha256 introot${j}
+				dm_inc_name=introot${j}
+				integritysetup open ${devroot} --integrity sha256 --journal-integrity sha256 ${dm_inc_name}
 				unset LABEL
 				unset PTTYPE
 				unset TYPE
-				devroot=/dev/mapper/introot${j}
+				devroot=/dev/mapper/${dm_inc_name}
 				for arg in $(blkid ${devroot}); do
 					case "${arg}" in
 						LABEL=*) eval ${arg};;
@@ -126,30 +128,32 @@ securestorageinit_run() {
 					esac
 				done
 			fi
+			dm_enc_name=encroot${j}
 			if [ ! -n "${TYPE}" ] && [ ! -n "${PTTYPE}" ]; then
 				if test -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb; then
-					dmsetup create root${j} --table "0 $(blockdev --getsz ${devroot}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${devroot} 0"
+					dmsetup create ${dm_enc_name} --table "0 $(blockdev --getsz ${devroot}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${devroot} 0"
 				else
-					dmsetup create root${j} --table "0 $(blockdev --getsz ${devroot}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${devroot} 0"
+					dmsetup create ${dm_enc_name} --table "0 $(blockdev --getsz ${devroot}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${devroot} 0"
 				fi
 				let j=j+1
 			else
-				[ -n "${TYPE}" ] && [ "${TYPE}" = "DM_integrity" ] &&  let j=j+1
+				[ -n "${TYPE}" ] && [ "${TYPE}" = "DM_integrity" ] && let j=j+1
 			fi
 			let i=i+1
 			unset LABEL
 			unset TYPE
 			unset PTTYPE
 		done
+
 		if [ -n "${bcactive}" ]; then
 			dmvalue=${bcactive: -1}
-			if [ $(ls /dev/dm-* | wc -l) -eq 4 ]; then
+			if [ -e /dev/mapper/introot0 ] && [ -e /dev/mapper/encroot0 ]; then
 				dmvalue=1
 				[ ${bcactive: -1} -eq 1 ] && dmvalue=3
 			fi
 		else
 			dmvalue=0
-			if [ $(ls /dev/dm-* | wc -l) -eq 2 ]; then
+			if [ -e /dev/mapper/introot0 ] && [ -e /dev/mapper/encroot0 ]; then
 				dmvalue=1
 			fi
 		fi
@@ -164,10 +168,8 @@ securestorageinit_run() {
 		mount ${root} ${ROOTFS_DIR}
 	fi
 	mount --move /dev ${ROOTFS_DIR}/dev
-	mount --move /proc $ROOTFS_DIR/proc
-	mount --move /sys $ROOTFS_DIR/sys
-	cd $ROOTFS_DIR
-	exec switch_root $ROOTFS_DIR ${bootparam_init:-/sbin/init}
+	mount --move /proc ${ROOTFS_DIR}/proc
+	mount --move /sys ${ROOTFS_DIR}/sys
+	cd ${ROOTFS_DIR}
+	exec switch_root ${ROOTFS_DIR} ${bootparam_init:-/sbin/init}
 }
-
-
