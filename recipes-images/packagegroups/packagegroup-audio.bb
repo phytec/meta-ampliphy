@@ -7,7 +7,8 @@ inherit packagegroup
 
 RDEPENDS:${PN} = " \
     alsa-utils \
-    alsa-utils-scripts \
+    alsa-utils-alsa-info \
+    alsa-utils-alsaconf \
     alsa-state \
     vorbis-tools \
     libao-plugin-libalsa \
