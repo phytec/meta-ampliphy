@@ -6,15 +6,28 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 inherit deploy
 S = "${UNPACKDIR}"
 
-do_install () {
-        install -d ${D}/rauc
-}
+C = "${WORKDIR}/config-partition"
 
-FILES:${PN} = "rauc/"
+fakeroot do_config_partition () {
+        install -d ${C}
+        install -d ${C}/rauc
+
+        tar -czf ${B}/config-partition.tar.gz -C ${C}/ .
+
+        # calculate size of config partition,
+        # needs to be at least 2MB for ext4
+        size=$(du -s ${C} | awk '{print $1}')
+        if [ $size -lt 2048 ]; then size=2048; fi
+        mkfs.ext4 -d ${C} ${B}/config-partition.ext4 $size
+}
+do_config_partition[depends] += " \
+        virtual/fakeroot-native:do_populate_sysroot \
+        e2fsprogs-native:do_populate_sysroot \
+"
+addtask config_partition
 
 do_deploy () {
-        tar -czf ${B}/config-partition.tar.gz -C ${D}/ . --owner=0 --group=0
         install -m 644 ${B}/config-partition.tar.gz ${DEPLOYDIR}
+        install -m 644 ${B}/config-partition.ext4 ${DEPLOYDIR}
 }
-
-addtask deploy after do_install
+addtask deploy after do_config_partition
