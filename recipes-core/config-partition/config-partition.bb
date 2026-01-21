@@ -12,6 +12,9 @@ C = "${WORKDIR}/config-partition"
 fakeroot do_config_partition () {
         install -d ${C}
         install -d ${C}/rauc
+        if echo ${MACHINE_FEATURES} | grep -wq "optee"; then
+                install -o teesuppl -g teesuppl -m 0700 -d ${C}/optee
+        fi
 
         tar -czf ${B}/config-partition.tar.gz -C ${C}/ .
 
@@ -24,6 +27,7 @@ fakeroot do_config_partition () {
 do_config_partition[depends] += " \
         virtual/fakeroot-native:do_populate_sysroot \
         e2fsprogs-native:do_populate_sysroot \
+        ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'optee-client:do_populate_sysroot', '', d)} \
 "
 addtask config_partition
 
