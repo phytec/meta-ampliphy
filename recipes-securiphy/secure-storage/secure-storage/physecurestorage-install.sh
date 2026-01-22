@@ -152,7 +152,6 @@ do
 			exit 5
 		fi
 		j=0
-		flashpart=2
 		while [ $j -lt $DORAUC ]
 		do
 			case ${2} in
@@ -182,7 +181,6 @@ do
 				exit 3
 			esac
 			j=`expr $j + 1`
-			flashpart=`expr $flashpart + 2`
 		done
 		exit 0
 		;;
