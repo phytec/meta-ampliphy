@@ -1,0 +1,14 @@
+[Unit]
+Description=Load keys from config partition
+DefaultDependencies=no
+After=mnt-config.mount
+
+[Service]
+Type=oneshot
+KeyringMode=shared
+User=root
+ExecStartPre=/usr/bin/keyctl link @u @s
+ExecStart=/usr/bin/physecurekeystorage-install --loadkeystorage
+
+[Install]
+WantedBy=initrd.target
