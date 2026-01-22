@@ -22,7 +22,6 @@ DISTRO_VERSION:k3r5-am64xx = "${DISTRO_VERSION:am64xx}"
 DISTRO_VERSION:am67xx = "BSP-Yocto-Ampliphy-AM67x-master"
 DISTRO_VERSION:k3r5-am67xx = "${DISTRO_VERSION:am67xx}"
 DISTRO_VERSION:j721s2 = "BSP-Yocto-Ampliphy-AM68x-master"
-DISTRO_VERSION:rk3288 = "BSP-Yocto-Ampliphy-RK3288-master"
 
 # DISTRO_VERSION's development-build marker '-devel'
 DISTRO_VERSION:append = "${@ '' if d.getVar('BB_PHY_BUILDTYPE') == "RELEASE" else '-devel' }"

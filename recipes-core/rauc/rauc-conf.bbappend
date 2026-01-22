@@ -31,7 +31,6 @@ USE_BOOTLOADER_SLOT ?= "${USE_BOOTLOADER_SLOT_WEAK_DEFAULT}"
 # overridden by normal assignment later on
 USE_BOOTLOADER_SLOT_WEAK_DEFAULT = "true"
 USE_BOOTLOADER_SLOT_WEAK_DEFAULT:ti33x = "false"
-USE_BOOTLOADER_SLOT_WEAK_DEFAULT:rk3288 = "false"
 
 # We want system.conf to be fetched before any of the following variables are
 # changed. This is needed because ${UNPACKDIR}/system.conf is overridden by
