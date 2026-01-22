@@ -24,6 +24,13 @@ do_install() {
 }
 
 RDEPENDS:${PN} = " \
+    cryptsetup \
+    e2fsprogs-mke2fs \
+    e2fsprogs-resize2fs \
+    kernel-module-dm-crypt \
+    kernel-module-dm-integrity \
+    keyutils \
+    libdevmapper \
     xz \
 "
 
