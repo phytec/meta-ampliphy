@@ -1,0 +1,16 @@
+[Unit]
+Description=Open encrypted partitions
+DefaultDependencies=no
+After=physecurekeystorage-load.service
+Wants=physecurekeystorage-load.service
+Before=initrd-root-device.target
+
+[Service]
+KeyringMode=shared
+User=root
+ExecStartPre=/usr/bin/keyctl link @u @s
+ExecStart=/usr/bin/physecurestorage-open
+Type=oneshot
+
+[Install]
+WantedBy=initrd.target
