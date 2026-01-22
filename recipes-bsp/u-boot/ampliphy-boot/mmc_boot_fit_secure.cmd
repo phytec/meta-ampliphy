@@ -5,7 +5,7 @@ fi
 
 test -n ${distro_rootpart} || env set distro_rootpart 2
 test -n ${fit_addr_r} && env set loadaddr ${fit_addr_r}
-env set bootargs "console=${console} earlycon=${earlycon} root=/dev/mapper/root${distro_rootpart} ${raucargs} rootwait rw ${optargs}"
+env set bootargs "console=${console} earlycon=${earlycon} root=/dev/mapper/mmcblk${devnum}p${distro_rootpart} ${raucargs} rootwait rw ${optargs}"
 
 load ${devtype} ${devnum}:${distro_bootpart} ${loadaddr} fitImage
 
