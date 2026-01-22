@@ -60,6 +60,8 @@ do_install() {
 	echo "ANSI_COLOR=\"1;35\"" >> ${D}${sysconfdir}/os-release
 	echo "HOME_URL=\"http://www.phytec.de\"" >> ${D}${sysconfdir}/os-release
 
+        ln -rs ${D}${sysconfdir}/os-release ${D}${sysconfdir}/initrd-release
+
 	install -d ${D}${bindir}
 	install -m 0755 ${UNPACKDIR}/lsb_release ${D}${bindir}/
 }
@@ -73,3 +75,9 @@ RPROVIDES:${PN} = "os-release"
 RREPLACES:${PN} = "os-release"
 RCONFLICTS:${PN} = "os-release"
 
+PACKAGES += "${PN}-initrd"
+FILES:${PN}-initrd = "${sysconfdir}/initrd-release"
+RDEPENDS:${PN}-initrd += "${PN}"
+RPROVIDES:${PN}-initrd = "os-release-initrd"
+RREPLACES:${PN}-initrd = "os-release-initrd"
+RCONFLICTS:${PN}-initrd = "os-release-initrd"
