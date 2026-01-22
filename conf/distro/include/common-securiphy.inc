@@ -33,9 +33,7 @@ KERNEL_FEATURES_DESELECT ?= "debug kvm media xen"
 
 # File system encryption
 DISTRO_FEATURES += "securestorage"
-# possible values: fileauthorenc , fileauthandenc
-SECURE_STORAGE_TYPE ??= "fileauthandenc"
-DISTROOVERRIDES:append = ":securestorage:${SECURE_STORAGE_TYPE}"
+DISTROOVERRIDES:append = ":securestorage"
 
 #add class secureboot for signing Bootloader and FIT-Image
 INHERIT += "secureboot"
