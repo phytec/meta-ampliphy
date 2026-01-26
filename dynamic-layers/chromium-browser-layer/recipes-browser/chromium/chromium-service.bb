@@ -5,6 +5,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 inherit features_check
 inherit systemd
 
+UNPACKDIR = "${S}"
+
 SRC_URI = "\
             file://chromium.service \
           "
@@ -16,7 +18,7 @@ SYSTEMD_SERVICE:${PN} = "chromium.service"
 
 do_install() {
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/chromium.service ${D}${systemd_system_unitdir}
+    install -m 0644 ${UNPACKDIR}/chromium.service ${D}${systemd_system_unitdir}
 }
 
 FILES:${PN} += "${systemd_system_unitdir}/chromium.service"
