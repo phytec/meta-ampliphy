@@ -1,0 +1,1 @@
+KERNEL=="mmcblk[0-9]*p[0-9]*", PROGRAM="@BINDIR@/isbootpart %k", SYMLINK+="boot"
