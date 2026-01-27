@@ -1,0 +1,6 @@
+[Match]
+Name=end3
+
+[Network]
+DHCP=ipv4
+Address=192.168.6.11/24
