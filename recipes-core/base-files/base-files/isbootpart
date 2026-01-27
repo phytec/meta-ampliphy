@@ -1,0 +1,16 @@
+#!/bin/sh
+
+RAUC_SYSTEM_CONF="/etc/rauc/system.conf"
+ROOT_DEV=$(mount | grep -w "/" | cut -d " " -f 1)
+if [ ! -e "$RAUC_SYSTEM_CONF" ]; then
+        # Distro without RAUC detected. Boot partition is assumed to be always
+        # p1 of the same device as the rootfs.
+        exit $(test "/dev/$1" = "${ROOT_DEV%p*}p1")
+fi
+
+PARSED_CONF=$(awk '/\[/{prefix=$0; next} $1{print prefix $0}' $RAUC_SYSTEM_CONF)
+ROOT_SLOT=$(echo "$PARSED_CONF" | grep "$ROOT_DEV" | grep -Eo "root[a-z0-9]*\.[01]")
+BOOT_SLOT=$(echo "$PARSED_CONF" | grep "$1" | grep -E "\[slot\.boot[a-z0-9]*\.[01]\]" | grep -Eo "[a-z0-9]+\.[01]")
+PARENT_ROOT_SLOT=$(echo "$PARSED_CONF" | grep "\[slot\.$BOOT_SLOT\]parent=" | grep -o "root[a-z0-9]*\.[01]")
+
+exit $(test "$ROOT_SLOT" = "$PARENT_ROOT_SLOT")

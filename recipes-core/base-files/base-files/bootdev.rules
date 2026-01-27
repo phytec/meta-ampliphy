@@ -1,5 +1,0 @@
-# udev rule for MMC block devices
-# Matches partition 1 (p1) on any MMC block device (mmcblk0, mmcblk1, etc.)
-# Check if the coresponding partion 2 (p2) is mounted as root and add a symlink
-KERNEL=="mmcblk[0-9]*p1", ACTION=="add", SUBSYSTEM=="block", \
-	PROGRAM="BINDIR/check_boot_root.sh %k", SYMLINK+="bootdev"
