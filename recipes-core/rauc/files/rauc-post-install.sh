@@ -8,5 +8,3 @@ end() {
         exit $result
     fi
 }
-
-/usr/lib/rauc/rauc-handle-secrets.sh -r
