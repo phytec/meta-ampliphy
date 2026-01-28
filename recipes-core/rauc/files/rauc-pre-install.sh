@@ -10,4 +10,3 @@ end() {
 }
 
 rauc_downgrade_barrier.sh
-/usr/lib/rauc/rauc-handle-secrets.sh -b

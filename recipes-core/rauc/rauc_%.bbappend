@@ -6,7 +6,6 @@ SRC_URI += " \
     file://update_usb.sh \
     file://rauc_downgrade_barrier.sh \
     file://rauc-pre-install.sh \
-    file://rauc-handle-secrets.sh \
     file://rauc-post-install.sh \
     ${@bb.utils.contains('DISTRO_FEATURES', 'rauc-appfs', 'file://is-parent-active file://10-appfs.rules', '', d)} \
 "
@@ -52,7 +51,6 @@ do_install:append() {
 	install -m 0644 ${UNPACKDIR}/downgrade_barrier_version ${D}${sysconfdir}/rauc/downgrade_barrier_version
 
 	install -m 0774 ${UNPACKDIR}/rauc-pre-install.sh ${D}${libdir}/rauc
-	install -m 0774 ${UNPACKDIR}/rauc-handle-secrets.sh ${D}${libdir}/rauc
 	install -m 0774 ${UNPACKDIR}/rauc-post-install.sh ${D}${libdir}/rauc
 }
 do_install:append:rauc-appfs() {
