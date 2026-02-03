@@ -24,6 +24,7 @@ fakeroot do_config_partition () {
         size=$(du -s ${C} | awk '{print $1}')
         if [ $size -lt 2048 ]; then size=2048; fi
         mkfs.ext4 -d ${C} ${B}/config-partition.ext4 $size
+        fsck.ext4 -pvfD ${B}/config-partition.ext4 || [ $? -le 3 ]
 }
 do_config_partition[depends] += " \
         virtual/fakeroot-native:do_populate_sysroot \
