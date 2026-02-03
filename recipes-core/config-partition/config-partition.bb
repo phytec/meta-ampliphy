@@ -15,6 +15,7 @@ fakeroot do_config_partition () {
                 install -o teesuppl -g teesuppl -m 0700 -d ${C}/optee
         fi
 
+        install -d ${B}
         tar -czf ${B}/config-partition.tar.gz -C ${C}/ .
 
         # calculate size of config partition,
