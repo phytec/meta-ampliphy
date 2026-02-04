@@ -109,8 +109,7 @@ PARTUP_PACKAGE_DEPENDS:append:mx9-generic-bsp = " ampliphy-boot"
 # Dependency used by RAUC bundles and sbom-cyclonedx class
 DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
 DEP_BOOTLOADER:mx8-nxp-bsp = "${IMAGE_BOOTLOADER}"
-DEP_BOOTLOADER:mx91-nxp-bsp = "${IMAGE_BOOTLOADER}"
-DEP_BOOTLOADER:mx93-nxp-bsp = "${IMAGE_BOOTLOADER}"
+DEP_BOOTLOADER:mx9-nxp-bsp = "${IMAGE_BOOTLOADER}"
 DEP_BOOTLOADER:k3 = "${IMAGE_BOOTLOADER}"
 
 # Set a more generic tune for better package reuse across different machines
