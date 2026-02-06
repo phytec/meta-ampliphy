@@ -97,6 +97,7 @@ init_keystore() {
 }
 
 load_keystore() {
+	modprobe -r trusted
 	if test -f ${CONFIG_MOUNTPATH}/secrets/trusted_key.config; then
 		source ${CONFIG_MOUNTPATH}/secrets/trusted_key.config
 		if [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
