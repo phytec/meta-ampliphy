@@ -47,4 +47,6 @@ PACKAGE_INSTALL:remove:mx9-nxp-bsp = " \
 
 PACKAGE_EXCLUDE = "kernel-image-*"
 
+MACHINE_FIRMWARE:remove:mx8mp-nxp-bsp  = "sof-imx sof-zephyr zephyr-demo-imx"
+
 NO_RECOMMENDATIONS = "1"
