@@ -18,9 +18,11 @@ export IMAGE_BASENAME = "phytec-secureboot-initramfs"
 IMAGE_NAME_SUFFIX = ""
 
 IMAGE_INSTALL = " \
-    initramfs-framework-base \
-    initramfs-module-udev \
-    initramfs-module-securestorage \
+    packagegroup-core-boot \
+    systemd-initramfs \
+    ampliphy-version-initrd \
+    physecurekeystorage-load \
+    physecurestorage-open \
     busybox \
     ${MACHINE_EXTRA_RDEPENDS} \
     packagegroup-sks-kernelkeyring \
