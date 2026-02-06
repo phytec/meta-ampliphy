@@ -21,10 +21,8 @@ NAND_DEV ??= "0"
 
 ROOTFS_0_DEV ??= "/dev/mmcblk${EMMC_DEV}p5"
 ROOTFS_1_DEV ??= "/dev/mmcblk${EMMC_DEV}p6"
-ROOTFS_0_DEV:fileauthorenc ?= "/dev/dm-0"
-ROOTFS_1_DEV:fileauthorenc ?= "/dev/dm-1"
-ROOTFS_0_DEV:fileauthandenc ?= "/dev/dm-1"
-ROOTFS_1_DEV:fileauthandenc ?= "/dev/dm-3"
+ROOTFS_0_DEV:securestorage ?= "/dev/mapper/mmcblk${EMMC_DEV}p5"
+ROOTFS_1_DEV:securestorage ?= "/dev/mapper/mmcblk${EMMC_DEV}p6"
 
 USE_BOOTLOADER_SLOT ?= "${USE_BOOTLOADER_SLOT_WEAK_DEFAULT}"
 # we don't use overrides directly to set a default, as this cannot be
