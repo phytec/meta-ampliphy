@@ -62,6 +62,12 @@ do_install() {
 	install -d ${D}${bindir}
 	install -m 0755 ${UNPACKDIR}/lsb_release ${D}${bindir}/
 }
+FILES:${PN} = "\
+    ${sysconfdir}/os-release \
+    ${sysconfdir}/ampliphy-version \
+    ${sysconfdir}/ampliphy-build-info \
+    ${bindir}/lsb_release \
+"
 RPROVIDES:${PN} = "os-release"
 RREPLACES:${PN} = "os-release"
 RCONFLICTS:${PN} = "os-release"
