@@ -17,7 +17,7 @@ IMAGE_FSTYPES:update = "cpio.gz"
 export IMAGE_BASENAME = "phytec-secureboot-initramfs"
 IMAGE_NAME_SUFFIX = ""
 
-IMAGE_INSTALL = " \
+PACKAGE_INSTALL = " \
     packagegroup-core-boot \
     systemd-initramfs \
     ampliphy-version-initrd \
@@ -33,23 +33,18 @@ IMAGE_INSTALL = " \
     systemd-conf \
 "
 
-IMAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
+PACKAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
 
-IMAGE_INSTALL:remove:mx8m-nxp-bsp = " \
+PACKAGE_INSTALL:remove:mx8m-nxp-bsp = " \
     kernel-module-tpm-tis-spi \
     kernel-module-tpm-tis \
 "
 
-IMAGE_INSTALL:remove:mx9-nxp-bsp = " \
+PACKAGE_INSTALL:remove:mx9-nxp-bsp = " \
     kernel-module-tpm-tis-spi \
     kernel-module-tpm-tis \
 "
 
 PACKAGE_EXCLUDE = "kernel-image-*"
 
-# Remove some packages added via recommendations
-BAD_RECOMMENDATIONS += " \
-    initramfs-module-rootfs \
-    initramfs-module-finish \
-    busybox-syslog \
-"
+NO_RECOMMENDATIONS = "1"
