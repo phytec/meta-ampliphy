@@ -9,6 +9,8 @@ SRC_URI = " \
 
 S = "${UNPACKDIR}"
 
+PACKAGES = "${PN}-install"
+
 FLASH_PATH ??= "/dev/mmcblk${EMMC_DEV}"
 
 do_patch() {
@@ -22,7 +24,7 @@ do_install() {
     install -m 0500 ${S}/physecurestorage-install.sh ${D}${bindir}/physecurestorage-install
 }
 
-RDEPENDS:${PN} = " \
+RDEPENDS:${PN}-install = " \
     cryptsetup \
     e2fsprogs-mke2fs \
     e2fsprogs-resize2fs \
@@ -33,6 +35,6 @@ RDEPENDS:${PN} = " \
     xz \
 "
 
-FILES:${PN} = "\
+FILES:${PN}-install = "\
     ${bindir}/physecurestorage-install \
 "
