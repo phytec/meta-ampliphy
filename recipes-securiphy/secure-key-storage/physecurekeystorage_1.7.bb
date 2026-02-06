@@ -9,6 +9,8 @@ SRC_URI = " \
 
 S = "${UNPACKDIR}"
 
+PACKAGES = "${PN}-install"
+
 CONFIG_DEV ??= "/dev/mmcblk${EMMC_DEV}p3"
 CONFIG_MOUNTPATH ??= "/mnt/config"
 
@@ -24,11 +26,11 @@ do_install() {
     install -m 0500 ${S}/physecurekeystorage-install.sh ${D}${bindir}/physecurekeystorage-install
 }
 
-FILES:${PN} = "\
+FILES:${PN}-install = "\
     ${bindir}/physecurekeystorage-install \
 "
 
-RDEPENDS:${PN} = " \
+RDEPENDS:${PN}-install = " \
     jq \
     kernel-module-trusted \
     kernel-module-encrypted-keys \
