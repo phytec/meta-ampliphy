@@ -30,4 +30,9 @@ FILES:${PN} = "\
 
 RDEPENDS:${PN} = " \
     jq \
+    kernel-module-trusted \
+    kernel-module-encrypted-keys \
+    keyutils \
+    ${@bb.utils.contains("MACHINE_FEATURES", "caam", "keyctl-caam", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "tpm2-tools", "", d)} \
 "
