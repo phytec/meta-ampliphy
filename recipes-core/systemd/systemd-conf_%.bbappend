@@ -84,7 +84,8 @@ do_install:append() {
 }
 
 do_install:append:phyboard-segin() {
-    sed -i 's/^\s*FDMode\s*=\s*yes/FDMode=no/' ${D}${systemd_unitdir}/network/11-can.network
+    sed -i '/^FDMode/d' ${D}${systemd_unitdir}/network/11-can.network
+    sed -i '/^DataBitRate/d' ${D}${systemd_unitdir}/network/11-can.network
 }
 
 # first interface should always have the ip 192.168.3.11
