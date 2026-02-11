@@ -4,7 +4,10 @@ K3_INHERIT = ""
 K3_INHERIT:k3 = "uboot-extra-env"
 inherit ${K3_INHERIT}
 
-SRC_URI:append:update = " file://rauc.cfg"
+SRC_URI:append:update = " \
+    file://rauc.cfg \
+    file://boot-retry.cfg \
+"
 
 SRC_URI:append:secureboot = " \
     file://disable-insecure-bootmeths.cfg \
