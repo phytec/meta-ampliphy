@@ -16,7 +16,6 @@ PACKAGECONFIG ??= "\
 "
 
 PACKAGECONFIG[apparmor] = "-Dapparmor=true,-Dapparmor=false,"
-PACKAGECONFIG[udev-hwdb] = "-Dhwdb=true,-Dhwdb=false,"
 
 RRECOMMENDS:${PN}:remove = "systemd-compat-units"
 RDEPENDS:${PN} += "systemd-conf"
