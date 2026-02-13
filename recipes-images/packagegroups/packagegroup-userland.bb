@@ -17,5 +17,5 @@ RDEPENDS:${PN} = " \
     rpm \
     linuxptp \
     wget \
-    ${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-phytec u-boot-phytec-imx u-boot-phytec-ti', 'libubootenv-bin',     '', d)} \
+    ${@'libubootenv-bin u-boot-tools-mkimage' if (d.getVar('PREFERRED_PROVIDER_virtual/bootloader', True) or '').startswith('u-boot') else ''} \
 "
