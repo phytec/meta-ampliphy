@@ -20,14 +20,10 @@ RDEPENDS:${PN} = " \
     iproute2 \
     nfs-utils-client \
     rauc-flash-nand \
+    ${@bb.utils.contains("MACHINE_FEATURES", "camera", "phycam-setup", "", d)} \
 "
 
-RDEPENDS:${PN}:append:j721s2 = " phycam-setup"
 RDEPENDS:${PN}:append:mx6-generic-bsp = " bbu"
-RDEPENDS:${PN}:append:mx6ul-generic-bsp = " bbu phycam-setup"
-RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " phycam-setup"
-RDEPENDS:${PN}:append:mx8mm-nxp-bsp = " phycam-setup"
-RDEPENDS:${PN}:append:mx95-nxp-bsp = " phycam-setup"
-RDEPENDS:${PN}:append:mx93-nxp-bsp = " phycam-setup"
+RDEPENDS:${PN}:append:mx6ul-generic-bsp = " bbu"
 RDEPENDS:${PN}:append:rk3288 = " rkeeprom"
 RDEPENDS:${PN}:append:ti33x = " bbu"
