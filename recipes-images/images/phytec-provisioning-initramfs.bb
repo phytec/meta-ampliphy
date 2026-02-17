@@ -44,6 +44,8 @@ PACKAGE_INSTALL = " \
     systemd-conf \
 "
 
+PACKAGE_INSTALL:append:mx6-generic-bsp = " kernel-module-imx-sdma"
+PACKAGE_INSTALL:append:mx6ul-generic-bsp = " kernel-module-imx-sdma"
 PACKAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
 
 PACKAGE_INSTALL:remove:mx8m-nxp-bsp = " \
