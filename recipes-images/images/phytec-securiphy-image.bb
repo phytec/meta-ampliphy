@@ -4,7 +4,6 @@ LICENSE = "MIT"
 
 inherit features_check
 require recipes-images/images/phytec-headless-image.bb
-require recipes-images/images/security/setrootpassword.inc
 
 REQUIRED_DISTRO_FEATURES = "secureboot"
 

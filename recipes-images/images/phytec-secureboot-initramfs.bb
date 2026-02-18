@@ -3,7 +3,6 @@ DESCRIPTION = "Mount the protected rootfs partitions for booting"
 LICENSE = "MIT"
 
 inherit core-image image_types
-require recipes-images/images/security/setrootpassword.inc
 
 # Do not pollute the initrd image with rootfs features
 IMAGE_FEATURES = ""
