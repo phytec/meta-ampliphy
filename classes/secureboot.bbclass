@@ -43,3 +43,10 @@ FIT_HASH_ALG = "sha256"
 # Set pkcs11 as signing engine
 # UBOOT_MKIMAGE_SIGN_ARGS = "-N pkcs11"
 UBOOT_MKIMAGE_SIGN_ARGS ?= ""
+
+##################################################
+#       Userspace authentication                 #
+##################################################
+
+# ssh certificate authentication public key
+SSH_CA_PUBKEY ?= "${CERT_PATH}/ssh-ca/user-client-ca/user_client_ca.pub"
