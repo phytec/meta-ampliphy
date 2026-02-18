@@ -2,10 +2,8 @@ SUMMARY = "PHYTEC provisioning initramfs image for initialization of security fe
 LICENSE = "MIT"
 
 inherit core-image image_types
-require recipes-images/images/security/setrootpassword.inc
 
 # Do not pollute the initrd image with rootfs features
-IMAGE_FEATURES = ""
 IMAGE_LINGUAS = ""
 
 IMAGE_ROOTFS_SIZE = "8192"
