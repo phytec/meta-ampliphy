@@ -16,7 +16,6 @@ do_image[depends] += "\
     ${@bb.utils.contains('UBOOT_SIGN_ENABLE','1','${_FITIMAGE_TO_WIC}','', d)}"
 
 IMAGE_INSTALL += " \
-    ${@bb.utils.contains("DISTRO_FEATURES", "protectionshield", "phytec-example-users", "", d)} \
     rng-tools \
     packagegroup-sks-kernelkeyring \
     ${@bb.utils.contains("DISTRO_FEATURES", "virtualization", "packagegroup-virtualization", "", d)} \
