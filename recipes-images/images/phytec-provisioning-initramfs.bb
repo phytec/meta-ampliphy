@@ -23,6 +23,7 @@ PACKAGE_INSTALL = " \
     packagegroup-core-boot \
     systemd-initramfs \
     systemd-networkd \
+    openssh \
     busybox \
     packagegroup-hwtools-init \
     util-linux \
