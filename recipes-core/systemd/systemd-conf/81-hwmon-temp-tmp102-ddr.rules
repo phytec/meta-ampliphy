@@ -1,0 +1,5 @@
+# TMP102 at i2c-1, address 0x48  (1-0048)
+ACTION=="add", SUBSYSTEM=="hwmon", \
+  ATTR{name}=="tmp102", \
+  KERNELS=="1-0048", SUBSYSTEMS=="i2c", \
+  RUN+="/bin/sh -c 'ln -sf /sys$devpath/temp1_input /dev/tmp102-phyflex-dram'"

@@ -34,6 +34,13 @@ SRC_URI:append:k3 = " \
     file://86-k3-remoteproc.rules \
 "
 
+SRC_URI:append:phyflex-libra-rdk = " \
+    file://82-hwmon-temp-libra.rules \
+"
+SRC_URI:append:am62lxx:phyflex-fpsc-g = " \
+    file://81-hwmon-temp-tmp102-ddr.rules \
+"
+
 do_install:append() {
     install -d ${D}${systemd_unitdir}/network/
     for file in $(find ${WORKDIR} -maxdepth 1 -type f -name *.network); do
@@ -70,6 +77,16 @@ do_install:append() {
     if [ -e ${WORKDIR}/45-disable-multitouch-mouse.rules ]; then
         install -d ${D}${sysconfdir}/udev/rules.d
         install -m 0644 ${WORKDIR}/45-disable-multitouch-mouse.rules ${D}${sysconfdir}/udev/rules.d/
+    fi
+
+    if [ -e ${WORKDIR}/81-hwmon-temp-tmp102-ddr.rules ]; then
+        install -d ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${WORKDIR}/81-hwmon-temp-tmp102-ddr.rules ${D}${sysconfdir}/udev/rules.d/
+    fi
+
+    if [ -e ${WORKDIR}/82-hwmon-temp-libra.rules ]; then
+        install -d ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${WORKDIR}/82-hwmon-temp-libra.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 
     rm -rf ${D}${systemd_unitdir}/network/wired.network
