@@ -10,9 +10,10 @@
 set -e
 trap end EXIT
 end() {
-	if [ "$?" -ne 0 ]; then
-		printf "\n[ERROR] Provisioning eMMC install" 1>&2
-		exit $?
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		printf "\n[ERROR] Provisioning eMMC install\n" 1>&2
+		exit $ret
 	fi
 }
 
