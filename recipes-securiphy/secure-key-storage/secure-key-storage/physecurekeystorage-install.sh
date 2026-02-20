@@ -3,9 +3,10 @@
 set -e
 trap end EXIT
 end() {
-	if [ "$?" -ne 0 ]; then
-		printf "\n[ERROR] Secure Key Storage install" 1>&2
-		exit $?
+	ret=$?
+	if [ $ret -ne 0 ]; then
+		printf "\n[ERROR] Secure Key Storage install\n" 1>&2
+		exit $ret
 	fi
 }
 
@@ -93,6 +94,7 @@ init_keystore() {
 		;;
 	*)
 		echo "Not supported Key type"
+		exit 1
 	esac
 }
 
