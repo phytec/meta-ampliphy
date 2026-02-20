@@ -124,6 +124,7 @@ load_keystore() {
 
 erase_keystore() {
 	keyctl clear @u
+	[ $(lsmod | grep dm_crypt | wc -l) -ne 0 ] && rmmod dm-crypt
 	[ $(lsmod | grep encrypted_keys | wc -l) -ne 0 ] && rmmod encrypted-keys
 	[ $(lsmod | grep trusted | wc -l) -ne 0 ] && rmmod trusted
 	rm ${CONFIG_MOUNTPATH}/secrets/*
