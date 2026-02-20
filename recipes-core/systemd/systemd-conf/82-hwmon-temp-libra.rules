@@ -1,0 +1,5 @@
+# P3T1755 on Libra at i2c-5, address 0x4f  (5-004f)
+ACTION=="add", SUBSYSTEM=="hwmon", \
+ATTR{name}=="p3t1755", \
+KERNELS=="5-004f", SUBSYSTEMS=="i2c", \
+RUN+="/bin/sh -c 'ln -sf /sys$devpath/temp1_input /dev/p3t1755-libra'"
