@@ -6,8 +6,6 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 inherit packagegroup
 
 RDEPENDS:${PN} = " \
-    media-ctl \
-    v4l-utils \
     gstreamer1.0 \
     gstreamer1.0-libav \
     gstreamer1.0-plugins-base \
