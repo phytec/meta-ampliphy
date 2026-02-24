@@ -13,7 +13,7 @@ RDEPENDS:${PN} = " \
     bayer2rgb-neon-bin \
 "
 
-RDEPENDS:${PN}:append:mx95-generic-bsp = " \
+RDEPENDS:${PN}:append:mx95-nxp-bsp = " \
     libcamera \
     libcamera-pycamera \
 "
