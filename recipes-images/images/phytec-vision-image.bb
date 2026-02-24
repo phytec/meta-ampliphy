@@ -26,6 +26,19 @@ IMAGE_INSTALL += "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)} \
 "
 
+IMAGE_INSTALL:append:mx6-nxp-bsp = "\
+    phytec-camera-examples-imx6 \
+"
+
+IMAGE_INSTALL:append:mx6ul-nxp-bsp = "\
+    phytec-camera-examples-imx6ul \
+"
+
+IMAGE_INSTALL:append:mx8mm-nxp-bsp = "\
+    phytec-camera-examples-imx8mm \
+"
+
 IMAGE_INSTALL:append:mx8mp-nxp-bsp = "\
+    phytec-camera-examples-imx8mp \
     isp-imx-phycam \
 "
