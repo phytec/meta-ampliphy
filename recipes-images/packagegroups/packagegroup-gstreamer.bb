@@ -17,11 +17,13 @@ RDEPENDS:${PN} = " \
 # Camera tools by PHYTEC
 RDEPENDS:${PN}:append:mx6-generic-bsp = " \
     phytec-camera-examples-imx6 \
+    gstreamer1.0-plugin-bayer2rgb-neon \
     gstreamer1.0-plugin-vita1300-remapper \
 "
 
 RDEPENDS:${PN}:append:mx6ul-generic-bsp = " \
     phytec-camera-examples-imx6ul \
+    gstreamer1.0-plugin-bayer2rgb-neon \
     gstreamer1.0-plugins-imx \
 "
 
@@ -32,12 +34,14 @@ RDEPENDS:${PN}:append:mx7-nxp-bsp = " \
 
 RDEPENDS:${PN}:append:mx8mm-nxp-bsp = " \
     phytec-camera-examples-imx8mm \
+    gstreamer1.0-plugin-bayer2rgb-neon \
     imx-gst1.0-plugin-gplay \
     imx-gst1.0-plugin \
 "
 
 RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " \
     phytec-camera-examples-imx8mp \
+    gstreamer1.0-plugin-bayer2rgb-neon \
     imx-gst1.0-plugin-gplay \
     imx-gst1.0-plugin \
 "
