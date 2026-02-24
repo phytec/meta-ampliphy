@@ -48,10 +48,11 @@ FILES:${PN} += " \
 
 RDEPENDS:${PN} += " \
     bash \
-    python3-core \
     media-ctl \
     v4l-utils \
     phycam-setup \
+    python3-core \
+    python3-opencv \
     gstreamer1.0 \
     gstreamer1.0-plugins-good-multifile \
     gstreamer1.0-plugins-good-video4linux2 \
