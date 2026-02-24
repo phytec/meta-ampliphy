@@ -1,0 +1,47 @@
+From d74e8b10a2fe24e91cd46e9b36acca843a6c4be9 Mon Sep 17 00:00:00 2001
+From: Julien Vuillaumier <julien.vuillaumier@nxp.com>
+Date: Mon, 15 Dec 2025 15:53:05 +0100
+Subject: [PATCH 1/5] gstreamer: Add raw support to libcamerasrc stream-role
+ property
+
+The current definition of the stream-role property of libcamerasrc
+element does not allow for the Raw (0) value to be assigned.
+That property is used to query the pipeline handlers through
+generateConfiguration(roles) to retrieve the formats exposed to
+the user. Not being able to specify the raw stream-role, bayer
+formats are not reported so can not be used for caps negotiation.
+
+Adding value stream-role=raw enables usage of bayer GStreamer pipelines
+like:
+
+`gst-launch-1.0 libcamerasrc camera-name=<name> src::stream-role=raw !
+    video/x-bayer, format=bggr16le ! ...`
+
+Upstream-Status: Backport [v0.7.0]
+
+Signed-off-by: Julien Vuillaumier <julien.vuillaumier@nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+---
+ src/gstreamer/gstlibcamerapad.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/gstreamer/gstlibcamerapad.cpp b/src/gstreamer/gstlibcamerapad.cpp
+index 37a4689fdb1a..30d4a69f9365 100644
+--- a/src/gstreamer/gstlibcamerapad.cpp
++++ b/src/gstreamer/gstlibcamerapad.cpp
+@@ -95,6 +95,10 @@ gst_libcamera_stream_role_get_type()
+ 	static GType type = 0;
+ 	static const GEnumValue values[] = {
+ 		{
++			static_cast<gint>(StreamRole::Raw),
++			"libcamera::Raw",
++			"raw",
++		}, {
+ 			static_cast<gint>(StreamRole::StillCapture),
+ 			"libcamera::StillCapture",
+ 			"still-capture",
+-- 
+2.43.0
+

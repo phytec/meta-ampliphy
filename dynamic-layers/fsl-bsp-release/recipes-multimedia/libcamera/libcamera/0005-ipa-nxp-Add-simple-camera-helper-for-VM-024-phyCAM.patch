@@ -1,0 +1,169 @@
+From 0ddb96a1173ad62b07d485803697fc70df2113c4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Mon, 23 Feb 2026 16:01:49 +0100
+Subject: [PATCH 5/5] ipa: nxp: Add simple camera helper for VM-024 phyCAM
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add a phycam camera helper for the VM-024 phyCAM (AR0830).
+
+Upstream-Status: Inappropriate [PHYTEC/NXP specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ .../nxp/cam_helper/camera_helper_phycam.cpp   | 138 ++++++++++++++++++
+ 1 file changed, 138 insertions(+)
+
+diff --git a/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp b/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp
+index f4aa12fddb1b..0697326f5c04 100644
+--- a/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp
++++ b/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp
+@@ -52,6 +52,144 @@ class CameraHelperAr0521 : public CameraHelperPhycam
+ };
+ REGISTER_CAMERA_HELPER("ar0521", CameraHelperAr0521)
+ 
++class CameraHelperAr0830 : public CameraHelper
++{
++public:
++	CameraHelperAr0830()
++	{
++		attributes_.delayedControlParams = {
++			{ V4L2_CID_GAIN, {2, false } },
++			{ V4L2_CID_EXPOSURE, {2, false } },
++		};
++		attributes_.mdParams.topLines = 0;
++		attributes_.rgbIr = false;
++	}
++
++	void controlInfoMapGetAnalogGainRange(
++		const ControlInfoMap *ctrls, std::vector<double> *minGain,
++		std::vector<double> *maxGain, std::vector<double> *defGain) const override;
++	uint32_t gainCode(double gain) const override;
++	double gain(uint32_t gainCode) const override;
++	void controlListSetAGC(ControlList *ctrls, double exposure, double gain) const override;
++	int sensorControlsToMetaData(
++		const ControlList *sensorCtrls,
++		ControlList *mdCtrls) const override;
++};
++
++void CameraHelperAr0830::controlInfoMapGetAnalogGainRange(
++	const ControlInfoMap *ctrls, std::vector<double> *minGain,
++	std::vector<double> *maxGain, std::vector<double> *defGain) const
++{
++	uint32_t min, max, def;
++	const auto it = ctrls->find(V4L2_CID_GAIN);
++
++	if (it != ctrls->end()) {
++		min = it->second.min().get<int32_t>();
++		max = it->second.max().get<int32_t>();
++		def = it->second.def().get<int32_t>();
++	} else {
++		min = 0;
++		max = 0;
++		def = 0;
++		LOG(NxpCameraHelper, Error)
++			<< "V4L2_CID_GAIN not supported";
++	}
++
++	minGain->clear();
++	minGain->push_back(gain(min));
++
++	maxGain->clear();
++	maxGain->push_back(gain(max));
++
++	defGain->clear();
++	defGain->push_back(gain(def));
++}
++
++uint32_t CameraHelperAr0830::gainCode(double gain) const
++{
++	int code = 20.0 * std::log10(gain);
++	return std::max(0, std::min(code, 143));
++}
++
++double CameraHelperAr0830::gain(uint32_t gainCode) const
++{
++	return std::pow(10, 0.05 * gainCode);
++}
++
++void CameraHelperAr0830::controlListSetAGC(
++	ControlList *ctrls, double exposure, double gain) const
++{
++	if (!controlListHasId(ctrls, V4L2_CID_GAIN)) {
++		LOG(NxpCameraHelper, Error)
++			<< "V4L2_CID_GAIN cannot be set";
++		return;
++	}
++
++	ctrls->set(V4L2_CID_GAIN, static_cast<int32_t>(gainCode(gain)));
++
++	int32_t lines =
++		static_cast<int32_t>(std::round(exposure / lineDuration()));
++
++	if (!controlListHasId(ctrls, V4L2_CID_EXPOSURE)) {
++		LOG(NxpCameraHelper, Error)
++			<< "V4L2_CID_EXPOSURE cannot be set";
++		return;
++	}
++
++	ctrls->set(V4L2_CID_EXPOSURE, lines);
++}
++
++int CameraHelperAr0830::sensorControlsToMetaData(
++	const ControlList *sensorCtrls,
++	ControlList *mdCtrls) const
++{
++	int ret = 0;
++
++	/* Gain, consider single capture */
++	ASSERT(controlListHasId(mdCtrls, md::AnalogueGain.id()));
++	const ControlValue &GainCtrl = sensorCtrls->get(V4L2_CID_GAIN);
++	std::array<float, 1> GainsArray = { 1.0f };
++	if (!GainCtrl.isNone()) {
++		uint32_t GainCode = GainCtrl.get<int32_t>();
++		GainsArray[0] = gain(GainCode);
++	} else {
++		LOG(NxpCameraHelper, Warning) << "Invalid analogue gain control";
++		ret = -1;
++	}
++	mdCtrls->set(md::AnalogueGain, Span<float>(GainsArray));
++
++	/* Unitary gain for digital gain */
++	ASSERT(controlListHasId(mdCtrls, md::DigitalGain.id()));
++	std::array<float, 1> dGainsArray = { 1.0f };
++	mdCtrls->set(md::DigitalGain, Span<float>(dGainsArray));
++
++	/* Exposure, consider single capture */
++	ASSERT(controlListHasId(mdCtrls, md::Exposure.id()));
++	const ControlValue &exposureCtrl = sensorCtrls->get(V4L2_CID_EXPOSURE);
++	std::array<float, 1> exposuresArray = { 0.0f };
++	if (!exposureCtrl.isNone()) {
++		int32_t exposureLines = exposureCtrl.get<int32_t>();
++		exposuresArray[0] = static_cast<float>(exposureLines * lineDuration());
++	} else {
++		LOG(NxpCameraHelper, Warning) << "Invalid exposure control";
++		ret = -1;
++	}
++	mdCtrls->set(md::Exposure, Span<float>(exposuresArray));
++
++	/* Unitary gains for white balance */
++	ASSERT(controlListHasId(mdCtrls, md::WhiteBalanceGain.id()));
++	std::array<float, 4> wbGains = { 1.0f, 1.0f, 1.0f, 1.0f };
++	mdCtrls->set(md::WhiteBalanceGain, Span<float>(wbGains));
++
++	/* Arbitrary temperature value */
++	ASSERT(controlListHasId(mdCtrls, md::Temperature.id()));
++	mdCtrls->set(md::Temperature, 25.0);
++
++	return ret;
++}
++
++REGISTER_CAMERA_HELPER("ar0830", CameraHelperAr0830)
++
+ } /* namespace nxp */
+ 
+ } /* namespace libcamera */
+-- 
+2.43.0
+

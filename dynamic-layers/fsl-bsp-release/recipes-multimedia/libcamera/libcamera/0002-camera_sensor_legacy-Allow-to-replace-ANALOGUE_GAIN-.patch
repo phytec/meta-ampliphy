@@ -1,0 +1,48 @@
+From b71d285185e88c2d0d47871725712b4e39e32003 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Mon, 23 Feb 2026 15:49:28 +0100
+Subject: [PATCH 2/5] camera_sensor_legacy: Allow to replace ANALOGUE_GAIN by
+ GAIN
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Some camera sensors use a global gain code for both analogue and digital
+gain instead of separate controls for both. Allow to use these with
+libcamera as well.
+
+Upstream-Status: Inappropriate [PHYTEC/NXP specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ src/libcamera/sensor/camera_sensor_legacy.cpp | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/libcamera/sensor/camera_sensor_legacy.cpp b/src/libcamera/sensor/camera_sensor_legacy.cpp
+index 32989c19c019..f0d13c98be58 100644
+--- a/src/libcamera/sensor/camera_sensor_legacy.cpp
++++ b/src/libcamera/sensor/camera_sensor_legacy.cpp
+@@ -437,7 +437,6 @@ int CameraSensorLegacy::validateSensorDriver()
+ 	 * required by the CameraSensor class.
+ 	 */
+ 	static constexpr uint32_t mandatoryControls[] = {
+-		V4L2_CID_ANALOGUE_GAIN,
+ 		V4L2_CID_EXPOSURE,
+ 		V4L2_CID_HBLANK,
+ 		V4L2_CID_PIXEL_RATE,
+@@ -454,6 +453,12 @@ int CameraSensorLegacy::validateSensorDriver()
+ 		}
+ 	}
+ 
++	if (!controls.count(V4L2_CID_ANALOGUE_GAIN) && !controls.count(V4L2_CID_GAIN)) {
++		LOG(CameraSensor, Error)
++			<< "Mandatory V4L2 gain control (analog or global) not available";
++		err = -EINVAL;
++	}
++
+ 	if (err) {
+ 		LOG(CameraSensor, Error)
+ 			<< "The sensor kernel driver needs to be fixed";
+-- 
+2.43.0
+
