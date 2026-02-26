@@ -37,6 +37,7 @@ PACKAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-pkcs11-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-openssl-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-provision-tpm2", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "optee-client", "", d)} \
     packagegroup-cryptodev \
     rng-tools \
     pv \
