@@ -114,25 +114,29 @@ python do_cyclonedx_image() {
     deploy_base_dir = d.getVar("DEPLOY_DIR_CYCLONEDX_BASE", True)
     for entry in os.listdir(deploy_base_dir):
         filesdir = os.path.join(deploy_base_dir, entry)
+        files = list()
         if os.path.isdir(filesdir):
             files = os.listdir(filesdir)
-            for filename in files:
-                if filename.endswith(".json"):
-                    filepath = os.path.join(filesdir, filename)
-                    component = read_json(filepath)
-                    for comp in component["components"]:
-                        if not bb.utils.to_boolean(d.getVar('CYCLONEDX_WITH_NATIVE')) and not "isNative" in comp["tags"]:
-                            add_comp = True
-                            for sbom_comp in sbom["components"]:
-                                if comp["cpe"] == sbom_comp["cpe"]:
-                                    values_changed = diff_json(comp, sbom_comp, [])
-                                    # if identical or only bom-ref is different, then it is the same component
-                                    if len(values_changed) == 0 \
-                                        or (len(values_changed) == 1 and ".bom-ref" in values_changed):
-                                        add_comp = False
-                                        break;
-                            if add_comp:
-                                sbom["components"].append(comp)
+        elif os.path.isfile(filesdir):
+            files.append(filesdir)
+
+        for filename in files:
+            if filename.endswith(".json"):
+                filepath = os.path.join(filesdir, filename)
+                component = read_json(filepath)
+                for comp in component["components"]:
+                    if not bb.utils.to_boolean(d.getVar('CYCLONEDX_WITH_NATIVE')) and not "isNative" in comp["tags"]:
+                        add_comp = True
+                        for sbom_comp in sbom["components"]:
+                            if comp["cpe"] == sbom_comp["cpe"]:
+                                values_changed = diff_json(comp, sbom_comp, [])
+                                # if identical or only bom-ref is different, then it is the same component
+                                if len(values_changed) == 0 \
+                                    or (len(values_changed) == 1 and ".bom-ref" in values_changed):
+                                    add_comp = False
+                                    break;
+                        if add_comp:
+                            sbom["components"].append(comp)
 
     packages = sorted(image_list_installed_packages(d).keys())
     for sbom_comp in sbom["components"]:
