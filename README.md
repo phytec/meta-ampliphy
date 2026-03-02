@@ -19,6 +19,22 @@ Variable Glossary
 
 ampliPHY provides bitbake variables below:
 
+* `DISTRO_FEATURES`
+  Following `DISTRO_FEATURES` are supported to configure ampliPHY. Those are
+  features extending pokys feature set:
+  - `secureboot`
+  - `protectionshield`
+  - `hardening`
+  - `securestorage`
+  - `kernelmodsign`
+  - `rauc-appfs`
+
+* `MACHINE_FEATURES`
+  Following `MACHINE_FEATURES` are used in this layer to enable extra features
+  in the BSP if enabled:
+  - `can`, `fan`, `pcie`, and `resistivetouch` install additional software tools
+    to make use of the hardware features.
+
 * `BB_PHY_BUILDTYPE` - Shell environment variable to specify when a
   build-execution shall be treated as an official release build.
 
@@ -62,21 +78,6 @@ ampliPHY provides bitbake variables below:
         pipeline that feeds an sstate-mirror executes development-builds, this
         does not negatively affect the sstate-mirror use or the developers
         build time.
-
-
-Machine Features
-----------------
-In general, the following `MACHINE_FEATURES` are used in this layer to enable extra features in the
-BSP: `can`, `caam`, `camera`, `emmc`, `fan`, `gc320`, `gpu`, `mmip`, `optee`, `pci`,
-`resistivetouch`, `tpm2`
-
-Hardware Features
------------------
-Some hardware diagnostic features are not enabled by default even though the hardware can
-theoretically support them. E.g. som Kits are delivered without fans even though the SBCs do have a
-fan header. These machines do not have the `fan` machine feature.
-To enable them, add the respective feature to the `MACHINE_FEATURES` variable.
-Currently, `can`, `fan`, `pcie`, and `resistivetouch` enable additional software tools.
 
 Support
 =======
