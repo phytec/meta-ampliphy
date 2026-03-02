@@ -42,6 +42,8 @@ PACKAGE_INSTALL = " \
     rng-tools \
     pv \
     systemd-conf \
+    pcsc-lite \
+    opensc \
 "
 
 PACKAGE_INSTALL:append:mx6-generic-bsp = " kernel-module-imx-sdma"
