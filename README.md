@@ -22,12 +22,16 @@ ampliPHY provides bitbake variables below:
 * `DISTRO_FEATURES`
   Following `DISTRO_FEATURES` are supported to configure ampliPHY. Those are
   features extending pokys feature set:
-  - `secureboot`
-  - `protectionshield`
-  - `hardening`
-  - `securestorage`
-  - `kernelmodsign`
-  - `rauc-appfs`
+  - `secureboot`: using only signed authenticated boot flow
+  - `hardening`: depending on the `MACHINE_FEATURES`, the kernel configurations
+    are reduced in terms of functions
+  - `securestorage`: activate the filesystem integrity and encryption
+  - `kernelmodsign`: using only signed kernel modules
+  - `rauc-appfs`: activate redundant application slots
+  - `update`: activate double system update system
+  - `ssh-authentication`: activate the client authentication with specific
+    connection configuration for ssh
+  - `disable-console`: disable the serial console in bootloader and kernel userspace
 
 * `MACHINE_FEATURES`
   Following `MACHINE_FEATURES` are used in this layer to enable extra features
