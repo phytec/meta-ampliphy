@@ -1,0 +1,12 @@
+# AM62x, AM62Ax, AM62Lx, AM62Px, AM64x, AM67x, AM68x
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="4201000.gpio", SYMLINK+="gpio/by-label/mcu_gpio0"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="42110000.gpio", SYMLINK+="gpio/by-label/wkup_gpio0"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="42100000.gpio", SYMLINK+="gpio/by-label/wkup_gpio1"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="600000.gpio", SYMLINK+="gpio/by-label/main_gpio0"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="601000.gpio", SYMLINK+="gpio/by-label/main_gpio1"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="610000.gpio", SYMLINK+="gpio/by-label/main_gpio2"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="611000.gpio", SYMLINK+="gpio/by-label/main_gpio3"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="620000.gpio", SYMLINK+="gpio/by-label/main_gpio4"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="621000.gpio", SYMLINK+="gpio/by-label/main_gpio5"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="630000.gpio", SYMLINK+="gpio/by-label/main_gpio6"
+SUBSYSTEM=="gpio", ACTION=="add", KERNELS=="631000.gpio", SYMLINK+="gpio/by-label/main_gpio7"
