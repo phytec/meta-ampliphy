@@ -24,6 +24,7 @@ SRC_URI:append:mx8-generic-bsp = " file://45-disable-multitouch-mouse.rules"
 SRC_URI:append:ti-soc =  " \
     file://37-can-ti-soc.rules \
     file://38-serial-ti-soc.rules \
+    file://39-gpio-ti-soc.rules \
 "
 SRC_URI:append:ti33x = " \
     file://11-dcan.network \
@@ -75,6 +76,11 @@ do_install:append() {
     if [ -e ${WORKDIR}/38-serial-ti-soc.rules ]; then
         install -d ${D}${sysconfdir}/udev/rules.d
         install -m 0644 ${WORKDIR}/38-serial-ti-soc.rules ${D}${sysconfdir}/udev/rules.d/
+    fi
+
+    if [ -e ${WORKDIR}/39-gpio-ti-soc.rules ]; then
+        install -d ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${WORKDIR}/39-gpio-ti-soc.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 
     if [ -e ${WORKDIR}/86-k3-remoteproc.rules ]; then
