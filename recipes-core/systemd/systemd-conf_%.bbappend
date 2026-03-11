@@ -17,11 +17,13 @@ SRC_URI += " \
     file://10-ethernet.link \
     file://11-can.network \
     file://11-fcan.network \
+    file://30-stamped-fpsc-devnames-imx93.rules \
     file://90-dhcp-default.network \
 "
 
 SRC_URI:append:mx6ul-generic-bsp = " file://cpuidle-disable-state.rules"
 SRC_URI:append:mx8-generic-bsp = " file://45-disable-multitouch-mouse.rules"
+SRC_URI:append:mx93-generic-bsp = " file://30-stamped-fpsc-devnames-imx93.rules"
 SRC_URI:append:mx95-generic-bsp = " file://37-can-imx-soc.rules"
 SRC_URI:append:ti-soc =  " file://37-can-ti-soc.rules"
 SRC_URI:append:ti33x = " \
@@ -64,6 +66,11 @@ do_install:append() {
     if [ -e ${UNPACKDIR}/cpuidle-disable-state.rules ]; then
         install -d ${D}${sysconfdir}/udev/rules.d
         install -m 0644 ${UNPACKDIR}/cpuidle-disable-state.rules ${D}${sysconfdir}/udev/rules.d/
+    fi
+
+    if [ -e ${UNPACKDIR}/30-stamped-fpsc-devnames-imx93.rules ]; then
+        install -d ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${UNPACKDIR}/30-stamped-fpsc-devnames-imx93.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 
     if [ -e ${UNPACKDIR}/37-can-imx-soc.rules ]; then

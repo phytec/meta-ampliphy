@@ -1,0 +1,38 @@
+# The udev rules in this file ensure that the Linux dev-nodes of all FPSC
+# interfaces are named as the interfaces appear in the datahseet of the
+# phyFLEX module or as printed on the development carrier board.
+#
+# We refer here to the names from the datasheet or the imprints on the
+# carrier board as "stamps".
+#
+# The udev rules create one symbolic link for each FPSC interface's devnode.
+# The link has the name of the stamp and is placed in folder /dev/*/by-stamp/.
+# The '*' is replaced with the name of the interface class,
+# like 'serial', 'disk' or 'i2c'.
+#
+# Examples:
+#   /dev/serial/by-stamp/fpsc-uart1 -> ../../ttyLP1
+#   /dev/serial/by-stamp/fpsc-uart3 -> ../../ttyLP3
+#
+# This eases the application developer to find the dev-node to a real existing
+# physical connector. And this also approaches compatibility of dev-node
+# references over different phyFLEX modules.
+
+# import board type from device tree
+SUBSYSTEM=="*?", IMPORT{program}="/bin/sh -c 'echo BOARD_COMPATIBLE=$(tr  \"\\0\" \" \" < /sys/firmware/devicetree/base/compatible)'"
+
+# manage dev-nodes of fpsc interfaces
+SUBSYSTEM=="tty", KERNEL=="ttyLP1", ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="serial/by-stamp/fpsc-uart%n"
+SUBSYSTEM=="tty", KERNEL=="ttyLP2", ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="serial/by-stamp/fpsc-uart%n"
+SUBSYSTEM=="tty", KERNEL=="ttyLP3", ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="serial/by-stamp/fpsc-uart%n"
+
+SUBSYSTEM=="i2c-dev", KERNEL=="i2c-1*", ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="i2c/by-stamp/fpsc-i2c%n"
+SUBSYSTEM=="i2c-dev", KERNEL=="i2c-2*", ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="i2c/by-stamp/fpsc-i2c%n"
+SUBSYSTEM=="i2c-dev", KERNEL=="i2c-3*", ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="i2c/by-stamp/fpsc-i2c%n"
+
+SUBSYSTEM=="block", KERNEL=="mmcblk0",          ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="disk/by-stamp/fpsc-emmc"
+SUBSYSTEM=="block", KERNEL=="mmcblk0p[1-9]",    ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="disk/by-stamp/fpsc-emmcp%n"
+SUBSYSTEM=="block", KERNEL=="mmcblk0boot[0-9]", ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="disk/by-stamp/fpsc-emmcboot%n"
+
+SUBSYSTEM=="block", KERNEL=="mmcblk1",       ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="disk/by-stamp/fpsc-sdcard"
+SUBSYSTEM=="block", KERNEL=="mmcblk1p[1-9]", ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="disk/by-stamp/fpsc-sdcardp%n"
