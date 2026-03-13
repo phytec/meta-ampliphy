@@ -20,7 +20,6 @@ RDEPENDS:${PN} = " \
     iproute2 \
     nfs-utils-client \
     rauc-flash-nand \
-    ${@bb.utils.contains("MACHINE_FEATURES", "camera", "phycam-setup", "", d)} \
 "
 
 RDEPENDS:${PN}:append:mx6-generic-bsp = " bbu"
