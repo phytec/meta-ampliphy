@@ -18,6 +18,7 @@ SRC_URI += " \
     file://11-can.network \
     file://11-fcan.network \
     file://90-dhcp-default.network \
+    ${@bb.utils.contains("MACHINE_FEATURES", "camera", "file://90-phycam.rules", "", d)} \
 "
 
 SRC_URI:append:mx6ul-generic-bsp = " file://cpuidle-disable-state.rules"
@@ -110,6 +111,11 @@ do_install:append() {
         install -m 0644 ${UNPACKDIR}/82-hwmon-temp-libra.rules ${D}${sysconfdir}/udev/rules.d/
     fi
 
+    if [ -e ${UNPACKDIR}/90-phycam.rules ]; then
+        install -d ${D}${nonarch_base_libdir}/udev/rules.d
+        install -m 0644 ${UNPACKDIR}/90-phycam.rules ${D}${nonarch_base_libdir}/udev/rules.d/
+    fi
+
     rm -rf ${D}${systemd_unitdir}/network/wired.network
     rm -rf ${D}${systemd_unitdir}/network/80-wired.network
 }
@@ -130,6 +136,7 @@ do_install:append:phyflex-fpsc-g() {
 }
 
 FILES:${PN} += "\
+    ${nonarch_base_libdir}/udev/rules.d \
     ${systemd_system_unitdir} \
     ${sysconfdir}/udev/rules.d \
 "
