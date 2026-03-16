@@ -1,5 +1,5 @@
 # The udev rules in this file ensure that the Linux dev-nodes of all FPSC
-# interfaces are named as the interfaces appear in the datahseet of the
+# interfaces are named as the interfaces appear in the datasheet of the
 # phyFLEX module or as printed on the development carrier board.
 #
 # We refer here to the names from the datasheet or the imprints on the
@@ -19,7 +19,7 @@
 # references over different phyFLEX modules.
 
 # import board type from device tree
-SUBSYSTEM=="*?", IMPORT{program}="/bin/sh -c 'echo BOARD_COMPATIBLE=$(tr  \"\\0\" \" \" < /sys/firmware/devicetree/base/compatible)'"
+SUBSYSTEM=="tty|i2c-dev|block", IMPORT{program}="/bin/sh -c 'echo BOARD_COMPATIBLE=$$(tr  \"\\0\" \" \" < /sys/firmware/devicetree/base/compatible)'"
 
 # manage dev-nodes of fpsc interfaces
 SUBSYSTEM=="tty", KERNEL=="ttyLP1", ENV{BOARD_COMPATIBLE}=="*phytec,imx93-phyflex-fpsc-g*", SYMLINK+="serial/by-stamp/fpsc-uart%n"
