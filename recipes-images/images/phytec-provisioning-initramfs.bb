@@ -44,6 +44,8 @@ PACKAGE_INSTALL = " \
     systemd-conf \
     pcsc-lite \
     opensc \
+    openssl-bin \
+    pkcs11-provider \
 "
 
 PACKAGE_INSTALL:append:mx6-generic-bsp = " kernel-module-imx-sdma"
