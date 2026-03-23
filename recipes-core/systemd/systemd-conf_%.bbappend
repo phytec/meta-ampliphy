@@ -111,6 +111,10 @@ do_install:append:phyboard-segin() {
     sed -i 's/^\s*FDMode\s*=\s*yes/FDMode=no/' ${D}${systemd_unitdir}/network/11-can.network
 }
 
+do_install:append:phyboard-segin-imx6ul() {
+    sed -i '/^\s*DataBitRate\s*=\s*2000000/d' ${D}${systemd_unitdir}/network/11-can.network
+}
+
 FILES:${PN} += "\
     ${systemd_system_unitdir} \
     ${sysconfdir}/udev/rules.d \
