@@ -135,6 +135,10 @@ do_install:append:phyflex-fpsc-g() {
     sed -i 's#^\(Address=192.168.\)7\(.11\/24\)#\16\2#' ${path}/10-end4.network
 }
 
+do_install:append:phyboard-segin() {
+    sed -i 's/^\s*FDMode\s*=\s*yes/FDMode=no/' ${D}${systemd_unitdir}/network/11-can.network
+}
+
 FILES:${PN} += "\
     ${nonarch_base_libdir}/udev/rules.d \
     ${systemd_system_unitdir} \
