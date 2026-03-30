@@ -50,10 +50,10 @@ SRC_URI:append:am62lxx:phyflex-fpsc-g = " \
 
 do_install:append() {
     install -d ${D}${systemd_unitdir}/network/
-    for file in $(find ${UNPACKDIR} -maxdepth 1 -type f -name "*.network"); do
+    for file in $(find ${UNPACKDIR} -maxdepth 1 -type f -name "[0-9][0-9]-*.network"); do
         install -m 0644 "$file" ${D}${systemd_unitdir}/network/
     done
-    for file in $(find ${UNPACKDIR} -maxdepth 1 -type f -name "*.link"); do
+    for file in $(find ${UNPACKDIR} -maxdepth 1 -type f -name "[0-9][0-9]-*.link"); do
         install -m 0644 "$file" ${D}${systemd_unitdir}/network/
     done
     install -d ${D}${systemd_system_unitdir}/
