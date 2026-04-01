@@ -16,7 +16,7 @@ do_image[depends] += "\
     ${@bb.utils.contains('UBOOT_SIGN_ENABLE','1','${_FITIMAGE_TO_WIC}','', d)}"
 
 IMAGE_INSTALL = " \
-    packagegroup-machine-base \
+    packagegroup-base \
     packagegroup-core-boot \
     packagegroup-cryptodev \
     openssh \
@@ -25,8 +25,6 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "optee", "packagegroup-tee", "", d)} \
     packagegroup-sks-kernelkeyring \
 "
-
-IMAGE_INSTALL:append:update = " packagegroup-update e2fsprogs-resize2fs "
 
 IMAGE_INSTALL:append:mx6-generic-bsp = " firmwared"
 IMAGE_INSTALL:append:mx6ul-generic-bsp = " firmwared"
