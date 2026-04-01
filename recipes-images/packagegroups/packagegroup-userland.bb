@@ -8,8 +8,6 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
     gdbserver \
     strace \
-    openssh \
-    openssh-sftp-server \
     rsync \
     htop \
     kbd \
