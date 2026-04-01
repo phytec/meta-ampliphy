@@ -1,10 +1,15 @@
-DESCRIPTION = "bluetooth tools used on Phytec boards"
-LICENSE = "MIT"
+RDEPENDS:packagegroup-base-3g += " \
+    modemmanager \
+"
 
-inherit packagegroup
+RDEPENDS:packagegroup-base-alsa += " \
+    alsa-utils \
+    alsa-utils-scripts \
+    vorbis-tools \
+    libao-plugin-libalsa \
+"
 
-RDEPENDS:${PN} = " \
-    bluez5 \
+RDEPENDS:packagegroup-base-bluetooth += " \
     bluez5-testtools \
     bluez5-obex \
     pulseaudio-server \
@@ -23,6 +28,12 @@ RDEPENDS:${PN} = " \
     ezurio-sterling-firmware \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-ibt-misc", "", d)} \
 "
+RDEPENDS:packagegroup-base-bluetooth:append:am57xx = " bt-fw"
+RDEPENDS:packagegroup-base-bluetooth:append:mx8x-generic-bsp = " brcm-patchram-plus"
 
-RDEPENDS:${PN}:append:am57xx = " bt-fw"
-RDEPENDS:${PN}:append:mx8x-generic-bsp = " brcm-patchram-plus"
+RDEPENDS:packagegroup-base-wifi += " \
+    hostapd \
+    ezurio-sterling-firmware \
+    linux-firmware-wl18xx \
+    ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-iwlwifi", "", d)} \
+"
