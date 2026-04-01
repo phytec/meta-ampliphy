@@ -31,6 +31,11 @@ RDEPENDS:packagegroup-base-bluetooth += " \
 RDEPENDS:packagegroup-base-bluetooth:append:am57xx = " bt-fw"
 RDEPENDS:packagegroup-base-bluetooth:append:mx8x-generic-bsp = " brcm-patchram-plus"
 
+RDEPENDS:packagegroup-base-rauc += " \
+    rauc-hawkbit-updater \
+    rauc-update-usb \
+"
+
 RDEPENDS:packagegroup-base-wifi += " \
     hostapd \
     ezurio-sterling-firmware \

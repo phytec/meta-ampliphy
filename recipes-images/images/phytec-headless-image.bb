@@ -24,8 +24,6 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("DISTRO_FEATURES", "systemd", "procps-sysctl", "", d)} \
 "
 
-IMAGE_INSTALL:append:update = " packagegroup-update"
-
 IMAGE_INSTALL:append:mx6-generic-bsp = " firmwared"
 IMAGE_INSTALL:append:mx6ul-generic-bsp = " firmwared"
 IMAGE_INSTALL:append:mx8m-generic-bsp = " firmwared"
