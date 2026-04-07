@@ -40,7 +40,7 @@ IMAGE_INSTALL:append:mx8mm-nxp-bsp = "\
 
 IMAGE_INSTALL:append:mx8mp-nxp-bsp = "\
     phytec-camera-examples-imx8mp \
-    isp-imx-phycam \
+    isp-imx \
 "
 
 IMAGE_INSTALL:append:mx95-nxp-bsp = "\
