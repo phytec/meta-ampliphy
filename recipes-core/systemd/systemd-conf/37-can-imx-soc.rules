@@ -1,3 +1,6 @@
 # iMX95
 SUBSYSTEM=="net", ACTION=="add", KERNELS=="443a0000.can", NAME="fcan1"
 SUBSYSTEM=="net", ACTION=="add", KERNELS=="425b0000.can", NAME="fcan2"
+# iMX8MP-FPSC
+SUBSYSTEM=="net", ACTION=="add", KERNELS=="308c0000.can", NAME="fcan1"
+SUBSYSTEM=="net", ACTION=="add", KERNELS=="308d0000.can", NAME="fcan2"
