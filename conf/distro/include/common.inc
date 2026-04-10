@@ -114,7 +114,6 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 IMAGE_BOOT_FILES:append:k3 = " boot.scr.uimg"
 WKS_FILE_DEPENDS:append:k3 = " ampliphy-boot"
 PARTUP_PACKAGE_DEPENDS:append:k3 = " ampliphy-boot"
-INITRAMFS_IMAGE:k3 = "phytec-initramfs-image"
 
 # Dependency used by RAUC bundles and sbom-cyclonedx class
 DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
