@@ -64,6 +64,8 @@ PACKAGE_INSTALL:remove:mx9-nxp-bsp = " \
 
 PACKAGE_INSTALL:append:imx-generic-bsp = " crucible"
 
+IMAGE_INSTALL:append:k3 = " ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-spi-omap2-mcspi", "", d)}"
+
 PACKAGE_EXCLUDE = "kernel-image-*"
 
 NO_RECOMMENDATIONS = "1"
