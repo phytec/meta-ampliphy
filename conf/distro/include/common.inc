@@ -105,6 +105,7 @@ WKS_FILE_DEPENDS:append:mx9-generic-bsp = " ampliphy-boot"
 PARTUP_PACKAGE_DEPENDS:append:k3 = " ampliphy-boot"
 PARTUP_PACKAGE_DEPENDS:append:mx8-generic-bsp = " ampliphy-boot"
 PARTUP_PACKAGE_DEPENDS:append:mx9-generic-bsp = " ampliphy-boot"
+INITRAMFS_IMAGE:k3 ?= "phytec-initramfs-image"
 
 # Dependency used by RAUC bundles and sbom-cyclonedx class
 DEP_BOOTLOADER ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
