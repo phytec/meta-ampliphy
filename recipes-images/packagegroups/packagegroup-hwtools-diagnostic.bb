@@ -39,6 +39,7 @@ RDEPENDS:${PN} = " \
     rng-tools \
     tcpdump \
     ${@bb.utils.contains("MACHINE_FEATURES", "camera", "phycam-setup", "", d)} \
+    v4l-utils \ 
 "
 
 RDEPENDS:${PN}:append:arm = " arm-memspeed"
