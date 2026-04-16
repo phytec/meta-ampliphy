@@ -83,8 +83,8 @@ IMAGE_LINGUAS ?= "de-de fr-fr en-us zh-cn"
 
 PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 
-DISTRO_FEATURES_DEFAULT:remove = "pcmcia zeroconf"
-DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
+DISTRO_FEATURES_DEFAULTS:remove = "pcmcia zeroconf"
+DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULTS} \
     opengl \
     wayland \
     pam \
