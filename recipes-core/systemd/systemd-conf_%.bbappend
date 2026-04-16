@@ -21,6 +21,7 @@ SRC_URI += " \
     ${@bb.utils.contains("MACHINE_FEATURES", "camera", "file://90-phycam.rules", "", d)} \
 "
 
+SRC_URI:append:phyboard-pollux-imx8mp-3 = " file://10-enp1s0.network"
 SRC_URI:append:mx6ul-generic-bsp = " file://cpuidle-disable-state.rules"
 SRC_URI:append:mx8-generic-bsp = " file://45-disable-multitouch-mouse.rules"
 SRC_URI:append:mx95-generic-bsp = " file://37-can-imx-soc.rules"
