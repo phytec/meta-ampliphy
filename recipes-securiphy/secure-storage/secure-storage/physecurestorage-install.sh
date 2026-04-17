@@ -27,7 +27,6 @@ Example:
 
 One of the following action can be selected:
     -n | --newsecurestorage <value>   Create new Secure Storage of type
-                            int     Root File System with integrity
                             enc     Encrypted root file system
                             intenc  Encrypted root file system with integrity
     -h | --help             This Help
@@ -156,12 +155,6 @@ do
 		while [ $j -lt $DORAUC ]
 		do
 			case ${2} in
-			int)
-				echo "file system with integrity: ${FLASH_PATH}p${FLASH_LAYOUT[j]}"
-				init_integrity "${FLASH_PATH}p${FLASH_LAYOUT[j]}"
-				install_files "${LABEL_NAME}${j}" "/dev/mapper/introotfs" ${FILE_SYSTEM}
-				init_integrityclose
-				;;
 			enc)
 				echo "encrypted file system: ${FLASH_PATH}p${FLASH_LAYOUT[j]}"
 				init_enc "${FLASH_PATH}p${FLASH_LAYOUT[j]}"
