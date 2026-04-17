@@ -9,6 +9,6 @@ PV = "0.16+git${SRCPV}"
 SRCREV = "e3854df28287dfb5ed899f152d073969220e2e04"
 
 
-inherit setuptools3
+inherit python_setuptools_build_meta
 
 RDEPENDS:${PN} += "python3-smbus2 python3-core"
