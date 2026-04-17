@@ -19,7 +19,7 @@ IMAGE_NAME_SUFFIX = ""
 PACKAGE_INSTALL = " \
     packagegroup-core-boot \
     systemd-initramfs \
-    ampliphy-version-initrd \
+    os-release-initrd \
     physecurekeystorage-load \
     physecurestorage-open \
     busybox \
