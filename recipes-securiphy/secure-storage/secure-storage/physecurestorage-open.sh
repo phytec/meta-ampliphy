@@ -34,9 +34,6 @@ do
 			dmsetup create ${dm_final_name} --table "0 $(blockdev --getsz ${devroot}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${devroot} 0"
 		fi
 	fi
-	if [ -e /dev/mapper/${dm_inc_name} ] && [ ! -e /dev/mapper/${dm_final_name} ]; then
-		dmsetup rename ${dm_inc_name} ${dm_final_name}
-	fi
 	let i=i+1
 	unset TYPE
 	unset PTTYPE
