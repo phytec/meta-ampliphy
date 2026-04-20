@@ -46,6 +46,8 @@ PACKAGE_INSTALL:remove:mx9-nxp-bsp = " \
     kernel-module-tpm-tis \
 "
 
+IMAGE_INSTALL:append:k3 = " ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-spi-omap2-mcspi", "", d)}"
+
 PACKAGE_EXCLUDE = "kernel-image-*"
 
 MACHINE_FIRMWARE:remove:mx8mp-nxp-bsp  = "sof-imx sof-zephyr zephyr-demo-imx"
