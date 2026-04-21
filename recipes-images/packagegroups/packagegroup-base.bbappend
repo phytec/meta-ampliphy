@@ -4,7 +4,9 @@ RDEPENDS:packagegroup-base-3g += " \
 
 RDEPENDS:packagegroup-base-alsa += " \
     alsa-utils \
-    alsa-utils-scripts \
+    alsa-utils-alsabat \
+    alsa-utils-alsaconf \
+    alsa-utils-alsa-info \
     vorbis-tools \
     libao-plugin-libalsa \
 "
