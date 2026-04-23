@@ -7,13 +7,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
 SRC_URI:append = " file://mtd-tests.cfg"
 KERNEL_MODULES_RDEPENDS_DISABLE += "${MTD_TEST_PACKAGES}"
 
-SRC_URI:append:secureboot = " \
-    file://fs_encryption.cfg \
-    file://trustedkey-base.cfg \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'tpm2', 'file://trustedkey-tpm.cfg', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'caam', 'file://trustedkey-caam.cfg', '', d)} \
-    ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'file://trustedkey-tee.cfg', '', d)} \
-"
 SRC_URI:append:kernelmodsign = " \
     file://kernel-modsign.cfg \
 "
@@ -42,3 +35,4 @@ SRC_URI:append:hardening = " \
 "
 
 inherit ${@bb.utils.contains('DISTRO_FEATURES', 'kernelmodsign', 'kernel-modsign', '', d)}
+require ${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'recipes-kernel/linux/secureboot.inc', '', d)}

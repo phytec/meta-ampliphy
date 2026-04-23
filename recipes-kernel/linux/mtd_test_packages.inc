@@ -2,7 +2,7 @@
 # Author: Stefan Christ <s.christ@phytec.de>
 
 # The mtd test packages are used in
-#    recipes-kernel/linux/linux-common-append.inc and
+#    recipes-kernel/linux/linux-phytec%.bbappend and
 #    recipes-images/images/phytec-hwtest-image.bb
 MTD_TEST_PACKAGES = " \
     kernel-module-mtd-nandecctest \
