@@ -28,7 +28,7 @@ do
 	fi
 	dm_final_name=$(basename ${root})${i}
 	if [ ! -n "${TYPE}" ] && [ ! -n "${PTTYPE}" ]; then
-		if test -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb; then
+		if [ $(keyctl list @u | grep "logon: rootfs" | wc -l) -eq 1 ]; then
 			dmsetup create ${dm_final_name} --table "0 $(blockdev --getsz ${devroot}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${devroot} 0"
 		else
 			dmsetup create ${dm_final_name} --table "0 $(blockdev --getsz ${devroot}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${devroot} 0"
