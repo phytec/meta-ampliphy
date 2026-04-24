@@ -2,6 +2,7 @@
 Description=Load keys from config partition
 DefaultDependencies=no
 After=mnt-config.mount
+@TPM2_TARGET@
 
 [Service]
 Type=oneshot

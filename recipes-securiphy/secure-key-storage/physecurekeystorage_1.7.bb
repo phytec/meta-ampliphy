@@ -26,6 +26,14 @@ do_patch() {
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
     ${S}/physecurekeystorage-install.sh
+
+    if echo ${MACHINE_FEATURES} | grep -wq "tpm2"; then
+        sed -i 's:@TPM2_TARGET@:After=tpm2.target\nWants=tpm2.target:g' \
+            ${S}/physecurekeystorage-load.service
+    else
+        sed -i 's:@TPM2_TARGET@::g' \
+            ${S}/physecurekeystorage-load.service
+    fi
 }
 
 do_install() {
