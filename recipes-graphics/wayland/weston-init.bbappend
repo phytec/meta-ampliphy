@@ -25,6 +25,18 @@ do_install:append:mx8-nxp-bsp() {
     fi
 }
 
+# On K3 machines with linux-phytec (upstream Imagination / Mesa / Zink stack),
+# the PowerVR Vulkan driver only loads when PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1
+# is set.
+PVR_BROKEN_VULKAN = "${@oe.utils.conditional('PREFERRED_PROVIDER_virtual/kernel', 'linux-phytec', '1', '0', d)}"
+
+do_install:append:k3() {
+    if [ "${PVR_BROKEN_VULKAN}" = "1" ]; then
+        install -d ${D}${sysconfdir}/default
+        echo 'PVR_I_WANT_A_BROKEN_VULKAN_DRIVER=1' >> ${D}${sysconfdir}/default/weston
+    fi
+}
+
 FILES:${PN} += " \
     ${sysconfdir}/udev/rules.d \
     ${bindir}/calibrate-res-touchscreen.sh \
