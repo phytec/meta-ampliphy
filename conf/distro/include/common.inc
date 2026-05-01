@@ -84,6 +84,7 @@ IMAGE_LINGUAS ?= "de-de fr-fr en-us zh-cn"
 PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 
 DISTRO_FEATURES_DEFAULTS:remove = "zeroconf"
+DISTRO_FEATURES_OPTED_OUT += "ptest"
 DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULTS} \
     pam \
     virtualization \
