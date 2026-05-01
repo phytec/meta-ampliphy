@@ -83,16 +83,12 @@ IMAGE_LINGUAS ?= "de-de fr-fr en-us zh-cn"
 
 PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 
-DISTRO_FEATURES_DEFAULTS:remove = "pcmcia zeroconf"
+DISTRO_FEATURES_DEFAULTS:remove = "zeroconf"
 DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULTS} \
-    opengl \
-    wayland \
     pam \
     virtualization \
     security \
     tpm2"
-DISTRO_FEATURES:append:mx95-generic-bsp = " vulkan"
-DISTRO_FEATURES:append:k3 = " vulkan"
 VIRTUAL-RUNTIME_container_runtime ?= "crun"
 DISTRO_FEATURES:remove:mx6ul-generic-bsp = "opengl wayland"
 DISTRO_FEATURES:remove:am57x6 = "opengl"
