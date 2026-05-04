@@ -83,13 +83,8 @@ IMAGE_LINGUAS ?= "de-de fr-fr en-us zh-cn"
 
 PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 
-DISTRO_FEATURES_DEFAULTS:remove = "zeroconf"
-DISTRO_FEATURES_OPTED_OUT += "ptest"
-DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULTS} \
-    pam \
-    virtualization \
-    security \
-    tpm2"
+DISTRO_FEATURES_OPTED_OUT += "zeroconf ptest"
+DISTRO_FEATURES:append = " pam virtualization security tpm2"
 VIRTUAL-RUNTIME_container_runtime ?= "crun"
 DISTRO_FEATURES:remove:mx6ul-generic-bsp = "opengl wayland"
 DISTRO_FEATURES:remove:am57x6 = "opengl"
