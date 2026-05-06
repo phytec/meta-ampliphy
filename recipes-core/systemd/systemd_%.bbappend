@@ -51,3 +51,7 @@ do_install:append() {
 # long ago and it causes troubles for us (conflicts between sysvinit scripts
 # and systemd services). Thus remove 'sysvinit' packageconfig for i.MX NXP BSP.
 PACKAGECONFIG:remove:imx-nxp-bsp = "sysvinit"
+
+# OSC 3008 from /etc/profile.d/80-systemd-osc-context.sh (systemd >= 258)
+# breaks tools such as labgrid's serial console matcher.
+PACKAGECONFIG:remove = "osc-context"
