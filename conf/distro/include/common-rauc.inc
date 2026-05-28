@@ -11,7 +11,3 @@ IMAGE_ROOTFS_ALIGNMENT = "4"
 
 # Disable ext4 filesystem features incompatible with e2fsprogs prior to 1.47.0
 EXTRA_IMAGECMD:ext4:append = " -O ^orphan_file"
-
-# Activate redundant application slots
-#DISTRO_FEATURES += "rauc-appfs"
-#DISTROOVERRIDES:append = ":rauc-appfs"
