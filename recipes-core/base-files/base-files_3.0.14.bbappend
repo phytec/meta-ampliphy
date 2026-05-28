@@ -22,10 +22,11 @@ parse_fstab() {
             -e 's/@CONFIG_DEV_TYPE@/ubifs/g' \
             ${UNPACKDIR}/fstab
     fi
+    sed -i -e 's/@ARTIFACTS_DEV@/\/dev\/mmcblk${EMMC_DEV}p7/g' ${UNPACKDIR}/fstab
 }
 clean_fstab() {
     # /mnt/config does not exist when using a regular (non-RAUC) image
-    sed -i -e '/\/mnt\/config/d' ${UNPACKDIR}/fstab
+    sed -i -e '/\/mnt\/config/d' -e '/\/mnt\/artifacts/d' ${UNPACKDIR}/fstab
 }
 
 do_patch[postfuncs] += " \
@@ -44,6 +45,7 @@ python do_patch:append() {
 }
 
 do_install:append() {
+    install -d ${D}/mnt/artifacts
     install -d ${D}/mnt/config
     install -m 0755 ${UNPACKDIR}/print_issue.sh ${D}${sysconfdir}/profile.d/print_issue.sh
     install -m 0644 ${UNPACKDIR}/share/dot.profile ${D}${ROOT_HOME}/.profile
@@ -62,6 +64,7 @@ do_install_basefilesissue:append() {
 }
 
 FILES:${PN} += " \
+    /mnt/artifacts \
     /mnt/config \
     ${bindir} \
     ${sysconfdir}/udev/rules.d \
