@@ -29,13 +29,8 @@ clean_fstab() {
 }
 
 do_patch[postfuncs] += " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'rauc-appfs', '', 'fstab_delete_appfs', d)} \
     bootpart_rules_bindir \
 "
-
-fstab_delete_appfs() {
-    sed -i -e '/\/mnt\/app/d' ${UNPACKDIR}/fstab
-}
 
 bootpart_rules_bindir() {
     sed -i -e 's#@BINDIR@#${bindir}#g' ${UNPACKDIR}/20-bootpart.rules
@@ -50,7 +45,6 @@ python do_patch:append() {
 
 do_install:append() {
     install -d ${D}/mnt/config
-    install -d ${D}/mnt/app
     install -m 0755 ${UNPACKDIR}/print_issue.sh ${D}${sysconfdir}/profile.d/print_issue.sh
     install -m 0644 ${UNPACKDIR}/share/dot.profile ${D}${ROOT_HOME}/.profile
     install -m 0644 ${UNPACKDIR}/share/dot.bashrc ${D}${ROOT_HOME}/.bashrc
@@ -69,7 +63,6 @@ do_install_basefilesissue:append() {
 
 FILES:${PN} += " \
     /mnt/config \
-    /mnt/app \
     ${bindir} \
     ${sysconfdir}/udev/rules.d \
 "
