@@ -27,7 +27,6 @@ ampliPHY provides bitbake variables below:
     are reduced in terms of functions
   - `securestorage`: activate the filesystem integrity and encryption
   - `kernelmodsign`: using only signed kernel modules
-  - `rauc-appfs`: activate redundant application slots
   - `update`: activate double system update system
   - `ssh-authentication`: activate the client authentication with specific
     connection configuration for ssh
