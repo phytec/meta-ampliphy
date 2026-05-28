@@ -42,7 +42,7 @@ RAUC_SLOT_boot ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_boot[type] ?= "boot"
 RAUC_SLOT_boot[file] ?= "boot.tar.gz"
 
-python do_configure:prepend() {
+def create_boot_archive(d):
     import shutil
     import subprocess
     import os
@@ -87,11 +87,16 @@ python do_configure:prepend() {
     if os.path.islink(emmc_boot_path):
         os.remove(emmc_boot_path)
     os.symlink(bootloader_filename[d.getVar("DEP_BOOTLOADER")], emmc_boot_path)
+
+python do_configure:prepend() {
+    if bb.utils.contains('RAUC_BUNDLE_SLOTS', 'boot', True, False, d):
+        create_boot_archive(d)
 }
 
 python do_configure:append() {
-    if os.path.isfile("%s/boot.tar.gz" % deploy_dir):
-        os.remove("%s/boot.tar.gz" % deploy_dir)
+    boot_archive = d.expand("${DEPLOY_DIR_IMAGE}/boot.tar.gz")
+    if os.path.isfile(boot_archive):
+        os.remove(boot_archive)
 }
 
 do_bundle:prepend() {
@@ -107,9 +112,11 @@ do_bundle:prepend() {
 }
 
 do_deploy:append() {
-    install -d ${DEPLOYDIR}
-    install -m 0644 ${WORKDIR}/archives/${IMAGE_NAME}.boot.tar.gz ${DEPLOYDIR}/${IMAGE_NAME}.boot.tar.gz
-    ln -sf ${IMAGE_NAME}.boot.tar.gz ${DEPLOYDIR}/boot.tar.gz
+    if ${@bb.utils.contains('RAUC_BUNDLE_SLOTS', 'boot', 'true', 'false', d)}; then
+        install -d ${DEPLOYDIR}
+        install -m 0644 ${WORKDIR}/archives/${IMAGE_NAME}.boot.tar.gz ${DEPLOYDIR}/${IMAGE_NAME}.boot.tar.gz
+        ln -sf ${IMAGE_NAME}.boot.tar.gz ${DEPLOYDIR}/boot.tar.gz
+    fi
 }
 
 RAUC_KEY_FILE ?= "${CERT_PATH}/rauc-intermediate/private/development-1.key.pem"
