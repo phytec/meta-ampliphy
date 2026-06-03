@@ -97,7 +97,7 @@ Maintainer
 ==========
 
 M:  Stefan Müller-Klieser <s.mueller-klieser@phytec.de>
-M:  Norbert Wesp <n.wesp@phytec.de>
+M:  Martin Schwan <m.schwan@phytec.de>
 
 Dependencies
 ============
