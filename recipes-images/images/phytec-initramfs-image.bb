@@ -3,36 +3,39 @@ DESCRIPTION = "A small image capable of allowing a device to boot and \
 check for hardware problems or flash new software to the eMMC. \
 The kernel includes the Minimal RAM-based Initial Root Filesystem \
 (initramfs), which finds the first 'init' program more efficiently."
-
-PACKAGE_INSTALL = " \
-    packagegroup-core-boot \
-    packagegroup-core-ssh-openssh \
-    packagegroup-base \
-    packagegroup-hwtools-diagnostic \
-    partup \
-"
+LICENSE = "MIT"
 
 # Do not pollute the initrd image with rootfs features
+IMAGE_LINGUAS = ""
+
+IMAGE_ROOTFS_SIZE = "8192"
+IMAGE_ROOTFS_EXTRA_SPACE = "0"
+IMAGE_OVERHEAD_FACTOR = "1.0"
+
+IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
+
+export IMAGE_BASENAME = "phytec-initramfs-image"
+IMAGE_NAME_SUFFIX ?= ""
+
 IMAGE_FEATURES = " \
     allow-empty-password \
     allow-root-login \
     empty-root-password \
 "
 
-# Don't allow the initramfs to contain a kernel
-PACKAGE_EXCLUDE = "kernel-image-*"
-
-IMAGE_NAME_SUFFIX ?= ""
-IMAGE_LINGUAS = ""
-
-LICENSE = "MIT"
-
-IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
-IMAGE_FSTYPES:update = "${INITRAMFS_FSTYPES}"
 inherit core-image
 
-IMAGE_ROOTFS_SIZE = "8192"
-IMAGE_ROOTFS_EXTRA_SPACE = "0"
+PACKAGE_INSTALL = " \
+    packagegroup-core-boot \
+    systemd-initramfs \
+    systemd-networkd \
+    systemd-conf \
+    openssh \
+    busybox \
+    packagegroup-hwtools-diagnostic \
+    partup \
+"
 
-export IMAGE_BASENAME = "phytec-initramfs-image"
+PACKAGE_EXCLUDE = "kernel-image-*"
+
 NO_RECOMMENDATIONS = "1"
