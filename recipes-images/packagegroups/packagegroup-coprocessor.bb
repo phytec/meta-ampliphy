@@ -10,7 +10,6 @@ RDEPENDS:${PN}:append:k3 = " \
 "
 
 RDEPENDS:${PN}:remove:am62axx = " \
-    pru-icss \
     mcu-plus-sdk-firmware \
 "
 RDEPENDS:${PN}:append:am62axx = " \
@@ -18,7 +17,6 @@ RDEPENDS:${PN}:append:am62axx = " \
    cnm-wave-fw \
 "
 RDEPENDS:${PN}:remove:j721s2 = " \
-    pru-icss \
     mcu-plus-sdk-firmware \
 "
 RDEPENDS:${PN}:append:j721s2 = " \
@@ -30,7 +28,6 @@ RDEPENDS:${PN}:append:am57xx = " \
     ti-ipc-rtos-fw \
     ti-ipc-examples-linux \
     ti-ipc-test \
-    pru-icss \
 "
 
 RDEPENDS:${PN}:append:j722s = " \
@@ -39,7 +36,6 @@ RDEPENDS:${PN}:append:j722s = " \
 "
 
 RDEPENDS:${PN}:remove:j722s = " \
-    pru-icss \
     mcu-plus-sdk-firmware \
 "
 
@@ -49,7 +45,6 @@ RDEPENDS:${PN}:append:am62pxx = " \
 "
 
 RDEPENDS:${PN}:remove:am62pxx = " \
-    pru-icss \
     mcu-plus-sdk-firmware \
 "
 

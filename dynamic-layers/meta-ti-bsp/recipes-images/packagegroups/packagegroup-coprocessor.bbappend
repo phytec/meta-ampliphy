@@ -1,3 +1,3 @@
-RDEPENDS:${PN}:append:k3 = " pru-icss \
+RDEPENDS:${PN}:append:k3 = " \
     ti-rpmsg-char \
 "
