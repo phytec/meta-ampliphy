@@ -28,6 +28,7 @@ RDEPENDS:${PN}:append:am57xx = " \
     ti-ipc-rtos-fw \
     ti-ipc-examples-linux \
     ti-ipc-test \
+    ti-rtos-messageq-test-fw \
 "
 
 RDEPENDS:${PN}:append:j722s = " \
