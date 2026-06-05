@@ -46,6 +46,8 @@ python do_patch:append() {
         bb.build.exec_func("parse_fstab", d)
     else:
         bb.build.exec_func("clean_fstab", d)
+    if "am57xx" in d.getVar("OVERRIDES").split(":"):
+        bb.process.run("sed -i -e '\\|/boot|d' %s/fstab" % d.getVar("WORKDIR"))
 }
 
 do_install:append() {
