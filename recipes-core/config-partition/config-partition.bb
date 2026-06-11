@@ -8,6 +8,8 @@ S = "${UNPACKDIR}"
 
 C = "${WORKDIR}/config-partition"
 
+PSEUDO_INCLUDE_PATHS .= ",${C}"
+
 fakeroot do_config_partition () {
         install -d ${C}
         install -d ${C}/rauc
