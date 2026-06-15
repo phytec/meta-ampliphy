@@ -7,13 +7,14 @@ inherit features_check
 
 REQUIRED_DISTRO_FEATURES = "secureboot"
 
-_FITIMAGE_TO_WIC = "\
-    ${@bb.utils.contains('KERNEL_IMAGETYPES', 'fitImage', '', \
-    '${@bb.utils.contains("MACHINE_FEATURES", "emmc", "phytec-secureboot-initramfs-fitimage:do_deploy", "phytec-simple-fitimage:do_deploy", d)}' \
-    , d)}"
+# Only i.MX6/i.MX6UL still build the FIT via the meta-ampliphy fitimage class;
+# stage its do_deploy before do_image so wic can place fitImage in /boot.
+_FITIMAGE_SEL = "${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'phytec-secureboot-initramfs-fitimage:do_deploy', 'phytec-simple-fitimage:do_deploy', d)}"
+_PROV_FITIMAGE_DEP = ""
+_PROV_FITIMAGE_DEP:mx6-generic-bsp   = "${_FITIMAGE_SEL}"
+_PROV_FITIMAGE_DEP:mx6ul-generic-bsp = "${_FITIMAGE_SEL}"
 
-do_image[depends] += "\
-    ${@bb.utils.contains('UBOOT_SIGN_ENABLE','1','${_FITIMAGE_TO_WIC}','', d)}"
+do_image[depends] += "${_PROV_FITIMAGE_DEP}"
 
 IMAGE_INSTALL = " \
     packagegroup-base \

@@ -6,5 +6,10 @@ inherit image
 PACKAGE_INSTALL = ""
 LINGUAS_INSTALL = ""
 
-do_image[depends] += "\
-    ${@bb.utils.contains('KERNEL_IMAGETYPES', 'fitImage', '', 'phytec-provisioning-initramfs-fitimage:do_deploy', d)}"
+# Only i.MX6/i.MX6UL still build the FIT via the meta-ampliphy fitimage class;
+# stage its do_deploy before do_image so wic can place fitImage in /boot.
+_PROV_FITIMAGE_DEP = ""
+_PROV_FITIMAGE_DEP:mx6-generic-bsp   = "phytec-provisioning-initramfs-fitimage:do_deploy"
+_PROV_FITIMAGE_DEP:mx6ul-generic-bsp = "phytec-provisioning-initramfs-fitimage:do_deploy"
+
+do_image[depends] += "${_PROV_FITIMAGE_DEP}"
