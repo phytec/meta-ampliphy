@@ -16,7 +16,6 @@ SRC_URI += " \
     file://10-end4.network \
     file://10-ethernet.link \
     file://11-can.network \
-    file://11-fcan.network \
     file://90-dhcp-default.network \
     ${@bb.utils.contains("MACHINE_FEATURES", "camera", "file://90-phycam.rules", "", d)} \
 "
