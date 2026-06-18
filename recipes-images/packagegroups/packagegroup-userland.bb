@@ -17,5 +17,6 @@ RDEPENDS:${PN} = " \
     rpm \
     linuxptp \
     wget \
+    util-linux-lsblk \
     ${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/bootloader', 'u-boot u-boot-phytec u-boot-phytec-imx u-boot-phytec-ti', 'libubootenv-bin',     '', d)} \
 "
