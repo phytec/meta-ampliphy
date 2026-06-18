@@ -21,7 +21,15 @@ PR = "r0"
 #   $ tar -czf phytec-camera-examples-imx8mp-3.2.tar.gz \
 #     phytec-camera-examples-imx8mp-3.2/
 
-SRC_URI = "https://download.phytec.de/Software/Linux/Applications/${BPN}-${PV}.tar.gz"
+SRC_URI = " \
+    https://download.phytec.de/Software/Linux/Applications/${BPN}-${PV}.tar.gz \
+    file://0001-gstreamer-examples-Fix-pipeline-echo-for-save-jpeg-g.patch \
+    file://0002-gstreamer-examples-Abort-gstreamer-pipelines-if-GST_.patch \
+    file://0003-gstreamer-examples-vpu-Add-H.256-encoding-scripts.patch \
+    file://0001-gstreamer-examples-vpu-Add-H265-sdp-file-and-update-.patch \
+    file://0002-gstreamer-examples-func.sh-Clearify-ISP-single-port-.patch \
+"
+
 SRC_URI[md5sum] = "0a00ac7426e5a8d7277e8ac45ff01994"
 SRC_URI[sha256sum] = "abf6fc023f7798026b980a19ffcc7bf34b7c3160bb97c865046ca7dc3a0ad5ff"
 

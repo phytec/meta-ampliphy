@@ -1,0 +1,341 @@
+From 71b40ae08c2de245cae9c2cdee535d8012c9e59c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Mon, 13 Apr 2026 15:38:24 +0200
+Subject: [PATCH 3/3] gstreamer-examples: vpu: Add H.256 encoding scripts
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Extend the existing H.264 encoding scripts with support for encoding in
+H.265(HEVC). Let the user decide which encoding to use when the script
+is started.
+
+Upstream-Status: Inappropriate [PHYTEC specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ ...pture-h26x-network-stream-1280x720-csi1.sh} | 18 +++++++++++++++---
+ ...pture-h26x-network-stream-1280x720-csi2.sh} | 18 +++++++++++++++---
+ ...-csi1.sh => save-h26x-mkv-1280x720-csi1.sh} | 18 +++++++++++++++---
+ ...-csi2.sh => save-h26x-mkv-1280x720-csi2.sh} | 18 +++++++++++++++---
+ ...pture-h26x-network-stream-1280x720-csi1.sh} | 18 +++++++++++++++---
+ ...pture-h26x-network-stream-1280x720-csi2.sh} | 18 +++++++++++++++---
+ ...-csi1.sh => save-h26x-mkv-1280x720-csi1.sh} | 18 +++++++++++++++---
+ ...-csi2.sh => save-h26x-mkv-1280x720-csi2.sh} | 18 +++++++++++++++---
+ 8 files changed, 120 insertions(+), 24 deletions(-)
+ rename phytec-gstreamer-examples/isi/vpu/{capture-h264-network-stream-1280x720-csi1.sh => capture-h26x-network-stream-1280x720-csi1.sh} (70%)
+ rename phytec-gstreamer-examples/isi/vpu/{capture-h264-network-stream-1280x720-csi2.sh => capture-h26x-network-stream-1280x720-csi2.sh} (70%)
+ rename phytec-gstreamer-examples/isi/vpu/{save-h264-mkv-1280x720-csi1.sh => save-h26x-mkv-1280x720-csi1.sh} (61%)
+ rename phytec-gstreamer-examples/isi/vpu/{save-h264-mkv-1280x720-csi2.sh => save-h26x-mkv-1280x720-csi2.sh} (61%)
+ rename phytec-gstreamer-examples/isp/vpu/{capture-h264-network-stream-1280x720-csi1.sh => capture-h26x-network-stream-1280x720-csi1.sh} (70%)
+ rename phytec-gstreamer-examples/isp/vpu/{capture-h264-network-stream-1280x720-csi2.sh => capture-h26x-network-stream-1280x720-csi2.sh} (70%)
+ rename phytec-gstreamer-examples/isp/vpu/{save-h264-mkv-1280x720-csi1.sh => save-h26x-mkv-1280x720-csi1.sh} (61%)
+ rename phytec-gstreamer-examples/isp/vpu/{save-h264-mkv-1280x720-csi2.sh => save-h26x-mkv-1280x720-csi2.sh} (61%)
+
+diff --git a/phytec-gstreamer-examples/isi/vpu/capture-h264-network-stream-1280x720-csi1.sh b/phytec-gstreamer-examples/isi/vpu/capture-h26x-network-stream-1280x720-csi1.sh
+similarity index 70%
+rename from phytec-gstreamer-examples/isi/vpu/capture-h264-network-stream-1280x720-csi1.sh
+rename to phytec-gstreamer-examples/isi/vpu/capture-h26x-network-stream-1280x720-csi1.sh
+index 1b4f407366df..98e8039a4cb0 100644
+--- a/phytec-gstreamer-examples/isi/vpu/capture-h264-network-stream-1280x720-csi1.sh
++++ b/phytec-gstreamer-examples/isi/vpu/capture-h26x-network-stream-1280x720-csi1.sh
+@@ -16,18 +16,30 @@ echo "==========================================================================
+ echo "Starting VPU encoded stream from ${CAM_PHYCAM_NAME} on ${INTERFACE} via ${PROC} using Gstreamer"
+ echo "Configured Sensor Mode: ${CAM_MODENAME}"
+ echo "Capturing ${CAP_WIDTH}x${CAP_HEIGHT} with ${CAP_FMT} from ${CAP_DEVICE},"
+-echo "converting it to a H264 stream and streaming it via Network to ${HOST_IP}:${UDP_PORT}"
++echo "converting it to a H26x stream and streaming it via Network to ${HOST_IP}:${UDP_PORT}"
+ echo ""
+ echo "Note: Make sure to configure the correct HOST_IP in this script and the"
+ echo "correct Target device IP in VLC_Network_Stream.sdp"
+ echo "================================================================================="
++echo ""
++echo " Choose the Encoder"
++echo " =================="
++echo " 1 = H.264 (IMX VPU-based AVC/H264 video encoder) (default)"
++echo " 2 = H.265 (IMX VPU-based HEVC/H265 video encoder)"
++read -r ENCODER_TYPE
++echo "Your selection: ${ENCODER_TYPE:-1}"
++
++case $ENCODER_TYPE in
++	"1") ENCODING="queue ! v4l2h264enc ! rtph264pay";;
++	"2") ENCODING="queue ! v4l2h265enc ! rtph265pay";;
++	*) ENCODING="queue ! v4l2h264enc ! rtph264pay";;
++esac
+ 
+ set_mode
+ set_controls
+ 
+ SOURCE="v4l2src device=${CAP_DEVICE}"
+-RATE="videorate ! $(echo ${GST_FMT} | cut -d',' -f1),framerate=25/1"
+-ENCODING="queue ! vpuenc_h264 ! rtph264pay"
++RATE="videorate ! $(echo "${GST_FMT}" | cut -d',' -f1),framerate=25/1"
+ SINK="udpsink host=${HOST_IP} port=${UDP_PORT} sync=false"
+ 
+ echo "  gst-launch-1.0 ${SOURCE} ! \\"
+diff --git a/phytec-gstreamer-examples/isi/vpu/capture-h264-network-stream-1280x720-csi2.sh b/phytec-gstreamer-examples/isi/vpu/capture-h26x-network-stream-1280x720-csi2.sh
+similarity index 70%
+rename from phytec-gstreamer-examples/isi/vpu/capture-h264-network-stream-1280x720-csi2.sh
+rename to phytec-gstreamer-examples/isi/vpu/capture-h26x-network-stream-1280x720-csi2.sh
+index a94371a6c7e1..fe8fea3def1a 100644
+--- a/phytec-gstreamer-examples/isi/vpu/capture-h264-network-stream-1280x720-csi2.sh
++++ b/phytec-gstreamer-examples/isi/vpu/capture-h26x-network-stream-1280x720-csi2.sh
+@@ -16,18 +16,30 @@ echo "==========================================================================
+ echo "Starting VPU encoded stream from ${CAM_PHYCAM_NAME} on ${INTERFACE} via ${PROC} using Gstreamer"
+ echo "Configured Sensor Mode: ${CAM_MODENAME}"
+ echo "Capturing ${CAP_WIDTH}x${CAP_HEIGHT} with ${CAP_FMT} from ${CAP_DEVICE},"
+-echo "converting it to a H264 stream and streaming it via Network to ${HOST_IP}:${UDP_PORT}"
++echo "converting it to a H26x stream and streaming it via Network to ${HOST_IP}:${UDP_PORT}"
+ echo ""
+ echo "Note: Make sure to configure the correct HOST_IP in this script and the"
+ echo "correct Target device IP in VLC_Network_Stream.sdp"
+ echo "================================================================================="
++echo ""
++echo " Choose the Encoder"
++echo " =================="
++echo " 1 = H.264 (IMX VPU-based AVC/H264 video encoder) (default)"
++echo " 2 = H.265 (IMX VPU-based HEVC/H265 video encoder)"
++read -r ENCODER_TYPE
++echo "Your selection: ${ENCODER_TYPE:-1}"
++
++case $ENCODER_TYPE in
++	"1") ENCODING="queue ! v4l2h264enc ! rtph264pay";;
++	"2") ENCODING="queue ! v4l2h265enc ! rtph265pay";;
++	*) ENCODING="queue ! v4l2h264enc ! rtph264pay";;
++esac
+ 
+ set_mode
+ set_controls
+ 
+ SOURCE="v4l2src device=${CAP_DEVICE}"
+-RATE="videorate ! $(echo ${GST_FMT} | cut -d',' -f1),framerate=25/1"
+-ENCODING="queue ! vpuenc_h264 ! rtph264pay"
++RATE="videorate ! $(echo "${GST_FMT}" | cut -d',' -f1),framerate=25/1"
+ SINK="udpsink host=${HOST_IP} port=${UDP_PORT} sync=false"
+ 
+ echo "  gst-launch-1.0 ${SOURCE} ! \\"
+diff --git a/phytec-gstreamer-examples/isi/vpu/save-h264-mkv-1280x720-csi1.sh b/phytec-gstreamer-examples/isi/vpu/save-h26x-mkv-1280x720-csi1.sh
+similarity index 61%
+rename from phytec-gstreamer-examples/isi/vpu/save-h264-mkv-1280x720-csi1.sh
+rename to phytec-gstreamer-examples/isi/vpu/save-h26x-mkv-1280x720-csi1.sh
+index dd1ea141b432..1a770760a8c4 100644
+--- a/phytec-gstreamer-examples/isi/vpu/save-h264-mkv-1280x720-csi1.sh
++++ b/phytec-gstreamer-examples/isi/vpu/save-h26x-mkv-1280x720-csi1.sh
+@@ -16,12 +16,24 @@ echo "==========================================================================
+ echo "Starting gstreamer with ${CAM_FMT} Source on ${INTERFACE} via ${PROC}"
+ echo "Configured Sensor Mode: ${CAM_MODENAME}"
+ echo "Capturing ${CAP_WIDTH}x${CAP_HEIGHT} with ${CAP_FMT} from ${CAP_DEVICE},"
+-echo "converting it to a H264 stream and saving it as ${CAM_NAME}_${CAM_COLOR}_HD.mkv"
++echo "converting it to a H26x stream and saving it as ${CAM_NAME}_${CAM_COLOR}_HD.mkv"
+ echo "================================================================================="
++echo ""
++echo " Choose the Encoder"
++echo " =================="
++echo " 1 = H.264 (IMX VPU-based AVC/H264 video encoder) (default)"
++echo " 2 = H.265 (IMX VPU-based HEVC/H265 video encoder)"
++read -r ENCODER_TYPE
++echo "Your selection: ${ENCODER_TYPE:-1}"
++
++case $ENCODER_TYPE in
++	"1") ENCODER="H.264"; ENCODING="queue ! v4l2h264enc ! h264parse ! matroskamux";;
++	"2") ENCODER="H.265"; ENCODING="queue ! v4l2h265enc ! h265parse ! matroskamux";;
++	*) ENCODER="H.264"; ENCODING="queue ! v4l2h264enc ! h264parse ! matroskamux";;
++esac
+ 
+ SOURCE="v4l2src device=${CAP_DEVICE}"
+-ENCODING="queue ! vpuenc_h264 ! h264parse ! matroskamux"
+-SINK="filesink location=${CAM_NAME}_${CAM_COLOR}_HD.mkv"
++SINK="filesink location=${CAM_NAME}_${CAM_COLOR}_${ENCODER}_HD.mkv"
+ 
+ echo "  gst-launch-1.0 ${SOURCE} ! \\"
+ echo "    ${GST_FMT} ! \\"
+diff --git a/phytec-gstreamer-examples/isi/vpu/save-h264-mkv-1280x720-csi2.sh b/phytec-gstreamer-examples/isi/vpu/save-h26x-mkv-1280x720-csi2.sh
+similarity index 61%
+rename from phytec-gstreamer-examples/isi/vpu/save-h264-mkv-1280x720-csi2.sh
+rename to phytec-gstreamer-examples/isi/vpu/save-h26x-mkv-1280x720-csi2.sh
+index 823965ee8b62..8ed40cffa38b 100644
+--- a/phytec-gstreamer-examples/isi/vpu/save-h264-mkv-1280x720-csi2.sh
++++ b/phytec-gstreamer-examples/isi/vpu/save-h26x-mkv-1280x720-csi2.sh
+@@ -16,12 +16,24 @@ echo "==========================================================================
+ echo "Starting gstreamer with ${CAM_FMT} Source on ${INTERFACE} via ${PROC}"
+ echo "Configured Sensor Mode: ${CAM_MODENAME}"
+ echo "Capturing ${CAP_WIDTH}x${CAP_HEIGHT} with ${CAP_FMT} from ${CAP_DEVICE},"
+-echo "converting it to a H264 stream and saving it as ${CAM_NAME}_${CAM_COLOR}_HD.mkv"
++echo "converting it to a H26x stream and saving it as ${CAM_NAME}_${CAM_COLOR}_HD.mkv"
+ echo "================================================================================="
++echo ""
++echo " Choose the Encoder"
++echo " =================="
++echo " 1 = H.264 (IMX VPU-based AVC/H264 video encoder) (default)"
++echo " 2 = H.265 (IMX VPU-based HEVC/H265 video encoder)"
++read -r ENCODER_TYPE
++echo "Your selection: ${ENCODER_TYPE:-1}"
++
++case $ENCODER_TYPE in
++	"1") ENCODER="H.264"; ENCODING="queue ! v4l2h264enc ! h264parse ! matroskamux";;
++	"2") ENCODER="H.265"; ENCODING="queue ! v4l2h265enc ! h265parse ! matroskamux";;
++	*) ENCODER="H.264"; ENCODING="queue ! v4l2h264enc ! h264parse ! matroskamux";;
++esac
+ 
+ SOURCE="v4l2src device=${CAP_DEVICE}"
+-ENCODING="queue ! vpuenc_h264 ! h264parse ! matroskamux"
+-SINK="filesink location=${CAM_NAME}_${CAM_COLOR}_HD.mkv"
++SINK="filesink location=${CAM_NAME}_${CAM_COLOR}_${ENCODER}_HD.mkv"
+ 
+ echo "  gst-launch-1.0 ${SOURCE} ! \\"
+ echo "    ${GST_FMT} ! \\"
+diff --git a/phytec-gstreamer-examples/isp/vpu/capture-h264-network-stream-1280x720-csi1.sh b/phytec-gstreamer-examples/isp/vpu/capture-h26x-network-stream-1280x720-csi1.sh
+similarity index 70%
+rename from phytec-gstreamer-examples/isp/vpu/capture-h264-network-stream-1280x720-csi1.sh
+rename to phytec-gstreamer-examples/isp/vpu/capture-h26x-network-stream-1280x720-csi1.sh
+index de676bc3a1f4..b96e8caf3ce9 100644
+--- a/phytec-gstreamer-examples/isp/vpu/capture-h264-network-stream-1280x720-csi1.sh
++++ b/phytec-gstreamer-examples/isp/vpu/capture-h26x-network-stream-1280x720-csi1.sh
+@@ -16,18 +16,30 @@ echo "==========================================================================
+ echo "Starting VPU encoded stream from ${CAM_PHYCAM_NAME} on ${INTERFACE} via ${PROC} using Gstreamer"
+ echo "Configured Sensor Mode: ${CAM_MODENAME}"
+ echo "Capturing ${CAP_WIDTH}x${CAP_HEIGHT} with ${CAP_FMT} from ${CAP_DEVICE},"
+-echo "converting it to a H264 stream and streaming it via Network to ${HOST_IP}:${UDP_PORT}"
++echo "converting it to a H26x stream and streaming it via Network to ${HOST_IP}:${UDP_PORT}"
+ echo ""
+ echo "Note: Make sure to configure the correct HOST_IP in this script and the"
+ echo "correct Target device IP in VLC_Network_Stream.sdp"
+ echo "================================================================================="
++echo ""
++echo " Choose the Encoder"
++echo " =================="
++echo " 1 = H.264 (IMX VPU-based AVC/H264 video encoder) (default)"
++echo " 2 = H.265 (IMX VPU-based HEVC/H265 video encoder)"
++read -r ENCODER_TYPE
++echo "Your selection: ${ENCODER_TYPE:-1}"
++
++case $ENCODER_TYPE in
++	"1") ENCODING="queue ! v4l2h264enc ! rtph264pay";;
++	"2") ENCODING="queue ! v4l2h265enc ! rtph265pay";;
++	*) ENCODING="queue ! v4l2h264enc ! rtph264pay";;
++esac
+ 
+ set_mode
+ set_controls
+ 
+ SOURCE="v4l2src device=${CAP_DEVICE}"
+-RATE="videorate ! $(echo ${GST_FMT} | cut -d',' -f1),framerate=25/1"
+-ENCODING="queue ! vpuenc_h264 ! rtph264pay"
++RATE="videorate ! $(echo "${GST_FMT}" | cut -d',' -f1),framerate=25/1"
+ SINK="udpsink host=${HOST_IP} port=${UDP_PORT} sync=false"
+ 
+ echo "  gst-launch-1.0 ${SOURCE} ! \\"
+diff --git a/phytec-gstreamer-examples/isp/vpu/capture-h264-network-stream-1280x720-csi2.sh b/phytec-gstreamer-examples/isp/vpu/capture-h26x-network-stream-1280x720-csi2.sh
+similarity index 70%
+rename from phytec-gstreamer-examples/isp/vpu/capture-h264-network-stream-1280x720-csi2.sh
+rename to phytec-gstreamer-examples/isp/vpu/capture-h26x-network-stream-1280x720-csi2.sh
+index 813a6f7f363b..93c119682b17 100644
+--- a/phytec-gstreamer-examples/isp/vpu/capture-h264-network-stream-1280x720-csi2.sh
++++ b/phytec-gstreamer-examples/isp/vpu/capture-h26x-network-stream-1280x720-csi2.sh
+@@ -16,18 +16,30 @@ echo "==========================================================================
+ echo "Starting VPU encoded stream from ${CAM_PHYCAM_NAME} on ${INTERFACE} via ${PROC} using Gstreamer"
+ echo "Configured Sensor Mode: ${CAM_MODENAME}"
+ echo "Capturing ${CAP_WIDTH}x${CAP_HEIGHT} with ${CAP_FMT} from ${CAP_DEVICE},"
+-echo "converting it to a H264 stream and streaming it via Network to ${HOST_IP}:${UDP_PORT}"
++echo "converting it to a H26x stream and streaming it via Network to ${HOST_IP}:${UDP_PORT}"
+ echo ""
+ echo "Note: Make sure to configure the correct HOST_IP in this script and the"
+ echo "correct Target device IP in VLC_Network_Stream.sdp"
+ echo "================================================================================="
++echo ""
++echo " Choose the Encoder"
++echo " =================="
++echo " 1 = H.264 (IMX VPU-based AVC/H264 video encoder) (default)"
++echo " 2 = H.265 (IMX VPU-based HEVC/H265 video encoder)"
++read -r ENCODER_TYPE
++echo "Your selection: ${ENCODER_TYPE:-1}"
++
++case $ENCODER_TYPE in
++	"1") ENCODING="queue ! v4l2h264enc ! rtph264pay";;
++	"2") ENCODING="queue ! v4l2h265enc ! rtph265pay";;
++	*) ENCODING="queue ! v4l2h264enc ! rtph264pay";;
++esac
+ 
+ set_mode
+ set_controls
+ 
+ SOURCE="v4l2src device=${CAP_DEVICE}"
+-RATE="videorate ! $(echo ${GST_FMT} | cut -d',' -f1),framerate=25/1"
+-ENCODING="queue ! vpuenc_h264 ! rtph264pay"
++RATE="videorate ! $(echo "${GST_FMT}" | cut -d',' -f1),framerate=25/1"
+ SINK="udpsink host=${HOST_IP} port=${UDP_PORT} sync=false"
+ 
+ echo "  gst-launch-1.0 ${SOURCE} ! \\"
+diff --git a/phytec-gstreamer-examples/isp/vpu/save-h264-mkv-1280x720-csi1.sh b/phytec-gstreamer-examples/isp/vpu/save-h26x-mkv-1280x720-csi1.sh
+similarity index 61%
+rename from phytec-gstreamer-examples/isp/vpu/save-h264-mkv-1280x720-csi1.sh
+rename to phytec-gstreamer-examples/isp/vpu/save-h26x-mkv-1280x720-csi1.sh
+index 4eb704b38cba..d683cd78cd94 100644
+--- a/phytec-gstreamer-examples/isp/vpu/save-h264-mkv-1280x720-csi1.sh
++++ b/phytec-gstreamer-examples/isp/vpu/save-h26x-mkv-1280x720-csi1.sh
+@@ -16,12 +16,24 @@ echo "==========================================================================
+ echo "Starting gstreamer with ${CAM_FMT} Source on ${INTERFACE} via ${PROC}"
+ echo "Configured Sensor Mode: ${CAM_MODENAME}"
+ echo "Capturing ${CAP_WIDTH}x${CAP_HEIGHT} with ${CAP_FMT} from ${CAP_DEVICE},"
+-echo "converting it to a H264 stream and saving it as ${CAM_NAME}_${CAM_COLOR}_HD.mkv"
++echo "converting it to a H26x stream and saving it as ${CAM_NAME}_${CAM_COLOR}_HD.mkv"
+ echo "================================================================================="
++echo ""
++echo " Choose the Encoder"
++echo " =================="
++echo " 1 = H.264 (IMX VPU-based AVC/H264 video encoder) (default)"
++echo " 2 = H.265 (IMX VPU-based HEVC/H265 video encoder)"
++read -r ENCODER_TYPE
++echo "Your selection: ${ENCODER_TYPE:-1}"
++
++case $ENCODER_TYPE in
++	"1") ENCODER="H.264"; ENCODING="queue ! v4l2h264enc ! h264parse ! matroskamux";;
++	"2") ENCODER="H.265"; ENCODING="queue ! v4l2h265enc ! h265parse ! matroskamux";;
++	*) ENCODER="H.264"; ENCODING="queue ! v4l2h264enc ! h264parse ! matroskamux";;
++esac
+ 
+ SOURCE="v4l2src device=${CAP_DEVICE}"
+-ENCODING="queue ! vpuenc_h264 ! h264parse ! matroskamux"
+-SINK="filesink location=${CAM_NAME}_${CAM_COLOR}_HD.mkv"
++SINK="filesink location=${CAM_NAME}_${CAM_COLOR}_${ENCODER}_HD.mkv"
+ 
+ echo "  gst-launch-1.0 ${SOURCE} ! \\"
+ echo "    ${GST_FMT} ! \\"
+diff --git a/phytec-gstreamer-examples/isp/vpu/save-h264-mkv-1280x720-csi2.sh b/phytec-gstreamer-examples/isp/vpu/save-h26x-mkv-1280x720-csi2.sh
+similarity index 61%
+rename from phytec-gstreamer-examples/isp/vpu/save-h264-mkv-1280x720-csi2.sh
+rename to phytec-gstreamer-examples/isp/vpu/save-h26x-mkv-1280x720-csi2.sh
+index bef255b77122..29c5bbd8d2fd 100644
+--- a/phytec-gstreamer-examples/isp/vpu/save-h264-mkv-1280x720-csi2.sh
++++ b/phytec-gstreamer-examples/isp/vpu/save-h26x-mkv-1280x720-csi2.sh
+@@ -16,12 +16,24 @@ echo "==========================================================================
+ echo "Starting gstreamer with ${CAM_FMT} Source on ${INTERFACE} via ${PROC}"
+ echo "Configured Sensor Mode: ${CAM_MODENAME}"
+ echo "Capturing ${CAP_WIDTH}x${CAP_HEIGHT} with ${CAP_FMT} from ${CAP_DEVICE},"
+-echo "converting it to a H264 stream and saving it as ${CAM_NAME}_${CAM_COLOR}_HD.mkv"
++echo "converting it to a H26x stream and saving it as ${CAM_NAME}_${CAM_COLOR}_HD.mkv"
+ echo "================================================================================="
++echo ""
++echo " Choose the Encoder"
++echo " =================="
++echo " 1 = H.264 (IMX VPU-based AVC/H264 video encoder) (default)"
++echo " 2 = H.265 (IMX VPU-based HEVC/H265 video encoder)"
++read -r ENCODER_TYPE
++echo "Your selection: ${ENCODER_TYPE:-1}"
++
++case $ENCODER_TYPE in
++	"1") ENCODER="H.264"; ENCODING="queue ! v4l2h264enc ! h264parse ! matroskamux";;
++	"2") ENCODER="H.265"; ENCODING="queue ! v4l2h265enc ! h265parse ! matroskamux";;
++	*) ENCODER="H.264"; ENCODING="queue ! v4l2h264enc ! h264parse ! matroskamux";;
++esac
+ 
+ SOURCE="v4l2src device=${CAP_DEVICE}"
+-ENCODING="queue ! vpuenc_h264 ! h264parse ! matroskamux"
+-SINK="filesink location=${CAM_NAME}_${CAM_COLOR}_HD.mkv"
++SINK="filesink location=${CAM_NAME}_${CAM_COLOR}_${ENCODER}_HD.mkv"
+ 
+ echo "  gst-launch-1.0 ${SOURCE} ! \\"
+ echo "    ${GST_FMT} ! \\"
+-- 
+2.54.0
+

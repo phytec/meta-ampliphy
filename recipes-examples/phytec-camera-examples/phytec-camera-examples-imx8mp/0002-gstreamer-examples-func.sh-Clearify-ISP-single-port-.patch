@@ -1,0 +1,34 @@
+From 86581a908e49b1a26a4407c2e37f2c8244ba8ac0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 13 May 2026 15:57:32 +0200
+Subject: [PATCH 2/2] gstreamer-examples: func.sh: Clearify ISP single port
+ restriction
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add a helpful note for the user on how to solve the "Dual port phyCAM-L
+not supported with ISP" error message.
+
+Upstream-Status: Inappropriate [PHYTEC specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ phytec-gstreamer-examples/tools/func.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/phytec-gstreamer-examples/tools/func.sh b/phytec-gstreamer-examples/tools/func.sh
+index e318b976f09e..998216ea1f80 100644
+--- a/phytec-gstreamer-examples/tools/func.sh
++++ b/phytec-gstreamer-examples/tools/func.sh
+@@ -91,6 +91,7 @@ detect_sensor_type() {
+ 	if [ "$PROC" = "ISP" ] ; then
+ 		if [ -L "/dev/cam-${IFACE}-port0" ] && [ -L "/dev/cam-${IFACE}-port1" ] ; then
+ 			echo "Dual port phyCAM-L not supported with ISP"
++			echo "With ISP only one FPD-Link port can be connected/enabled at once"
+ 			exit 1
+ 		fi
+ 	fi
+-- 
+2.54.0
+

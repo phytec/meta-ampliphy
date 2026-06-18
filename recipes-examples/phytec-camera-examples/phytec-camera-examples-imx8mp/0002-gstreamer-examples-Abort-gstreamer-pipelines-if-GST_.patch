@@ -1,0 +1,80 @@
+From a86ab49a909460cd83ef8dc4ae424ac061b5346d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 12 Feb 2025 14:41:42 +0100
+Subject: [PATCH 2/3] gstreamer-examples: Abort gstreamer pipelines if GST_FMT
+ is empty
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Configurations with an empty GST_FMT setting do not support gstreamer
+pipelines due to a lack of 8 bit formats. Thus abort gstreamer pipelines
+in that case.
+
+Upstream-Status: Inappropriate [PHYTEC specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ phytec-gstreamer-examples/tools/func.sh | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/phytec-gstreamer-examples/tools/func.sh b/phytec-gstreamer-examples/tools/func.sh
+index 609727067d18..cb4a17319ba9 100644
+--- a/phytec-gstreamer-examples/tools/func.sh
++++ b/phytec-gstreamer-examples/tools/func.sh
+@@ -257,6 +257,11 @@ create_gst_livestream_pipeline() {
+ 	SOURCE="v4l2src device=${CAP_DEVICE} ${GST_SRC_OPTS}"
+ 	SINK="waylandsink sync=false"
+ 
++	if [ -z "$GST_FMT" ]; then
++		echo "Camera Sensor ${CAM_PHYCAM_NAME} does not support 8 bit capture."
++		exit 1
++	fi
++
+ 	echo "GStreamer Pipeline"
+ 	echo "=================="
+ 	echo "  gst-launch-1.0 ${SOURCE} ! \\"
+@@ -283,6 +288,16 @@ create_gst_livestream_dual_pipeline() {
+ 	COMP_SINK1="sink_1::xpos=640 sink_1::ypos=100 sink_1::width=640 sink_1::height=400"
+ 	SINK="waylandsink"
+ 
++	if [ -z "$CAM1_GST_FMT" ]; then
++		echo "Camera Sensor ${CAM1_PHYCAM_NAME} does not support 8 bit capture."
++		exit 1
++	fi
++
++	if [ -z "$CAM2_GST_FMT" ]; then
++		echo "Camera Sensor ${CAM2_PHYCAM_NAME} does not support 8 bit capture."
++		exit 1
++	fi
++
+ 	echo "GStreamer Pipeline"
+ 	echo "=================="
+ 	echo "  gst-launch-1.0 ${COMP} \\"
+@@ -322,6 +337,11 @@ create_gst_save_jpeg_pipeline() {
+ 	SOURCE="v4l2src device=${CAP_DEVICE} num-buffers=${CAP_FRAME_CNT} ${GST_SRC_OPTS}"
+ 	ENCODING="jpegenc"
+ 
++	if [ -z "$GST_FMT" ]; then
++		echo "Camera Sensor ${CAM_PHYCAM_NAME} does not support 8 bit capture."
++		exit 1
++	fi
++
+ 	if [ -n "$MODE_NAME" ] ; then
+ 		FILENAME="${CAM_NAME}_${CAM_COLOR}_${MODE_NAME}_${PROC}.jpg"
+ 	else
+@@ -352,6 +372,11 @@ create_gst_save_raw_pipeline() {
+ 
+ 	SOURCE="v4l2src device=${CAP_DEVICE} num-buffers=${CAP_FRAME_CNT} ${GST_SRC_OPTS}"
+ 
++	if [ -z "$GST_FMT" ]; then
++		echo "Camera Sensor ${CAM_PHYCAM_NAME} does not support 8 bit capture."
++		exit 1
++	fi
++
+ 	if [ -n "$MODE_NAME" ] ; then
+ 		FILENAME="${CAM_NAME}_${CAM_COLOR}_${MODE_NAME}_${PROC}.${FILE_EXTENSION}"
+ 	else
+-- 
+2.54.0
+

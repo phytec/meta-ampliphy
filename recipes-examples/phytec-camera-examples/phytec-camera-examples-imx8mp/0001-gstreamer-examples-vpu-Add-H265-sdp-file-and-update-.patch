@@ -1,0 +1,116 @@
+From 4799eb79e4ba12ed5476f8124c7c3cde11c44dfb Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 13 May 2026 15:53:37 +0200
+Subject: [PATCH 1/2] gstreamer-examples: vpu: Add H265 sdp file and update
+ README
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Upstream-Status: Inappropriate [PHYTEC specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ phytec-gstreamer-examples/isi/vpu/README.rst    | 17 ++++++++---------
+ ...k_Stream.sdp => VLC_Network_Stream_H264.sdp} |  0
+ .../isi/vpu/VLC_Network_Stream_H265.sdp         |  4 ++++
+ phytec-gstreamer-examples/isp/vpu/README.rst    | 17 ++++++++---------
+ ...k_Stream.sdp => VLC_Network_Stream_H264.sdp} |  0
+ .../isp/vpu/VLC_Network_Stream_H265.sdp         |  4 ++++
+ 6 files changed, 24 insertions(+), 18 deletions(-)
+ rename phytec-gstreamer-examples/isi/vpu/{VLC_Network_Stream.sdp => VLC_Network_Stream_H264.sdp} (100%)
+ create mode 100644 phytec-gstreamer-examples/isi/vpu/VLC_Network_Stream_H265.sdp
+ rename phytec-gstreamer-examples/isp/vpu/{VLC_Network_Stream.sdp => VLC_Network_Stream_H264.sdp} (100%)
+ create mode 100644 phytec-gstreamer-examples/isp/vpu/VLC_Network_Stream_H265.sdp
+
+diff --git a/phytec-gstreamer-examples/isi/vpu/README.rst b/phytec-gstreamer-examples/isi/vpu/README.rst
+index 66ebd8754b82..215c6c4067ea 100644
+--- a/phytec-gstreamer-examples/isi/vpu/README.rst
++++ b/phytec-gstreamer-examples/isi/vpu/README.rst
+@@ -4,17 +4,16 @@ Gstreamer VPU Encoding Examples
+ Scripts
+ -------
+ 
+-  - save-h264-mkv-1280x720.sh
+-    This example saves a HD video stream from the connected camera, H264
+-    encoded in an MKV file.
++  - save-h26x-mkv-1280x720.sh
++    This example saves a HD video stream from the connected camera, H264 or
++    H265 encoded in an MKV file.
+ 
+-  - capture-h264-network-stream-1280x720.sh
+-    This example streams an HD video stream H264 encoded to the network, which
+-    can be accessed e.g. with VLC on a connected host PC.
+-    The provided VLC_Network_Stream.sdp can be used to access the provided
+-    stream on the host PC.
++  - capture-h26x-network-stream-1280x720.sh
++    This example streams an HD video stream H264 or H265 encoded to the
++    network, which can be accessed e.g. with VLC on a connected host PC.
++    The provided sdp can be used to access the stream on the host PC.
+     Make sure to set the correct IP address of your target board in
+-    VLC_Network_Stream.sdp and the correct IP address of your host PC in the
++    the sdp file and the correct IP address of your host PC in the
+     script.
+ 
+     Note: To improve the delay on the received stream you can adjust the
+diff --git a/phytec-gstreamer-examples/isi/vpu/VLC_Network_Stream.sdp b/phytec-gstreamer-examples/isi/vpu/VLC_Network_Stream_H264.sdp
+similarity index 100%
+rename from phytec-gstreamer-examples/isi/vpu/VLC_Network_Stream.sdp
+rename to phytec-gstreamer-examples/isi/vpu/VLC_Network_Stream_H264.sdp
+diff --git a/phytec-gstreamer-examples/isi/vpu/VLC_Network_Stream_H265.sdp b/phytec-gstreamer-examples/isi/vpu/VLC_Network_Stream_H265.sdp
+new file mode 100644
+index 000000000000..1aa181d531d7
+--- /dev/null
++++ b/phytec-gstreamer-examples/isi/vpu/VLC_Network_Stream_H265.sdp
+@@ -0,0 +1,4 @@
++v=0
++m=video 5200 RTP/AVP 96
++c=IN IP4 192.168.3.11
++a=rtpmap:96 H265/90000
+diff --git a/phytec-gstreamer-examples/isp/vpu/README.rst b/phytec-gstreamer-examples/isp/vpu/README.rst
+index 66ebd8754b82..723e8f669077 100644
+--- a/phytec-gstreamer-examples/isp/vpu/README.rst
++++ b/phytec-gstreamer-examples/isp/vpu/README.rst
+@@ -4,17 +4,16 @@ Gstreamer VPU Encoding Examples
+ Scripts
+ -------
+ 
+-  - save-h264-mkv-1280x720.sh
+-    This example saves a HD video stream from the connected camera, H264
+-    encoded in an MKV file.
++  - save-h26x-mkv-1280x720.sh
++    This example saves a HD video stream from the connected camera, H264 or
++    H265 encoded in an MKV file.
+ 
+-  - capture-h264-network-stream-1280x720.sh
+-    This example streams an HD video stream H264 encoded to the network, which
+-    can be accessed e.g. with VLC on a connected host PC.
+-    The provided VLC_Network_Stream.sdp can be used to access the provided
+-    stream on the host PC.
++  - capture-h26x-network-stream-1280x720.sh
++    This example streams an HD video stream H264 or H265 encoded to the
++    network, which can be accessed e.g. with VLC on a connected host PC.
++    The provided sdp file can be used to access the stream on the host PC.
+     Make sure to set the correct IP address of your target board in
+-    VLC_Network_Stream.sdp and the correct IP address of your host PC in the
++    the sdp file and the correct IP address of your host PC in the
+     script.
+ 
+     Note: To improve the delay on the received stream you can adjust the
+diff --git a/phytec-gstreamer-examples/isp/vpu/VLC_Network_Stream.sdp b/phytec-gstreamer-examples/isp/vpu/VLC_Network_Stream_H264.sdp
+similarity index 100%
+rename from phytec-gstreamer-examples/isp/vpu/VLC_Network_Stream.sdp
+rename to phytec-gstreamer-examples/isp/vpu/VLC_Network_Stream_H264.sdp
+diff --git a/phytec-gstreamer-examples/isp/vpu/VLC_Network_Stream_H265.sdp b/phytec-gstreamer-examples/isp/vpu/VLC_Network_Stream_H265.sdp
+new file mode 100644
+index 000000000000..1aa181d531d7
+--- /dev/null
++++ b/phytec-gstreamer-examples/isp/vpu/VLC_Network_Stream_H265.sdp
+@@ -0,0 +1,4 @@
++v=0
++m=video 5200 RTP/AVP 96
++c=IN IP4 192.168.3.11
++a=rtpmap:96 H265/90000
+-- 
+2.54.0
+
