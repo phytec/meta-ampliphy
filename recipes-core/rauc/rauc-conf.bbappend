@@ -54,6 +54,7 @@ def map_system_conf_bootloader(d):
     bootloader_map = {
         "barebox": "barebox",
         "u-boot": "uboot",
+        "u-boot-master": "uboot",
         "u-boot-phytec": "uboot",
         "u-boot-phytec-imx": "uboot",
         "u-boot-phytec-ti": "uboot"
