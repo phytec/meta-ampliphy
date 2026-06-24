@@ -24,8 +24,8 @@ KERNEL_FEATURES_DESELECT ?= "debug kvm media xen"
 DISTRO_FEATURES += "securestorage"
 DISTROOVERRIDES:append = ":securestorage"
 
-#add class secureboot for signing Bootloader and FIT-Image
-INHERIT += "secureboot"
+# Default key/material locations for bootloader + FIT signing
+require conf/distro/include/secure-boot-keys.inc
 
 # Sign fitImage
 UBOOT_SIGN_ENABLE ?= "1"
