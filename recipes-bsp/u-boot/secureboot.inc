@@ -8,6 +8,7 @@ inherit uboot-extra-env
 SRC_URI:append = " \
     file://deselect-commands.cfg \
     file://default-env.cfg \
+    file://bootcommand.cfg \
     ${@bb.utils.contains('UBOOT_SIGN_ENABLE','1','file://fitimage.cfg', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'disable-console', 'file://disable-console.cfg', '', d)} \
 "
