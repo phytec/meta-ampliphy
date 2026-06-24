@@ -45,7 +45,7 @@ SRC_URI = " \
     file://boot-sign.its.in \
 "
 
-inherit deploy secureboot
+inherit deploy signing-helpers
 
 # default bootscript (boot.scr.uimg) to be built into the .wic image
 DEFAULT_BOOTSCRIPT ??= "mmc_boot.cmd"
