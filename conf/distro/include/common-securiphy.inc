@@ -30,7 +30,7 @@ INHERIT += "secureboot"
 # Sign fitImage
 UBOOT_SIGN_ENABLE ?= "1"
 
-# Sign individiual images in fitImages,
-# only enable when using ampliphy-boot
+# Sign individiual images in fitImages
+FIT_SIGN_INDIVIDUAL:k3 = "1"
 FIT_SIGN_INDIVIDUAL:mx8-generic-bsp = "1"
 FIT_SIGN_INDIVIDUAL:mx9-generic-bsp = "1"
