@@ -78,7 +78,8 @@ do_compile() {
             -e "s/@@FIT_HASH_ALG@@/${FIT_HASH_ALG}/" \
             "${S}/${DEFAULT_ITS}" > boot.its
         mkimage -C none -A ${UBOOT_ARCH} -f boot.its ${script}.scr.uimg
-        if [ "${UBOOT_SIGN_ENABLE}" = "1" ] && [ "${FIT_SIGN_INDIVIDUAL}" = "1" ]; then
+        # Sign the boot script whenever verified boot is enabled.
+        if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
             if echo "${UBOOT_SIGN_KEYDIR}" | grep -q "pkcs11:"; then
                 setup_pkcs11_env
             fi
