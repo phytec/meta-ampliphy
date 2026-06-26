@@ -26,31 +26,26 @@ RDEPENDS:${PN}:append:mx6ul-generic-bsp = " \
 "
 
 RDEPENDS:${PN}:append:mx7-nxp-bsp = " \
-    imx-gst1.0-plugin-gplay \
     imx-gst1.0-plugin \
 "
 
 RDEPENDS:${PN}:append:mx8mm-nxp-bsp = " \
     gstreamer1.0-plugin-bayer2rgb-neon \
-    imx-gst1.0-plugin-gplay \
     imx-gst1.0-plugin \
 "
 
 RDEPENDS:${PN}:append:mx8mp-nxp-bsp = " \
     gstreamer1.0-plugin-bayer2rgb-neon \
-    imx-gst1.0-plugin-gplay \
     imx-gst1.0-plugin \
 "
 
 RDEPENDS:${PN}:append:mx93-nxp-bsp = " \
     gstreamer1.0-plugin-bayer2rgb-neon \
-    imx-gst1.0-plugin-gplay \
     imx-gst1.0-plugin \
 "
 
 RDEPENDS:${PN}:append:mx95-nxp-bsp = " \
     gstreamer1.0-plugin-bayer2rgb-neon \
-    imx-gst1.0-plugin-gplay \
     imx-gst1.0-plugin \
     libcamera-gst \
 "
