@@ -27,6 +27,8 @@ DISTROOVERRIDES:append = ":securestorage"
 # Default key/material locations for bootloader + FIT signing
 require conf/distro/include/secure-boot-keys.inc
 
+PARTUP_PACKAGE_DEPENDS:append:k3 = " linux-yocto-fitimage"
+
 # Sign fitImage
 UBOOT_SIGN_ENABLE ?= "1"
 
