@@ -14,7 +14,7 @@ IMAGE_FSTYPES = "cpio.gz"
 export IMAGE_BASENAME = "phytec-provisioning-initramfs"
 IMAGE_NAME_SUFFIX = ""
 
-IMAGE_INSTALL:remove:mx8m-nxp-bsp = "packagegroup-fsl-optee-imx"
+PACKAGE_INSTALL:remove:mx8m-nxp-bsp = "packagegroup-fsl-optee-imx"
 MACHINE_FIRMWARE:remove:mx8mp-nxp-bsp  = "sof-imx sof-zephyr zephyr-demo-imx"
 
 PACKAGE_INSTALL = " \
@@ -65,7 +65,7 @@ PACKAGE_INSTALL:remove:mx9-nxp-bsp = " \
 
 PACKAGE_INSTALL:append:imx-generic-bsp = " crucible"
 
-IMAGE_INSTALL:append:k3 = " \
+PACKAGE_INSTALL:append:k3 = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-spi-omap2-mcspi", "", d)} \
     kernel-module-rtc-rv3028 \
     kernel-module-rtc-ti-k3 \
