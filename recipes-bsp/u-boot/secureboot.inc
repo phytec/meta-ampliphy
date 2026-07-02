@@ -26,6 +26,14 @@ SRC_URI:append:mx93-generic-bsp = " \
     file://ahab.cfg \
 "
 
+# default-env.cfg enables ENV_WRITEABLE_LIST, which rejects any variable
+# imported from the stored environment unless it is marked writeable in
+# CFG_ENV_FLAGS_LIST_STATIC.
+# Comma-separated <name>:<flags> entries, no spaces.
+UBOOT_ENV_FLAGS_LIST_STATIC ?= "BOOT_ORDER:sw,BOOT_system0_LEFT:dw,BOOT_system1_LEFT:dw"
+
+EXTRA_OEMAKE:append:k3 = ' KCFLAGS=-DCFG_ENV_FLAGS_LIST_STATIC=\\\"${UBOOT_ENV_FLAGS_LIST_STATIC}\\\"'
+
 kconfig_set() {
     bbnote "Setting $1 in configs to $2"
     if [ "$2" = "n" ]; then
