@@ -16,7 +16,7 @@ SYSTEMD_SERVICE:${PN} = "chromium.service"
 
 do_install() {
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/chromium.service ${D}${systemd_system_unitdir}
+    install -m 0644 ${UNPACKDIR}/chromium.service ${D}${systemd_system_unitdir}
 }
 
 FILES:${PN} += "${systemd_system_unitdir}/chromium.service"

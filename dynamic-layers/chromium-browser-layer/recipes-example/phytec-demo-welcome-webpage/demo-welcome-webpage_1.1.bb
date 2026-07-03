@@ -8,8 +8,6 @@ SRC_URI = "\
           "
 SRC_URI[sha256sum] = "2b0d3b4ca3102eb5de379cd297f92417573545db4f004acb947491e878cb4b69"
 
-S = "${WORKDIR}"
-
 PR = "r0"
 
 # strip leading folder in archive and exclude script sub folder as this is not needed
@@ -18,12 +16,12 @@ TAR_ARGS = "--strip-components=1 --exclude='${BPN}-${PV}/scripts'"
 do_install () {
     install -d ${D}${servicedir}/http
     # extract webpage archive to /srv/http
-    tar --no-same-owner -xpf ${S}/webpage.tar.gz -C ${D}${servicedir}/http \
+    tar --no-same-owner -xpf ${UNPACKDIR}/webpage.tar.gz -C ${D}${servicedir}/http \
         ${TAR_ARGS}
 
     # install a systemd override to open the welcome-demo during system boot on chromium
     install -d ${D}${systemd_system_unitdir}/chromium.service.d
-    install -m 0644 ${S}/override.conf ${D}${systemd_system_unitdir}/chromium.service.d/
+    install -m 0644 ${UNPACKDIR}/override.conf ${D}${systemd_system_unitdir}/chromium.service.d/
 }
 
 FILES:${PN} = "\
