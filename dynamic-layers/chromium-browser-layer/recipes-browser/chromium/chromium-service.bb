@@ -23,4 +23,4 @@ do_install() {
 
 FILES:${PN} += "${systemd_system_unitdir}/chromium.service"
 
-REQUIRED_DISTRO_FEATURES= " systemd"
+REQUIRED_DISTRO_FEATURES = "systemd"
