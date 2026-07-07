@@ -45,3 +45,6 @@ RDEPENDS:packagegroup-base-wifi += " \
     linux-firmware-wl18xx \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-iwlwifi", "", d)} \
 "
+
+RDEPENDS:packagegroup-base-wifi:remove:ti-soc = "linux-firmware-wl18xx"
+RDEPENDS:packagegroup-base-wifi:append:ti-soc = " wl18xx-fw"
