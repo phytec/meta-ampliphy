@@ -9,4 +9,5 @@ RDEPENDS:${PN} += " \
     rauc \
     rauc-hawkbit-updater \
     rauc-update-usb \
+    rauc-downgrade-barrier \
 "
