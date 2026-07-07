@@ -34,6 +34,7 @@ RDEPENDS:packagegroup-base-bluetooth:append:mx8x-generic-bsp = " brcm-patchram-p
 RDEPENDS:packagegroup-base-rauc += " \
     rauc-hawkbit-updater \
     rauc-update-usb \
+    rauc-downgrade-barrier \
 "
 
 RDEPENDS:packagegroup-base-wifi += " \
