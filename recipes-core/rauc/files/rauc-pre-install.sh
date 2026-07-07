@@ -9,4 +9,6 @@ end() {
     fi
 }
 
-rauc_downgrade_barrier.sh
+if which rauc_downgrade_barrier.sh; then
+    rauc_downgrade_barrier.sh
+fi

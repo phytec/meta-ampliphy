@@ -9,7 +9,7 @@ SRC_URI += " \
     file://rauc-post-install.sh \
 "
 
-PACKAGES =+ "rauc-update-usb"
+PACKAGES =+ "rauc-update-usb rauc-downgrade-barrier"
 
 SYSTEMD_PACKAGES += "rauc-update-usb"
 SYSTEMD_SERVICE:rauc-update-usb = "update-usb@.service"
@@ -48,6 +48,10 @@ FILES:rauc-update-usb += " \
     ${bindir}/update_usb.sh \
     ${systemd_unitdir}/system/update-usb@.service \
     ${nonarch_base_libdir}/udev/rules.d/10-update-usb.rules \
+"
+FILES:rauc-downgrade-barrier = " \
+    ${bindir}/rauc_downgrade_barrier.sh \
+    ${sysconfdir}/rauc/downgrade_barrier_version \
 "
 
 RDEPENDS:${PN} += " \
