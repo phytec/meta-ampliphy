@@ -42,6 +42,5 @@ RDEPENDS:${PN} = " \
     v4l-utils \ 
 "
 
-RDEPENDS:${PN}:append:arm = " arm-memspeed"
 RDEPENDS:${PN}:append:mx6-generic-bsp = " mmdc"
 RDEPENDS:${PN}:append:mx6ul-generic-bsp = " mmdc"
