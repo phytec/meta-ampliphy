@@ -18,7 +18,6 @@ PACKAGECONFIG ??= "\
 PACKAGECONFIG[apparmor] = "-Dapparmor=true,-Dapparmor=false,"
 
 RDEPENDS:${PN} += "systemd-conf"
-RDEPENDS:${PN}:remove = "${@bb.utils.contains('DISTRO_FEATURES', 'disable-console','systemd-serialgetty','',d)}"
 
 # Should be fixed in poky recipe
 #
