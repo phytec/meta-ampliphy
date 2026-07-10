@@ -30,7 +30,6 @@ ampliPHY provides bitbake variables below:
   - `update`: activate double system update system
   - `ssh-authentication`: activate the client authentication with specific
     connection configuration for ssh
-  - `disable-console`: disable the serial console in bootloader and kernel userspace
 
 * `MACHINE_FEATURES`
   Following `MACHINE_FEATURES` are used in this layer to enable extra features
