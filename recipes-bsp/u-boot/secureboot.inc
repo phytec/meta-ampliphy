@@ -5,12 +5,14 @@
 inherit u-boot-dts-pubkeynode
 inherit uboot-extra-env
 
+UBOOT_DISABLE_CONSOLE ?= "0"
+
 SRC_URI:append = " \
     file://deselect-commands.cfg \
     file://default-env.cfg \
     file://bootcommand.cfg \
     ${@bb.utils.contains('UBOOT_SIGN_ENABLE','1','file://fitimage.cfg', '', d)} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'disable-console', 'file://disable-console.cfg', '', d)} \
+    ${@oe.utils.conditional('UBOOT_DISABLE_CONSOLE', '1', 'file://disable-console.cfg', '', d)} \
 "
 
 SRC_URI:append:mx8m-generic-bsp = " \
