@@ -43,3 +43,4 @@ RDEPENDS:packagegroup-base-wifi += " \
     linux-firmware-wl18xx \
     ${@bb.utils.contains("MACHINE_FEATURES", "pci", "linux-firmware-iwlwifi", "", d)} \
 "
+RDEPENDS:packagegroup-base-wifi:append:phyflex-phyvip = " linux-firmware-cc33xx"
