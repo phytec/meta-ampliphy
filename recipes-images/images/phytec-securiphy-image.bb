@@ -25,6 +25,7 @@ IMAGE_INSTALL = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-pkcs11-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "optee", "packagegroup-tee", "", d)} \
     packagegroup-sks-kernelkeyring \
+    ${@bb.utils.contains("DISTRO_FEATURES", "securestorage", "libdevmapper", "", d)} \
 "
 
 IMAGE_INSTALL:append:mx6-generic-bsp = " firmwared"
