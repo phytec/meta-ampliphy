@@ -26,8 +26,18 @@ RAUC_SLOT_kernel[type] ?= "kernel"
 
 RAUC_SLOT_bootloader ?= "${PREFERRED_PROVIDER_virtual/bootloader}"
 RAUC_SLOT_bootloader[type] ?= "boot"
-RAUC_SLOT_bootloader[file] ?= "emmc-boot.img"
+RAUC_SLOT_bootloader[file] ?= "${@bootloader_filename(d)}"
+RAUC_SLOT_bootloader[rename] ?= "bootloader.img"
 RAUC_SLOT_bootloader[offset] ?= "${BOOTLOADER_SEEK_EMMC}K"
+def bootloader_filename(d):
+    filename = {
+        'barebox': d.getVar('BAREBOX_BINARY'),
+        'u-boot-phytec-imx': 'u-boot.imx',
+        'u-boot-phytec': d.getVar('IMAGE_BOOTLOADER'),
+        'imx-boot': 'imx-boot',
+        'ti-boot-container': 'ti-boot-container.img'
+    }
+    return filename[d.getVar('DEP_BOOTLOADER')]
 
 RAUC_SLOT_dtb ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 RAUC_SLOT_dtb[type] ?= "file"
@@ -74,19 +84,6 @@ def create_boot_archive(d):
     if os.path.islink("%s/boot.tar.gz" % deploy_dir):
         os.remove("%s/boot.tar.gz" % deploy_dir)
     os.symlink(tarpath, "%s/boot.tar.gz" % deploy_dir)
-
-    # Create link to eMMC bootloader image with correct image type
-    bootloader_filename = {
-        "barebox": d.getVar("BAREBOX_BINARY"),
-        "u-boot-phytec-imx": "u-boot.imx",
-        "u-boot-phytec": d.getVar("IMAGE_BOOTLOADER"),
-        "imx-boot": "imx-boot",
-        "ti-boot-container": "ti-boot-container.img"
-    }
-    emmc_boot_path = "%s/%s" % (deploy_dir, "emmc-boot.img")
-    if os.path.islink(emmc_boot_path):
-        os.remove(emmc_boot_path)
-    os.symlink(bootloader_filename[d.getVar("DEP_BOOTLOADER")], emmc_boot_path)
 
 python do_configure:prepend() {
     if bb.utils.contains('RAUC_BUNDLE_SLOTS', 'boot', True, False, d):
