@@ -18,9 +18,6 @@ SRC_URI:append = " \
 SRC_URI:append:mx8m-generic-bsp = " \
     file://hab.cfg \
 "
-SRC_URI:append:mx8m-nxp-bsp = " \
-    ${@bb.utils.contains('FITIMAGE_SIGN_ENGINE','nxphab','file://disable-fit-signature.cfg', '', d)} \
-"
 SRC_URI:append:mx91-generic-bsp = " \
     file://ahab.cfg \
 "
@@ -59,7 +56,7 @@ set_fitimage_key() {
 }
 
 python do_patch:append () {
-    if d.getVar("UBOOT_SIGN_ENABLE") == "1" and d.getVar('FITIMAGE_SIGN_ENGINE') != 'nxphab':
+    if d.getVar("UBOOT_SIGN_ENABLE") == "1":
         bb.build.exec_func("set_fitimage_key", d)
 }
 
