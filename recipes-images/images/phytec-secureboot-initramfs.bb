@@ -45,7 +45,7 @@ PACKAGE_INSTALL:remove:mx9-nxp-bsp = " \
     kernel-module-tpm-tis \
 "
 
-IMAGE_INSTALL:append:k3 = " \
+PACKAGE_INSTALL:append:k3 = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-spi-omap2-mcspi", "", d)} \
     kernel-module-rtc-rv3028 \
     kernel-module-rtc-ti-k3 \
