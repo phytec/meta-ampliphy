@@ -1,6 +1,6 @@
 #!/bin/sh
 
-RAUC_SYSTEM_CONF="/etc/rauc/system.conf"
+RAUC_SYSTEM_CONF="/usr/lib/rauc/system.conf"
 ROOT_DEV=$(mount | grep -w "/" | cut -d " " -f 1)
 if [ ! -e "$RAUC_SYSTEM_CONF" ]; then
         # Distro without RAUC detected. Boot partition is assumed to be always
