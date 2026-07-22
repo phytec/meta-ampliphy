@@ -58,11 +58,6 @@ IMAGE_INSTALL:append:k3 = " \
     kernel-module-rtc-ti-k3 \
 "
 
-RRECOMMENDS += " \
-    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis-spi", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis",   "", d)} \
-"
-
 PACKAGE_EXCLUDE = "kernel-image-*"
 
 # Remove some packages added via recommendations
