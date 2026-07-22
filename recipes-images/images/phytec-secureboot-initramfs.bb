@@ -25,8 +25,6 @@ PACKAGE_INSTALL = " \
     ${MACHINE_EXTRA_RDEPENDS} \
     packagegroup-sks-kernelkeyring \
     ${@bb.utils.contains("DISTRO_FEATURES", "securestorage", "packagegroup-secure-storage", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis-spi", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis", "", d)} \
     pv \
     systemd-conf \
 "
@@ -34,16 +32,6 @@ PACKAGE_INSTALL = " \
 PACKAGE_INSTALL:append:mx6-generic-bsp = " kernel-module-imx-sdma"
 PACKAGE_INSTALL:append:mx6ul-generic-bsp = " kernel-module-imx-sdma"
 PACKAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
-
-PACKAGE_INSTALL:remove:mx8m-nxp-bsp = " \
-    kernel-module-tpm-tis-spi \
-    kernel-module-tpm-tis \
-"
-
-PACKAGE_INSTALL:remove:mx9-nxp-bsp = " \
-    kernel-module-tpm-tis-spi \
-    kernel-module-tpm-tis \
-"
 
 IMAGE_INSTALL:append:k3 = " \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-spi-omap2-mcspi", "", d)} \
