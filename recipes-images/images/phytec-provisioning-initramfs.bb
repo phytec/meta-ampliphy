@@ -32,8 +32,6 @@ PACKAGE_INSTALL = " \
     packagegroup-sks-kernelkeyring \
     ${@bb.utils.contains("DISTRO_FEATURES", "securestorage", "packagegroup-secure-storage", "", d)} \
     ${@bb.utils.contains("DISTRO_FEATURES", "securestorage", "physecurestorage-install", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis-spi", "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-tpm-tis",   "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-pkcs11-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-openssl-tpm2", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "packagegroup-sks-provision-tpm2", "", d)} \
@@ -51,16 +49,6 @@ PACKAGE_INSTALL = " \
 PACKAGE_INSTALL:append:mx6-generic-bsp = " kernel-module-imx-sdma"
 PACKAGE_INSTALL:append:mx6ul-generic-bsp = " kernel-module-imx-sdma"
 PACKAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
-
-PACKAGE_INSTALL:remove:mx8m-nxp-bsp = " \
-    kernel-module-tpm-tis-spi \
-    kernel-module-tpm-tis \
-"
-
-PACKAGE_INSTALL:remove:mx9-nxp-bsp = " \
-    kernel-module-tpm-tis-spi \
-    kernel-module-tpm-tis \
-"
 
 PACKAGE_INSTALL:append:imx-generic-bsp = " crucible"
 
