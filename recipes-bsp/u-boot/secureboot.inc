@@ -18,10 +18,7 @@ SRC_URI:append = " \
 SRC_URI:append:mx8m-generic-bsp = " \
     file://hab.cfg \
 "
-SRC_URI:append:mx91-generic-bsp = " \
-    file://ahab.cfg \
-"
-SRC_URI:append:mx93-generic-bsp = " \
+SRC_URI:append:mx9-generic-bsp = " \
     file://ahab.cfg \
 "
 
