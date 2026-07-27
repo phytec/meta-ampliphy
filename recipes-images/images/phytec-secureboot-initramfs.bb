@@ -33,7 +33,6 @@ IMAGE_INSTALL:append:mx6ul-generic-bsp = " kernel-module-imx-sdma"
 IMAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
 
 IMAGE_INSTALL:append:k3 = " \
-    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-spi-omap2-mcspi", "", d)} \
     kernel-module-rtc-rv3028 \
     kernel-module-rtc-ti-k3 \
 "
