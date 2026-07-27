@@ -1,4 +1,4 @@
-SUMMARY = "PHYTEC provisioning initramfs image for initialization of security features on the device"
+UMMARY = "PHYTEC provisioning initramfs image for initialization of security features on the device"
 LICENSE = "MIT"
 
 inherit core-image image_types
@@ -54,7 +54,6 @@ PACKAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-im
 PACKAGE_INSTALL:append:imx-generic-bsp = " crucible"
 
 PACKAGE_INSTALL:append:k3 = " \
-    ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "kernel-module-spi-omap2-mcspi", "", d)} \
     kernel-module-rtc-rv3028 \
     kernel-module-rtc-ti-k3 \
 "
