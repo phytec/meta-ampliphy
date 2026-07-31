@@ -45,4 +45,5 @@ IMAGE_INSTALL:append:mx8mp-nxp-bsp = "\
 
 IMAGE_INSTALL:append:mx95-nxp-bsp = "\
     phytec-camera-examples-imx95 \
+    neo-ipa-uguzzi \
 "
