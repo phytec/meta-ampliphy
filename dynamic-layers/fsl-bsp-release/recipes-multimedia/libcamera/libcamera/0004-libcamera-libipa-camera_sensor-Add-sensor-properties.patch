@@ -1,0 +1,45 @@
+From 0976ada8c81966a816d45814f19432e444c402e8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Mon, 23 Feb 2026 15:56:55 +0100
+Subject: [PATCH 4/8] libcamera: libipa: camera_sensor: Add sensor properties
+ for AR0830
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Upstream-Status: Inappropriate [PHYTEC/NXP specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ src/libcamera/sensor/camera_sensor_properties.cpp | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/src/libcamera/sensor/camera_sensor_properties.cpp b/src/libcamera/sensor/camera_sensor_properties.cpp
+index fd81bebb1ff7..8da3c46115b4 100644
+--- a/src/libcamera/sensor/camera_sensor_properties.cpp
++++ b/src/libcamera/sensor/camera_sensor_properties.cpp
+@@ -112,6 +112,21 @@ const CameraSensorProperties *CameraSensorProperties::get(const std::string &sen
+ 			},
+ 			.sensorDelays = { },
+ 		} },
++		{ "ar0830", {
++			.unitCellSize = { 1400, 1400 },
++			.testPatternModes = {
++				{ controls::draft::TestPatternModeOff, 0 },
++				{ controls::draft::TestPatternModeSolidColor, 1 },
++				{ controls::draft::TestPatternModeColorBars, 2 },
++				{ controls::draft::TestPatternModeColorBarsFadeToGray, 3 },
++			},
++			.sensorDelays = {
++				.exposureDelay = 2,
++				.gainDelay = 2,
++				.vblankDelay = 2,
++				.hblankDelay = 2
++			},
++		} },
+ 		{ "gc05a2", {
+ 			.unitCellSize = { 1120, 1120 },
+ 			.testPatternModes = {
+-- 
+2.43.0
+

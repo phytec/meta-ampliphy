@@ -1,0 +1,46 @@
+From dfcb15aef9d28ec6e3749bdd94a842c3719b8bdf Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Mon, 23 Feb 2026 16:00:10 +0100
+Subject: [PATCH 5/8] ipa: nxp: neo: Add simple isp config for ar0830
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Upstream-Status: Inappropriate [PHYTEC/NXP specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ src/ipa/nxp/neo/data/ar0830.yaml | 8 ++++++++
+ src/ipa/nxp/neo/data/meson.build | 1 +
+ 2 files changed, 9 insertions(+)
+ create mode 100644 src/ipa/nxp/neo/data/ar0830.yaml
+
+diff --git a/src/ipa/nxp/neo/data/ar0830.yaml b/src/ipa/nxp/neo/data/ar0830.yaml
+new file mode 100644
+index 000000000000..a7bbd8d84263
+--- /dev/null
++++ b/src/ipa/nxp/neo/data/ar0830.yaml
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: CC0-1.0
++%YAML 1.1
++---
++version: 1
++algorithms:
++  - Agc:
++  - Awb:
++...
+diff --git a/src/ipa/nxp/neo/data/meson.build b/src/ipa/nxp/neo/data/meson.build
+index 29035a29fe1e..549008507cf9 100644
+--- a/src/ipa/nxp/neo/data/meson.build
++++ b/src/ipa/nxp/neo/data/meson.build
+@@ -5,6 +5,7 @@ conf_files = files([
+     'ar0234.yaml',
+     'ar0235.yaml',
+     'ar0521.yaml',
++    'ar0830.yaml',
+     'imx219.yaml',
+     'imx519.yaml',
+     'imx708.yaml',
+-- 
+2.43.0
+

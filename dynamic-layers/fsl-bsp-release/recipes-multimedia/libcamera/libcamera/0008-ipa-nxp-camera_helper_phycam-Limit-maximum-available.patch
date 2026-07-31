@@ -1,0 +1,130 @@
+From 0c816eb079b71ab5d1752e806b4df8ec6b4cce97 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 29 Jul 2026 15:01:07 +0000
+Subject: [PATCH 8/8] ipa: nxp: camera_helper_phycam: Limit maximum available
+ exposure
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+We want to keep the framerate constant when using the neoisp and don't
+want an increased exposure time to cause a slower framerate. Therefore
+limit the maximum exposure to height + vertical blanking.
+
+Upstream-Status: Inappropriate [PHYTEC/NXP specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ .../nxp/cam_helper/camera_helper_phycam.cpp   | 68 +++++++++++++++++++
+ 1 file changed, 68 insertions(+)
+
+diff --git a/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp b/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp
+index b98d613e05dd..2170181896d7 100644
+--- a/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp
++++ b/src/ipa/nxp/cam_helper/camera_helper_phycam.cpp
+@@ -14,6 +14,8 @@
+ 
+ #include "camera_helper.h"
+ 
++using namespace std::literals::chrono_literals;
++
+ namespace libcamera {
+ 
+ LOG_DECLARE_CATEGORY(NxpCameraHelper)
+@@ -25,6 +27,9 @@ class CameraHelperPhycam : public CameraHelper
+ public:
+ 	uint32_t gainCode(double gain) const override;
+ 	double gain(uint32_t gainCode) const override;
++	void controlInfoMapGetExposureRange(
++		const ControlInfoMap *ctrls, std::vector<Duration> *minExposure,
++		std::vector<Duration> *maxExposure, std::vector<Duration> *defExposure) const override;
+ };
+ 
+ uint32_t CameraHelperPhycam::gainCode(double gain) const
+@@ -37,6 +42,36 @@ double CameraHelperPhycam::gain(uint32_t gainCode) const
+ 	return gainCode / 1000.0;
+ }
+ 
++void CameraHelperPhycam::controlInfoMapGetExposureRange(
++	const ControlInfoMap *ctrls, std::vector<Duration> *minExposure,
++	std::vector<Duration> *maxExposure, std::vector<Duration> *defExposure) const
++{
++	uint32_t min, max, def;
++	const auto it = ctrls->find(V4L2_CID_EXPOSURE);
++
++	if (it != ctrls->end()) {
++		min = it->second.min().get<int32_t>();
++		max = mode_.height + mode_.vblank;
++		def = it->second.def().get<int32_t>();
++	} else {
++		min = 0;
++		max = 0;
++		def = 0;
++		LOG(NxpCameraHelper, Error)
++			<< "V4L2_CID_EXPOSURE not supported";
++	}
++
++	Duration lineLength = hblankToLineLength(mode_.hblank);
++	minExposure->clear();
++	minExposure->push_back(exposure(min, lineLength));
++
++	maxExposure->clear();
++	maxExposure->push_back(exposure(max, lineLength));
++
++	defExposure->clear();
++	defExposure->push_back(exposure(def, lineLength));
++}
++
+ class CameraHelperAr0144 : public CameraHelperPhycam
+ {
+ };
+@@ -64,6 +99,9 @@ public:
+ 		attributes_.mdParams.topLines = 0;
+ 	}
+ 
++	void controlInfoMapGetExposureRange(
++		const ControlInfoMap *ctrls, std::vector<Duration> *minExposure,
++		std::vector<Duration> *maxExposure, std::vector<Duration> *defExposure) const override;
+ 	void controlInfoMapGetAnalogGainRange(
+ 		const ControlInfoMap *ctrls, std::vector<double> *minGain,
+ 		std::vector<double> *maxGain, std::vector<double> *defGain) const override;
+@@ -77,6 +115,36 @@ public:
+ 		ControlList *mdCtrls) const override;
+ };
+ 
++void CameraHelperAr0830::controlInfoMapGetExposureRange(
++	const ControlInfoMap *ctrls, std::vector<Duration> *minExposure,
++	std::vector<Duration> *maxExposure, std::vector<Duration> *defExposure) const
++{
++	uint32_t min, max, def;
++	const auto it = ctrls->find(V4L2_CID_EXPOSURE);
++
++	if (it != ctrls->end()) {
++		min = it->second.min().get<int32_t>();
++		max = mode_.height + mode_.vblank;
++		def = it->second.def().get<int32_t>();
++	} else {
++		min = 0;
++		max = 0;
++		def = 0;
++		LOG(NxpCameraHelper, Error)
++			<< "V4L2_CID_EXPOSURE not supported";
++	}
++
++	Duration lineLength = hblankToLineLength(mode_.hblank);
++	minExposure->clear();
++	minExposure->push_back(exposure(min, lineLength));
++
++	maxExposure->clear();
++	maxExposure->push_back(exposure(max, lineLength));
++
++	defExposure->clear();
++	defExposure->push_back(exposure(def, lineLength));
++}
++
+ void CameraHelperAr0830::controlInfoMapGetAnalogGainRange(
+ 	const ControlInfoMap *ctrls, std::vector<double> *minGain,
+ 	std::vector<double> *maxGain, std::vector<double> *defGain) const
+-- 
+2.43.0
+

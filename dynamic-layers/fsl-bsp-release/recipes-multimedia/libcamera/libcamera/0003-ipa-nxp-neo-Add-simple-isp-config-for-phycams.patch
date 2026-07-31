@@ -1,0 +1,88 @@
+From 97886fba835837139b9f1402d67598a5ae0881c9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>
+Date: Wed, 5 Mar 2025 17:58:29 +0100
+Subject: [PATCH 3/8] ipa: nxp: neo: Add simple isp config for phycams
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Upstream-Status: Inappropriate [PHYTEC/NXP specific]
+
+Signed-off-by: Stefan Riedmüller <s.riedmueller@phytec.de>
+---
+ src/ipa/nxp/neo/data/ar0144.yaml | 8 ++++++++
+ src/ipa/nxp/neo/data/ar0234.yaml | 8 ++++++++
+ src/ipa/nxp/neo/data/ar0521.yaml | 8 ++++++++
+ src/ipa/nxp/neo/data/meson.build | 5 ++++-
+ 4 files changed, 28 insertions(+), 1 deletion(-)
+ create mode 100644 src/ipa/nxp/neo/data/ar0144.yaml
+ create mode 100644 src/ipa/nxp/neo/data/ar0234.yaml
+ create mode 100644 src/ipa/nxp/neo/data/ar0521.yaml
+
+diff --git a/src/ipa/nxp/neo/data/ar0144.yaml b/src/ipa/nxp/neo/data/ar0144.yaml
+new file mode 100644
+index 000000000000..a7bbd8d84263
+--- /dev/null
++++ b/src/ipa/nxp/neo/data/ar0144.yaml
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: CC0-1.0
++%YAML 1.1
++---
++version: 1
++algorithms:
++  - Agc:
++  - Awb:
++...
+diff --git a/src/ipa/nxp/neo/data/ar0234.yaml b/src/ipa/nxp/neo/data/ar0234.yaml
+new file mode 100644
+index 000000000000..a7bbd8d84263
+--- /dev/null
++++ b/src/ipa/nxp/neo/data/ar0234.yaml
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: CC0-1.0
++%YAML 1.1
++---
++version: 1
++algorithms:
++  - Agc:
++  - Awb:
++...
+diff --git a/src/ipa/nxp/neo/data/ar0521.yaml b/src/ipa/nxp/neo/data/ar0521.yaml
+new file mode 100644
+index 000000000000..a7bbd8d84263
+--- /dev/null
++++ b/src/ipa/nxp/neo/data/ar0521.yaml
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: CC0-1.0
++%YAML 1.1
++---
++version: 1
++algorithms:
++  - Agc:
++  - Awb:
++...
+diff --git a/src/ipa/nxp/neo/data/meson.build b/src/ipa/nxp/neo/data/meson.build
+index abb7e397fa49..29035a29fe1e 100644
+--- a/src/ipa/nxp/neo/data/meson.build
++++ b/src/ipa/nxp/neo/data/meson.build
+@@ -1,7 +1,10 @@
+ # SPDX-License-Identifier: CC0-1.0
+ 
+ conf_files = files([
++    'ar0144.yaml',
++    'ar0234.yaml',
+     'ar0235.yaml',
++    'ar0521.yaml',
+     'imx219.yaml',
+     'imx519.yaml',
+     'imx708.yaml',
+@@ -14,4 +17,4 @@ conf_files = files([
+ 
+ install_data(conf_files,
+              install_dir : ipa_data_dir / 'nxp' / 'neo',
+-             install_tag : 'runtime')
+\ No newline at end of file
++             install_tag : 'runtime')
+-- 
+2.43.0
+
