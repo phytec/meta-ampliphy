@@ -122,11 +122,6 @@ do_install:append() {
     rm -rf ${D}${systemd_unitdir}/network/80-wired.network
 }
 
-do_install:append:phyboard-segin() {
-    sed -i '/^FDMode/d' ${D}${systemd_unitdir}/network/11-can.network
-    sed -i '/^DataBitRate/d' ${D}${systemd_unitdir}/network/11-can.network
-}
-
 # first interface should always have the ip 192.168.3.11
 do_install:append:phyflex-fpsc-g() {
     path='${D}${systemd_unitdir}/network/'
@@ -139,6 +134,7 @@ do_install:append:phyflex-fpsc-g() {
 
 do_install:append:phyboard-segin() {
     sed -i 's/^\s*FDMode\s*=\s*yes/FDMode=no/' ${D}${systemd_unitdir}/network/11-can.network
+    sed -i '/^\s*DataBitRate\s*=\s*2000000/d' ${D}${systemd_unitdir}/network/11-can.network
 }
 
 do_install:append:mx6ul-generic-bsp() {
