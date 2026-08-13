@@ -3,7 +3,7 @@ DESCRIPTION = "RTLA is a meta-tool including commands to analyze real-time prope
 HOMEPAGE = "https://www.kernel.org/doc/html/latest/tools/rtla/rtla.html"
 LICENSE = "GPL-2.0-only"
 
-inherit linux-kernel-base kernel-arch manpages
+inherit kernel-arch manpages
 inherit python3-dir
 
 S = "${UNPACKDIR}/${BP}"
