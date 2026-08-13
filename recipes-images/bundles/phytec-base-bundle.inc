@@ -32,6 +32,7 @@ RAUC_SLOT_bootloader[offset] ?= "${BOOTLOADER_SEEK_EMMC}K"
 def bootloader_filename(d):
     filename = {
         'barebox': d.getVar('BAREBOX_BINARY'),
+        'u-boot-master': d.getVar('UBOOT_BINARY'),
         'u-boot-phytec-imx': 'u-boot.imx',
         'u-boot-phytec': d.getVar('IMAGE_BOOTLOADER'),
         'imx-boot': 'imx-boot',
