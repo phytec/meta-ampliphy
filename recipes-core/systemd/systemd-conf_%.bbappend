@@ -42,6 +42,7 @@ SRC_URI:append:k3 = " \
     file://11-mcu_mcan.network \
     file://86-k3-remoteproc.rules \
 "
+SRC_URI:append:phyboard-izar = " file://85-hwmon-pwm-fan.rules"
 
 SRC_URI:append:phyflex-libra-rdk = " \
     file://82-hwmon-temp-libra.rules \
@@ -116,6 +117,11 @@ do_install:append() {
     if [ -e ${UNPACKDIR}/90-phycam.rules ]; then
         install -d ${D}${nonarch_base_libdir}/udev/rules.d
         install -m 0644 ${UNPACKDIR}/90-phycam.rules ${D}${nonarch_base_libdir}/udev/rules.d/
+    fi
+
+    if [ -e ${UNPACKDIR}/85-hwmon-pwm-fan.rules ]; then
+	install -d ${D}${nonarch_base_libdir}/udev/rules.d
+	install -m 0644 ${UNPACKDIR}/85-hwmon-pwm-fan.rules ${D}${nonarch_base_libdir}/udev/rules.d/
     fi
 
     rm -rf ${D}${systemd_unitdir}/network/wired.network
