@@ -1,0 +1,2 @@
+# pwm needs to stay enabled for the inverted fan logic
+ACTION=="add", SUBSYSTEM=="hwmon", ATTR{name}=="pwmfan", ATTR{pwm1_enable}="2"
