@@ -8,7 +8,7 @@ SECTION = "multimedia"
 PR = "r0"
 
 SRC_URI = "git://github.com/phytec/demo-camera-examples-imx95;protocol=https;branch=main"
-SRCREV = "50a6e4a3518d3e206d8446ec6d74760ae6656f8d"
+SRCREV = "8dd09a599f592db94f44f549d8ebfe111e266477"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
