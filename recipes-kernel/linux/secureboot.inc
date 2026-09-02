@@ -3,6 +3,8 @@
 
 inherit signing-helpers
 
+SPDX_INCLUDE_COMPILED_SOURCES = "1"
+
 SRC_URI:append = " \
     file://fs_encryption.cfg \
     file://trustedkey-base.cfg \
