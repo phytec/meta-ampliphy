@@ -29,7 +29,7 @@ fdt address ${loadaddr};
 fdt get value fit_default_conf /configurations/ default;
 
 if test -n ${fit_overlay_conf}; then
-	bootm ${loadaddr}#${fit_default_conf}${fit_extensions}#${fit_overlay_conf}
+	bootm ${loadaddr}#${fit_default_conf}${fit_extensions}#${fit_overlay_conf} -
 else
-	bootm ${loadaddr}#${fit_default_conf}${fit_extensions}
+	bootm ${loadaddr}#${fit_default_conf}${fit_extensions} -
 fi
