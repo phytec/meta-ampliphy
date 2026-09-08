@@ -2,6 +2,8 @@ SUMMARY = "PHYTEC eMMC image for secure storage"
 DESCRIPTION = "Mount the protected rootfs partitions for booting"
 LICENSE = "MIT"
 
+KERNEL_DEPLOY_DEPEND = ""
+
 inherit core-image image_types
 
 # Do not pollute the initrd image with rootfs features
