@@ -47,6 +47,9 @@ inherit deploy
 MMC_BOOT_SCRIPT ?= "mmc_boot.cmd"
 MMC_BOOT_SCRIPT:secureboot ?= "mmc_boot_fit.cmd"
 
+BOOTSCRIPTS ??= "*.cmd"
+BOOTSCRIPTS:mx8-generic-bsp ?= "mmc_boot.cmd mmc_boot_fit.cmd net_boot_fit.cmd"
+
 # Used by the spi boot script to locate the fitImage
 SPI_MTD_PARTS ?= ""
 SPI_MTD_PARTS:k3 ?= "nor0:-@0x740000(fitimage)"
@@ -66,7 +69,7 @@ do_compile() {
     sed -e 's/@@IP_PARAM@@/${IP_PARAM}/' \
         -e 's/@@NET_FETCH_CMD@@/${NET_FETCH_CMD}/' "${WORKDIR}/net_boot_fit.cmd.in" > net_boot_fit.cmd
 
-    for script in *.cmd ; do
+    for script in ${BOOTSCRIPTS} ; do
         sed -e "s/@@BOOTCOMMAND_FILE@@/${script}/" "${WORKDIR}/boot.its.in" > boot.its
         mkimage -C none -A ${UBOOT_ARCH} -f boot.its ${script}.scr.uimg
     done
