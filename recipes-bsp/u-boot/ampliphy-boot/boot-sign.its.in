@@ -1,0 +1,33 @@
+/dts-v1/;
+/ {
+	description = "boot script";
+	images {
+		default = "script";
+		script {
+			data = /incbin/("./@@BOOTCOMMAND_FILE@@");
+			type = "script";
+			hash-1 {
+				algo = "@@FIT_HASH_ALG@@";
+			};
+			signature-1 {
+				algo = "@@FIT_HASH_ALG@@,@@FIT_SIGN_ALG@@";
+				key-name-hint = "@@UBOOT_SIGN_IMG_KEYNAME@@";
+			};
+		};
+	};
+	configurations {
+		default = "conf";
+		conf {
+			script = "script";
+			hash-1 {
+				algo = "@@FIT_HASH_ALG@@";
+			};
+			signature-1 {
+				algo = "@@FIT_HASH_ALG@@,@@FIT_SIGN_ALG@@";
+				key-name-hint = "@@UBOOT_SIGN_KEYNAME@@";
+				padding = "pkcs-1.5";
+				sign-images = "script";
+			};
+		};
+	};
+};
