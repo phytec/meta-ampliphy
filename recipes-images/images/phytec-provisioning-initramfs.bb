@@ -3,6 +3,8 @@ LICENSE = "MIT"
 
 inherit core-image image_types
 
+KERNEL_DEPLOY_DEPEND = ""
+
 # Do not pollute the initrd image with rootfs features
 IMAGE_LINGUAS = ""
 
