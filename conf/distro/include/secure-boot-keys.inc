@@ -16,6 +16,21 @@ AHAB_SRK_TABLE_BIN ?= "${CERT_PATH}/nxp_ahab_pki/crts/SRK_1_2_3_4_table.bin"
 AHAB_SRK_PUB_CERT ?= "${CERT_PATH}/nxp_ahab_pki/crts/SRK1_sha512_secp521r1_v3_usr_crt.pem"
 AHAB_SRK_INDEX ?= "0"
 
+# AHAB i.MX95
+AHAB_SRK0 ?= "${CERT_PATH}/nxp_ahab_pki/crts/SRK1_sha512_secp521r1_v3_usr_crt.pem"
+AHAB_SRK1 ?= "${CERT_PATH}/nxp_ahab_pki/crts/SRK2_sha512_secp521r1_v3_usr_crt.pem"
+AHAB_SRK2 ?= "${CERT_PATH}/nxp_ahab_pki/crts/SRK3_sha512_secp521r1_v3_usr_crt.pem"
+AHAB_SRK3 ?= "${CERT_PATH}/nxp_ahab_pki/crts/SRK4_sha512_secp521r1_v3_usr_crt.pem"
+AHAB_SIGN_SRK ?= "${CERT_PATH}/nxp_ahab_pki/keys/SRK1_sha512_secp521r1_v3_usr_key.pem"
+AHAB_SIGN_SRK_PASS ?= "${CERT_PATH}/nxp_ahab_pki/keys/key_pass.txt"
+
+AHAB_PQC_SRK0 ?= "${CERT_PATH}/nxp_ahab_pki_pqc/keys/SRK0_mldsa87_key.pub.pem"
+AHAB_PQC_SRK1 ?= "${CERT_PATH}/nxp_ahab_pki_pqc/keys/SRK1_mldsa87_key.pub.pem"
+AHAB_PQC_SRK2 ?= "${CERT_PATH}/nxp_ahab_pki_pqc/keys/SRK2_mldsa87_key.pub.pem"
+AHAB_PQC_SRK3 ?= "${CERT_PATH}/nxp_ahab_pki_pqc/keys/SRK3_mldsa87_key.pub.pem"
+AHAB_PQC_SIGN_SRK ?= "${CERT_PATH}/nxp_ahab_pki_pqc/keys/SRK0_mldsa87_key.pem"
+AHAB_PQC_SIGN_SRK_PASS ?= "${CERT_PATH}/nxp_ahab_pki_pqc/keys/key_pass.txt"
+
 # for TI K3
 BOOTLOADER_TI_K3_MPK_KEY ??= "${CERT_PATH}/ti_k3/keys/phytecSMPK.pem"
 BOOTLOADER_TI_K3_DEGENERATE_KEY ??= "${CERT_PATH}/ti_k3/keys/ti-degenerate-key.pem"
