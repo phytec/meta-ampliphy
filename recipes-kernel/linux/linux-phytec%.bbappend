@@ -1,6 +1,7 @@
 inherit kernel-module-split-disable
 inherit deselect-fragments
 include recipes-kernel/linux/mtd_test_packages.inc
+require ${@bb.utils.contains('DISTRO_FEATURES', 'rauc', 'recipes-kernel/linux/linux-yocto_rauc.inc', '', d)}
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
 
@@ -10,15 +11,11 @@ KERNEL_MODULES_RDEPENDS_DISABLE += "${MTD_TEST_PACKAGES}"
 SRC_URI:append:kernelmodsign = " \
     file://kernel-modsign.cfg \
 "
-SRC_URI:append:update = " \
-    file://rauc.scc \
-"
 
 SRC_URI:append:preempt-rt = " \
     file://rtla.scc \
 "
 
-KERNEL_FEATURES:append:update = " rauc.scc"
 KERNEL_FEATURES:append:preempt-rt = " rtla.scc"
 
 SRC_URI:append:hardening = " \
