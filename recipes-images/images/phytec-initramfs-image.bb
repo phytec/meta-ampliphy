@@ -36,6 +36,11 @@ PACKAGE_INSTALL = " \
     partup \
 "
 
+PACKAGE_INSTALL:append:k3 = " \
+    kernel-module-rtc-rv3028 \
+    kernel-module-rtc-ti-k3 \
+"
+
 PACKAGE_EXCLUDE = "kernel-image-*"
 
 NO_RECOMMENDATIONS = "1"
