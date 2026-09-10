@@ -1,4 +1,4 @@
-UMMARY = "PHYTEC provisioning initramfs image for initialization of security features on the device"
+SUMMARY = "PHYTEC provisioning initramfs image for initialization of security features on the device"
 LICENSE = "MIT"
 
 inherit core-image image_types
