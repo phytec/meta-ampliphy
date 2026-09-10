@@ -7,5 +7,4 @@ RDEPENDS:${PN} = " \
     cryptodev-module \
     cryptodev-tests \
     cryptodev-linux \
-    openssl-engines \
 "
