@@ -7,6 +7,8 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
 SRC_URI:append = " file://mtd-tests.cfg"
 KERNEL_MODULES_RDEPENDS_DISABLE += "${MTD_TEST_PACKAGES}"
 
+SPDX_INCLUDE_COMPILED_SOURCES = "1"
+
 SRC_URI:append:secureboot = " \
     file://fs_encryption.cfg \
     file://trustedkey-base.cfg \
