@@ -52,6 +52,7 @@ PACKAGE_INSTALL = " \
 PACKAGE_INSTALL:append:mx6-generic-bsp = " kernel-module-imx-sdma"
 PACKAGE_INSTALL:append:mx6ul-generic-bsp = " kernel-module-imx-sdma"
 PACKAGE_INSTALL:append:mx8m-generic-bsp = " ${MACHINE_FIRMWARE} kernel-module-imx-sdma"
+PACKAGE_INSTALL:append:mx95-generic-bsp = " ${MACHINE_FIRMWARE}"
 
 PACKAGE_INSTALL:append:imx-generic-bsp = " crucible"
 
