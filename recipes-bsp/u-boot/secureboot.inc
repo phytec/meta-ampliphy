@@ -65,4 +65,9 @@ do_uboot_assemble_fitimage:prepend () {
 
 python do_env:append() {
     env_add(d, "silent", "1")
+
+    fit_overlay = d.getVar("FIT_OVERLAY")
+    fit_conf_prefix = d.getVar("FIT_CONF_PREFIX") or "conf-"
+    if fit_overlay:
+        env_add(d, "fit_overlay_conf", '#'.join([fit_conf_prefix + e for e in fit_overlay.split()]))
 }
