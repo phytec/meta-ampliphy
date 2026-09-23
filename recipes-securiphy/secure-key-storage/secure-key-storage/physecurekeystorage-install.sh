@@ -55,6 +55,7 @@ check_keysexist() {
 init_keystore() {
 	case ${1} in
 	trustedtpm|trustedtee|trustedcaam)
+		modprobe -r trusted
 		if [ $(expr match ${1} 'trustedtpm') -gt 0 ]; then
 			resp="null"
 			[ -f ${TPM_FAPICONFIG} ] && resp=$(jq -c -r '.ek_cert_less' ${TPM_FAPICONFIG})
