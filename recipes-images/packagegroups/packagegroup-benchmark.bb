@@ -6,6 +6,7 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
     bonnie++ \
     ${@bb.utils.contains("MACHINE_FEATURES", "gpu", "glmark2", "",d)} \
+    ${@bb.utils.contains("DISTRO_FEATURES", "vulkan", bb.utils.contains("MACHINE_FEATURES", "gpu", "vkmark", "", d), "", d)} \
     hdparm \
     iozone3 \
     iperf3 \
