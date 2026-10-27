@@ -40,7 +40,7 @@ ampliPHY provides bitbake variables below:
 * `BB_PHY_BUILDTYPE` - Shell environment variable to specify when a
   build-execution shall be treated as an official release build.
 
-  The `DISTRO_VERSION` can have the appendix '-devel'. That '-devel' marker
+  The `AMPLIPHY_VERSION` can have the appendix '-devel'. That '-devel' marker
   indicates to the user that the respective build and its output (e.g. a
   target-image) were not part of any official release procedure.
   In contrast to a release-build, such a development-build can usually have
@@ -60,7 +60,12 @@ ampliPHY provides bitbake variables below:
   'RELEASE' before calling bitbake, the build-execution is treated as
   release-build and '-devel' will not be appended. Instead, if
   `BB_PHY_BUILDTYPE` is unset or empty '-devel' will be appended to the
-  `DISTRO_VERSION`.
+  `AMPLIPHY_VERSION`.
+
+  `DISTRO_VERSION` defaults to `AMPLIPHY_VERSION` (set with `=`), so other (KSP)
+  layers can set `DISTRO_VERSION` themselves. In that case the '-devel' marker
+  is not appended automatically; reference `${AMPLIPHY_VERSION}` or add the
+  marker in that layer.
 
      Example to start a "release build":
      ```bash
