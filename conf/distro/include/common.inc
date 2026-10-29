@@ -1,5 +1,5 @@
 AMPLIPHY_VERSION ??= "UNASSIGNED"
-AMPLIPHY_VERSION:mx6-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6-wrynose"
+AMPLIPHY_VERSION:mx6-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6-PD26.1-rc1"
 AMPLIPHY_VERSION:mx6ul-generic-bsp = "BSP-Yocto-Ampliphy-i.MX6UL-wrynose"
 AMPLIPHY_VERSION:mx7-nxp-bsp = "BSP-Yocto-NXP-i.MX7-wrynose"
 AMPLIPHY_VERSION:mx8mm-mainline-bsp = "BSP-Yocto-Ampliphy-i.MX8MM-wrynose"
