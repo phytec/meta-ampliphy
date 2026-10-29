@@ -6,7 +6,7 @@ inherit kconfig-set
 MODSIGN_KEY ?= "${CERT_PATH}/kernel_modsign/kernel_modsign.pem"
 MODSIGN_CERT ?= "${CERT_PATH}/kernel_modsign/kernel_modsign.pem"
 
-DEPENDS:append:kernelmodsign = " phytec-dev-ca-native libp11-native"
+DEPENDS:append:kernelmodsign = " phytec-dev-ca-native"
 do_patch[depends] += "${@bb.utils.contains("DISTRO_FEATURES", "kernelmodsign", "phytec-dev-ca-native:do_install", "", d)}"
 
 
@@ -24,7 +24,7 @@ do_configure:prepend() {
 		bberror "Kernel modsign cert ${MODSIGN_CERT} not found."
 	fi
 	if [ ! -f "${MODSIGN_KEY}" ]; then
-		echo "${MODSIGN_KEY}" | grep -q "^pkcs11:" || bberror "Kernel modsign key ${MODSIGN_KEY} not found and not a 'pkcs11:' URI"
+		bberror "Kernel modsign key ${MODSIGN_KEY} not found."
 	fi
 
 	check_dev_key "${MODSIGN_CERT}"
@@ -35,19 +35,4 @@ do_configure:append() {
 	kconfig_set MODULE_SIG_KEY "\"${MODSIGN_KEY}\""
 	kconfig_set SYSTEM_TRUSTED_KEYS "\"${MODSIGN_CERT}\""
 }
-
-set_pkcs11_env_vars() {
-	engines_dir=`basename $( openssl version -e | sed -e 's/.*"\(.*\)".*/\1/g')`
-	export OPENSSL_ENGINES="${WORKDIR}/recipe-sysroot-native/usr/lib/${engines_dir}"
-	export PKCS11_MODULE_PATH="${PKCS11_MODULE_PATH}"
-
-}
-
-do_compile:prepend() {
-	set_pkcs11_env_vars
-}
-
 PARALLEL_MAKE:task-install = "-j 1"
-do_install:prepend() {
-	set_pkcs11_env_vars
-}

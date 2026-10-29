@@ -1,8 +1,6 @@
 # Loaded from linux-phytec%.bbappend only when secureboot is in
 # DISTRO_FEATURES, so everything here applies unconditionally.
 
-inherit signing-helpers
-
 SPDX_INCLUDE_COMPILED_SOURCES = "1"
 
 SRC_URI:append = " \
