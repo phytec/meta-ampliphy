@@ -49,14 +49,6 @@ UBOOT_SIGN_IMG_KEYNAME = "FIT-IMG-4096"
 FIT_SIGN_ALG = "rsa4096"
 FIT_HASH_ALG = "sha256"
 
-# Set set the following variables for pkcs11 signing
-# PKCS11_MODULE_PATH = ""
-# UBOOT_SIGN_KEYDIR = "pkcs11:"
-# UBOOT_SIGN_KEYNAME = ""
-# Set pkcs11 as signing engine
-# UBOOT_MKIMAGE_SIGN_ARGS = "-N pkcs11"
-UBOOT_MKIMAGE_SIGN_ARGS ?= ""
-
 ##################################################
 #       Userspace authentication                 #
 ##################################################
