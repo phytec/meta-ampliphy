@@ -1,0 +1,46 @@
+From b9a72fef5cd51f849ce01c9f2775d129a687d855 Mon Sep 17 00:00:00 2001
+From: Bastien Nocera <hadess@hadess.net>
+Date: Thu, 19 Mar 2026 11:52:06 +0100
+Subject: [PATCH] adapter: Fix "Failed to set default system config" startup
+ warning
+
+When using a stock configuration, there will be nothing in the list of
+configuration changes to apply to the Bluetooth adapter, which since
+5e5b46c5c0cc ("adapter: Do not send empty default system parameter
+list") would throw an error, as sending an empty list to the adapter
+didn't generate one.
+
+bluetoothd[3291147]: Bluetooth daemon 5.86
+bluetoothd[3291147]: Starting SDP server
+bluetoothd[3291147]: Using external plugins is not officially supported.
+bluetoothd[3291147]: Consider upstreaming your plugins into the BlueZ project.
+bluetoothd[3291147]: Bluetooth management interface 1.23 initialized
+bluetoothd[3291147]: Battery Provider Manager created
+bluetoothd[3291147]: Failed to set default system config for hci0
+
+Upstream-Status: Backport [https://github.com/bluez/bluez/commit/b9a72fef5cd51f849ce01c9f2775d129a687d855]
+
+Fixes: 5e5b46c5c0cc ("adapter: Do not send empty default system parameter list")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+---
+ src/adapter.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/adapter.c b/src/adapter.c
+index 4e5ff219fe..04568dae6e 100644
+--- a/src/adapter.c
++++ b/src/adapter.c
+@@ -4963,8 +4963,11 @@ static void load_defaults(struct btd_adapter *adapter)
+ 	if (!load_le_defaults(adapter, list, &btd_opts.defaults.le))
+ 		goto done;
+ 
+-	if (mgmt_tlv_list_size(list) == 0)
+-		goto done;
++	/* No changes from defaults */
++	if (mgmt_tlv_list_size(list) == 0) {
++		mgmt_tlv_list_free(list);
++		return;
++	}
+ 
+ 	err = mgmt_send_tlv(adapter->mgmt, MGMT_OP_SET_DEF_SYSTEM_CONFIG,
+ 			adapter->dev_id, list, NULL, NULL, NULL);
