@@ -33,7 +33,6 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 DEPENDS = "u-boot-mkimage-native dtc-native"
-DEPENDS:append:secureboot = " libp11-native"
 
 SRC_URI = " \
     file://mmc_boot.cmd \
@@ -45,7 +44,7 @@ SRC_URI = " \
     file://boot-sign.its.in \
 "
 
-inherit deploy signing-helpers
+inherit deploy
 
 # default bootscript (boot.scr.uimg) to be built into the .wic image
 DEFAULT_BOOTSCRIPT ??= "mmc_boot.cmd"
@@ -80,9 +79,6 @@ do_compile() {
         mkimage -C none -A ${UBOOT_ARCH} -f boot.its ${script}.scr.uimg
         # Sign the boot script whenever verified boot is enabled.
         if [ "${UBOOT_SIGN_ENABLE}" = "1" ]; then
-            if echo "${UBOOT_SIGN_KEYDIR}" | grep -q "pkcs11:"; then
-                setup_pkcs11_env
-            fi
             mkimage ${UBOOT_MKIMAGE_SIGN_ARGS} \
                 -k ${UBOOT_SIGN_KEYDIR} -F ${script}.scr.uimg
         fi
