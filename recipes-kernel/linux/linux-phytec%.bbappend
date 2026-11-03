@@ -12,11 +12,8 @@ SRC_URI:append:kernelmodsign = " \
     file://kernel-modsign.cfg \
 "
 
-SRC_URI:append:preempt-rt = " \
-    file://rtla.scc \
-"
-
-KERNEL_FEATURES:append:preempt-rt = " rtla.scc"
+SRC_URI:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'file://rtla.scc', '', d)}"
+KERNEL_FEATURES:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'preempt-rt', 'rtla.scc', '', d)}"
 
 SRC_URI:append:hardening = " \
     file://hardening.cfg \
