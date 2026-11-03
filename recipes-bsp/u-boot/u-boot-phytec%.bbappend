@@ -9,6 +9,7 @@ SRC_URI:append:update = " file://rauc.cfg"
 SRC_URI:append:secureboot = " \
     file://disable-insecure-bootmeths.cfg \
 "
+SRC_URI:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'hardening', 'file://hardening.cfg', '', d)}"
 
 python do_env:append:k3() {
     env_add(d, "script_offset_f", "0x700000")
@@ -18,4 +19,3 @@ python do_env:append:k3() {
 }
 
 require ${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'recipes-bsp/u-boot/secureboot.inc', '', d)}
-require ${@bb.utils.contains('DISTRO_FEATURES', 'hardening', 'recipes-bsp/u-boot/hardening.inc', '', d)}

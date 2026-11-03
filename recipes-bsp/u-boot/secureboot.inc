@@ -30,25 +30,7 @@ UBOOT_ENV_FLAGS_LIST_STATIC ?= "BOOT_ORDER:sw,BOOT_system0_LEFT:dw,BOOT_system1_
 
 EXTRA_OEMAKE:append:k3 = ' KCFLAGS=-DCFG_ENV_FLAGS_LIST_STATIC=\\\"${UBOOT_ENV_FLAGS_LIST_STATIC}\\\"'
 
-kconfig_set() {
-    bbnote "Setting $1 in configs to $2"
-    if [ "$2" = "n" ]; then
-        line="# CONFIG_$1 is not set"
-    else
-        line="CONFIG_$1=$2"
-    fi
-
-    for config in ${UBOOT_MACHINE}; do
-    if [ "$(grep -E CONFIG_$1[=\ ] ${S}/configs/${config})" ]; then
-        sed -i "/CONFIG_$1[= ]/c\\$line" "${S}/configs/${config}"
-    else
-        echo "$line" >> "${S}/configs/${config}"
-    fi
-    done
-}
-
 set_fitimage_key() {
-    kconfig_set DEVICE_TREE_INCLUDES '"signature_node.dtsi"'
     cp "${FITIMAGE_PUBKEY_SIGNATURE_PATH}" "${S}/arch/arm/dts/"
 }
 
