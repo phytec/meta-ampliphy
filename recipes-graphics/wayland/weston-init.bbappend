@@ -8,12 +8,12 @@ SRC_URI += "file://weston.ini \
 "
 
 do_install:append() {
-    if [ -e ${WORKDIR}/res-touchscreen.rules ]; then
+    if [ -e ${UNPACKDIR}/res-touchscreen.rules ]; then
         install -d ${D}${sysconfdir}/udev/rules.d
-        install -m 0644 ${WORKDIR}/res-touchscreen.rules ${D}${sysconfdir}/udev/rules.d
+        install -m 0644 ${UNPACKDIR}/res-touchscreen.rules ${D}${sysconfdir}/udev/rules.d
 
         install -d ${D}${bindir}
-        install -m 0774 ${WORKDIR}/calibrate-res-touchscreen.sh ${D}${bindir}
+        install -m 0774 ${UNPACKDIR}/calibrate-res-touchscreen.sh ${D}${bindir}
     fi
 }
 
