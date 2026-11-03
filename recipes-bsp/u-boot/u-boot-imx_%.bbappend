@@ -3,4 +3,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/features:"
 
 require ${@bb.utils.contains('DISTRO_FEATURES', 'secureboot', 'recipes-bsp/u-boot/secureboot.inc', '', d)}
-require ${@bb.utils.contains('DISTRO_FEATURES', 'hardening', 'recipes-bsp/u-boot/hardening.inc', '', d)}
+
+SRC_URI:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'hardening', 'file://hardening.cfg', '', d)}"
