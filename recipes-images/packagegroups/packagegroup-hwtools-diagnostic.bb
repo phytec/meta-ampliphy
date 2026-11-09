@@ -38,6 +38,7 @@ RDEPENDS:${PN} = " \
     spidev-test \
     rng-tools \
     tcpdump \
+    util-linux-lsblk \
     ${@bb.utils.contains("MACHINE_FEATURES", "camera", "phycam-setup", "", d)} \
     v4l-utils \ 
 "
