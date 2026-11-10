@@ -8,7 +8,7 @@ ACTION=="add|change", \
 # CSI0 (Port0) Video Device
 ACTION=="add|change", \
 	SUBSYSTEM=="video4linux", \
-	ATTR{name}=="30102000.ticsi2rx context 0", \
+	ATTR{name}=="30102000.ticsi2rx context 0|j721e-csi2rx", \
 	DRIVERS=="j721e-csi2rx", \
 	SYMLINK+="video-csi0", \
 	SYMLINK+="video-csi0-port0"
