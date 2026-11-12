@@ -102,26 +102,23 @@ init_keystore() {
 }
 
 load_keystore() {
-	if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL} ]; then
-		ret=$(cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL})
-		trustedsource=$(expr "$ret" : '^trustedsource=\(tpm\|tee\|caam\)$')
-		if [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
-			modprobe -q tpm_tis_spi
-		fi
-		[ -n "$trustedsource" ] && modprobe -q  trusted source=${trustedsource}
-	else
-		modprobe -q  trusted
-	fi
-	modprobe -q  encrypted-keys
-	if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL} ]; then
-		keyctl add trusted kmk  "load `cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL}`" @u
-	fi
-	if [ -f ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL} ]; then
-		keyctl add encrypted rootfs  "load `cat ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL}`" @u
-	fi
 	if [ -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb ]; then
 		caam-keygen import ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb importkey
 		cat ${CONFIG_MOUNTPATH}/secrets/importkey | keyctl padd logon rootfs: @u
+	else
+		if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL} ]; then
+			ret=$(cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL})
+			trustedsource=$(expr "$ret" : '^trustedsource=\(tpm\|tee\|caam\)$')
+			if [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
+				modprobe -q tpm_tis_spi
+			fi
+			modprobe -q  trusted source=${trustedsource}
+		fi
+		modprobe -q  encrypted-keys
+		if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL} ] && [ -f ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL} ]; then
+			keyctl add trusted kmk  "load `cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL}`" @u
+			keyctl add encrypted rootfs  "load `cat ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL}`" @u
+		fi
 	fi
 }
 
