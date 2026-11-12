@@ -27,7 +27,7 @@ Example:
     $(basename $0) --newkeystorage trustedtpm
     $(basename $0) --deletekeystorage
     $(basename $0) --loadkeystorage
-    $(basename $0) --pkcs11testkey
+    $(basename $0) --pkcs11testkey /usr/lib/libckteec.so.0
 
 One of the following action can be selected:
     -n | --newkeystorage <value>  Create new Secure Key Storage
@@ -37,7 +37,9 @@ One of the following action can be selected:
                             securecaam (black blob only NXP Vendor BSP)
     -d | --deletekeystorage Erase the existing Secure Key Storage
     -l | --loadkeystorage   Load the existing Secure Key Storage
-    -p | --pkcs11testkey    Create an ECC testkey with user pin 1234
+    -p | --pkcs11testkey <value>  Create an ECC testkey with user pin 1234
+                            /usr/lib/libckteec.so.0
+                            /usr/lib/pkcs11/libtpm2_pkcs11.so
     -h | --help             This Help
     -v | --version          The version of $(basename $0)
 "
@@ -128,7 +130,6 @@ erase_keystore() {
 	[ $(lsmod | grep encrypted_keys | wc -l) -ne 0 ] && rmmod encrypted-keys
 	[ $(lsmod | grep trusted | wc -l) -ne 0 ] && rmmod trusted
 	rm ${CONFIG_MOUNTPATH}/secrets/*
-	rm -rf ${CONFIG_MOUNTPATH}/tpm2
 }
 
 check_storage() {
@@ -155,7 +156,7 @@ check_storage() {
 #
 # Command line options
 #
-ARGS=$(getopt -n $(basename $0) -o n:dlpvh -l newkeystorage:,deletekeystorage,loadkeystorage,pkcs11testkey,version,help -- "$@")
+ARGS=$(getopt -n $(basename $0) -o n:dlp:vh -l newkeystorage:,deletekeystorage,loadkeystorage,pkcs11testkey:,version,help -- "$@")
 VALID_ARGS=$?
 if [ "$VALID_ARGS" != "0" ]; then
 	echo "${usage}"
@@ -191,25 +192,19 @@ do
 		exit 0
 		;;
 	-p | --pkcs11testkey)
-		check_storage
-		retvalue=$(check_keysexist)
-		ret=$(cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL})
-		trustedsource=$(expr "$ret" : '^trustedsource=\(tpm\|tee\|caam\)$')
-		if [ $retvalue -ne 0 ] && [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
-			echo "Create ECC test key with user pin 1234"
-			tpm2pkcs11tool='pkcs11-tool --module /usr/lib/libtpm2_pkcs11.so.0'
-			if [ ! -f /usr/lib/libtpm2_pkcs11.so.0 ]; then
-				tpm2pkcs11tool='pkcs11-tool --module /usr/lib/pkcs11/libtpm2_pkcs11.so.0'
-			fi
-			# init test token
-			$tpm2pkcs11tool --init-token --label=test --so-pin=1234
-			# set user pin
-			$tpm2pkcs11tool --label="test" --init-pin --so-pin 1234 --pin 1234
-			# create test keypair
-			$tpm2pkcs11tool --label="test-keypair" --login --pin=1234 --keypairgen --usage-sign --key-type EC:prime256v1 -d 1
-		else
-			echo "Please create a trustedtpm Secure Key Storage!"
+		if [ ! -f "${2}" ]; then
+			echo "Error: PKCS#11 module ${2} not found!"
+			exit 1
 		fi
+		p11="pkcs11-tool --module ${2}"
+		# init test token
+		$p11 --init-token --label=test --so-pin=1234
+		# set user pin
+		$p11 --label="test" --init-pin --so-pin 1234 --pin 1234
+		# create test keypair
+		$p11 --label="test-keypair" --login --pin=1234 --keypairgen --usage-sign --key-type EC:prime256v1 -d 1
+
+		echo "Delete the generated metadata, depending on the PKCS#11 module's configuration"
 		exit 0
 		;;
 	-h | --help)
