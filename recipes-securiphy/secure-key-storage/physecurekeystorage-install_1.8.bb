@@ -16,6 +16,10 @@ CONFIG_MOUNTPATH ??= "/mnt/config"
 ENCRYPTED_KEY_LABEL ??= "encrypted_key.blob"
 TRUSTED_KEY_LABEL ??= "trusted_key.blob"
 TRUSTED_TYPE_LABEL ??= "trusted_key.config"
+OPTEE_TRUSTED_SLOT ??= "0"
+OPTEE_TRUSTED_TOKEN_NAME ??= "keyblobs_store"
+OPTEE_TRUSTED_SO_PIN_LABEL ??= "so_pin"
+OPTEE_TRUSTED_USER_PIN_LABEL ??= "user_pin"
 
 do_patch() {
     sed -i \
@@ -24,6 +28,10 @@ do_patch() {
     -e 's:@ENCRYPTED_KEY_LABEL@:${ENCRYPTED_KEY_LABEL}:g' \
     -e 's:@TRUSTED_KEY_LABEL@:${TRUSTED_KEY_LABEL}:g' \
     -e 's:@TRUSTED_TYPE_LABEL@:${TRUSTED_TYPE_LABEL}:g' \
+    -e 's:@OPTEE_TRUSTED_SLOT@:${OPTEE_TRUSTED_SLOT}:g' \
+    -e 's:@OPTEE_TRUSTED_TOKEN_NAME@:${OPTEE_TRUSTED_TOKEN_NAME}:g' \
+    -e 's:@OPTEE_TRUSTED_SO_PIN_LABEL@:${OPTEE_TRUSTED_SO_PIN_LABEL}:g' \
+    -e 's:@OPTEE_TRUSTED_USER_PIN_LABEL@:${OPTEE_TRUSTED_USER_PIN_LABEL}:g' \
     ${WORKDIR}/physecurekeystorage-install.sh
 }
 
