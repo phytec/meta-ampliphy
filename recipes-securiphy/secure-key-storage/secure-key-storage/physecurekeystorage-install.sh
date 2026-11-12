@@ -103,11 +103,12 @@ init_keystore() {
 
 load_keystore() {
 	if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL} ]; then
-		source ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL}
+		ret=$(cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL})
+		trustedsource=$(expr "$ret" : '^trustedsource=\(tpm\|tee\|caam\)$')
 		if [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
 			modprobe -q tpm_tis_spi
 		fi
-		modprobe -q  trusted source=${trustedsource}
+		[ -n "$trustedsource" ] && modprobe -q  trusted source=${trustedsource}
 	else
 		modprobe -q  trusted
 	fi
@@ -195,7 +196,8 @@ do
 	-p | --pkcs11testkey)
 		check_storage
 		retvalue=$(check_keysexist)
-		source ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL}
+		ret=$(cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL})
+		trustedsource=$(expr "$ret" : '^trustedsource=\(tpm\|tee\|caam\)$')
 		if [ $retvalue -ne 0 ] && [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
 			echo "Create ECC test key with user pin 1234"
 			tpm2pkcs11tool='pkcs11-tool --module /usr/lib/libtpm2_pkcs11.so.0'
