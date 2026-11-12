@@ -13,6 +13,9 @@ SRC_URI:append = " \
 SKS_PATH ??= "/dev/mmcblk${EMMC_DEV}p1"
 CONFIG_DEV ??= "/dev/mmcblk${EMMC_DEV}p3"
 CONFIG_MOUNTPATH ??= "/mnt/config"
+ENCRYPTED_KEY_LABEL ??= "encrypted_key.blob"
+TRUSTED_KEY_LABEL ??= "trusted_key.blob"
+TRUSTED_TYPE_LABEL ??= "trusted_key.config"
 
 do_varchange() {
     sed -i \
@@ -24,6 +27,9 @@ do_varchange() {
     -e 's:@SKS_PATH@:${SKS_PATH}:g' \
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
+    -e 's:@ENCRYPTED_KEY_LABEL@:${ENCRYPTED_KEY_LABEL}:g' \
+    -e 's:@TRUSTED_KEY_LABEL@:${TRUSTED_KEY_LABEL}:g' \
+    -e 's:@TRUSTED_TYPE_LABEL@:${TRUSTED_TYPE_LABEL}:g' \
     ${WORKDIR}/securestorageinit.sh
 }
 addtask varchange after do_patch and before do_install

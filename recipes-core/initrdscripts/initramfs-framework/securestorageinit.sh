@@ -11,6 +11,9 @@
 SKS_PATH=@SKS_PATH@
 CONFIG_DEV=@CONFIG_DEV@
 CONFIG_MOUNTPATH=@CONFIG_MOUNTPATH@
+ENCRYPTED_KEY_LABEL=@ENCRYPTED_KEY_LABEL@
+TRUSTED_KEY_LABEL=@TRUSTED_KEY_LABEL@
+TRUSTED_TYPE_LABEL=@TRUSTED_TYPE_LABEL@
 
 securestorageinit_enabled() {
 	return 0
@@ -74,12 +77,12 @@ securestorageinit_run() {
 			rmmod trusted
 		fi
 		#backward compatible to old first boot partition
-		if ! test -d ${CONFIG_MOUNTPATH}/secrets; then
+		if [ ! -d ${CONFIG_MOUNTPATH}/secrets ]; then
 			umount ${CONFIG_MOUNTPATH}
 			mount ${SKS_PATH} ${CONFIG_MOUNTPATH}
 		fi
-		if test -f ${CONFIG_MOUNTPATH}/secrets/trusted_key.config; then
-			source ${CONFIG_MOUNTPATH}/secrets/trusted_key.config
+		if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL} ]; then
+			source ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL}
 			modprobe -q trusted source=${trustedsource}
 		else
 			modprobe -q trusted
@@ -87,13 +90,13 @@ securestorageinit_run() {
 		load_kernel_module encrypted-keys
 		load_kernel_module dm-crypt
 		load_kernel_module dm-integrity
-		if test -f ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob; then
-			keyctl add trusted kmk "load `cat ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob`" @u
+		if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL} ]; then
+			keyctl add trusted kmk "load `cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL}`" @u
 		fi
-		if test -f ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob; then
-			keyctl add encrypted rootfs "load `cat ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob`" @u
+		if [ -f ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL} ]; then
+			keyctl add encrypted rootfs "load `cat ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL}`" @u
 		fi
-		if test -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb; then
+		if [ -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb ]; then
 			caam-keygen import ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb importkey
 			cat ${CONFIG_MOUNTPATH}/secrets/importkey | keyctl padd logon rootfs: @u
 		fi
@@ -130,7 +133,7 @@ securestorageinit_run() {
 			fi
 			dm_enc_name=encroot${j}
 			if [ ! -n "${TYPE}" ] && [ ! -n "${PTTYPE}" ]; then
-				if test -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb; then
+				if [ -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb ]; then
 					dmsetup create ${dm_enc_name} --table "0 $(blockdev --getsz ${devroot}) crypt capi:tk(cbc(aes))-plain :64:logon:rootfs: 0 ${devroot} 0"
 				else
 					dmsetup create ${dm_enc_name} --table "0 $(blockdev --getsz ${devroot}) crypt aes-xts-plain64 :64:encrypted:rootfs 0 ${devroot} 0"
