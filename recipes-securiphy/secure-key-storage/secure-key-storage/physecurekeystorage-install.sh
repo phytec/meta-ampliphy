@@ -13,6 +13,9 @@ end() {
 version="v1.7"
 CONFIG_DEV=@CONFIG_DEV@
 CONFIG_MOUNTPATH=@CONFIG_MOUNTPATH@
+ENCRYPTED_KEY_LABEL=@ENCRYPTED_KEY_LABEL@
+TRUSTED_KEY_LABEL=@TRUSTED_KEY_LABEL@
+TRUSTED_TYPE_LABEL=@TRUSTED_TYPE_LABEL@
 TPM_FAPICONFIG="/etc/tpm2-tss/fapi-config.json"
 
 usage="
@@ -76,7 +79,6 @@ init_keystore() {
 		trustedtype=$(expr substr "${1}" ${pos} ${lentype})
 		modprobe trusted source=${trustedtype}
 		modprobe encrypted-keys
-		echo "trustedsource=${trustedtype}" > ${CONFIG_MOUNTPATH}/secrets/trusted_key.config
 		if [ "${trustedtype}" = "tpm" ]; then
 			trustedid=$(keyctl add trusted kmk "new 64 keyhandle=0x81000001" @u)
 		else
@@ -84,8 +86,9 @@ init_keystore() {
 		fi
 		echo "Create encrypted key"
 		encid=$(keyctl add encrypted rootfs "new trusted:kmk 64" @u)
-		keyctl pipe ${trustedid} > ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob
-		keyctl pipe ${encid} > ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob
+		echo "trustedsource=${trustedtype}" > ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL}
+		keyctl pipe ${trustedid} > ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL}
+		keyctl pipe ${encid} > ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL}
 		;;
 	securecaam)
 		echo "Create NXP secure Key (black blob)"
@@ -99,8 +102,8 @@ init_keystore() {
 }
 
 load_keystore() {
-	if test -f ${CONFIG_MOUNTPATH}/secrets/trusted_key.config; then
-		source ${CONFIG_MOUNTPATH}/secrets/trusted_key.config
+	if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL} ]; then
+		source ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL}
 		if [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
 			modprobe -q tpm_tis_spi
 		fi
@@ -109,13 +112,13 @@ load_keystore() {
 		modprobe -q  trusted
 	fi
 	modprobe -q  encrypted-keys
-	if test -f ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob; then
-		keyctl add trusted kmk  "load `cat ${CONFIG_MOUNTPATH}/secrets/trusted_key.blob`" @u
+	if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL} ]; then
+		keyctl add trusted kmk  "load `cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL}`" @u
 	fi
-	if test -f ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob; then
-		keyctl add encrypted rootfs  "load `cat ${CONFIG_MOUNTPATH}/secrets/encrypted_key.blob`" @u
+	if [ -f ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL} ]; then
+		keyctl add encrypted rootfs  "load `cat ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL}`" @u
 	fi
-	if test -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb; then
+	if [ -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb ]; then
 		caam-keygen import ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb importkey
 		cat ${CONFIG_MOUNTPATH}/secrets/importkey | keyctl padd logon rootfs: @u
 	fi
@@ -192,7 +195,7 @@ do
 	-p | --pkcs11testkey)
 		check_storage
 		retvalue=$(check_keysexist)
-		source ${CONFIG_MOUNTPATH}/secrets/trusted_key.config
+		source ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL}
 		if [ $retvalue -ne 0 ] && [ $(expr match ${trustedsource} 'tpm') -gt 0 ]; then
 			echo "Create ECC test key with user pin 1234"
 			tpm2pkcs11tool='pkcs11-tool --module /usr/lib/libtpm2_pkcs11.so.0'

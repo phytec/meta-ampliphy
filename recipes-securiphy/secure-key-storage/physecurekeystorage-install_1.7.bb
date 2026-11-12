@@ -13,11 +13,17 @@ S = "${WORKDIR}"
 
 CONFIG_DEV ??= "/dev/mmcblk${EMMC_DEV}p3"
 CONFIG_MOUNTPATH ??= "/mnt/config"
+ENCRYPTED_KEY_LABEL ??= "encrypted_key.blob"
+TRUSTED_KEY_LABEL ??= "trusted_key.blob"
+TRUSTED_TYPE_LABEL ??= "trusted_key.config"
 
 do_patch() {
     sed -i \
     -e 's:@CONFIG_DEV@:${CONFIG_DEV}:g' \
     -e 's:@CONFIG_MOUNTPATH@:${CONFIG_MOUNTPATH}:g' \
+    -e 's:@ENCRYPTED_KEY_LABEL@:${ENCRYPTED_KEY_LABEL}:g' \
+    -e 's:@TRUSTED_KEY_LABEL@:${TRUSTED_KEY_LABEL}:g' \
+    -e 's:@TRUSTED_TYPE_LABEL@:${TRUSTED_TYPE_LABEL}:g' \
     ${WORKDIR}/physecurekeystorage-install.sh
 }
 
