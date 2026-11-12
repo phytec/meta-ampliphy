@@ -16,6 +16,8 @@ CONFIG_MOUNTPATH ??= "/mnt/config"
 ENCRYPTED_KEY_LABEL ??= "encrypted_key.blob"
 TRUSTED_KEY_LABEL ??= "trusted_key.blob"
 TRUSTED_TYPE_LABEL ??= "trusted_key.config"
+OPTEE_TRUSTED_SLOT ??= "0"
+OPTEE_TRUSTED_TOKEN_NAME ??= "keyblobs_store"
 
 do_varchange() {
     sed -i \
@@ -30,6 +32,8 @@ do_varchange() {
     -e 's:@ENCRYPTED_KEY_LABEL@:${ENCRYPTED_KEY_LABEL}:g' \
     -e 's:@TRUSTED_KEY_LABEL@:${TRUSTED_KEY_LABEL}:g' \
     -e 's:@TRUSTED_TYPE_LABEL@:${TRUSTED_TYPE_LABEL}:g' \
+    -e 's:@OPTEE_TRUSTED_SLOT@:${OPTEE_TRUSTED_SLOT}:g' \
+    -e 's:@OPTEE_TRUSTED_TOKEN_NAME@:${OPTEE_TRUSTED_TOKEN_NAME}:g' \
     ${WORKDIR}/securestorageinit.sh
 }
 addtask varchange after do_patch and before do_install
@@ -94,5 +98,9 @@ RDEPENDS:initramfs-module-provisioninginit = "${PN}-base"
 FILES:initramfs-module-provisioninginit = "/init.d/98-provisioninginit"
 
 SUMMARY:initramfs-module-securestorage = "initramfs support PHYTEC secure storage of devices"
-RDEPENDS:initramfs-module-securestorage = "${PN}-base"
+RDEPENDS:initramfs-module-securestorage = " \
+    ${PN}-base \
+    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "optee-client libp11 opensc pkcs11-provider", "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "optee", "initramfs-module-optee", "", d)} \
+    "
 FILES:initramfs-module-securestorage = "/init.d/98-securestorageinit"

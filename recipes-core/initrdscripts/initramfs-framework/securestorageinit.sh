@@ -14,6 +14,25 @@ CONFIG_MOUNTPATH=@CONFIG_MOUNTPATH@
 ENCRYPTED_KEY_LABEL=@ENCRYPTED_KEY_LABEL@
 TRUSTED_KEY_LABEL=@TRUSTED_KEY_LABEL@
 TRUSTED_TYPE_LABEL=@TRUSTED_TYPE_LABEL@
+TOKEN_NAME=@OPTEE_TRUSTED_TOKEN_NAME@
+SLOT=@OPTEE_TRUSTED_SLOT@
+
+SAVE_IN_TEE=0
+
+# Parameter
+# $1: obj to read from the token
+optee_read_obj() {
+	# Create temporary file for reading the object
+	tmp_file=$(mktemp)
+	# read object from the token to temporary file
+	pkcs11-tool --module /usr/lib/libckteec.so.0 --token-label ${TOKEN_NAME} \
+	--read-object --type data \
+	--label "${1}" \
+	--slot $SLOT \
+	--output-file "${tmp_file}" > /dev/null 2>&1 || echo ""
+	cat "${tmp_file}"
+}
+
 
 securestorageinit_enabled() {
 	return 0
@@ -93,15 +112,32 @@ securestorageinit_run() {
 		else
 			if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL} ]; then
 				ret=$(cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL})
+			else
+				ret=$(optee_read_obj "${TRUSTED_TYPE_LABEL}")
+				[ -n "${ret}" ] && SAVE_IN_TEE=1
+			fi
+			if [ -n "${ret}" ]; then
 				ret=$(expr "$ret" : '^trustedsource=\(tpm\|tee\|caam\)$')
 				load_kernel_module trusted $ret
 			fi
 			load_kernel_module encrypted-keys
-			if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL} ] && [ -f ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL} ]; then
+			if [ $SAVE_IN_TEE -eq 0 ] && \
+				[ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL} ] && \
+				[ -f ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL} ]; then
 				keyctl add trusted kmk "load `cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL}`" @u
 				keyctl add encrypted rootfs "load `cat ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL}`" @u
+			elif [ $SAVE_IN_TEE -eq 1 ] && \
+			[ ! -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL} ] && \
+			[ ! -f ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL} ]; then
+				keyctl add trusted kmk  "load $(optee_read_obj ${TRUSTED_KEY_LABEL})" @u
+				keyctl add encrypted rootfs  "load $(optee_read_obj ${ENCRYPTED_KEY_LABEL})" @u
+			else
+				printf "Error: Cannot load keys from TEE or filesystem"
 			fi
 		fi
+		# Kill tee-supplicant if running
+		[ "$(pidof tee-supplicant)" != "" ] && kill $(pidof tee-supplicant)
+
 		load_kernel_module dm-crypt
 		load_kernel_module dm-integrity
 		# mount all partitions without label (sign for encrypted partition)
