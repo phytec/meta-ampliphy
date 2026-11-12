@@ -27,10 +27,15 @@ do_login() {
 
 # Load kernel module
 # $1 file name
+# $2 source for the kernel module (optional)
 load_kernel_module() {
 	MODEXIST=$(find /lib/modules/$(uname -r) -type f -name "$1.ko*")
 	if [ -f "$MODEXIST" ]; then
-		modprobe $1
+		if [ -n "$2" ]; then
+			modprobe $1 source=$2
+		else
+			modprobe $1
+		fi
 	fi
 }
 
@@ -82,10 +87,11 @@ securestorageinit_run() {
 			mount ${SKS_PATH} ${CONFIG_MOUNTPATH}
 		fi
 		if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL} ]; then
-			source ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL}
-			modprobe -q trusted source=${trustedsource}
+			ret=$(cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL})
+			ret=$(expr "$ret" : '^trustedsource=\(tpm\|tee\|caam\)$')
+			load_kernel_module trusted $ret
 		else
-			modprobe -q trusted
+			load_kernel_module trusted
 		fi
 		load_kernel_module encrypted-keys
 		load_kernel_module dm-crypt
