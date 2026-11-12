@@ -86,27 +86,24 @@ securestorageinit_run() {
 			umount ${CONFIG_MOUNTPATH}
 			mount ${SKS_PATH} ${CONFIG_MOUNTPATH}
 		fi
-		if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL} ]; then
-			ret=$(cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL})
-			ret=$(expr "$ret" : '^trustedsource=\(tpm\|tee\|caam\)$')
-			load_kernel_module trusted $ret
-		else
-			load_kernel_module trusted
-		fi
-		load_kernel_module encrypted-keys
-		load_kernel_module dm-crypt
-		load_kernel_module dm-integrity
-		if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL} ]; then
-			keyctl add trusted kmk "load `cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL}`" @u
-		fi
-		if [ -f ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL} ]; then
-			keyctl add encrypted rootfs "load `cat ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL}`" @u
-		fi
+
 		if [ -f ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb ]; then
 			caam-keygen import ${CONFIG_MOUNTPATH}/secrets/tksecure_key.bb importkey
 			cat ${CONFIG_MOUNTPATH}/secrets/importkey | keyctl padd logon rootfs: @u
+		else
+			if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL} ]; then
+				ret=$(cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_TYPE_LABEL})
+				ret=$(expr "$ret" : '^trustedsource=\(tpm\|tee\|caam\)$')
+				load_kernel_module trusted $ret
+			fi
+			load_kernel_module encrypted-keys
+			if [ -f ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL} ] && [ -f ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL} ]; then
+				keyctl add trusted kmk "load `cat ${CONFIG_MOUNTPATH}/secrets/${TRUSTED_KEY_LABEL}`" @u
+				keyctl add encrypted rootfs "load `cat ${CONFIG_MOUNTPATH}/secrets/${ENCRYPTED_KEY_LABEL}`" @u
+			fi
 		fi
-
+		load_kernel_module dm-crypt
+		load_kernel_module dm-integrity
 		# mount all partitions without label (sign for encrypted partition)
 		count=$(ls ${root%?}* | wc -l)
 		i=1
