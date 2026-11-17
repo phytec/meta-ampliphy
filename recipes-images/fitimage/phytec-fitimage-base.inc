@@ -4,6 +4,8 @@ LICENSE = "MIT"
 REQUIRED_DISTRO_FEATURES = "secureboot"
 inherit features_check
 
+COMPATIBLE_MACHINE = "mx6ul-generic-bsp"
+
 inherit phytec-fitimage
 
 FITIMAGE_SLOT_kernel ?=  "${PREFERRED_PROVIDER_virtual/kernel}"
@@ -17,17 +19,6 @@ FITIMAGE_SLOT_fdt[file] ?= "${@' '.join(os.path.basename(dtb) for dtb in (d.getV
 FITIMAGE_SLOT_fdto ?= "${PREFERRED_PROVIDER_virtual/kernel}"
 FITIMAGE_SLOT_fdto[type] ?= "fdto"
 FITIMAGE_SLOT_fdto[file] ?= "${@' '.join(os.path.basename(dtb) for dtb in (d.getVar('KERNEL_DEVICETREE') or '').split() if dtb.endswith('.dtbo'))}"
-
-FITIMAGE_SLOT_fdtadin1300:mx6-generic-bsp ?= "${PREFERRED_PROVIDER_virtual/kernel}"
-FITIMAGE_SLOT_fdtadin1300[type] ?= "fdtapply"
-FITIMAGE_SLOT_fdtadin1300[file] ?= "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])} imx6-phytec-phycore-phy-adin1300.dtbo"
-FITIMAGE_SLOT_fdtadin1300[name] ?= "phyboard-imx6-phytec-phycore-phy-adin1300.dtb"
-
-
-FITIMAGE_SLOT_fdtksz9131:mx6-generic-bsp ?= "${PREFERRED_PROVIDER_virtual/kernel}"
-FITIMAGE_SLOT_fdtksz9131[type] ?= "fdtapply"
-FITIMAGE_SLOT_fdtksz9131[file] ?= "${@os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])} imx6-phytec-phycore-phy-ksz9131.dtbo"
-FITIMAGE_SLOT_fdtksz9131[name] ?= "phyboard-imx6-phytec-phycore-phy-ksz9131.dtb"
 
 FITIMAGE_SLOT_tee ?= "optee-os"
 FITIMAGE_SLOT_tee[type] ?= "tee"
