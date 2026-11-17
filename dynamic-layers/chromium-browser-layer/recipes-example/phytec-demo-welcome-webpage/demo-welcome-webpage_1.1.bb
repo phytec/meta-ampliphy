@@ -8,6 +8,8 @@ SRC_URI = "\
           "
 SRC_URI[sha256sum] = "2b0d3b4ca3102eb5de379cd297f92417573545db4f004acb947491e878cb4b69"
 
+S = "${UNPACKDIR}"
+
 PR = "r0"
 
 # strip leading folder in archive and exclude script sub folder as this is not needed
