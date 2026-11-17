@@ -4,7 +4,7 @@ LICENSE = "MIT"
 REQUIRED_DISTRO_FEATURES = "secureboot"
 inherit features_check
 
-inherit fitimage
+inherit phytec-fitimage
 
 FITIMAGE_SLOT_kernel ?=  "${PREFERRED_PROVIDER_virtual/kernel}"
 FITIMAGE_SLOT_kernel[type] ?= "kernel"
