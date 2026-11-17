@@ -15,14 +15,17 @@ parse_fstab() {
         sed -i \
             -e 's/@CONFIG_DEV@/\/dev\/mmcblk${EMMC_DEV}p3/g' \
             -e 's/@CONFIG_DEV_TYPE@/auto/g' \
+            -e 's/@ARTIFACTS_DEV@/\/dev\/mmcblk${EMMC_DEV}p7/g' \
+            -e 's/@ARTIFACTS_DEV_TYPE@/auto/g' \
             ${UNPACKDIR}/fstab
     else
         sed -i \
             -e 's/@CONFIG_DEV@/ubi0:config/g' \
             -e 's/@CONFIG_DEV_TYPE@/ubifs/g' \
+            -e 's/@ARTIFACTS_DEV@/ubi0:artifacts/g' \
+            -e 's/@ARTIFACTS_DEV_TYPE@/ubifs/g' \
             ${UNPACKDIR}/fstab
     fi
-    sed -i -e 's/@ARTIFACTS_DEV@/\/dev\/mmcblk${EMMC_DEV}p7/g' ${UNPACKDIR}/fstab
 }
 clean_fstab() {
     # /mnt/config does not exist when using a regular (non-RAUC) image
