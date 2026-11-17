@@ -57,7 +57,6 @@ RDEPENDS:${PN}-install = " \
     kernel-module-trusted \
     kernel-module-encrypted-keys \
     keyutils \
-    ${@bb.utils.contains("MACHINE_FEATURES", "caam", "keyctl-caam", "", d)} \
     ${@bb.utils.contains("MACHINE_FEATURES", "tpm2", "tpm2-tools", "", d)} \
 "
 RDEPENDS:${PN}-load = "${PN}-install"
