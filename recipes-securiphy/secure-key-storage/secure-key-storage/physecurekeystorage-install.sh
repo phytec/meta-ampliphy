@@ -53,6 +53,7 @@ check_keysexist() {
 # Parameter
 # key type
 init_keystore() {
+	keyctl link @u @s
 	case ${1} in
 	trustedtpm|trustedtee|trustedcaam)
 		modprobe -r trusted
