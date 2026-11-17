@@ -9,6 +9,8 @@ SRC_URI = "\
             file://chromium.service \
           "
 
+S = "${UNPACKDIR}"
+
 SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 SYSTEMD_PACKAGES = "${PN}"
 
