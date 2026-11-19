@@ -86,7 +86,7 @@ IMAGE_LINGUAS ?= "de-de fr-fr en-us zh-cn"
 PREFERRED_RPROVIDER_util-linux-sfdisk-native = "util-linux-native"
 
 DISTRO_FEATURES_OPTED_OUT += "zeroconf ptest"
-DISTRO_FEATURES:append = " pam virtualization security tpm2"
+DISTRO_FEATURES:append = " pam virtualization security tpm2 opencl"
 VIRTUAL-RUNTIME_container_runtime ?= "crun"
 VIRTUAL-RUNTIME_container_networking ?= "netavark"
 VIRTUAL-RUNTIME_container_dns ?= "aardvark-dns"
